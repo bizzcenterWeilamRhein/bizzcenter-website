@@ -1,0 +1,22 @@
+---
+title: "Pricing — my-website"
+description: "Simple, transparent pricing for teams of all sizes."
+---
+
+<PricingSection title="Simple, Transparent Pricing" description="Start free. Upgrade when you are ready. No surprises.">
+  <PricingPlan name="Free" price="$0" description="For individuals and small projects" features={["Up to 5 team members", "Core features included", "1 GB storage", "Community support", "Basic analytics"]} cta={{ label: "Get Started Free", href: "https://app.my-website.com/signup" }} />
+  <PricingPlan name="Pro" price="$29/mo" yearlyPrice="$24/mo" description="For growing teams that need more" features={["Unlimited team members", "All features included", "50 GB storage", "Priority email support", "Advanced analytics", "Custom integrations", "SSO authentication"]} cta={{ label: "Start Free Trial", href: "https://app.my-website.com/signup?plan=pro" }} popular={true} />
+  <PricingPlan name="Enterprise" price="Custom" description="For organizations that need control" features={["Everything in Pro", "Unlimited storage", "Dedicated account manager", "99.99% uptime SLA", "SCIM provisioning", "Custom contracts", "On-premise deployment"]} cta={{ label: "Contact Sales", href: "mailto:sales@my-website.com" }} />
+</PricingSection>
+
+<FAQ title="Pricing Questions">
+  <FAQItem question="Can I switch plans at any time?">
+    Yes. You can upgrade, downgrade, or cancel at any time. When you upgrade, you only pay the prorated difference. When you downgrade, the credit is applied to your next billing cycle.
+  </FAQItem>
+  <FAQItem question="What happens when my trial ends?">
+    After your 14-day Pro trial, you can continue on the Free plan with no data loss. All your projects and settings are preserved. Upgrade whenever you are ready.
+  </FAQItem>
+  <FAQItem question="Do you offer discounts for startups or nonprofits?">
+    Yes! We offer 50% off Pro plans for qualifying startups and nonprofits. Contact our sales team to learn more about eligibility.
+  </FAQItem>
+</FAQ>

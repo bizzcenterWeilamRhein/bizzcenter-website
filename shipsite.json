@@ -1,0 +1,198 @@
+{
+  "$schema": "./node_modules/@shipsite.dev/core/shipsite.schema.json",
+  "name": "bizzcenter-website",
+  "url": "https://my-website.com",
+  "logo": "/images/logo.svg",
+  "favicon": "/favicon.png",
+  "ogImage": "/images/og-image.png",
+  "colors": {
+    "primary": "#059669",
+    "accent": "#067647",
+    "background": "#ffffff",
+    "text": "#1f2a37"
+  },
+  "fonts": {
+    "heading": "Inter",
+    "body": "Inter"
+  },
+  "i18n": {
+    "defaultLocale": "en",
+    "locales": [
+      "en",
+      "de"
+    ],
+    "localePrefix": "as-needed"
+  },
+  "navigation": {
+    "items": [
+      {
+        "label": {
+          "en": "Features",
+          "de": "Funktionen"
+        },
+        "href": "/features"
+      },
+      {
+        "label": {
+          "en": "Pricing",
+          "de": "Preise"
+        },
+        "href": "/pricing"
+      },
+      {
+        "label": {
+          "en": "Blog",
+          "de": "Blog"
+        },
+        "href": "/blog"
+      }
+    ],
+    "cta": {
+      "label": {
+        "en": "Get Started",
+        "de": "Loslegen"
+      },
+      "href": "https://app.my-website.com/signup"
+    }
+  },
+  "footer": {
+    "columns": [
+      {
+        "title": {
+          "en": "Product",
+          "de": "Produkt"
+        },
+        "links": [
+          {
+            "label": {
+              "en": "Features",
+              "de": "Funktionen"
+            },
+            "href": "/features"
+          },
+          {
+            "label": {
+              "en": "Pricing",
+              "de": "Preise"
+            },
+            "href": "/pricing"
+          },
+          {
+            "label": {
+              "en": "Blog",
+              "de": "Blog"
+            },
+            "href": "/blog"
+          }
+        ]
+      },
+      {
+        "title": {
+          "en": "Legal",
+          "de": "Rechtliches"
+        },
+        "links": [
+          {
+            "label": {
+              "en": "Privacy Policy",
+              "de": "Datenschutz"
+            },
+            "href": "/privacy"
+          },
+          {
+            "label": {
+              "en": "Terms of Service",
+              "de": "Nutzungsbedingungen"
+            },
+            "href": "/terms"
+          }
+        ]
+      }
+    ],
+    "copyright": "© 2026 my-website"
+  },
+  "pages": [
+    {
+      "slug": "",
+      "type": "landing",
+      "content": "landing",
+      "locales": [
+        "en",
+        "de"
+      ]
+    },
+    {
+      "slug": "features",
+      "type": "page",
+      "content": "features",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "slug": "pricing",
+      "type": "page",
+      "content": "pricing",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "slug": "blog",
+      "type": "blog-index",
+      "content": "blog",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "slug": "blog/getting-started",
+      "type": "blog-article",
+      "content": "blog/getting-started",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "slug": "blog/building-your-first-project",
+      "type": "blog-article",
+      "content": "blog/building-your-first-project",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "slug": "blog/best-practices",
+      "type": "blog-article",
+      "content": "blog/best-practices",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "slug": "privacy",
+      "type": "legal",
+      "content": "privacy",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "slug": "terms",
+      "type": "legal",
+      "content": "terms",
+      "locales": [
+        "en"
+      ]
+    }
+  ],
+  "blog": {
+    "authors": {
+      "default": {
+        "name": "Team",
+        "role": "Author",
+        "image": "/images/team.svg"
+      }
+    }
+  }
+}

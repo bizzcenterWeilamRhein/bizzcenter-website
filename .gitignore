@@ -1,0 +1,5 @@
+node_modules/
+.next/
+.shipsite/
+.content-collections/
+*.tsbuildinfo
