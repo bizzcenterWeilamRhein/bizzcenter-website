@@ -7,4 +7,4 @@
 // Then use in any MDX file:
 //   <Highlight color="blue">Important text</Highlight>
 
-export {};
+export { ServiceHero } from './ServiceHero';

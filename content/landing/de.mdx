@@ -3,48 +3,48 @@ title: "bizzcenter – Coworking & Büros in Konstanz & Weil am Rhein"
 description: "Geschäftsadresse, Coworking, Private Offices und Konferenzräume an 2 Standorten im Dreiländereck. Seit 2004. Flexibel ab 1 Tag."
 ---
 
-<Hero
-  title="Ihr Business. Zwei Standorte. Null Risiko."
-  description="Geschäftsadresse, Coworking, Büros und Konferenzräume – flexibel ab einem Tag. Konstanz am Bodensee und Weil am Rhein im Dreiländereck."
-  image="/images/hero-kesselhaus.jpg"
+<ServiceHero
+  backgroundImage="/images/hero-kesselhaus.jpg"
+  headline="bizzcenter – Workspace-Lösungen in Konstanz & Weil am Rhein"
+  services={[
+    {
+      title: "Geschäftsadresse",
+      image: "/images/virtual-office.jpg",
+      description: "Ihr Firmendomizil im bizzcenter. Mit 20 Jahren Erfahrung der ideale Partner rund um Ihre Geschäftsadresse.",
+      links: [
+        { label: "In Konstanz", href: "/konstanz/geschaeftsadresse" },
+        { label: "In Weil am Rhein", href: "/weil-am-rhein/geschaeftsadresse" }
+      ]
+    },
+    {
+      title: "Coworking",
+      image: "/images/arbeitsplatz-weil.jpg",
+      description: "Effizientes Arbeiten in inspirierenden Räumen und zugleich vom Networking mit Branchenexperten profitieren.",
+      links: [
+        { label: "In Konstanz", href: "/konstanz/coworking" },
+        { label: "In Weil am Rhein", href: "/weil-am-rhein/coworking" }
+      ]
+    },
+    {
+      title: "Büros mieten",
+      image: "/images/konstanz-empfang.jpg",
+      description: "Möblierte Büros – ready to work – perfekt auf Ihren Bedarf angepasst. Stundenweise oder langfristig.",
+      links: [
+        { label: "In Konstanz", href: "/konstanz/privates-buero" },
+        { label: "In Weil am Rhein", href: "/weil-am-rhein/privates-buero" }
+      ]
+    },
+    {
+      title: "Konferenzräume",
+      image: "/images/konferenzraum-konstanz.jpg",
+      description: "Moderne helle Räume für bis zu 35 Personen. Für Tagungen, Meetings, Sitzungen oder Konferenzen.",
+      links: [
+        { label: "In Konstanz", href: "/konstanz/konferenzraum" },
+        { label: "In Weil am Rhein", href: "/weil-am-rhein/konferenzraum" }
+      ]
+    }
+  ]}
 />
-
-<CardGrid title="Was brauchen Sie?" description="Wählen Sie Ihre Lösung – alle Preise transparent, keine versteckten Kosten.">
-  <CardGridItem
-    title="Geschäftsadresse & Virtual Office"
-    description="Repräsentative Firmenadresse, Postservice und Telefonannahme in Ihrem Namen. Ohne eigenes Büro. Ab sofort verfügbar."
-    href="/weil-am-rhein/geschaeftsadresse"
-  />
-  <CardGridItem
-    title="Coworking Space"
-    description="Flexibler Arbeitsplatz in inspirierender Atmosphäre. Tageweise oder als Monatsabo. WLAN, Kaffee, Community inklusive."
-    href="/weil-am-rhein/coworking"
-  />
-  <CardGridItem
-    title="Privates Büro"
-    description="Ihr eigenes Büro – möbliert, abschließbar, sofort bezugsfertig. Kurze Laufzeiten, alles inklusive."
-    href="/weil-am-rhein/privates-buero"
-  />
-  <CardGridItem
-    title="Konferenzraum & Meeting Room"
-    description="Moderne Räume für 2–35 Personen. Stundenweise buchbar. Beamer, Whiteboard und Catering auf Wunsch."
-    href="/weil-am-rhein/konferenzraum"
-  />
-</CardGrid>
-
-<BentoGrid title="Zwei Standorte. Ihr Vorteil." description="Wählen Sie den Standort, der zu Ihnen passt – oder nutzen Sie beide.">
-  <BentoItem
-    title="Weil am Rhein – Dreiländereck"
-    description="Im Kesselhaus direkt an der Schweizer Grenze. 10 Min. nach Basel. Green Office mit Holz, Glas und Pflanzen. Ideale Anbindung an A5 und Euroairport."
-    image="/images/hero-kesselhaus.jpg"
-    span={2}
-  />
-  <BentoItem
-    title="Konstanz – Bodensee"
-    description="Seit 2004 die erste Adresse für flexibles Arbeiten am Bodensee. Universität, Altstadt und Schweiz in Laufweite."
-    image="/images/konstanz-empfang.jpg"
-  />
-</BentoGrid>
 
 <Features title="Alles inklusive. Keine Überraschungen." description="Jede Mitgliedschaft enthält:" columns={3}>
   <Feature title="High-Speed WLAN" description="Glasfaser-Internet an beiden Standorten." />
