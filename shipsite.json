@@ -103,6 +103,22 @@
     { "slug": "ueber-uns", "type": "page", "content": "ueber-uns", "locales": ["de", "en"] },
     { "slug": "kontakt", "type": "page", "content": "kontakt", "locales": ["de", "en"] },
     { "slug": "impressum", "type": "page", "content": "impressum", "locales": ["de", "en"] },
-    { "slug": "datenschutz", "type": "page", "content": "datenschutz", "locales": ["de", "en"] }
+    { "slug": "datenschutz", "type": "page", "content": "datenschutz", "locales": ["de", "en"] },
+    { "slug": "konstanz/beamer-mieten", "type": "page", "content": "konstanz/beamer-mieten", "locales": ["de"] },
+    { "slug": "weil-am-rhein/beamer-mieten", "type": "page", "content": "weil-am-rhein/beamer-mieten", "locales": ["de"] },
+    { "slug": "konstanz/schweizer-telefonnummer", "type": "page", "content": "konstanz/schweizer-telefonnummer", "locales": ["de"] },
+    { "slug": "weil-am-rhein/schweizer-telefonnummer", "type": "page", "content": "weil-am-rhein/schweizer-telefonnummer", "locales": ["de"] },
+    { "slug": "konstanz/telefonservice", "type": "page", "content": "konstanz/telefonservice", "locales": ["de"] },
+    { "slug": "weil-am-rhein/telefonservice", "type": "page", "content": "weil-am-rhein/telefonservice", "locales": ["de"] },
+    { "slug": "konstanz/lagerservice", "type": "page", "content": "konstanz/lagerservice", "locales": ["de"] },
+    { "slug": "weil-am-rhein/lagerservice", "type": "page", "content": "weil-am-rhein/lagerservice", "locales": ["de"] },
+    { "slug": "konstanz/sekretariatsservice", "type": "page", "content": "konstanz/sekretariatsservice", "locales": ["de"] },
+    { "slug": "weil-am-rhein/sekretariatsservice", "type": "page", "content": "weil-am-rhein/sekretariatsservice", "locales": ["de"] },
+    { "slug": "konstanz/fulfillment", "type": "page", "content": "konstanz/fulfillment", "locales": ["de"] },
+    { "slug": "weil-am-rhein/fulfillment", "type": "page", "content": "weil-am-rhein/fulfillment", "locales": ["de"] },
+    { "slug": "konstanz/post-bearbeitung", "type": "page", "content": "konstanz/post-bearbeitung", "locales": ["de"] },
+    { "slug": "weil-am-rhein/post-bearbeitung", "type": "page", "content": "weil-am-rhein/post-bearbeitung", "locales": ["de"] },
+    { "slug": "konstanz/individueller-service", "type": "page", "content": "konstanz/individueller-service", "locales": ["de"] },
+    { "slug": "weil-am-rhein/individueller-service", "type": "page", "content": "weil-am-rhein/individueller-service", "locales": ["de"] }
   ]
 }
