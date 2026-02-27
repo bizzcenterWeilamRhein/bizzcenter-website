@@ -8,3 +8,4 @@
 //   <Highlight color="blue">Important text</Highlight>
 
 export { ServiceHero } from './ServiceHero';
+export { ServiceGrid } from './ServiceGrid';
