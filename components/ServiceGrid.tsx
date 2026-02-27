@@ -20,7 +20,6 @@ function ServiceIcon({ icon }: { icon: string }) {
     projector: (
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
         <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h14.25c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125H4.875A1.125 1.125 0 013.75 9.375v-4.5zM3.75 14.625c0-.621.504-1.125 1.125-1.125h14.25c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125H4.875a1.125 1.125 0 01-1.125-1.125v-4.5z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 7.5h.008v.008H12V7.5zm0 10h.008v.008H12v-.008z" />
       </svg>
     ),
     phone: (
@@ -60,8 +59,48 @@ function ServiceIcon({ icon }: { icon: string }) {
     ),
   };
   return (
-    <div className="w-14 h-14 rounded-xl bg-[var(--color-primary,#1a73b5)]/10 text-[var(--color-primary,#1a73b5)] flex items-center justify-center flex-shrink-0">
+    <div className="w-12 h-12 rounded-xl bg-[var(--color-primary,#1a73b5)]/10 text-[var(--color-primary,#1a73b5)] flex items-center justify-center flex-shrink-0">
       {icons[icon] || icons.sparkles}
+    </div>
+  );
+}
+
+function ServiceCard({ service, isActive, onToggle }: { service: Service; isActive: boolean; onToggle: () => void }) {
+  return (
+    <div
+      onClick={onToggle}
+      className="bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-shadow cursor-pointer h-full flex flex-col overflow-hidden"
+    >
+      {/* Header - always visible */}
+      <div className="p-5 flex items-start gap-3">
+        <ServiceIcon icon={service.icon} />
+        <h3 className="text-base font-semibold text-gray-900 pt-1.5">{service.title}</h3>
+      </div>
+
+      {/* Content area - either description or location picker */}
+      <div className="px-5 pb-5 flex-grow flex flex-col">
+        {!isActive ? (
+          <p className="text-sm text-gray-600 leading-relaxed">{service.description}</p>
+        ) : (
+          <div className="flex flex-col gap-2">
+            <p className="text-xs font-medium text-gray-500 mb-1">Standort wählen:</p>
+            <Link
+              href={`/konstanz/${service.slug}`}
+              className="block text-center text-sm font-semibold py-2.5 px-4 rounded-lg bg-[var(--color-primary,#1a73b5)] text-white hover:opacity-90 transition-opacity"
+              onClick={(e) => e.stopPropagation()}
+            >
+              📍 Konstanz
+            </Link>
+            <Link
+              href={`/weil-am-rhein/${service.slug}`}
+              className="block text-center text-sm font-semibold py-2.5 px-4 rounded-lg bg-gray-100 text-gray-800 hover:bg-gray-200 border border-gray-200 transition-colors"
+              onClick={(e) => e.stopPropagation()}
+            >
+              📍 Weil am Rhein
+            </Link>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -69,47 +108,21 @@ function ServiceIcon({ icon }: { icon: string }) {
 export function ServiceGrid({ title, services }: ServiceGridProps) {
   const [activeService, setActiveService] = useState<string | null>(null);
 
+  // Pad to multiple of 3 for symmetry (8 services → show all 8 in 3-col grid)
   return (
     <section className="w-full max-w-7xl mx-auto px-4 py-16 sm:py-20">
       {title && (
         <h2 className="text-2xl sm:text-3xl font-bold text-center mb-10">{title}</h2>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {services.map((service) => (
-          <div key={service.slug} className="relative">
-            <button
-              onClick={() => setActiveService(activeService === service.slug ? null : service.slug)}
-              className="w-full text-left bg-white border border-gray-100 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow cursor-pointer"
-            >
-              <div className="flex items-start gap-4">
-                <ServiceIcon icon={service.icon} />
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1">{service.title}</h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">{service.description}</p>
-                </div>
-              </div>
-            </button>
-
-            {/* Location Picker Dropdown */}
-            {activeService === service.slug && (
-              <div className="absolute z-20 top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-200 p-4 flex flex-col gap-2 animate-in fade-in slide-in-from-top-2">
-                <p className="text-sm font-medium text-gray-500 mb-1">Standort wählen:</p>
-                <Link
-                  href={`/konstanz/${service.slug}`}
-                  className="block text-center font-semibold py-2.5 px-4 rounded-lg bg-[var(--color-primary,#1a73b5)] text-white hover:opacity-90 transition-opacity"
-                >
-                  📍 Konstanz
-                </Link>
-                <Link
-                  href={`/weil-am-rhein/${service.slug}`}
-                  className="block text-center font-semibold py-2.5 px-4 rounded-lg bg-gray-100 text-gray-800 hover:bg-gray-200 border border-gray-200 transition-colors"
-                >
-                  📍 Weil am Rhein
-                </Link>
-              </div>
-            )}
-          </div>
+          <ServiceCard
+            key={service.slug}
+            service={service}
+            isActive={activeService === service.slug}
+            onToggle={() => setActiveService(activeService === service.slug ? null : service.slug)}
+          />
         ))}
       </div>
     </section>
