@@ -21,7 +21,7 @@ export function ServiceHero({ backgroundImage, headline, services }: ServiceHero
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${backgroundImage})` }}
       />
-      <div className="absolute inset-0 bg-black/40" />
+      <div className="absolute inset-0 bg-black/15" />
 
       {/* Content */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 py-12 sm:py-20">
