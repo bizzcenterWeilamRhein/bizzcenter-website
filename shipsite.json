@@ -1,14 +1,14 @@
 {
   "$schema": "./node_modules/@shipsite.dev/core/shipsite.schema.json",
-  "name": "bizzcenter-website",
-  "url": "https://my-website.com",
-  "logo": "/images/logo.svg",
+  "name": "bizzcenter",
+  "url": "https://bizzcenter.de",
+  "logo": "/images/virtual-office.jpg",
   "favicon": "/favicon.png",
   "ogImage": "/images/og-image.png",
   "colors": {
-    "primary": "#d4a017",
-    "accent": "#b8860b",
-    "background": "#fffdf5",
+    "primary": "#004990",
+    "accent": "#fb8e28",
+    "background": "#ffffff",
     "text": "#1f2a37"
   },
   "fonts": {
@@ -16,183 +16,102 @@
     "body": "Inter"
   },
   "i18n": {
-    "defaultLocale": "en",
-    "locales": [
-      "en",
-      "de"
-    ],
+    "defaultLocale": "de",
+    "locales": ["de", "en"],
     "localePrefix": "as-needed"
   },
   "navigation": {
     "items": [
       {
-        "label": {
-          "en": "Features",
-          "de": "Funktionen"
-        },
-        "href": "/features"
+        "label": { "de": "Bürolösungen", "en": "Office Solutions" },
+        "href": "/bueroloesungen",
+        "children": [
+          { "label": { "de": "Virtual Office", "en": "Virtual Office" }, "href": "/virtual-office-weil-am-rhein" },
+          { "label": { "de": "Coworking", "en": "Coworking" }, "href": "/coworking-weil-am-rhein" },
+          { "label": { "de": "Büros mieten", "en": "Rent an Office" }, "href": "/buero-mieten-weil-am-rhein" },
+          { "label": { "de": "Konferenzräume", "en": "Conference Rooms" }, "href": "/konferenzraum-weil-am-rhein" },
+          { "label": { "de": "Green Office Space", "en": "Green Office Space" }, "href": "/green-office-space-weil-am-rhein" },
+          { "label": { "de": "Coachingbüro", "en": "Coaching Office" }, "href": "/coachingbuero-weil-am-rhein" }
+        ]
       },
       {
-        "label": {
-          "en": "Pricing",
-          "de": "Preise"
-        },
-        "href": "/pricing"
+        "label": { "de": "Standorte", "en": "Locations" },
+        "href": "/bueroloesungen",
+        "children": [
+          { "label": { "de": "Weil am Rhein", "en": "Weil am Rhein" }, "href": "/anfahrt-weil-am-rhein" },
+          { "label": { "de": "Konstanz", "en": "Constance" }, "href": "/anfahrt-konstanz" },
+          { "label": { "de": "Kontakt Weil", "en": "Contact Weil" }, "href": "/kontakt-weil-am-rhein" },
+          { "label": { "de": "Kontakt Konstanz", "en": "Contact Constance" }, "href": "/kontakt-konstanz" }
+        ]
       },
       {
-        "label": {
-          "en": "Blog",
-          "de": "Blog"
-        },
-        "href": "/blog"
+        "label": { "de": "Über uns", "en": "About Us" },
+        "href": "/ueber-uns"
       }
     ],
     "cta": {
-      "label": {
-        "en": "Get Started",
-        "de": "Loslegen"
-      },
-      "href": "https://app.my-website.com/signup"
+      "label": { "de": "Kontakt", "en": "Contact" },
+      "href": "/kontakt-weil-am-rhein"
     }
   },
   "footer": {
     "columns": [
       {
-        "title": {
-          "en": "Product",
-          "de": "Produkt"
-        },
+        "title": { "de": "Bürolösungen", "en": "Office Solutions" },
         "links": [
-          {
-            "label": {
-              "en": "Features",
-              "de": "Funktionen"
-            },
-            "href": "/features"
-          },
-          {
-            "label": {
-              "en": "Pricing",
-              "de": "Preise"
-            },
-            "href": "/pricing"
-          },
-          {
-            "label": {
-              "en": "Blog",
-              "de": "Blog"
-            },
-            "href": "/blog"
-          }
+          { "label": { "de": "Virtual Office Weil", "en": "Virtual Office Weil" }, "href": "/virtual-office-weil-am-rhein" },
+          { "label": { "de": "Virtual Office Konstanz", "en": "Virtual Office Constance" }, "href": "/virtual-office-konstanz" },
+          { "label": { "de": "Coworking Weil", "en": "Coworking Weil" }, "href": "/coworking-weil-am-rhein" },
+          { "label": { "de": "Coworking Konstanz", "en": "Coworking Constance" }, "href": "/coworking-konstanz" },
+          { "label": { "de": "Büro mieten Weil", "en": "Rent Office Weil" }, "href": "/buero-mieten-weil-am-rhein" },
+          { "label": { "de": "Büro mieten Konstanz", "en": "Rent Office Constance" }, "href": "/buero-mieten-konstanz" }
         ]
       },
       {
-        "title": {
-          "en": "Legal",
-          "de": "Rechtliches"
-        },
+        "title": { "de": "Weitere Angebote", "en": "More Services" },
         "links": [
-          {
-            "label": {
-              "en": "Privacy Policy",
-              "de": "Datenschutz"
-            },
-            "href": "/privacy"
-          },
-          {
-            "label": {
-              "en": "Terms of Service",
-              "de": "Nutzungsbedingungen"
-            },
-            "href": "/terms"
-          }
+          { "label": { "de": "Konferenzräume", "en": "Conference Rooms" }, "href": "/konferenzraum-weil-am-rhein" },
+          { "label": { "de": "Green Office Space", "en": "Green Office Space" }, "href": "/green-office-space-weil-am-rhein" },
+          { "label": { "de": "Coachingbüro", "en": "Coaching Office" }, "href": "/coachingbuero-weil-am-rhein" },
+          { "label": { "de": "Beamer mieten", "en": "Projector Hire" }, "href": "/beamer-verleih-konstanz" },
+          { "label": { "de": "Tagesbüro buchen", "en": "Book Day Office" }, "href": "/tagesbuero-weil-am-rhein" },
+          { "label": { "de": "Coworking buchen", "en": "Book Coworking" }, "href": "/coworking-weil-buchen" }
+        ]
+      },
+      {
+        "title": { "de": "Unternehmen", "en": "Company" },
+        "links": [
+          { "label": { "de": "Über uns", "en": "About Us" }, "href": "/ueber-uns" },
+          { "label": { "de": "Anfahrt Weil", "en": "Directions Weil" }, "href": "/anfahrt-weil-am-rhein" },
+          { "label": { "de": "Anfahrt Konstanz", "en": "Directions Constance" }, "href": "/anfahrt-konstanz" },
+          { "label": { "de": "Kontakt Weil", "en": "Contact Weil" }, "href": "/kontakt-weil-am-rhein" },
+          { "label": { "de": "Kontakt Konstanz", "en": "Contact Constance" }, "href": "/kontakt-konstanz" },
+          { "label": { "de": "Impressum", "en": "Imprint" }, "href": "/impressum" }
         ]
       }
     ],
-    "copyright": "© 2026 my-website"
+    "copyright": "© 2026 bizzcenter e.K. Inh. Timo Schneeweis | Alle Rechte vorbehalten"
   },
   "pages": [
-    {
-      "slug": "",
-      "type": "landing",
-      "content": "landing",
-      "locales": [
-        "en",
-        "de"
-      ]
-    },
-    {
-      "slug": "features",
-      "type": "page",
-      "content": "features",
-      "locales": [
-        "en"
-      ]
-    },
-    {
-      "slug": "pricing",
-      "type": "page",
-      "content": "pricing",
-      "locales": [
-        "en"
-      ]
-    },
-    {
-      "slug": "blog",
-      "type": "blog-index",
-      "content": "blog",
-      "locales": [
-        "en"
-      ]
-    },
-    {
-      "slug": "blog/getting-started",
-      "type": "blog-article",
-      "content": "blog/getting-started",
-      "locales": [
-        "en"
-      ]
-    },
-    {
-      "slug": "blog/building-your-first-project",
-      "type": "blog-article",
-      "content": "blog/building-your-first-project",
-      "locales": [
-        "en"
-      ]
-    },
-    {
-      "slug": "blog/best-practices",
-      "type": "blog-article",
-      "content": "blog/best-practices",
-      "locales": [
-        "en"
-      ]
-    },
-    {
-      "slug": "privacy",
-      "type": "legal",
-      "content": "privacy",
-      "locales": [
-        "en"
-      ]
-    },
-    {
-      "slug": "terms",
-      "type": "legal",
-      "content": "terms",
-      "locales": [
-        "en"
-      ]
-    }
-  ],
-  "blog": {
-    "authors": {
-      "default": {
-        "name": "Team",
-        "role": "Author",
-        "image": "/images/team.svg"
-      }
-    }
-  }
+    { "slug": "", "type": "landing", "content": "landing", "locales": ["de", "en"] },
+    { "slug": "bueroloesungen", "type": "page", "content": "bueroloesungen", "locales": ["de", "en"] },
+    { "slug": "virtual-office-weil-am-rhein", "type": "page", "content": "virtual-office-weil", "locales": ["de", "en"] },
+    { "slug": "virtual-office-konstanz", "type": "page", "content": "virtual-office-konstanz", "locales": ["de", "en"] },
+    { "slug": "coworking-weil-am-rhein", "type": "page", "content": "coworking-weil", "locales": ["de", "en"] },
+    { "slug": "coworking-konstanz", "type": "page", "content": "coworking-konstanz", "locales": ["de", "en"] },
+    { "slug": "buero-mieten-weil-am-rhein", "type": "page", "content": "buero-mieten-weil", "locales": ["de", "en"] },
+    { "slug": "buero-mieten-konstanz", "type": "page", "content": "buero-mieten-konstanz", "locales": ["de", "en"] },
+    { "slug": "konferenzraum-weil-am-rhein", "type": "page", "content": "konferenzraum-weil", "locales": ["de", "en"] },
+    { "slug": "green-office-space-weil-am-rhein", "type": "page", "content": "green-office", "locales": ["de", "en"] },
+    { "slug": "coachingbuero-weil-am-rhein", "type": "page", "content": "coachingbuero", "locales": ["de"] },
+    { "slug": "beamer-verleih-konstanz", "type": "page", "content": "beamer-verleih", "locales": ["de", "en"] },
+    { "slug": "ueber-uns", "type": "page", "content": "ueber-uns", "locales": ["de", "en"] },
+    { "slug": "impressum", "type": "legal", "content": "impressum", "locales": ["de", "en"] },
+    { "slug": "kontakt-weil-am-rhein", "type": "page", "content": "kontakt-weil", "locales": ["de", "en"] },
+    { "slug": "kontakt-konstanz", "type": "page", "content": "kontakt-konstanz", "locales": ["de", "en"] },
+    { "slug": "anfahrt-weil-am-rhein", "type": "page", "content": "anfahrt-weil", "locales": ["de", "en"] },
+    { "slug": "anfahrt-konstanz", "type": "page", "content": "anfahrt-konstanz", "locales": ["de", "en"] },
+    { "slug": "coworking-weil-buchen", "type": "page", "content": "coworking-buchen", "locales": ["de"] },
+    { "slug": "tagesbuero-weil-am-rhein", "type": "page", "content": "tagesbuero", "locales": ["de"] }
+  ]
 }
