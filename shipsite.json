@@ -19,7 +19,9 @@
         "defaultLocale": "de",
         "locales": [
             "de",
-            "en"
+            "en",
+            "es",
+            "fr"
         ],
         "localePrefix": "as-needed"
     },
