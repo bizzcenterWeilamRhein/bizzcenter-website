@@ -15,7 +15,7 @@ interface ServiceHeroProps {
 
 export function ServiceHero({ backgroundImage, headline, services }: ServiceHeroProps) {
   return (
-    <section className="relative w-full min-h-[90vh] flex items-center justify-center overflow-hidden">
+    <section className="relative w-full min-h-[90vh] flex items-start justify-center overflow-hidden">
       {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -24,7 +24,7 @@ export function ServiceHero({ backgroundImage, headline, services }: ServiceHero
       <div className="absolute inset-0 bg-black/15" />
 
       {/* Content */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-4 py-12 sm:py-20">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-4 pt-6 sm:pt-10 pb-12 sm:pb-20">
         {headline && (
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white text-center mb-8 sm:mb-12 drop-shadow-lg">
             {headline}
