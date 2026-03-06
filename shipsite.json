@@ -32,28 +32,28 @@
                     "de": "Geschäftsadresse",
                     "en": "Virtual Office"
                 },
-                "href": "/konstanz/geschaeftsadresse"
+                "href": "/geschaeftsadresse"
             },
             {
                 "label": {
                     "de": "Coworking",
                     "en": "Coworking"
                 },
-                "href": "/konstanz/coworking"
+                "href": "/coworking"
             },
             {
                 "label": {
                     "de": "Büro mieten",
                     "en": "Rent Office"
                 },
-                "href": "/konstanz/privates-buero"
+                "href": "/buero-mieten"
             },
             {
                 "label": {
                     "de": "Konferenzräume",
                     "en": "Meeting Rooms"
                 },
-                "href": "/konstanz/konferenzraum"
+                "href": "/konferenzraum"
             },
             {
                 "label": {
@@ -532,6 +532,38 @@
             "slug": "weil-am-rhein/tagesbuero",
             "type": "page",
             "content": "weil-am-rhein/tagesbuero",
+            "locales": [
+                "de"
+            ]
+        },
+        {
+            "slug": "geschaeftsadresse",
+            "type": "page",
+            "content": "geschaeftsadresse",
+            "locales": [
+                "de"
+            ]
+        },
+        {
+            "slug": "coworking",
+            "type": "page",
+            "content": "coworking",
+            "locales": [
+                "de"
+            ]
+        },
+        {
+            "slug": "buero-mieten",
+            "type": "page",
+            "content": "buero-mieten",
+            "locales": [
+                "de"
+            ]
+        },
+        {
+            "slug": "konferenzraum",
+            "type": "page",
+            "content": "konferenzraum",
             "locales": [
                 "de"
             ]
