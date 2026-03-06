@@ -1,124 +1,538 @@
 {
-  "$schema": "./node_modules/@shipsite.dev/core/shipsite.schema.json",
-  "name": "bizzcenter",
-  "url": "https://bizzcenter.de",
-  "logo": "/images/logo.svg",
-  "favicon": "/favicon.png",
-  "ogImage": "/images/og-image.jpg",
-  "colors": {
-    "primary": "#1a73b5",
-    "accent": "#5ba65b",
-    "background": "#ffffff",
-    "text": "#2d3748"
-  },
-  "fonts": {
-    "heading": "Inter",
-    "body": "Inter"
-  },
-  "i18n": {
-    "defaultLocale": "de",
-    "locales": [
-      "de",
-      "en"
-    ],
-    "localePrefix": "as-needed"
-  },
-  "navigation": {
-    "items": [
-      {
-        "label": { "de": "Geschäftsadresse", "en": "Virtual Office" },
-        "href": "/konstanz/geschaeftsadresse"
-      },
-      {
-        "label": { "de": "Coworking", "en": "Coworking" },
-        "href": "/konstanz/coworking"
-      },
-      {
-        "label": { "de": "Büro mieten", "en": "Rent Office" },
-        "href": "/konstanz/privates-buero"
-      },
-      {
-        "label": { "de": "Konferenzräume", "en": "Meeting Rooms" },
-        "href": "/konstanz/konferenzraum"
-      },
-      {
-        "label": { "de": "Preise", "en": "Pricing" },
-        "href": "/preise"
-      },
-      {
-        "label": { "de": "Über uns", "en": "About" },
-        "href": "/ueber-uns"
-      }
-    ],
-    "cta": {
-      "label": { "de": "Kontakt", "en": "Contact" },
-      "href": "/kontakt"
-    }
-  },
-  "footer": {
-    "columns": [
-      {
-        "title": { "de": "Konstanz", "en": "Constance" },
-        "links": [
-          { "label": { "de": "Übersicht", "en": "Overview" }, "href": "/konstanz" },
-          { "label": { "de": "Geschäftsadresse", "en": "Virtual Office" }, "href": "/konstanz/geschaeftsadresse" },
-          { "label": { "de": "Coworking", "en": "Coworking" }, "href": "/konstanz/coworking" },
-          { "label": { "de": "Privates Büro", "en": "Private Office" }, "href": "/konstanz/privates-buero" },
-          { "label": { "de": "Konferenzraum", "en": "Meeting Room" }, "href": "/konstanz/konferenzraum" }
-        ]
-      },
-      {
-        "title": { "de": "Weil am Rhein", "en": "Weil am Rhein" },
-        "links": [
-          { "label": { "de": "Übersicht", "en": "Overview" }, "href": "/weil-am-rhein" },
-          { "label": { "de": "Geschäftsadresse", "en": "Virtual Office" }, "href": "/weil-am-rhein/geschaeftsadresse" },
-          { "label": { "de": "Coworking", "en": "Coworking" }, "href": "/weil-am-rhein/coworking" },
-          { "label": { "de": "Privates Büro", "en": "Private Office" }, "href": "/weil-am-rhein/privates-buero" },
-          { "label": { "de": "Konferenzraum", "en": "Meeting Room" }, "href": "/weil-am-rhein/konferenzraum" }
-        ]
-      },
-      {
-        "title": { "de": "Rechtliches", "en": "Legal" },
-        "links": [
-          { "label": { "de": "Impressum", "en": "Imprint" }, "href": "/impressum" },
-          { "label": { "de": "Datenschutz", "en": "Privacy Policy" }, "href": "/datenschutz" }
-        ]
-      }
-    ],
-    "copyright": "© 2026 bizzcenter e.K. Inh. Timo Schneeweis | Alle Rechte vorbehalten"
-  },
-  "pages": [
-    { "slug": "", "type": "landing", "content": "landing", "locales": ["de", "en"] },
-    { "slug": "konstanz", "type": "page", "content": "konstanz/uebersicht", "locales": ["de", "en"] },
-    { "slug": "konstanz/geschaeftsadresse", "type": "page", "content": "konstanz/geschaeftsadresse", "locales": ["de", "en"] },
-    { "slug": "konstanz/coworking", "type": "page", "content": "konstanz/coworking", "locales": ["de", "en"] },
-    { "slug": "konstanz/privates-buero", "type": "page", "content": "konstanz/privates-buero", "locales": ["de", "en"] },
-    { "slug": "konstanz/konferenzraum", "type": "page", "content": "konstanz/konferenzraum", "locales": ["de", "en"] },
-    { "slug": "weil-am-rhein", "type": "page", "content": "weil-am-rhein/uebersicht", "locales": ["de", "en"] },
-    { "slug": "weil-am-rhein/geschaeftsadresse", "type": "page", "content": "weil-am-rhein/geschaeftsadresse", "locales": ["de", "en"] },
-    { "slug": "weil-am-rhein/coworking", "type": "page", "content": "weil-am-rhein/coworking", "locales": ["de", "en"] },
-    { "slug": "weil-am-rhein/privates-buero", "type": "page", "content": "weil-am-rhein/privates-buero", "locales": ["de", "en"] },
-    { "slug": "weil-am-rhein/konferenzraum", "type": "page", "content": "weil-am-rhein/konferenzraum", "locales": ["de", "en"] },
-    { "slug": "preise", "type": "page", "content": "preise", "locales": ["de", "en"] },
-    { "slug": "ueber-uns", "type": "page", "content": "ueber-uns", "locales": ["de", "en"] },
-    { "slug": "kontakt", "type": "page", "content": "kontakt", "locales": ["de", "en"] },
-    { "slug": "impressum", "type": "page", "content": "impressum", "locales": ["de", "en"] },
-    { "slug": "datenschutz", "type": "page", "content": "datenschutz", "locales": ["de", "en"] },
-    { "slug": "konstanz/beamer-mieten", "type": "page", "content": "konstanz/beamer-mieten", "locales": ["de"] },
-    { "slug": "weil-am-rhein/beamer-mieten", "type": "page", "content": "weil-am-rhein/beamer-mieten", "locales": ["de"] },
-    { "slug": "konstanz/schweizer-telefonnummer", "type": "page", "content": "konstanz/schweizer-telefonnummer", "locales": ["de"] },
-    { "slug": "weil-am-rhein/schweizer-telefonnummer", "type": "page", "content": "weil-am-rhein/schweizer-telefonnummer", "locales": ["de"] },
-    { "slug": "konstanz/telefonservice", "type": "page", "content": "konstanz/telefonservice", "locales": ["de"] },
-    { "slug": "weil-am-rhein/telefonservice", "type": "page", "content": "weil-am-rhein/telefonservice", "locales": ["de"] },
-    { "slug": "konstanz/lagerservice", "type": "page", "content": "konstanz/lagerservice", "locales": ["de"] },
-    { "slug": "weil-am-rhein/lagerservice", "type": "page", "content": "weil-am-rhein/lagerservice", "locales": ["de"] },
-    { "slug": "konstanz/sekretariatsservice", "type": "page", "content": "konstanz/sekretariatsservice", "locales": ["de"] },
-    { "slug": "weil-am-rhein/sekretariatsservice", "type": "page", "content": "weil-am-rhein/sekretariatsservice", "locales": ["de"] },
-    { "slug": "konstanz/fulfillment", "type": "page", "content": "konstanz/fulfillment", "locales": ["de"] },
-    { "slug": "weil-am-rhein/fulfillment", "type": "page", "content": "weil-am-rhein/fulfillment", "locales": ["de"] },
-    { "slug": "konstanz/post-bearbeitung", "type": "page", "content": "konstanz/post-bearbeitung", "locales": ["de"] },
-    { "slug": "weil-am-rhein/post-bearbeitung", "type": "page", "content": "weil-am-rhein/post-bearbeitung", "locales": ["de"] },
-    { "slug": "konstanz/individueller-service", "type": "page", "content": "konstanz/individueller-service", "locales": ["de"] },
-    { "slug": "weil-am-rhein/individueller-service", "type": "page", "content": "weil-am-rhein/individueller-service", "locales": ["de"] }
-  ]
+    "$schema": "./node_modules/@shipsite.dev/core/shipsite.schema.json",
+    "name": "bizzcenter",
+    "url": "https://bizzcenter.de",
+    "logo": "/images/logo.svg",
+    "favicon": "/favicon.png",
+    "ogImage": "/images/og-image.jpg",
+    "colors": {
+        "primary": "#1a73b5",
+        "accent": "#5ba65b",
+        "background": "#ffffff",
+        "text": "#2d3748"
+    },
+    "fonts": {
+        "heading": "Inter",
+        "body": "Inter"
+    },
+    "i18n": {
+        "defaultLocale": "de",
+        "locales": [
+            "de",
+            "en"
+        ],
+        "localePrefix": "as-needed"
+    },
+    "navigation": {
+        "items": [
+            {
+                "label": {
+                    "de": "Geschäftsadresse",
+                    "en": "Virtual Office"
+                },
+                "href": "/konstanz/geschaeftsadresse"
+            },
+            {
+                "label": {
+                    "de": "Coworking",
+                    "en": "Coworking"
+                },
+                "href": "/konstanz/coworking"
+            },
+            {
+                "label": {
+                    "de": "Büro mieten",
+                    "en": "Rent Office"
+                },
+                "href": "/konstanz/privates-buero"
+            },
+            {
+                "label": {
+                    "de": "Konferenzräume",
+                    "en": "Meeting Rooms"
+                },
+                "href": "/konstanz/konferenzraum"
+            },
+            {
+                "label": {
+                    "de": "Preise",
+                    "en": "Pricing"
+                },
+                "href": "/preise"
+            },
+            {
+                "label": {
+                    "de": "Über uns",
+                    "en": "About"
+                },
+                "href": "/ueber-uns"
+            }
+        ],
+        "cta": {
+            "label": {
+                "de": "Kontakt",
+                "en": "Contact"
+            },
+            "href": "/kontakt"
+        }
+    },
+    "footer": {
+        "columns": [
+            {
+                "title": {
+                    "de": "Konstanz",
+                    "en": "Constance"
+                },
+                "links": [
+                    {
+                        "label": {
+                            "de": "Übersicht",
+                            "en": "Overview"
+                        },
+                        "href": "/konstanz"
+                    },
+                    {
+                        "label": {
+                            "de": "Geschäftsadresse",
+                            "en": "Virtual Office"
+                        },
+                        "href": "/konstanz/geschaeftsadresse"
+                    },
+                    {
+                        "label": {
+                            "de": "Coworking",
+                            "en": "Coworking"
+                        },
+                        "href": "/konstanz/coworking"
+                    },
+                    {
+                        "label": {
+                            "de": "Privates Büro",
+                            "en": "Private Office"
+                        },
+                        "href": "/konstanz/privates-buero"
+                    },
+                    {
+                        "label": {
+                            "de": "Konferenzraum",
+                            "en": "Meeting Room"
+                        },
+                        "href": "/konstanz/konferenzraum"
+                    },
+                    {
+                        "label": {
+                            "de": "Anfahrt",
+                            "en": "Directions"
+                        },
+                        "href": "/konstanz/anfahrt"
+                    }
+                ]
+            },
+            {
+                "title": {
+                    "de": "Weil am Rhein",
+                    "en": "Weil am Rhein"
+                },
+                "links": [
+                    {
+                        "label": {
+                            "de": "Übersicht",
+                            "en": "Overview"
+                        },
+                        "href": "/weil-am-rhein"
+                    },
+                    {
+                        "label": {
+                            "de": "Geschäftsadresse",
+                            "en": "Virtual Office"
+                        },
+                        "href": "/weil-am-rhein/geschaeftsadresse"
+                    },
+                    {
+                        "label": {
+                            "de": "Coworking",
+                            "en": "Coworking"
+                        },
+                        "href": "/weil-am-rhein/coworking"
+                    },
+                    {
+                        "label": {
+                            "de": "Privates Büro",
+                            "en": "Private Office"
+                        },
+                        "href": "/weil-am-rhein/privates-buero"
+                    },
+                    {
+                        "label": {
+                            "de": "Konferenzraum",
+                            "en": "Meeting Room"
+                        },
+                        "href": "/weil-am-rhein/konferenzraum"
+                    },
+                    {
+                        "label": {
+                            "de": "Anfahrt",
+                            "en": "Directions"
+                        },
+                        "href": "/weil-am-rhein/anfahrt"
+                    },
+                    {
+                        "label": {
+                            "de": "Green Office",
+                            "en": "Green Office"
+                        },
+                        "href": "/weil-am-rhein/green-office"
+                    }
+                ]
+            },
+            {
+                "title": {
+                    "de": "Rechtliches",
+                    "en": "Legal"
+                },
+                "links": [
+                    {
+                        "label": {
+                            "de": "Impressum",
+                            "en": "Imprint"
+                        },
+                        "href": "/impressum"
+                    },
+                    {
+                        "label": {
+                            "de": "Datenschutz",
+                            "en": "Privacy Policy"
+                        },
+                        "href": "/datenschutz"
+                    }
+                ]
+            }
+        ],
+        "copyright": "© 2026 bizzcenter e.K. Inh. Timo Schneeweis | Alle Rechte vorbehalten"
+    },
+    "pages": [
+        {
+            "slug": "",
+            "type": "landing",
+            "content": "landing",
+            "locales": [
+                "de",
+                "en"
+            ]
+        },
+        {
+            "slug": "konstanz",
+            "type": "page",
+            "content": "konstanz/uebersicht",
+            "locales": [
+                "de",
+                "en"
+            ]
+        },
+        {
+            "slug": "konstanz/geschaeftsadresse",
+            "type": "page",
+            "content": "konstanz/geschaeftsadresse",
+            "locales": [
+                "de",
+                "en"
+            ]
+        },
+        {
+            "slug": "konstanz/coworking",
+            "type": "page",
+            "content": "konstanz/coworking",
+            "locales": [
+                "de",
+                "en"
+            ]
+        },
+        {
+            "slug": "konstanz/privates-buero",
+            "type": "page",
+            "content": "konstanz/privates-buero",
+            "locales": [
+                "de",
+                "en"
+            ]
+        },
+        {
+            "slug": "konstanz/konferenzraum",
+            "type": "page",
+            "content": "konstanz/konferenzraum",
+            "locales": [
+                "de",
+                "en"
+            ]
+        },
+        {
+            "slug": "weil-am-rhein",
+            "type": "page",
+            "content": "weil-am-rhein/uebersicht",
+            "locales": [
+                "de",
+                "en"
+            ]
+        },
+        {
+            "slug": "weil-am-rhein/geschaeftsadresse",
+            "type": "page",
+            "content": "weil-am-rhein/geschaeftsadresse",
+            "locales": [
+                "de",
+                "en"
+            ]
+        },
+        {
+            "slug": "weil-am-rhein/coworking",
+            "type": "page",
+            "content": "weil-am-rhein/coworking",
+            "locales": [
+                "de",
+                "en"
+            ]
+        },
+        {
+            "slug": "weil-am-rhein/privates-buero",
+            "type": "page",
+            "content": "weil-am-rhein/privates-buero",
+            "locales": [
+                "de",
+                "en"
+            ]
+        },
+        {
+            "slug": "weil-am-rhein/konferenzraum",
+            "type": "page",
+            "content": "weil-am-rhein/konferenzraum",
+            "locales": [
+                "de",
+                "en"
+            ]
+        },
+        {
+            "slug": "preise",
+            "type": "page",
+            "content": "preise",
+            "locales": [
+                "de",
+                "en"
+            ]
+        },
+        {
+            "slug": "ueber-uns",
+            "type": "page",
+            "content": "ueber-uns",
+            "locales": [
+                "de",
+                "en"
+            ]
+        },
+        {
+            "slug": "kontakt",
+            "type": "page",
+            "content": "kontakt",
+            "locales": [
+                "de",
+                "en"
+            ]
+        },
+        {
+            "slug": "impressum",
+            "type": "page",
+            "content": "impressum",
+            "locales": [
+                "de",
+                "en"
+            ]
+        },
+        {
+            "slug": "datenschutz",
+            "type": "page",
+            "content": "datenschutz",
+            "locales": [
+                "de",
+                "en"
+            ]
+        },
+        {
+            "slug": "konstanz/beamer-mieten",
+            "type": "page",
+            "content": "konstanz/beamer-mieten",
+            "locales": [
+                "de"
+            ]
+        },
+        {
+            "slug": "weil-am-rhein/beamer-mieten",
+            "type": "page",
+            "content": "weil-am-rhein/beamer-mieten",
+            "locales": [
+                "de"
+            ]
+        },
+        {
+            "slug": "konstanz/schweizer-telefonnummer",
+            "type": "page",
+            "content": "konstanz/schweizer-telefonnummer",
+            "locales": [
+                "de"
+            ]
+        },
+        {
+            "slug": "weil-am-rhein/schweizer-telefonnummer",
+            "type": "page",
+            "content": "weil-am-rhein/schweizer-telefonnummer",
+            "locales": [
+                "de"
+            ]
+        },
+        {
+            "slug": "konstanz/telefonservice",
+            "type": "page",
+            "content": "konstanz/telefonservice",
+            "locales": [
+                "de"
+            ]
+        },
+        {
+            "slug": "weil-am-rhein/telefonservice",
+            "type": "page",
+            "content": "weil-am-rhein/telefonservice",
+            "locales": [
+                "de"
+            ]
+        },
+        {
+            "slug": "konstanz/lagerservice",
+            "type": "page",
+            "content": "konstanz/lagerservice",
+            "locales": [
+                "de"
+            ]
+        },
+        {
+            "slug": "weil-am-rhein/lagerservice",
+            "type": "page",
+            "content": "weil-am-rhein/lagerservice",
+            "locales": [
+                "de"
+            ]
+        },
+        {
+            "slug": "konstanz/sekretariatsservice",
+            "type": "page",
+            "content": "konstanz/sekretariatsservice",
+            "locales": [
+                "de"
+            ]
+        },
+        {
+            "slug": "weil-am-rhein/sekretariatsservice",
+            "type": "page",
+            "content": "weil-am-rhein/sekretariatsservice",
+            "locales": [
+                "de"
+            ]
+        },
+        {
+            "slug": "konstanz/fulfillment",
+            "type": "page",
+            "content": "konstanz/fulfillment",
+            "locales": [
+                "de"
+            ]
+        },
+        {
+            "slug": "weil-am-rhein/fulfillment",
+            "type": "page",
+            "content": "weil-am-rhein/fulfillment",
+            "locales": [
+                "de"
+            ]
+        },
+        {
+            "slug": "konstanz/post-bearbeitung",
+            "type": "page",
+            "content": "konstanz/post-bearbeitung",
+            "locales": [
+                "de"
+            ]
+        },
+        {
+            "slug": "weil-am-rhein/post-bearbeitung",
+            "type": "page",
+            "content": "weil-am-rhein/post-bearbeitung",
+            "locales": [
+                "de"
+            ]
+        },
+        {
+            "slug": "konstanz/individueller-service",
+            "type": "page",
+            "content": "konstanz/individueller-service",
+            "locales": [
+                "de"
+            ]
+        },
+        {
+            "slug": "weil-am-rhein/individueller-service",
+            "type": "page",
+            "content": "weil-am-rhein/individueller-service",
+            "locales": [
+                "de"
+            ]
+        },
+        {
+            "slug": "konstanz/anfahrt",
+            "type": "page",
+            "content": "konstanz/anfahrt",
+            "locales": [
+                "de",
+                "en"
+            ]
+        },
+        {
+            "slug": "weil-am-rhein/anfahrt",
+            "type": "page",
+            "content": "weil-am-rhein/anfahrt",
+            "locales": [
+                "de",
+                "en"
+            ]
+        },
+        {
+            "slug": "weil-am-rhein/green-office",
+            "type": "page",
+            "content": "weil-am-rhein/green-office",
+            "locales": [
+                "de",
+                "en"
+            ]
+        },
+        {
+            "slug": "weil-am-rhein/coachingbuero",
+            "type": "page",
+            "content": "weil-am-rhein/coachingbuero",
+            "locales": [
+                "de"
+            ]
+        },
+        {
+            "slug": "konstanz/tagesbuero",
+            "type": "page",
+            "content": "konstanz/tagesbuero",
+            "locales": [
+                "de"
+            ]
+        },
+        {
+            "slug": "weil-am-rhein/tagesbuero",
+            "type": "page",
+            "content": "weil-am-rhein/tagesbuero",
+            "locales": [
+                "de"
+            ]
+        }
+    ]
 }
