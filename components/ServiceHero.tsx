@@ -38,7 +38,7 @@ export function ServiceHero({ backgroundImage, headline, services }: ServiceHero
               key={i}
               className="bg-white/90 backdrop-blur-sm rounded-xl shadow-xl p-5 flex flex-col"
             >
-              <h3 className="text-lg font-bold text-gray-900 mb-2">{service.title}</h3>
+              <h3 className="text-lg font-bold text-gray-900 mb-2 text-center">{service.title}</h3>
               
               {service.image && (
                 <div className="w-full h-32 rounded-lg overflow-hidden mb-3">
@@ -51,7 +51,7 @@ export function ServiceHero({ backgroundImage, headline, services }: ServiceHero
                 </div>
               )}
 
-              <p className="text-sm text-gray-600 mb-4 flex-grow leading-relaxed">
+              <p className="text-sm text-gray-600 mb-4 flex-grow leading-relaxed text-center">
                 {service.description}
               </p>
 
