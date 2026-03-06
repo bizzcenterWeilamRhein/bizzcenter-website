@@ -24,7 +24,7 @@ export function ServiceHero({ backgroundImage, headline, services }: ServiceHero
       <div className="absolute inset-0 bg-black/15" />
 
       {/* Content */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 py-12 sm:py-20">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-4 py-12 sm:py-20">
         {headline && (
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white text-center mb-8 sm:mb-12 drop-shadow-lg">
             {headline}
@@ -32,11 +32,11 @@ export function ServiceHero({ backgroundImage, headline, services }: ServiceHero
         )}
 
         {/* Service Cards Grid: 1 col mobile, 2 col tablet, 4 col desktop */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-sm sm:max-w-none mx-auto">
           {services.map((service, i) => (
             <div
               key={i}
-              className="bg-white/95 backdrop-blur-sm rounded-xl shadow-xl p-5 flex flex-col"
+              className="bg-white/90 backdrop-blur-sm rounded-xl shadow-xl p-5 flex flex-col"
             >
               <h3 className="text-lg font-bold text-gray-900 mb-2">{service.title}</h3>
               
