@@ -34,7 +34,7 @@ export function CoworkingTarife() {
               className={`rounded-xl border-2 p-3 text-center transition-all duration-250 ease-in-out ${
                 isSelected
                   ? 'bg-[#e3e7fd] border-primary shadow-md'
-                  : 'border-border bg-background/80 hover:bg-[#f5f7ff] hover:border-primary/50 hover:shadow-sm group'
+                  : 'border-border bg-background/80 hover:bg-[#f0f4e8] hover:border-[#6b7f3e] hover:shadow-sm group'
               }`}
             >
               <div className={`text-xs font-medium mb-1 text-muted-foreground`}>{t.label}</div>
@@ -44,7 +44,7 @@ export function CoworkingTarife() {
               <div className={`text-xs font-semibold mt-1 transition-opacity duration-200 ${
                 isSelected
                   ? 'text-[#1e293b] opacity-100'
-                  : 'text-[#64748b] opacity-0 group-hover:opacity-100'
+                  : 'text-[#6b7f3e] opacity-0 group-hover:opacity-100'
               }`}>
                 {isSelected ? '✓ Ausgewählt' : 'Auswählen'}
               </div>
