@@ -38,7 +38,7 @@ const addons: AddonItem[] = [
   { id: 'geschaeftsadresse', label: 'Geschäftsadresse', priceMonat: 39, displayPrice: '+ EUR 39,- /Monat', note: 'Nur bei Monatsabo', selectable: true, requiresTarif: ['monatsabo'] },
   { id: 'meetingraum', label: 'Meeting- & Konferenzräume', displayPrice: 'Auf Tagesbasis buchbar', selectable: false },
   { id: 'parkplatz', label: 'Parkplatz', priceTag: 6, displayPrice: '+ EUR 6,- /Tag', selectable: true },
-  { id: 'kaffeeflat', label: 'Kaffee-Flatrate', priceTag: 3, priceMonat: 24, pricePer: { tagespass: 3, zehnerkarte: 27, monatspass: 24, monatsabo: 24 }, displayPrice: 'ab EUR 3,- /Tag', note: 'Bio-Kaffee — so viel Sie möchten', selectable: true, displayPricePer: { tagespass: 'EUR 3,- /Tag', zehnerkarte: '+ EUR 27,- (EUR 2,70 /Tag)', monatspass: '+ EUR 24,- /Monat', monatsabo: '+ EUR 24,- /Monat' } },
+  { id: 'kaffeeflat', label: 'Kaffee-Flatrate', priceTag: 2, priceMonat: 29, pricePer: { tagespass: 2, zehnerkarte: 27, monatspass: 29, monatsabo: 29 }, displayPrice: 'ab EUR 2,- /Tag', note: 'Bio-Kaffee — so viel Sie möchten', selectable: true, displayPricePer: { tagespass: '+ EUR 2,- /Tag', zehnerkarte: '+ EUR 27,- (EUR 2,70 /Tag)', monatspass: '+ EUR 29,- /Monat', monatsabo: '+ EUR 29,- /Monat' } },
   { id: 'teeflat', label: 'Tee-Flatrate', priceTag: 2, priceMonat: 24, pricePer: { tagespass: 2, zehnerkarte: 19, monatspass: 24, monatsabo: 24 }, displayPrice: 'ab EUR 2,- /Tag', note: 'Premium-Tees in großer Auswahl', selectable: true, displayPricePer: { tagespass: 'EUR 2,- /Tag', zehnerkarte: '+ EUR 19,- (EUR 1,90 /Tag)', monatspass: '+ EUR 24,- /Monat', monatsabo: '+ EUR 24,- /Monat' } },
 ];
 
