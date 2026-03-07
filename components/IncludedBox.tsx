@@ -30,10 +30,10 @@ interface IncludedBoxProps {
 }
 
 const tarife: TarifItem[] = [
-  { id: 'tagespass', label: 'Tagespass', price: 29, display: 'EUR 29,-', sub: 'pro Tag zzgl. MwSt.', unit: 'tag' },
-  { id: 'zehnerkarte', label: '10er-Karte', price: 249, display: 'EUR 249,-', sub: '10 Tage zzgl. MwSt.', unit: 'tag' },
-  { id: 'monatspass', label: 'Monatspass', price: 259, display: 'EUR 259,-', sub: 'pro Monat zzgl. MwSt.', unit: 'monat' },
-  { id: 'monatsabo', label: 'Monatsabo', price: 239, display: 'EUR 239,-', sub: 'pro Monat zzgl. MwSt.', unit: 'monat' },
+  { id: 'tagespass', label: 'Tagespass', price: 29, display: 'EUR 29,-', sub: 'pro Tag inkl. MwSt.', unit: 'tag' },
+  { id: 'zehnerkarte', label: '10er-Karte', price: 249, display: 'EUR 249,-', sub: '10 Tage inkl. MwSt.', unit: 'tag' },
+  { id: 'monatspass', label: 'Monatspass', price: 259, display: 'EUR 259,-', sub: 'pro Monat inkl. MwSt.', unit: 'monat' },
+  { id: 'monatsabo', label: 'Monatsabo', price: 239, display: 'EUR 239,-', sub: 'pro Monat inkl. MwSt.', unit: 'monat' },
 ];
 
 const addons: AddonItem[] = [
@@ -223,7 +223,7 @@ export function IncludedBox({
                 className="inline-block rounded-lg bg-[#a8a29e] text-white text-center py-3 px-10 text-base font-medium hover:bg-[#8a8380] transition-colors no-underline"
               >
                 {total != null ? (
-                  <>Jetzt buchen — {formatTotal(total)} {unitLabel} zzgl. MwSt.</>
+                  <>Jetzt buchen — {formatTotal(total)} {unitLabel} inkl. MwSt.</>
                 ) : (
                   <>Jetzt buchen und bezahlen</>
                 )}

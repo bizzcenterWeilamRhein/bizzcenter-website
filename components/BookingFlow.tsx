@@ -25,10 +25,10 @@ interface AddonItem {
 }
 
 const tarife: TarifItem[] = [
-  { id: 'tagespass', label: 'Tagespass', price: 29, display: 'EUR 29,-', sub: 'pro Tag zzgl. MwSt.', unit: 'tag' },
-  { id: 'zehnerkarte', label: '10er-Karte', price: 249, display: 'EUR 249,-', sub: '10 Tage zzgl. MwSt.', unit: 'tag' },
-  { id: 'monatspass', label: 'Monatspass', price: 259, display: 'EUR 259,-', sub: 'pro Monat zzgl. MwSt.', unit: 'monat' },
-  { id: 'monatsabo', label: 'Monatsabo', price: 239, display: 'EUR 239,-', sub: 'pro Monat zzgl. MwSt.', unit: 'monat' },
+  { id: 'tagespass', label: 'Tagespass', price: 29, display: 'EUR 29,-', sub: 'pro Tag inkl. MwSt.', unit: 'tag' },
+  { id: 'zehnerkarte', label: '10er-Karte', price: 249, display: 'EUR 249,-', sub: 'inkl. MwSt.', unit: 'tag' },
+  { id: 'monatspass', label: 'Monatspass', price: 259, display: 'EUR 259,-', sub: 'pro Monat inkl. MwSt.', unit: 'monat' },
+  { id: 'monatsabo', label: 'Monatsabo', price: 239, display: 'EUR 239,-', sub: 'pro Monat inkl. MwSt.', unit: 'monat' },
 ];
 
 const addons: AddonItem[] = [
@@ -39,7 +39,7 @@ const addons: AddonItem[] = [
   { id: 'meetingraum', label: 'Meeting- & Konferenzräume', displayPrice: 'Auf Tagesbasis buchbar', selectable: false },
   { id: 'parkplatz', label: 'Parkplatz', priceTag: 6, displayPrice: '+ EUR 6,- /Tag', selectable: true },
   { id: 'kaffeeflat', label: 'Kaffee-Flatrate', priceTag: 2, priceMonat: 29, pricePer: { tagespass: 2, zehnerkarte: 27, monatspass: 29, monatsabo: 29 }, displayPrice: 'ab EUR 2,- /Tag', note: 'Bio-Kaffee — so viel Sie möchten', selectable: true, displayPricePer: { tagespass: '+ EUR 2,- /Tag', zehnerkarte: '+ EUR 27,- (EUR 2,70 /Tag)', monatspass: '+ EUR 29,- /Monat', monatsabo: '+ EUR 29,- /Monat' } },
-  { id: 'teeflat', label: 'Tee-Flatrate', priceTag: 2, priceMonat: 24, pricePer: { tagespass: 2, zehnerkarte: 19, monatspass: 24, monatsabo: 24 }, displayPrice: 'ab EUR 2,- /Tag', note: 'Premium-Tees in großer Auswahl', selectable: true, displayPricePer: { tagespass: 'EUR 2,- /Tag', zehnerkarte: '+ EUR 19,- (EUR 1,90 /Tag)', monatspass: '+ EUR 24,- /Monat', monatsabo: '+ EUR 24,- /Monat' } },
+  { id: 'teeflat', label: 'Tee-Flatrate', priceTag: 2, priceMonat: 24, pricePer: { tagespass: 2, zehnerkarte: 19, monatspass: 24, monatsabo: 24 }, displayPrice: 'ab EUR 2,- /Tag', note: 'Premium-Tees in großer Auswahl', selectable: true, displayPricePer: { tagespass: '+ EUR 2,- /Tag', zehnerkarte: '+ EUR 19,- (EUR 1,90 /Tag)', monatspass: '+ EUR 24,- /Monat', monatsabo: '+ EUR 24,- /Monat' } },
 ];
 
 function StepBadge({ number, active }: { number: number; active: boolean }) {
@@ -131,6 +131,9 @@ export function BookingFlow({ title = 'In 4 Schritten zum Coworking-Platz' }: { 
         <div className="space-y-8">
           {/* Step 1: Tarif wählen */}
           <div className="rounded-2xl border border-border bg-card shadow-sm p-6 md:p-8">
+            <div className="mb-4 rounded-lg bg-[#6b7f3e] text-white text-center py-2.5 px-4">
+              <p className="text-sm font-bold">🌿 Green Office Eröffnungsangebot — 15% Rabatt bis 30.09.</p>
+            </div>
             <div className="flex items-center gap-4 mb-5">
               <StepBadge number={1} active={!selectedTarif} />
               <h3 className="text-lg md:text-xl font-bold text-foreground">Tarif wählen</h3>
@@ -149,7 +152,10 @@ export function BookingFlow({ title = 'In 4 Schritten zum Coworking-Platz' }: { 
                         : 'border-border bg-background hover:bg-[#f0f4e8] hover:border-[#6b7f3e] hover:shadow-sm'
                     }`}
                   >
-                    <div className="text-sm font-semibold text-foreground">{t.label}</div>
+                    <div className="flex items-center justify-center gap-1.5">
+                      <span className="text-sm font-semibold text-foreground">{t.label}</span>
+                      {t.id !== 'tagespass' && <span className="text-[10px] font-bold bg-[#6b7f3e] text-white rounded-full px-1.5 py-0.5">−15%</span>}
+                    </div>
                     <div className="text-lg font-bold text-[#1e293b] mt-1">{t.display}</div>
                     <div className="text-xs text-muted-foreground mt-1">{t.sub}</div>
                     {isSelected && (
@@ -248,7 +254,7 @@ export function BookingFlow({ title = 'In 4 Schritten zum Coworking-Platz' }: { 
                 className="inline-block rounded-lg bg-[#a8a29e] text-white text-center py-3.5 px-12 text-base font-semibold hover:bg-[#8a8380] transition-colors no-underline shadow-sm"
               >
                 {total != null ? (
-                  <>Jetzt buchen — {`EUR ${total},-`} {unitLabel} zzgl. MwSt.</>
+                  <>Jetzt buchen — {`EUR ${total},-`} {unitLabel} inkl. MwSt.</>
                 ) : (
                   <>Jetzt buchen und bezahlen</>
                 )}

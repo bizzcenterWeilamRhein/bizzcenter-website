@@ -79,10 +79,10 @@ export function CompactHero({ title, description, image, imageAlt, buttonText, b
 }
 
 const tarifLabels: Record<string, string> = {
-  tagespass: 'Tagespass — EUR 29,- zzgl. MwSt.',
-  zehnerkarte: '10er-Karte — EUR 249,- zzgl. MwSt.',
-  monatspass: 'Monatspass — EUR 259,- zzgl. MwSt.',
-  monatsabo: 'Monatsabo — EUR 239,- zzgl. MwSt.',
+  tagespass: 'Tagespass — EUR 29,- inkl. MwSt.',
+  zehnerkarte: '10er-Karte — EUR 249,- inkl. MwSt.',
+  monatspass: 'Monatspass — EUR 259,- inkl. MwSt.',
+  monatsabo: 'Monatsabo — EUR 239,- inkl. MwSt.',
 };
 
 function HeroForm() {

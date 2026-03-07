@@ -3,10 +3,10 @@
 import React, { useState } from 'react';
 
 const tarife = [
-  { id: 'tagespass', label: 'Tagespass', price: 'EUR 29,-', sub: 'pro Tag zzgl. MwSt.', info: 'Starttermin frei wählbar — Sofortstart möglich' },
-  { id: 'zehnerkarte', label: '10er-Karte', price: 'EUR 249,-', sub: 'zzgl. MwSt.', info: '10 Tage Coworking an flexibel wählbaren Tagen' },
-  { id: 'monatspass', label: 'Monatspass', price: 'EUR 259,-', sub: 'pro Monat zzgl. MwSt.', info: 'Ein Monat ohne Kündigungsfrist' },
-  { id: 'monatsabo', label: 'Monatsabo', price: 'EUR 239,-', sub: 'pro Monat zzgl. MwSt.', info: 'Monatspass mit 3 Monaten Kündigungsfrist' },
+  { id: 'tagespass', label: 'Tagespass', price: 'EUR 29,-', sub: 'pro Tag inkl. MwSt.', info: 'Starttermin frei wählbar — Sofortstart möglich', badge: '' },
+  { id: 'zehnerkarte', label: '10er-Karte', price: 'EUR 249,-', sub: 'inkl. MwSt.', info: '10 Tage Coworking an flexibel wählbaren Tagen', badge: '−15%' },
+  { id: 'monatspass', label: 'Monatspass', price: 'EUR 259,-', sub: 'pro Monat inkl. MwSt.', info: 'Ein Monat ohne Kündigungsfrist', badge: '−15%' },
+  { id: 'monatsabo', label: 'Monatsabo', price: 'EUR 239,-', sub: 'pro Monat inkl. MwSt.', info: 'Monatspass mit 3 Monaten Kündigungsfrist', badge: '−15%' },
 ];
 
 export function CoworkingTarife() {
@@ -23,6 +23,9 @@ export function CoworkingTarife() {
 
   return (
     <div className="mt-6">
+      <div className="mb-3 rounded-lg bg-[#6b7f3e] text-white text-center py-2 px-3">
+        <p className="text-sm font-bold">🌿 Green Office Eröffnungsangebot — 15% Rabatt bis 30.09.</p>
+      </div>
       <p className="mb-3 text-base font-bold text-foreground">Sofortstart möglich — wähle jetzt deinen Tarif:</p>
       <div className="grid grid-cols-2 gap-3">
         {tarife.map((t) => {
@@ -37,7 +40,10 @@ export function CoworkingTarife() {
                   : 'border-border bg-background/80 hover:bg-[#f0f4e8] hover:border-[#6b7f3e] hover:shadow-sm group'
               }`}
             >
-              <div className={`text-xs font-medium mb-1 text-muted-foreground`}>{t.label}</div>
+              <div className="flex items-center justify-center gap-1.5">
+                <span className={`text-xs font-medium text-muted-foreground`}>{t.label}</span>
+                {t.badge && <span className="text-[10px] font-bold bg-[#6b7f3e] text-white rounded-full px-1.5 py-0.5">{t.badge}</span>}
+              </div>
               <div className={`text-lg font-bold text-[#1e293b]`}>{t.price}</div>
               <div className={`text-xs font-medium text-muted-foreground`}>{t.sub}</div>
               {t.info && <div className={`text-xs font-medium mt-1 text-muted-foreground`}>{t.info}</div>}
