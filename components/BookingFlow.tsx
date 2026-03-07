@@ -36,6 +36,8 @@ const addons: AddonItem[] = [
   { id: 'geschaeftsadresse', label: 'Geschäftsadresse', priceMonat: 39, displayPrice: '+ EUR 39,- /Monat', note: 'Nur bei Monatsabo', selectable: true, requiresTarif: ['monatsabo'] },
   { id: 'meetingraum', label: 'Meeting- & Konferenzräume', displayPrice: 'Auf Tagesbasis buchbar', selectable: false },
   { id: 'parkplatz', label: 'Parkplatz', priceTag: 6, displayPrice: '+ EUR 6,- /Tag', selectable: true },
+  { id: 'kaffeeflat', label: 'Kaffee-Flatrate', priceTag: 5, priceMonat: 29, displayPrice: 'EUR 5,- /Tag · EUR 29,- /Monat', note: 'Bio-Kaffee, Tee & Wasser — so viel Sie möchten', selectable: true },
+  { id: 'teeflat', label: 'Tee-Flatrate', priceTag: 3, priceMonat: 19, displayPrice: 'EUR 3,- /Tag · EUR 19,- /Monat', note: 'Premium-Tees in großer Auswahl', selectable: true },
 ];
 
 function StepBadge({ number, active }: { number: number; active: boolean }) {
