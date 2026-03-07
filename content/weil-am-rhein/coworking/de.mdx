@@ -67,12 +67,19 @@ description: "Coworking Space in Weil am Rhein: Tagespass, 10er-Karte, Monatspas
 </FeaturesWithBg>
 
 {/* ===== STATS ===== */}
+<style>{`
+  .stats-centered [class*="stat"] { text-align: center !important; }
+  .stats-centered [class*="stat"] > * { text-align: center !important; justify-content: center !important; align-items: center !important; }
+  .stats-centered p, .stats-centered h2, .stats-centered h3, .stats-centered span, .stats-centered div { text-align: center !important; }
+`}</style>
+<div className="stats-centered">
 <Stats title="Coworking in Zahlen">
   <Stat value="3+" label="Coworking-Räume" description="Klein & ruhig statt Großraum" />
   <Stat value="2" label="Quiet Cubes" description="Für Calls & vertrauliche Gespräche" />
   <Stat value="24/7" label="Zugang" description="Dein eigener Türcode" />
   <Stat value="∞" label="Bio-Kaffee" description="Flatrate — so viel du willst" />
 </Stats>
+</div>
 
 {/* ===== TARIFE DETAILS ===== */}
 <FeaturesWithBg title="Coworking-Tarife im Überblick" columns={2} backgroundImage="/images/standorte/weil-am-rhein/coworking-loungeecke-cropped.jpg">
