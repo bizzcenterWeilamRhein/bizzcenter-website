@@ -39,7 +39,7 @@ export function MemberLogos({ title, logos, speed = 30 }: MemberLogosProps) {
               key={i}
               src={logo.src}
               alt={logo.alt}
-              className="h-12 sm:h-16 w-auto object-contain flex-shrink-0"
+              className="h-20 sm:h-28 w-auto object-contain flex-shrink-0"
               loading="lazy"
             />
           ))}
