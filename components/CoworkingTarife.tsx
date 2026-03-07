@@ -51,6 +51,12 @@ export function CoworkingTarife() {
           );
         })}
       </div>
+      <a
+        href="#formular"
+        className="mt-4 block w-full rounded-xl bg-[#002a9e] text-white text-center py-3 text-sm font-bold hover:bg-[#001f7a] transition-colors"
+      >
+        Jetzt buchen und bezahlen
+      </a>
     </div>
   );
 }
