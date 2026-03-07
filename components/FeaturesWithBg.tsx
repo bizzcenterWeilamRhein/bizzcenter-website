@@ -22,9 +22,11 @@ export function FeaturesWithBg({ title, description, columns = 3, backgroundImag
       <div className="absolute inset-0 bg-background/30" />
       <div className="relative z-10 container-main">
         {(title || description) && (
-          <div className="text-center mb-12">
-            {title && <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">{title}</h2>}
-            {description && <p className="text-lg text-muted-foreground max-w-2xl mx-auto">{description}</p>}
+          <div className="text-center mb-12 flex justify-center">
+            <div className="inline-block rounded-2xl bg-background/90 backdrop-blur-sm px-8 py-4 shadow-md border border-border">
+              {title && <h2 className="text-3xl md:text-4xl font-bold text-foreground">{title}</h2>}
+              {description && <p className="text-lg text-muted-foreground max-w-2xl mx-auto mt-2">{description}</p>}
+            </div>
           </div>
         )}
         <div className={`grid grid-cols-1 ${gridCols[columns]} gap-6`}>{children}</div>
