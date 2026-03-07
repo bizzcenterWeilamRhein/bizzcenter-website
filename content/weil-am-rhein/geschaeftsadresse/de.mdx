@@ -13,25 +13,27 @@ description: "Ladungsfähige Geschäftsadresse in Weil am Rhein mieten. Handelsr
   buttonHref="/kontakt"
 >
   <ul className="mt-3 space-y-1 text-sm md:text-base text-muted-foreground">
+    <li>✔ Basispakete ab 49,- €/Monat zzgl. MwSt.</li>
     <li>✔ Deutsche Geschäftsadresse für EU-Marktzugang</li>
     <li>✔ Nur 300 Meter von der Schweizer Grenze</li>
     <li>✔ Gewerbeanmeldung & Handelsregistereintrag in Deutschland möglich</li>
     <li>✔ Postannahme & Weiterleitung inklusive</li>
     <li>✔ Büro- & Konferenzräume vor Ort stundenweise buchbar</li>
+    <li>✔ Innerhalb von 24 Stunden startklar</li>
   </ul>
 </CompactHero>
 
 {/* ===== FORMULAR ===== */}
 <Form
   action="#"
-  title="Geschäftsadresse ab 49,- €/Monat"
-  description="Innerhalb von 24 Stunden eingerichtet."
+  title="Kostenloses Angebot anfordern"
+  description="Wir melden uns innerhalb von 24 Stunden bei Ihnen."
   columns={2}
   submitLabel="Kostenloses Angebot anfordern"
   successTitle="Anfrage gesendet!"
   successMessage="Wir melden uns innerhalb von 24 Stunden bei Ihnen."
 >
-  <FormField name="anrede" label="Anrede" type="select" options={["Herr", "Frau"]} required colSpan={2} />
+  <FormField name="anrede" label="Anrede" type="select" options={["Herr", "Frau", "Herr Dr.", "Frau Dr."]} required colSpan={2} />
   <FormField name="vorname" label="Vorname" type="text" required />
   <FormField name="nachname" label="Nachname" type="text" required />
   <FormField name="firma" label="Firma" type="text" required colSpan={2} />
