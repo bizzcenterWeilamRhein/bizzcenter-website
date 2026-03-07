@@ -37,10 +37,10 @@ export function CoworkingTarife() {
                   : 'border-border bg-background/80 hover:bg-[#002a9e] hover:border-[#002a9e] group'
               }`}
             >
-              <div className={`text-xs mb-1 ${isSelected ? 'text-white/80' : 'text-muted-foreground group-hover:text-white/80'}`}>{t.label}</div>
+              <div className={`text-xs font-medium mb-1 ${isSelected ? 'text-white/90' : 'text-muted-foreground group-hover:text-white/90'}`}>{t.label}</div>
               <div className={`text-lg font-bold ${isSelected ? 'text-white' : 'text-primary group-hover:text-white'}`}>{t.price}</div>
-              <div className={`text-xs ${isSelected ? 'text-white/80' : 'text-muted-foreground group-hover:text-white/80'}`}>{t.sub}</div>
-              {t.info && <div className={`text-[10px] mt-1 ${isSelected ? 'text-white/70' : 'text-muted-foreground/70 group-hover:text-white/70'}`}>{t.info}</div>}
+              <div className={`text-xs font-medium ${isSelected ? 'text-white/90' : 'text-muted-foreground group-hover:text-white/90'}`}>{t.sub}</div>
+              {t.info && <div className={`text-xs font-medium mt-1 ${isSelected ? 'text-white/90' : 'text-muted-foreground group-hover:text-white/90'}`}>{t.info}</div>}
               <div className={`text-xs font-semibold mt-1 ${
                 isSelected
                   ? 'text-white opacity-100'
