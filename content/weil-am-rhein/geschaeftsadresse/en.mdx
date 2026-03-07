@@ -1,51 +1,202 @@
 ---
-title: "Virtual Office Weil am Rhein – Business Address in the Border Triangle"
-description: "Rent a prestigious business address in Weil am Rhein. Address suitable for commercial register, mail service, flexible rental periods. bizzcenter in the border triangle Basel."
+title: "Business Address Weil am Rhein – Virtual Office in the Border Triangle Basel"
+description: "Rent a registered business address in Weil am Rhein. Suitable for commercial register, mail service, phone service. 300m from the Swiss border. Since 2004. From 49,- Euro/month."
 ---
 
-<PageHero
-  title="Virtual Office"
-  description="Your business address in Weil am Rhein"
-  image="/images/standorte/weil-am-rhein/eingang.png"
+{/* ===== HEADLINE + IMAGE ===== */}
+<CompactHero
+  title="Your Business Address in Weil am Rhein"
+  description="Your Gateway to the EU — German business address right at the border to Basel."
+  image="/images/standorte/weil-am-rhein/coworking-loungeecke.jpg"
+  imageAlt="Green Office Weil am Rhein – two coworkers in conversation"
+  buttonText=""
+  buttonHref=""
+>
+  <ul className="mt-3 space-y-1 text-sm md:text-base text-muted-foreground">
+    <li>✔ Packages from 49,- €/month excl. VAT</li>
+    <li>✔ German business address for EU market access</li>
+    <li>✔ Only 300 meters from the Swiss border</li>
+    <li>✔ Trade registration & commercial register entry in Germany</li>
+    <li>✔ Mail acceptance & forwarding</li>
+    <li>✔ Office & conference rooms bookable by the hour</li>
+    <li>✔ Ready within 24 hours</li>
+  </ul>
+</CompactHero>
+
+{/* ===== FORM ===== */}
+<div className="-mt-16">
+<Form
+  action="#"
+  title=""
+  description=""
+  columns={2}
+  submitLabel="Request a Free Quote"
+  successTitle="Request sent!"
+  successMessage="We will get back to you within 24 hours."
+>
+  <FormField name="anrede" label="Salutation" type="select" placeholder="Please select" options={["Mr.", "Mrs.", "Mr. Dr.", "Mrs. Dr."]} required colSpan={2} />
+  <FormField name="vorname" label="First Name" type="text" required />
+  <FormField name="nachname" label="Last Name" type="text" required />
+  <FormField name="firma" label="Company" type="text" required colSpan={2} />
+  <FormField name="strasse" label="Street, House Number" type="text" required colSpan={2} />
+  <FormField name="plz" label="Postal Code" type="text" required />
+  <FormField name="ort" label="City" type="text" required />
+  <FormField name="telefon" label="Phone Number" type="tel" required />
+  <FormField name="email" label="Email" type="email" required />
+  <FormField name="nachricht" label="Your Message" type="textarea" required colSpan={2} />
+</Form>
+</div>
+
+{/* ===== SOCIAL PROOF ===== */}
+<GoogleReviews
+  title="What Our Clients Say"
+  reviews={[
+    {
+      author: "Francesco Petrini",
+      rating: 5,
+      text: "Very well organized space and in development. Good WiFi network and easy parking. Perfect solution to work in Germany close to CH/France.",
+      source: "Google Review"
+    },
+    {
+      author: "Katja Falkenburger",
+      rating: 5,
+      text: "The shared and virtual offices offer comfortable spaces and flexibility combined with an attractive location close to Switzerland and France.",
+      source: "Google Review"
+    },
+    {
+      author: "veprosa",
+      rating: 5,
+      text: "Great, bright office in an attractive location – it doesn't get any better. We can warmly recommend bizzcenter Weil am Rhein!",
+      source: "Google Review"
+    }
+  ]}
 />
 
-Are you looking for a prestigious business address for your company in the border triangle – Germany, Switzerland, France?
+{/* ===== 4 REASONS ===== */}
+<FeaturesWithBg title="4 Reasons for Your Business Address at bizzcenter" columns={2} backgroundImage="/images/standorte/weil-am-rhein/green-office.jpg">
+  <FeatureCard title="Your EU Headquarters — 300 Meters from Basel" description="You need a German business address to trade in the EU, establish a branch or register a business. We offer exactly that — right at the Swiss border, no long journey required." icon="map-pin" />
+  <FeatureCard title="Over 22 Years of Experience in the Border Region" description="Since 2004, we have been supporting Swiss companies in entering the EU market. We know the tax and regulatory requirements on both sides of the border — and help you avoid costly mistakes." icon="flag-de-ch" />
+  <FeatureCard title="Everything Under One Roof — From Mail to Meeting Rooms" description="Start with a prestigious business address and mail service. When you need more, book office and conference rooms by the hour. No long-term lease, no fixed costs." icon="building" />
+  <FeatureCard title="Ready in 24 Hours" description="Once the contract and deposit are in place, your business address is active the next business day — with mail acceptance, registered address and everything included." icon="clock" />
+</FeaturesWithBg>
 
-## Our Services
+{/* ===== STATS ===== */}
+<Stats title="bizzcenter in Numbers">
+  <Stat value="22" label="Years" description="Experience since 2004" />
+  <Stat value="200+" label="Clients" description="Freelancers, startups & SMEs" />
+  <Stat value="300m" label="to Basel" description="Right at the Swiss border" />
+  <Stat value="24/7" label="Access" description="Pick up packages anytime" />
+</Stats>
 
-You receive your business mail at our address in your company name. We receive your mail and forward it to you or keep your mail ready for collection in your mailbox. We will inform you about your inbox by email. Book office or conference rooms by the hour according to your needs.
+{/* ===== YOUR BENEFITS ===== */}
+<FeaturesWithBg title="Your Benefits" columns={3} backgroundImage="/images/standorte/weil-am-rhein/green-office-flurbereich.jpg">
+  <FeatureCard title="Registered Business Address" description="For commercial register, trade registration, legal notice, Google Business and tax office. No c/o address — your company name on the mailbox." icon="landmark" />
+  <FeatureCard title="Apply for EORI Number" description="With a German business address you can apply for your EORI number for EU trade." icon="globe" />
+  <FeatureCard title="VAT ID (USt-ID)" description="Apply for a German VAT identification number for intra-community trade within the EU." icon="file-text" />
+  <FeatureCard title="Protect Your Private Address" description="Your home address stays private — only your business address appears in the commercial register, legal notice and on invoices." icon="shield" />
+  <FeatureCard title="Establish a German Branch" description="Simple setup of a company location or branch office in Germany — right at the Swiss border." icon="building" />
+  <FeatureCard title="Flexible Terms" description="Short rental periods, no hidden costs. Longer commitments are rewarded with attractive conditions." icon="calendar" />
+</FeaturesWithBg>
 
-## Legal Security
+{/* ===== HOW IT WORKS ===== */}
+<Steps title="Your Business Address in 3 Steps">
+  <Step title="Send Inquiry" description="By email, phone or contact form. We will prepare a tailored quote for you." />
+  <Step title="Choose Package" description="Business address only or with phone, secretarial and mail service. Transparently calculated." />
+  <Step title="Get Started" description="Company name on the mailbox, mail is accepted, you work from anywhere." />
+</Steps>
 
-We are aware that the decision for a virtual office with a registered office entails various requirements for (tax) legal reasons. Benefit from 16 years of experience and avoid pitfalls.
-
-<Features title="Your Benefits">
-  <FeatureCard title="No expensive office space" description="No unnecessary provision of expensive office space" icon="check" />
-  <FeatureCard title="Home-Office separation" description="Separation of home office and business" icon="check" />
-  <FeatureCard title="Open a branch" description="Opening of a branch or subsidiary" icon="check" />
-  <FeatureCard title="New company location" description="Simple setup of a new company location" icon="check" />
-  <FeatureCard title="Market presence" description="Market presence directly at the customer" icon="check" />
-  <FeatureCard title="Flexibility" description="Flexibility thanks to short rental periods" icon="check" />
-  <FeatureCard title="Experience" description="bizzcenter as a competent partner with over 16 years of experience" icon="check" />
+{/* ===== WHAT'S INCLUDED ===== */}
+<Features title="What's Included in Your Business Address" columns={2}>
+  <FeatureCard title="Mail & Package Acceptance" description="We accept your mail and packages in your company name." icon="mail" />
+  <FeatureCard title="Mail Forwarding" description="Forwarding of your business mail within the DACH region." icon="globe" />
+  <FeatureCard title="Package Pickup 24/7" description="Pick up packages anytime with your own door code — 7 days a week." icon="package" />
+  <FeatureCard title="Office & Conference Rooms" description="Book by the hour as needed. For client meetings, conferences or focused work." icon="monitor" />
 </Features>
 
-<FAQ title="Frequently Asked Questions about Virtual Office">
+<Features title="Add-On Packages" columns={4}>
+  <FeatureCard title="Coworking" description="Flexible workspaces in the Green Office at preferential rates for all business address clients." icon="users" />
+  <FeatureCard title="Phone Service" description="Calls answered in your company name. Mon–Fri 9 AM–5 PM." icon="phone" />
+  <FeatureCard title="Secretarial Service" description="Professional call handling, appointment management and correspondence." icon="users" />
+  <FeatureCard title="Company Sign" description="Your company name on the signage at the building entrance." icon="landmark" />
+</Features>
+
+{/* ===== CTA ===== */}
+<BannerCTA
+  title="Your Tailored Quote"
+  subtext="Business address from 49,- €/month. Flexible terms. No hidden costs."
+  buttonText="Request Quote" buttonHref="/kontakt"
+/>
+
+{/* ===== ABOUT US ===== */}
+<AlternatingFeatures>
+  <AlternatingFeatureRow title="Your Company Headquarters in the Kesselhaus" description="bizzcenter is located in the heritage-listed Kesselhaus in Weil am Rhein — an architectural highlight right at the Swiss border. Your company name is displayed on the mailbox and building. No c/o address, but a fully registered business address with over 22 years of experience." image="/images/hero/kesselhaus.jpg" imageAlt="Kesselhaus Weil am Rhein" />
+  <AlternatingFeatureRow title="Working in the Green Office" description="As a business address client, you can book coworking spaces, day offices or conference rooms at any time — at preferential rates. Work in daylight-flooded rooms with 7.50m ceiling height, high-speed internet and organic coffee." image="/images/standorte/weil-am-rhein/green-office.jpg" imageAlt="Green Office" />
+</AlternatingFeatures>
+
+{/* ===== FAQ ===== */}
+<FAQ title="Frequently Asked Questions About Business Addresses">
   <FAQItem question="What is a domicile address or business address?">
-    A domicile address is a summonable business address that you can use for your company without having to work there permanently. It serves as the official company address for the imprint, invoices, commercial register and authorities.
+    A domicile address is a registered business address that you can use for your company without being permanently present on site. It serves as the official company headquarters for legal notices, invoices, commercial register and authorities.
   </FAQItem>
-  <FAQItem question="For whom is a business address in the bizzcenter Weil am Rhein suitable?">
-    For start-ups, self-employed persons, freelancers, online companies, agencies, holding structures and foreign companies that need a legally secure address in Germany.
+  <FAQItem question="Who is a business address at bizzcenter Weil am Rhein suitable for?">
+    For founders, self-employed professionals, freelancers, online businesses, agencies, holding structures and foreign companies that need a legally compliant address in Germany.
   </FAQItem>
-  <FAQItem question="Is the address suitable for summons and approved for the commercial register?">
-    Yes. The business address in the bizzcenter Weil am Rhein is fully summonable and suitable for entries in the commercial register, business registration as well as for the tax office and authorities.
+  <FAQItem question="Is the address registered and approved for the commercial register?">
+    Yes. The business address at bizzcenter Weil am Rhein is fully registered and suitable for entries in the commercial register, trade registration as well as for the tax office and authorities. It is not a c/o address, but a full company address with your company name.
   </FAQItem>
-  <FAQItem question="Can I also use the business address from abroad?">
-    Yes. Many customers use the business address from Switzerland, Austria or other countries to have a presence in Germany. This enables trade within the EU.
+  <FAQItem question="Can I use the address in my legal notice and on my website?">
+    Yes. The address may be used in legal notices, on the website, in Google Business profiles, on invoices, letterhead and in email signatures.
+  </FAQItem>
+  <FAQItem question="What is the difference between a domicile address and a virtual office?">
+    The domicile address is the pure business address. A virtual office extends this with secretarial services such as call answering, scanning service and optionally usable workspaces or meeting rooms.
+  </FAQItem>
+  <FAQItem question="How does mail acceptance and forwarding work?">
+    Incoming mail is reliably processed and forwarded to any address in Germany, Switzerland and other countries. Optionally, a personal mailbox can also be used. Packages can be picked up 7 days a week, 24/7 with an individual door access code.
+  </FAQItem>
+  <FAQItem question="Can I use the business address from abroad?">
+    Yes. Many clients use the business address from Switzerland, Austria or other countries to have a presence in Germany without being physically on site. This enables trade within the EU.
+  </FAQItem>
+  <FAQItem question="Is trade registration possible with this address?">
+    Yes. The address can be used for trade registration as well as for existing companies as a business address.
+  </FAQItem>
+  <FAQItem question="Can I register multiple companies at one address?">
+    Yes, provided the legal requirements are met. Particularly relevant for holding structures or agencies with multiple companies. We offer advantageous combination packages for multiple companies.
+  </FAQItem>
+  <FAQItem question="How quickly can I use my business address?">
+    Once the contract is signed and the deposit is paid, we set up your business address within 24 hours. Usually, you are ready to go on the same day.
+  </FAQItem>
+  <FAQItem question="Are there minimum terms or long contract commitments?">
+    No. The models are kept flexible. Short notice periods and transparent prices without hidden costs. Longer notice periods give us planning security, which we reward with attractive conditions.
+  </FAQItem>
+  <FAQItem question="Can I also use workspaces or meeting rooms?">
+    Yes. Clients with business addresses can flexibly add coworking day passes, fixed desks, meeting rooms and permanent offices at preferential rates.
+  </FAQItem>
+  <FAQItem question="What do our clients commonly combine with their business address?">
+    Coworking workspaces (sometimes at reduced rates during off-peak hours), company signs at the main entrance, lockable filing cabinets for storing business documents, scanning service, German and Swiss phone numbers, small-scale storage space and fulfillment services (storage, picking and shipping) are popular combinations.
+  </FAQItem>
+  <FAQItem question="Where exactly is bizzcenter Weil am Rhein located?">
+    Im Schwarzenbach 4, 79576 Weil am Rhein — in the heritage-listed Kesselhaus. 300m from the Swiss border, easily accessible by car and public transport (tram line 8 from Basel, stop Riedlistrasse/Kesselhaus). EuroAirport Basel only 8 km away.
   </FAQItem>
 </FAQ>
 
-<BannerCTA
-  title="Your customized Virtual Office offer"
-  subtext="We will usually get back to you within 24 hours on working days."
-  buttonText="Request Offer" buttonHref="/kontakt"
-/>
+{/* ===== FINAL CTA WITH FORM ===== */}
+<Form
+  action="#"
+  title="Business Address from 49,- €/month — Quote in 24 Hours"
+  description="No hidden costs. Flexible terms. Free initial consultation."
+  columns={2}
+  submitLabel="Request a Free Quote"
+  successTitle="Request sent!"
+  successMessage="We will get back to you within 24 hours."
+>
+  <FormField name="anrede" label="Salutation" type="select" placeholder="Please select" options={["Mr.", "Mrs.", "Mr. Dr.", "Mrs. Dr."]} required colSpan={2} />
+  <FormField name="vorname" label="First Name" type="text" required />
+  <FormField name="nachname" label="Last Name" type="text" required />
+  <FormField name="firma" label="Company" type="text" required colSpan={2} />
+  <FormField name="strasse" label="Street, House Number" type="text" required colSpan={2} />
+  <FormField name="plz" label="Postal Code" type="text" required />
+  <FormField name="ort" label="City" type="text" required />
+  <FormField name="telefon" label="Phone Number" type="tel" required />
+  <FormField name="email" label="Email" type="email" required />
+  <FormField name="nachricht" label="Your Message" type="textarea" required colSpan={2} />
+</Form>
