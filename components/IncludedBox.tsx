@@ -2,26 +2,37 @@
 
 import React from 'react';
 
+interface TarifItem {
+  label: string;
+  price: string;
+  sub: string;
+}
+
 interface IncludedBoxProps {
   title?: string;
   optionalTitle?: string;
+  bookingTitle?: string;
+  tarife?: TarifItem[];
   children: React.ReactNode;
 }
 
-export function IncludedBox({ title = 'Was im Coworking-Preis enthalten ist', optionalTitle = 'Optional hinzubuchbar', children }: IncludedBoxProps) {
+const defaultTarife: TarifItem[] = [
+  { label: 'Tagespass', price: 'EUR 29,-', sub: 'pro Tag zzgl. MwSt.' },
+  { label: '10er-Karte', price: 'EUR 249,-', sub: '10 Tage zzgl. MwSt.' },
+  { label: 'Monatspass', price: 'EUR 259,-', sub: 'pro Monat zzgl. MwSt.' },
+  { label: 'Monatsabo', price: 'EUR 239,-', sub: 'pro Monat zzgl. MwSt.' },
+];
+
+export function IncludedBox({
+  title = 'Was im Coworking-Preis enthalten ist',
+  optionalTitle = 'Optional hinzubuchbar',
+  bookingTitle = 'Jetzt buchen',
+  tarife = defaultTarife,
+  children,
+}: IncludedBoxProps) {
   const childArray = React.Children.toArray(children);
-
-  // Find the divider index - look for a child with props.divider or use a Divider component
-  let dividerIndex = -1;
-  childArray.forEach((child, i) => {
-    if (React.isValidElement(child) && (child.props as any)?.divider) {
-      dividerIndex = i;
-    }
-  });
-
-  // If no explicit divider, split in half (6 included + rest optional)
-  const includedItems = dividerIndex >= 0 ? childArray.slice(0, dividerIndex) : childArray.slice(0, 6);
-  const optionalItems = dividerIndex >= 0 ? childArray.slice(dividerIndex + 1) : childArray.slice(6);
+  const includedItems = childArray.slice(0, 6);
+  const optionalItems = childArray.slice(6);
 
   return (
     <section className="py-12 md:py-16">
@@ -34,6 +45,28 @@ export function IncludedBox({ title = 'Was im Coworking-Preis enthalten ist', op
               {includedItems}
             </div>
           </div>
+
+          {/* Divider */}
+          <div className="border-t border-border mx-8 md:mx-10" />
+
+          {/* Booking / Tarife */}
+          <div className="p-8 md:p-10">
+            <h3 className="text-xl md:text-2xl font-bold text-foreground text-center mb-6">{bookingTitle}</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {tarife.map((t) => (
+                <a
+                  key={t.label}
+                  href="#formular"
+                  className="rounded-xl border border-border bg-background p-4 text-center transition-all duration-250 hover:bg-[#f0f4e8] hover:border-[#6b7f3e] hover:shadow-sm block no-underline"
+                >
+                  <div className="text-sm font-semibold text-foreground">{t.label}</div>
+                  <div className="text-xl font-bold text-[#1e293b] mt-1">{t.price}</div>
+                  <div className="text-xs text-muted-foreground mt-1">{t.sub}</div>
+                </a>
+              ))}
+            </div>
+          </div>
+
           {optionalItems.length > 0 && (
             <>
               {/* Divider */}
@@ -51,8 +84,4 @@ export function IncludedBox({ title = 'Was im Coworking-Preis enthalten ist', op
       </div>
     </section>
   );
-}
-
-export function IncludedDivider() {
-  return <div data-divider style={{ display: 'none' }} />;
 }
