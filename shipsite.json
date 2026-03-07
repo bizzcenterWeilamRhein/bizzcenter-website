@@ -1,13 +1,13 @@
 {
     "$schema": "./node_modules/@shipsite.dev/core/shipsite.schema.json",
-    "name": "bizzcenter",
+    "name": " ",
     "url": "https://bizzcenter.de",
-    "logo": "/images/logo-icon.png",
+    "logo": "/images/logo-bizzcenter.png",
     "favicon": "/favicon.png",
     "ogImage": "/images/og/og-image.jpg",
     "colors": {
-        "primary": "#004990",
-        "accent": "#C8F000",
+        "primary": "#0039D1",
+        "accent": "#B2FF00",
         "background": "#ffffff",
         "text": "#2d3748"
     },
