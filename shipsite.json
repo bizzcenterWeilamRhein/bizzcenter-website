@@ -57,6 +57,13 @@
       },
       {
         "label": {
+          "de": "Preise",
+          "en": "Pricing"
+        },
+        "href": "/preise"
+      },
+      {
+        "label": {
           "de": "Über uns",
           "en": "About"
         },
