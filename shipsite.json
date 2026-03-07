@@ -712,14 +712,9 @@
       "locales": [
         "de"
       ]
-    },
-    {
-      "slug": "test-components",
-      "type": "page",
-      "content": "test-components",
-      "locales": [
-        "de"
-      ]
     }
-  ]
+  ],
+  "analytics": {
+    "googleTagManager": "GTM-58ZDC5BN"
+  }
 }
