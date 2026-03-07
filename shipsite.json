@@ -712,6 +712,14 @@
       "locales": [
         "de"
       ]
+    },
+    {
+      "slug": "test-positions",
+      "type": "page",
+      "content": "test-positions",
+      "locales": [
+        "de"
+      ]
     }
   ],
   "analytics": {
