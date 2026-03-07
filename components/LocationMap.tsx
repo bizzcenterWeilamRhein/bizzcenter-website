@@ -1,6 +1,6 @@
 interface Location {
   name: string;
-  address: string;
+  address: string[];
   phone: string;
   email: string;
   mapEmbedUrl: string;
@@ -24,7 +24,9 @@ export function LocationMap({ title, locations }: LocationMapProps) {
           <div key={i} className="flex flex-col gap-4">
             <h3 className="text-lg font-semibold">{loc.name}</h3>
             <div className="text-sm text-gray-600 space-y-1">
-              <p>{loc.address}</p>
+              {loc.address.map((line, j) => (
+                <p key={j}>{line}</p>
+              ))}
               <p>
                 Telefon: <a href={"tel:" + loc.phone.replace(/\s/g, "")} className="text-blue-600 hover:underline">{loc.phone}</a>
               </p>
