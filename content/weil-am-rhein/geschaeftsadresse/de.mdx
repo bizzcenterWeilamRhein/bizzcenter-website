@@ -22,18 +22,23 @@ description: "Ladungsfähige Geschäftsadresse in Weil am Rhein mieten. Handelsr
 </CompactHero>
 
 {/* ===== FORMULAR ===== */}
-<ContactForm
+<Form
   action="#"
   title="Geschäftsadresse ab 49,- €/Monat"
   description="Innerhalb von 24 Stunden eingerichtet."
-  nameLabel="Name"
-  emailLabel="E-Mail"
-  messageLabel="Ihre Nachricht (optional)"
+  columns={2}
   submitLabel="Kostenloses Angebot anfordern"
   successTitle="Anfrage gesendet!"
   successMessage="Wir melden uns innerhalb von 24 Stunden bei Ihnen."
-  variant="card"
-/>
+>
+  <FormField name="anrede" label="Anrede" type="select" options={["Herr", "Frau"]} required colSpan={2} />
+  <FormField name="vorname" label="Vorname" type="text" required />
+  <FormField name="nachname" label="Nachname" type="text" required />
+  <FormField name="firma" label="Firma" type="text" required colSpan={2} />
+  <FormField name="telefon" label="Telefonnummer" type="tel" />
+  <FormField name="email" label="E-Mail" type="email" required />
+  <FormField name="nachricht" label="Ihre Nachricht (optional)" type="textarea" colSpan={2} />
+</Form>
 
 {/* ===== SOCIAL PROOF ===== */}
 <GoogleReviews
