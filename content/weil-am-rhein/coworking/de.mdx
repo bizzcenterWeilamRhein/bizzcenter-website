@@ -90,26 +90,25 @@ description: "Coworking Space in Weil am Rhein: Tagespass, 10er-Karte, Monatspas
 </div>
 
 <style>{`
-  .coworking-theme [class*="step"] [class*="number"],
-  .coworking-theme [class*="step"] [class*="circle"],
-  .coworking-theme [class*="step"] [class*="badge"],
-  .coworking-theme [class*="step"] > div:first-child,
-  .coworking-theme [class*="indicator"] {
+  .coworking-theme div[class*="rounded-full"],
+  .coworking-theme span[class*="rounded-full"],
+  .coworking-theme .bg-primary {
     background-color: #6b7f3e !important;
     color: white !important;
   }
-  .coworking-theme [class*="banner"] button,
-  .coworking-theme [class*="banner"] a,
-  .coworking-theme [class*="cta"] button,
-  .coworking-theme [class*="cta"] a {
+  .coworking-theme a[class*="bg-primary"],
+  .coworking-theme button[class*="bg-primary"],
+  .coworking-theme a.bg-primary,
+  .coworking-theme button.bg-primary {
     background-color: #a8a29e !important;
     color: white !important;
   }
-  .coworking-theme [class*="banner"] button:hover,
-  .coworking-theme [class*="banner"] a:hover,
-  .coworking-theme [class*="cta"] button:hover,
-  .coworking-theme [class*="cta"] a:hover {
+  .coworking-theme a[class*="bg-primary"]:hover,
+  .coworking-theme button[class*="bg-primary"]:hover {
     background-color: #8a8380 !important;
+  }
+  .coworking-theme section[class*="bg-primary"] {
+    background-color: #f0ece7 !important;
   }
 `}</style>
 <div className="coworking-theme">
