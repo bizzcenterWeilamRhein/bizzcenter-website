@@ -712,6 +712,14 @@
       "locales": [
         "de"
       ]
+    },
+    {
+      "slug": "test-hero",
+      "type": "page",
+      "content": "test-hero",
+      "locales": [
+        "de"
+      ]
     }
   ],
   "analytics": {
