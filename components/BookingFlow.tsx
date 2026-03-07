@@ -22,6 +22,7 @@ interface AddonItem {
   note?: string;
   selectable: boolean;
   requiresTarif?: string[];
+  discount?: boolean;
 }
 
 const tarife: TarifItem[] = [
@@ -32,14 +33,14 @@ const tarife: TarifItem[] = [
 ];
 
 const addons: AddonItem[] = [
-  { id: 'fixdesk', label: 'Fix Desk', priceMonat: 79, displayPrice: '+ EUR 79,- /Monat', selectable: true, requiresTarif: ['monatspass', 'monatsabo'] },
-  { id: 'aktenschrank', label: 'Abschließbarer Aktenschrank', priceMonat: 19, displayPrice: '+ EUR 19,- /Monat', selectable: true, requiresTarif: ['zehnerkarte', 'monatspass', 'monatsabo'] },
-  { id: 'monitor', label: '27" Curved Monitor', priceTag: 9, priceMonat: 27, displayPrice: 'EUR 9,- /Tag · EUR 27,- /Monat', selectable: true },
-  { id: 'geschaeftsadresse', label: 'Geschäftsadresse', priceMonat: 39, displayPrice: '+ EUR 39,- /Monat', note: 'Nur bei Monatsabo', selectable: true, requiresTarif: ['monatsabo'] },
+  { id: 'fixdesk', label: 'Fix Desk', priceMonat: 79, displayPrice: '+ EUR 79,- /Monat', selectable: true, requiresTarif: ['monatspass', 'monatsabo'], discount: true },
+  { id: 'aktenschrank', label: 'Abschließbarer Aktenschrank', priceMonat: 19, displayPrice: '+ EUR 19,- /Monat', selectable: true, requiresTarif: ['zehnerkarte', 'monatspass', 'monatsabo'], discount: true },
+  { id: 'monitor', label: '27" Curved Monitor', priceTag: 9, priceMonat: 27, displayPrice: 'EUR 9,- /Tag · EUR 27,- /Monat', selectable: true, discount: true },
+  { id: 'geschaeftsadresse', label: 'Geschäftsadresse', priceMonat: 39, displayPrice: '+ EUR 39,- /Monat', selectable: true, requiresTarif: ['monatsabo'], discount: true },
   { id: 'meetingraum', label: 'Meeting- & Konferenzräume', displayPrice: 'Auf Tagesbasis buchbar', selectable: false },
-  { id: 'parkplatz', label: 'Parkplatz', priceTag: 6, displayPrice: '+ EUR 6,- /Tag', selectable: true },
-  { id: 'kaffeeflat', label: 'Kaffee-Flatrate', priceTag: 2, priceMonat: 29, pricePer: { tagespass: 2, zehnerkarte: 27, monatspass: 29, monatsabo: 29 }, displayPrice: 'ab EUR 2,- /Tag', note: 'Bio-Kaffee — so viel Sie möchten', selectable: true, displayPricePer: { tagespass: '+ EUR 2,- /Tag', zehnerkarte: '+ EUR 27,- (EUR 2,70 /Tag)', monatspass: '+ EUR 29,- /Monat', monatsabo: '+ EUR 29,- /Monat' } },
-  { id: 'teeflat', label: 'Tee-Flatrate', priceTag: 2, priceMonat: 24, pricePer: { tagespass: 2, zehnerkarte: 19, monatspass: 24, monatsabo: 24 }, displayPrice: 'ab EUR 2,- /Tag', note: 'Premium-Tees in großer Auswahl', selectable: true, displayPricePer: { tagespass: '+ EUR 2,- /Tag', zehnerkarte: '+ EUR 19,- (EUR 1,90 /Tag)', monatspass: '+ EUR 24,- /Monat', monatsabo: '+ EUR 24,- /Monat' } },
+  { id: 'parkplatz', label: 'Parkplatz', priceTag: 6, displayPrice: '+ EUR 6,- /Tag', selectable: true, discount: true },
+  { id: 'kaffeeflat', label: 'Kaffee-Flatrate', priceTag: 2, priceMonat: 29, pricePer: { tagespass: 2, zehnerkarte: 27, monatspass: 29, monatsabo: 29 }, displayPrice: 'ab EUR 2,- /Tag', note: 'Bio-Kaffee — so viel Sie möchten', selectable: true, discount: true, displayPricePer: { tagespass: '+ EUR 2,- /Tag', zehnerkarte: '+ EUR 27,- (EUR 2,70 /Tag)', monatspass: '+ EUR 29,- /Monat', monatsabo: '+ EUR 29,- /Monat' } },
+  { id: 'teeflat', label: 'Tee-Flatrate', priceTag: 2, priceMonat: 24, pricePer: { tagespass: 2, zehnerkarte: 19, monatspass: 24, monatsabo: 24 }, displayPrice: 'ab EUR 2,- /Tag', note: 'Premium-Tees in großer Auswahl', selectable: true, discount: true, displayPricePer: { tagespass: '+ EUR 2,- /Tag', zehnerkarte: '+ EUR 19,- (EUR 1,90 /Tag)', monatspass: '+ EUR 24,- /Monat', monatsabo: '+ EUR 24,- /Monat' } },
 ];
 
 function StepBadge({ number, active }: { number: number; active: boolean }) {
@@ -202,10 +203,14 @@ export function BookingFlow({ title = 'In 4 Schritten zum Coworking-Platz' }: { 
                         : 'border-border bg-background hover:bg-[#f0f4e8] hover:border-[#6b7f3e] hover:shadow-sm cursor-pointer'
                     }`}
                   >
-                    <div className="text-sm font-semibold text-foreground">{addon.label}</div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-sm font-semibold text-foreground">{addon.label}</span>
+                      {addon.discount && <span className="text-[10px] font-bold bg-[#6b7f3e] text-white rounded-full px-1.5 py-0.5">−16%</span>}
+                    </div>
                     <div className="text-sm font-bold text-[#1e293b] mt-1">
                       {(selectedTarif && addon.displayPricePer?.[selectedTarif]) || addon.displayPrice}
                     </div>
+                    <div className="text-xs text-muted-foreground mt-0.5"><span className="underline">inkl. MwSt.</span></div>
                     {addon.note && (
                       <div className="text-xs text-muted-foreground mt-1 italic">{addon.note}</div>
                     )}
