@@ -714,9 +714,9 @@
       ]
     },
     {
-      "slug": "test-testimonials",
+      "slug": "test-components",
       "type": "page",
-      "content": "test-testimonials",
+      "content": "test-components",
       "locales": [
         "de"
       ]
