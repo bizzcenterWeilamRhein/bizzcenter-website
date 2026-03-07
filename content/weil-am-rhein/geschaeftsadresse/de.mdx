@@ -26,14 +26,14 @@ description: "Ladungsfähige Geschäftsadresse in Weil am Rhein mieten. Handelsr
 {/* ===== FORMULAR ===== */}
 <Form
   action="#"
-  title="Kostenloses Angebot anfordern"
-  description="Wir melden uns innerhalb von 24 Stunden bei Ihnen."
+  title=""
+  description=""
   columns={2}
   submitLabel="Kostenloses Angebot anfordern"
   successTitle="Anfrage gesendet!"
   successMessage="Wir melden uns innerhalb von 24 Stunden bei Ihnen."
 >
-  <FormField name="anrede" label="Anrede" type="select" options={["Herr", "Frau", "Herr Dr.", "Frau Dr."]} required colSpan={2} />
+  <FormField name="anrede" label="Anrede" type="select" placeholder="Bitte wählen" options={["Herr", "Frau", "Herr Dr.", "Frau Dr."]} required colSpan={2} />
   <FormField name="vorname" label="Vorname" type="text" required />
   <FormField name="nachname" label="Nachname" type="text" required />
   <FormField name="firma" label="Firma" type="text" required colSpan={2} />
