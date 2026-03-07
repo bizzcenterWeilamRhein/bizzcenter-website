@@ -54,7 +54,7 @@ export function CoworkingTarife() {
       </div>
       <a
         href="#formular"
-        className="mt-3 block w-full rounded-lg bg-[#94a3b8] text-white text-center py-2.5 text-sm font-medium hover:bg-[#64748b] transition-colors"
+        className="mt-3 block w-full rounded-lg bg-[#a8a29e] text-white text-center py-2.5 text-sm font-medium hover:bg-[#8a8380] transition-colors"
       >
         Jetzt buchen und bezahlen
       </a>
