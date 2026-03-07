@@ -22,8 +22,8 @@ export function CoworkingTarife() {
   }
 
   return (
-    <div className="mt-4">
-      <p className="mb-2 text-sm font-semibold text-foreground">Sofortstart möglich — wählen Sie Ihren Tarif:</p>
+    <div className="mt-6">
+      <p className="mb-3 text-base font-bold text-foreground">Sofortstart möglich — wähle jetzt deinen Tarif:</p>
       <div className="grid grid-cols-2 gap-3">
         {tarife.map((t) => {
           const isSelected = selected === t.id;
