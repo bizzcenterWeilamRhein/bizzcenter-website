@@ -57,38 +57,20 @@ description: "Coworking Space in Weil am Rhein: Tagespass, 10er-Karte, Monatspas
 />
 
 {/* ===== WAS ENTHALTEN IST + OPTIONAL ===== */}
-<section className="py-12 md:py-16">
-  <div className="container-main">
-    <div className="rounded-2xl border border-border bg-card shadow-lg overflow-hidden">
-      {/* Inklusive */}
-      <div className="p-8 md:p-10">
-        <h2 className="text-2xl md:text-3xl font-bold text-foreground text-center mb-8">Was im Coworking-Preis enthalten ist</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <FeatureCard title="Voll ausgestatteter Arbeitsplatz" description="Ergonomischer Schreibtisch, Bürostuhl, Steckdosen und gutes Licht — sofort loslegen." icon="laptop" />
-          <FeatureCard title="Highspeed-Internet" description="Glasfaser-Anbindung mit WIFI 5/6 und Gigabit-LAN. Perfekt für Videokonferenzen und IP-Telefonie." icon="wifi" />
-          <FeatureCard title="Quiet-Cubes" description="Zwei schallisolierte Rückzugsräume für vertrauliche Gespräche und Calls — kostenlos nutzbar." icon="shield" />
-          <FeatureCard title="Küche & Chillout-Area" description="Tee-Küche mit Aufwärm- und Kühlmöglichkeit. Gemütliche Lounge zum Abschalten und Netzwerken." icon="coffee" />
-          <FeatureCard title="Nebenkosten inklusive" description="Strom, Heizung, Reinigung, Wasser — alles im Preis. Keine versteckten Zusatzkosten." icon="zap" />
-          <FeatureCard title="24/7 Zugang" description="Eigener Türcode für den Zugang rund um die Uhr, sieben Tage die Woche." icon="key" />
-        </div>
-      </div>
-      {/* Trennlinie */}
-      <div className="border-t border-border mx-8 md:mx-10" />
-      {/* Optional hinzubuchbar */}
-      <div className="p-8 md:p-10">
-        <h3 className="text-xl md:text-2xl font-bold text-foreground text-center mb-6">Optional hinzubuchbar</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <FeatureCard title="Fix Desk" description="Fester Arbeitsplatz — immer der gleiche Platz, Bildschirm stehen lassen." icon="laptop" />
-          <FeatureCard title="Abschließbarer Aktenschrank" description="Spinde und Schränke in verschiedenen Größen für Unterlagen und Wertsachen." icon="key" />
-          <FeatureCard title="27\" Curved Monitor" description="Ergonomischer 27-Zoll Curved Monitor für produktives Arbeiten." icon="monitor" />
-          <FeatureCard title="Geschäftsadresse" description="Die Adresse als ladungsfähige Geschäftsadresse für Impressum und Handelsregister." icon="landmark" />
-          <FeatureCard title="Meeting- & Konferenzräume" description="Stunden- oder tageweise buchbar für Kundentermine und Teamtreffen." icon="users" />
-          <FeatureCard title="Parkplatz" description="Tages- und Monatstickets verfügbar. 90 Minuten kostenfreies Parken inklusive." icon="map-pin" />
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+<IncludedBox title="Was im Coworking-Preis enthalten ist" optionalTitle="Optional hinzubuchbar">
+  <FeatureCard title="Voll ausgestatteter Arbeitsplatz" description="Ergonomischer Schreibtisch, Bürostuhl, Steckdosen und gutes Licht — sofort loslegen." icon="laptop" />
+  <FeatureCard title="Highspeed-Internet" description="Glasfaser-Anbindung mit WIFI 5/6 und Gigabit-LAN. Perfekt für Videokonferenzen und IP-Telefonie." icon="wifi" />
+  <FeatureCard title="Quiet-Cubes" description="Zwei schallisolierte Rückzugsräume für vertrauliche Gespräche und Calls — kostenlos nutzbar." icon="shield" />
+  <FeatureCard title="Küche & Chillout-Area" description="Tee-Küche mit Aufwärm- und Kühlmöglichkeit. Gemütliche Lounge zum Abschalten und Netzwerken." icon="coffee" />
+  <FeatureCard title="Nebenkosten inklusive" description="Strom, Heizung, Reinigung, Wasser — alles im Preis. Keine versteckten Zusatzkosten." icon="zap" />
+  <FeatureCard title="24/7 Zugang" description="Eigener Türcode für den Zugang rund um die Uhr, sieben Tage die Woche." icon="key" />
+  <FeatureCard title="Fix Desk" description="Fester Arbeitsplatz — immer der gleiche Platz, Bildschirm stehen lassen." icon="laptop" />
+  <FeatureCard title="Abschließbarer Aktenschrank" description="Spinde und Schränke in verschiedenen Größen für Unterlagen und Wertsachen." icon="key" />
+  <FeatureCard title="27&quot; Curved Monitor" description="Ergonomischer 27-Zoll Curved Monitor für produktives Arbeiten." icon="monitor" />
+  <FeatureCard title="Geschäftsadresse" description="Die Adresse als ladungsfähige Geschäftsadresse für Impressum und Handelsregister." icon="landmark" />
+  <FeatureCard title="Meeting- & Konferenzräume" description="Stunden- oder tageweise buchbar für Kundentermine und Teamtreffen." icon="users" />
+  <FeatureCard title="Parkplatz" description="Tages- und Monatstickets verfügbar. 90 Minuten kostenfreies Parken inklusive." icon="map-pin" />
+</IncludedBox>
 
 {/* ===== STATS ===== */}
 <style>{`

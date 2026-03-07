@@ -18,3 +18,4 @@ export { FeatureCard } from './FeatureCard';
 export { PricingCards } from './PricingCards';
 export { CoworkingTarife } from './CoworkingTarife';
 export { ImageSlider } from './ImageSlider';
+export { IncludedBox } from './IncludedBox';
