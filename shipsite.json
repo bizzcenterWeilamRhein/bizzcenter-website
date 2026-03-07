@@ -6,8 +6,8 @@
     "favicon": "/favicon.png",
     "ogImage": "/images/og/og-image.jpg",
     "colors": {
-        "primary": "#1a73b5",
-        "accent": "#5ba65b",
+        "primary": "#004990",
+        "accent": "#C8F000",
         "background": "#ffffff",
         "text": "#2d3748"
     },
