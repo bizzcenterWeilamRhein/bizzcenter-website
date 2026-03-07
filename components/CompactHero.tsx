@@ -54,7 +54,7 @@ export function CompactHero({ title, description, image, imageAlt, buttonText, b
           />
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-black/20" />
         </div>
-        <div className="absolute inset-0 flex items-center justify-end px-8 md:px-16 lg:px-24">
+        <div className="absolute inset-0 flex items-center justify-center">
           <div className="rounded-2xl border border-border bg-background/95 backdrop-blur-sm p-8 max-w-lg shadow-lg">
             <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">{title}</h1>
             {description && <p className="text-lg text-muted-foreground">{description}</p>}
