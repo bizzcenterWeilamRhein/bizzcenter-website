@@ -7,13 +7,15 @@ interface CompactHeroProps {
   description?: string;
   image: string;
   imageAlt?: string;
+  buttonText?: string;
+  buttonHref?: string;
   children?: React.ReactNode;
 }
 
-export function CompactHero({ title, description, image, imageAlt, children }: CompactHeroProps) {
+export function CompactHero({ title, description, image, imageAlt, buttonText, buttonHref, children }: CompactHeroProps) {
   return (
     <>
-      {/* Mobile: Bild mit Text-Overlay */}
+      {/* Mobile: Bild mit Text-Overlay, Bullets + Button darunter */}
       <section className="md:hidden relative">
         <div className="relative aspect-[16/9] overflow-hidden">
           <img
@@ -27,10 +29,22 @@ export function CompactHero({ title, description, image, imageAlt, children }: C
             {description && <p className="text-sm text-white/90">{description}</p>}
           </div>
         </div>
-        {children}
+        <div className="px-4 py-4">
+          {children}
+          {buttonText && buttonHref && (
+            <div className="mt-4">
+              <a
+                href={buttonHref}
+                className="inline-flex items-center justify-center w-full rounded-lg bg-primary text-primary-foreground px-6 py-3 text-sm font-medium hover:bg-primary/90 transition-colors"
+              >
+                {buttonText}
+              </a>
+            </div>
+          )}
+        </div>
       </section>
 
-      {/* Desktop: Bild links, Text rechts */}
+      {/* Desktop: Bild links, Text + Bullets rechts */}
       <section className="hidden md:block px-4 py-8 md:py-12">
         <div className="container-main">
           <div className="grid grid-cols-2 gap-10 items-center">
