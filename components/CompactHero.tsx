@@ -52,14 +52,14 @@ export function CompactHero({ title, description, image, imageAlt, buttonText, b
 
       {/* Desktop: Bild volle Breite, Info links + Formular rechts */}
       <section className="hidden lg:block relative">
-        <div className="relative overflow-hidden" style={{aspectRatio: '21/8'}}>
+        <div className="relative overflow-hidden" style={{aspectRatio: '21/10'}}>
           <img
             src={image}
             alt={imageAlt || title}
             className="absolute inset-0 w-full h-full object-cover object-center"
           />
         </div>
-        <div className="absolute inset-0 flex items-end justify-center px-8 xl:px-16 pb-16 gap-10">
+        <div className="absolute inset-0 flex items-center justify-center px-8 xl:px-16 gap-10">
           <div className="flex items-stretch gap-10">
             <div className="rounded-2xl border border-border bg-background/95 backdrop-blur-sm p-8 shadow-lg shrink-0" style={{minWidth: '520px'}}>
               <h1 className="text-3xl xl:text-4xl font-bold text-foreground mb-2 whitespace-nowrap">{title}</h1>
