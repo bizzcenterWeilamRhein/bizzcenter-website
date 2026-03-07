@@ -59,7 +59,7 @@ export function CompactHero({ title, description, image, imageAlt, buttonText, b
             className="absolute inset-0 w-full h-full object-cover object-center"
           />
         </div>
-        <div className="absolute inset-0 flex items-end justify-center px-8 xl:px-16 pb-8 gap-10">
+        <div className="absolute inset-0 flex items-end justify-center px-8 xl:px-16 pb-16 gap-10">
           <div className="flex items-stretch gap-10">
             <div className="rounded-2xl border border-border bg-background/95 backdrop-blur-sm p-8 shadow-lg shrink-0" style={{minWidth: '520px'}}>
               <h1 className="text-3xl xl:text-4xl font-bold text-foreground mb-2 whitespace-nowrap">{title}</h1>
