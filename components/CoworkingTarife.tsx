@@ -45,7 +45,7 @@ export function CoworkingTarife() {
                   ? 'text-white opacity-100'
                   : 'text-primary group-hover:text-white opacity-0 group-hover:opacity-100'
               } transition-opacity`}>
-                {isSelected ? '✓ Ausgewählt' : 'Jetzt buchen'}
+                {isSelected ? '✓ Ausgewählt' : 'Auswählen'}
               </div>
             </button>
           );
