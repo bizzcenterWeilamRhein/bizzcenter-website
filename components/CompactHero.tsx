@@ -42,6 +42,11 @@ export function CompactHero({ title, description, image, imageAlt, buttonText, b
               </a>
             </div>
           )}
+          {formId && (
+            <div className="mt-6 rounded-2xl border border-border bg-card p-5" id={`${formId}-mobile`}>
+              <HeroForm />
+            </div>
+          )}
         </div>
       </section>
 
