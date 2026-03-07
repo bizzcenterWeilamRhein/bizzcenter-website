@@ -3,10 +3,10 @@
 import React, { useState } from 'react';
 
 const tarife = [
-  { id: 'tagespass', label: 'Tagespass', price: '29,- €', sub: 'pro Tag zzgl. MwSt.' },
-  { id: 'zehnerkarte', label: '10er-Karte', price: '249,- €', sub: '10 Tage zzgl. MwSt.' },
-  { id: 'monatspass', label: 'Monatspass', price: '259,- €', sub: 'pro Monat zzgl. MwSt.' },
-  { id: 'monatsabo', label: 'Monatsabo', price: '239,- €', sub: 'pro Monat zzgl. MwSt.' },
+  { id: 'tagespass', label: 'Tagespass', price: '29,- €', sub: 'pro Tag zzgl. MwSt.', info: '' },
+  { id: 'zehnerkarte', label: '10er-Karte', price: '249,- €', sub: 'zzgl. MwSt.', info: '10 Tage Coworking an flexibel wählbaren Tagen' },
+  { id: 'monatspass', label: 'Monatspass', price: '259,- €', sub: 'pro Monat zzgl. MwSt.', info: 'Ein Monat ohne Kündigungsfrist' },
+  { id: 'monatsabo', label: 'Monatsabo', price: '239,- €', sub: 'pro Monat zzgl. MwSt.', info: 'Monatspass mit 3 Monaten Kündigungsfrist' },
 ];
 
 export function CoworkingTarife() {
@@ -40,6 +40,7 @@ export function CoworkingTarife() {
               <div className={`text-xs mb-1 ${isSelected ? 'text-white/80' : 'text-muted-foreground group-hover:text-white/80'}`}>{t.label}</div>
               <div className={`text-lg font-bold ${isSelected ? 'text-white' : 'text-primary group-hover:text-white'}`}>{t.price}</div>
               <div className={`text-xs ${isSelected ? 'text-white/80' : 'text-muted-foreground group-hover:text-white/80'}`}>{t.sub}</div>
+              {t.info && <div className={`text-[10px] mt-1 ${isSelected ? 'text-white/70' : 'text-muted-foreground/70 group-hover:text-white/70'}`}>{t.info}</div>}
               <div className={`text-xs font-semibold mt-1 ${
                 isSelected
                   ? 'text-white opacity-100'
