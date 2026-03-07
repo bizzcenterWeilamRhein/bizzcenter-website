@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 
 const tarife = [
-  { id: 'tagespass', label: 'Tagespass', price: 'EUR 29,-', sub: 'pro Tag zzgl. MwSt.', info: '' },
+  { id: 'tagespass', label: 'Tagespass', price: 'EUR 29,-', sub: 'pro Tag zzgl. MwSt.', info: 'Starttermin frei wählbar — Sofortstart möglich' },
   { id: 'zehnerkarte', label: '10er-Karte', price: 'EUR 249,-', sub: 'zzgl. MwSt.', info: '10 Tage Coworking an flexibel wählbaren Tagen' },
   { id: 'monatspass', label: 'Monatspass', price: 'EUR 259,-', sub: 'pro Monat zzgl. MwSt.', info: 'Ein Monat ohne Kündigungsfrist' },
   { id: 'monatsabo', label: 'Monatsabo', price: 'EUR 239,-', sub: 'pro Monat zzgl. MwSt.', info: 'Monatspass mit 3 Monaten Kündigungsfrist' },
