@@ -43,7 +43,7 @@ export function CompactHero({ title, description, image, imageAlt, buttonText, b
             </div>
           )}
           {formId && (
-            <div className="mt-6 rounded-2xl border border-border bg-card p-5" id={`${formId}-mobile`}>
+            <div className="mt-6 rounded-2xl border border-border bg-card p-5" id={`${formId}-mobile`} style={{scrollMarginTop: '100px'}}>
               <HeroForm />
             </div>
           )}
@@ -67,7 +67,7 @@ export function CompactHero({ title, description, image, imageAlt, buttonText, b
               {children}
             </div>
             {formId && (
-              <div className="rounded-2xl border border-border bg-background/95 backdrop-blur-sm p-6 shadow-lg shrink-0 flex flex-col justify-center" style={{width: '420px'}} id={formId}>
+              <div className="rounded-2xl border border-border bg-background/95 backdrop-blur-sm p-6 shadow-lg shrink-0 flex flex-col justify-center" style={{width: '420px', scrollMarginTop: '100px'}} id={formId}>
                 <HeroForm />
               </div>
             )}
