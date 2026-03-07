@@ -35,9 +35,12 @@ description: "Ladungsfähige Geschäftsadresse in Weil am Rhein mieten. Handelsr
   <FormField name="vorname" label="Vorname" type="text" required />
   <FormField name="nachname" label="Nachname" type="text" required />
   <FormField name="firma" label="Firma" type="text" required colSpan={2} />
-  <FormField name="telefon" label="Telefonnummer" type="tel" />
+  <FormField name="strasse" label="Straße, Hausnummer" type="text" required colSpan={2} />
+  <FormField name="plz" label="Postleitzahl" type="text" required />
+  <FormField name="ort" label="Ort" type="text" required />
+  <FormField name="telefon" label="Telefonnummer" type="tel" required />
   <FormField name="email" label="E-Mail" type="email" required />
-  <FormField name="nachricht" label="Ihre Nachricht (optional)" type="textarea" colSpan={2} />
+  <FormField name="nachricht" label="Ihre Nachricht" type="textarea" required colSpan={2} />
 </Form>
 
 {/* ===== SOCIAL PROOF ===== */}
