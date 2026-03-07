@@ -83,6 +83,31 @@ description: "Coworking Space in Weil am Rhein: Tagespass, 10er-Karte, Monatspas
 </Stats>
 </div>
 
+<style>{`
+  .coworking-theme [class*="step"] [class*="number"],
+  .coworking-theme [class*="step"] [class*="circle"],
+  .coworking-theme [class*="step"] [class*="badge"],
+  .coworking-theme [class*="step"] > div:first-child,
+  .coworking-theme [class*="indicator"] {
+    background-color: #6b7f3e !important;
+    color: white !important;
+  }
+  .coworking-theme [class*="banner"] button,
+  .coworking-theme [class*="banner"] a,
+  .coworking-theme [class*="cta"] button,
+  .coworking-theme [class*="cta"] a {
+    background-color: #a8a29e !important;
+    color: white !important;
+  }
+  .coworking-theme [class*="banner"] button:hover,
+  .coworking-theme [class*="banner"] a:hover,
+  .coworking-theme [class*="cta"] button:hover,
+  .coworking-theme [class*="cta"] a:hover {
+    background-color: #8a8380 !important;
+  }
+`}</style>
+<div className="coworking-theme">
+
 {/* ===== SO FUNKTIONIERT'S ===== */}
 <Steps title="In 4 Schritten zum Coworking-Platz">
   <Step title="Tarif wählen" description="Tagespass, 10er-Karte, Monatspass oder Monatsabo." />
@@ -104,6 +129,8 @@ description: "Coworking Space in Weil am Rhein: Tagespass, 10er-Karte, Monatspas
   subtext="Füllen Sie das Formular aus — wir melden uns innerhalb von 24 Stunden."
   buttonText="Zum Anfrageformular" buttonHref="#formular"
 />
+
+</div>
 
 {/* ===== ÜBER UNS ===== */}
 <AlternatingFeatures>
