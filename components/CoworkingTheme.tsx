@@ -6,13 +6,30 @@ const statsStyles = `
   .stats-centered [class*="stat"] { text-align: center !important; }
   .stats-centered [class*="stat"] > * { text-align: center !important; justify-content: center !important; align-items: center !important; }
   .stats-centered p, .stats-centered h2, .stats-centered h3, .stats-centered span, .stats-centered div { text-align: center !important; }
-  .stats-centered { background-color: #f5f0eb !important; }
-  .stats-centered section { background-color: transparent !important; }
+  .stats-centered {
+    background: linear-gradient(135deg, #3d4a2a 0%, #2c3520 50%, #3d4a2a 100%) !important;
+  }
+  .stats-centered section { background: transparent !important; }
+  .stats-centered h2 {
+    color: #e8e3d6 !important;
+    letter-spacing: 0.02em !important;
+  }
   .stats-centered [class*="value"],
   .stats-centered [class*="stat"] h3,
   .stats-centered [class*="stat"] [class*="number"] {
-    color: #6b7f3e !important;
-    text-shadow: 0 2px 8px rgba(107,127,62,0.2) !important;
+    color: #B2FF00 !important;
+    text-shadow: 0 2px 16px rgba(178,255,0,0.25) !important;
+    font-weight: 800 !important;
+  }
+  .stats-centered [class*="label"],
+  .stats-centered [class*="stat"] > p:first-of-type {
+    color: #e8e3d6 !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.01em !important;
+  }
+  .stats-centered [class*="description"],
+  .stats-centered [class*="stat"] > p:last-of-type {
+    color: #a8a29e !important;
   }
 `;
 
