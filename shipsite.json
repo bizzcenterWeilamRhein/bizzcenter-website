@@ -28,45 +28,44 @@
   "navigation": {
     "items": [
       {
-        "label": {
-          "de": "Geschäftsadresse",
-          "en": "Virtual Office"
-        },
-        "href": "/geschaeftsadresse"
+        "label": { "de": "Geschäftsadresse", "en": "Virtual Office" },
+        "children": [
+          { "label": { "de": "Konstanz", "en": "Constance" }, "href": "/konstanz/geschaeftsadresse", "description": { "de": "Geschäftsadresse am Bodensee", "en": "Virtual office at Lake Constance" } },
+          { "label": { "de": "Weil am Rhein", "en": "Weil am Rhein" }, "href": "/weil-am-rhein/geschaeftsadresse", "description": { "de": "Geschäftsadresse im Dreiländereck Basel", "en": "Virtual office near Basel" } }
+        ]
       },
       {
-        "label": {
-          "de": "Coworking",
-          "en": "Coworking"
-        },
-        "href": "/coworking"
+        "label": { "de": "Coworking", "en": "Coworking" },
+        "children": [
+          { "label": { "de": "Konstanz", "en": "Constance" }, "href": "/konstanz/coworking", "description": { "de": "Coworking am Bodensee", "en": "Coworking at Lake Constance" } },
+          { "label": { "de": "Weil am Rhein", "en": "Weil am Rhein" }, "href": "/weil-am-rhein/coworking", "description": { "de": "Coworking im Kesselhaus", "en": "Coworking at Kesselhaus" } }
+        ]
       },
       {
-        "label": {
-          "de": "Büro mieten",
-          "en": "Rent Office"
-        },
-        "href": "/buero-mieten"
+        "label": { "de": "Büro mieten", "en": "Rent Office" },
+        "children": [
+          { "label": { "de": "Konstanz", "en": "Constance" }, "href": "/konstanz/privates-buero", "description": { "de": "Privates Büro am Bodensee", "en": "Private office at Lake Constance" } },
+          { "label": { "de": "Weil am Rhein", "en": "Weil am Rhein" }, "href": "/weil-am-rhein/privates-buero", "description": { "de": "Privates Büro im Kesselhaus", "en": "Private office at Kesselhaus" } }
+        ]
       },
       {
-        "label": {
-          "de": "Konferenzräume",
-          "en": "Meeting Rooms"
-        },
-        "href": "/konferenzraum"
+        "label": { "de": "Konferenzräume", "en": "Meeting Rooms" },
+        "children": [
+          { "label": { "de": "Konstanz", "en": "Constance" }, "href": "/konstanz/konferenzraum", "description": { "de": "Konferenzraum am Bodensee", "en": "Meeting room at Lake Constance" } },
+          { "label": { "de": "Weil am Rhein", "en": "Weil am Rhein" }, "href": "/weil-am-rhein/konferenzraum", "description": { "de": "Konferenzraum im Kesselhaus", "en": "Meeting room at Kesselhaus" } }
+        ]
       },
       {
-        "label": {
-          "de": "Preise",
-          "en": "Pricing"
-        },
-        "href": "/preise"
+        "label": { "de": "Services", "en": "Services" },
+        "children": [
+          { "label": { "de": "Telefonservice", "en": "Phone Service" }, "href": "/weil-am-rhein/telefonservice", "description": { "de": "Anrufannahme in Ihrem Firmennamen", "en": "Call answering in your company name" } },
+          { "label": { "de": "Sekretariatsservice", "en": "Secretary Service" }, "href": "/weil-am-rhein/sekretariatsservice", "description": { "de": "Professioneller Sekretariatsservice", "en": "Professional secretary service" } },
+          { "label": { "de": "Post-Bearbeitung", "en": "Mail Handling" }, "href": "/weil-am-rhein/post-bearbeitung", "description": { "de": "Postannahme und Weiterleitung", "en": "Mail receiving and forwarding" } },
+          { "label": { "de": "Schweizer Telefonnummer", "en": "Swiss Phone Number" }, "href": "/weil-am-rhein/schweizer-telefonnummer", "description": { "de": "Schweizer Festnetznummer", "en": "Swiss landline number" } }
+        ]
       },
       {
-        "label": {
-          "de": "Über uns",
-          "en": "About"
-        },
+        "label": { "de": "Über uns", "en": "About" },
         "href": "/ueber-uns"
       }
     ],
