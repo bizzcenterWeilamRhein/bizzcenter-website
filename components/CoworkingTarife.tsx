@@ -38,7 +38,7 @@ export function CoworkingTarife() {
               }`}
             >
               <div className={`text-xs font-medium mb-1 text-muted-foreground`}>{t.label}</div>
-              <div className={`text-lg font-bold text-primary`}>{t.price}</div>
+              <div className={`text-lg font-bold text-[#1e293b]`}>{t.price}</div>
               <div className={`text-xs font-medium text-muted-foreground`}>{t.sub}</div>
               {t.info && <div className={`text-xs font-medium mt-1 text-muted-foreground`}>{t.info}</div>}
               <div className={`text-xs font-semibold mt-1 transition-opacity duration-200 ${
