@@ -22,59 +22,29 @@ description: "Testseite"
       </ul>
     </div>
     <div className="rounded-2xl border border-border bg-background/95 backdrop-blur-sm p-6 shadow-lg shrink-0" style={{width: "420px"}}>
-      <div className="space-y-3">
-        <div>
-          <label className="text-sm font-medium text-foreground block mb-1">Anrede</label>
-          <select className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm">
-            <option>Bitte wählen</option>
-            <option>Herr</option>
-            <option>Frau</option>
-            <option>Herr Dr.</option>
-            <option>Frau Dr.</option>
-          </select>
+      <div className="space-y-2">
+        <select className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-muted-foreground">
+          <option>Anrede</option>
+          <option>Herr</option>
+          <option>Frau</option>
+          <option>Herr Dr.</option>
+          <option>Frau Dr.</option>
+        </select>
+        <div className="grid grid-cols-2 gap-2">
+          <input type="text" placeholder="Vorname" className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
+          <input type="text" placeholder="Nachname" className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
         </div>
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label className="text-sm font-medium text-foreground block mb-1">Vorname</label>
-            <input type="text" className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
-          </div>
-          <div>
-            <label className="text-sm font-medium text-foreground block mb-1">Nachname</label>
-            <input type="text" className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
-          </div>
+        <input type="text" placeholder="Firma" className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
+        <input type="text" placeholder="Straße, Hausnummer" className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
+        <div className="grid grid-cols-2 gap-2">
+          <input type="text" placeholder="PLZ" className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
+          <input type="text" placeholder="Ort" className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
         </div>
-        <div>
-          <label className="text-sm font-medium text-foreground block mb-1">Firma</label>
-          <input type="text" className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
+        <div className="grid grid-cols-2 gap-2">
+          <input type="tel" placeholder="Telefonnummer" className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
+          <input type="email" placeholder="E-Mail" className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
         </div>
-        <div>
-          <label className="text-sm font-medium text-foreground block mb-1">Straße, Hausnummer</label>
-          <input type="text" className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
-        </div>
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label className="text-sm font-medium text-foreground block mb-1">Postleitzahl</label>
-            <input type="text" className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
-          </div>
-          <div>
-            <label className="text-sm font-medium text-foreground block mb-1">Ort</label>
-            <input type="text" className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
-          </div>
-        </div>
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label className="text-sm font-medium text-foreground block mb-1">Telefonnummer</label>
-            <input type="tel" className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
-          </div>
-          <div>
-            <label className="text-sm font-medium text-foreground block mb-1">E-Mail</label>
-            <input type="email" className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
-          </div>
-        </div>
-        <div>
-          <label className="text-sm font-medium text-foreground block mb-1">Ihre Nachricht</label>
-          <textarea className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" rows={2}></textarea>
-        </div>
+        <textarea placeholder="Ihre Nachricht" className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" rows={2}></textarea>
         <button className="w-full rounded-lg bg-primary text-primary-foreground px-4 py-2.5 text-sm font-medium hover:bg-primary/90 transition-colors">Kostenloses Angebot anfordern</button>
       </div>
     </div>
