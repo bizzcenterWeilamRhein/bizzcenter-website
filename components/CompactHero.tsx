@@ -55,7 +55,7 @@ export function CompactHero({ title, description, image, imageAlt, buttonText, b
                 className="absolute inset-0 w-full h-full object-cover"
               />
             </div>
-            <div>
+            <div className="rounded-2xl border border-border bg-card p-8">
               <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">{title}</h1>
               {description && <p className="text-lg text-muted-foreground">{description}</p>}
               {children}
