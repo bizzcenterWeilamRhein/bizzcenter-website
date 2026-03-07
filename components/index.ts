@@ -12,3 +12,4 @@ export { ServiceGrid } from './ServiceGrid';
 export { MemberLogos } from './MemberLogos';
 export { LocationMap } from './LocationMap';
 export { GoogleReviews } from './GoogleReviews';
+export { FeaturesWithBg } from './FeaturesWithBg';
