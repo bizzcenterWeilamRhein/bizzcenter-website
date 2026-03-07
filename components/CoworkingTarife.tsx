@@ -31,21 +31,21 @@ export function CoworkingTarife() {
             <button
               key={t.id}
               onClick={() => handleClick(t.id)}
-              className={`rounded-xl border p-3 text-center transition-all duration-200 ${
+              className={`rounded-xl border-2 p-3 text-center transition-all duration-250 ease-in-out ${
                 isSelected
-                  ? 'bg-[#002a9e] border-[#002a9e] text-white'
-                  : 'border-border bg-background/80 hover:bg-[#002a9e] hover:border-[#002a9e] group'
+                  ? 'bg-[#e3e7fd] border-primary shadow-md'
+                  : 'border-border bg-background/80 hover:bg-[#f5f7ff] hover:border-primary/50 hover:shadow-sm group'
               }`}
             >
-              <div className={`text-xs font-medium mb-1 ${isSelected ? 'text-white/90' : 'text-muted-foreground group-hover:text-white/90'}`}>{t.label}</div>
-              <div className={`text-lg font-bold ${isSelected ? 'text-white' : 'text-primary group-hover:text-white'}`}>{t.price}</div>
-              <div className={`text-xs font-medium ${isSelected ? 'text-white/90' : 'text-muted-foreground group-hover:text-white/90'}`}>{t.sub}</div>
-              {t.info && <div className={`text-xs font-medium mt-1 ${isSelected ? 'text-white/90' : 'text-muted-foreground group-hover:text-white/90'}`}>{t.info}</div>}
-              <div className={`text-xs font-semibold mt-1 ${
+              <div className={`text-xs font-medium mb-1 text-muted-foreground`}>{t.label}</div>
+              <div className={`text-lg font-bold text-primary`}>{t.price}</div>
+              <div className={`text-xs font-medium text-muted-foreground`}>{t.sub}</div>
+              {t.info && <div className={`text-xs font-medium mt-1 text-muted-foreground`}>{t.info}</div>}
+              <div className={`text-xs font-semibold mt-1 transition-opacity duration-200 ${
                 isSelected
-                  ? 'text-white opacity-100'
-                  : 'text-primary group-hover:text-white opacity-0 group-hover:opacity-100'
-              } transition-opacity`}>
+                  ? 'text-primary opacity-100'
+                  : 'text-primary opacity-0 group-hover:opacity-100'
+              }`}>
                 {isSelected ? '✓ Ausgewählt' : 'Auswählen'}
               </div>
             </button>
