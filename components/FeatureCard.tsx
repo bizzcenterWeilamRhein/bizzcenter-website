@@ -75,7 +75,7 @@ export function FeatureCard({ title, description, icon, iconColor }: FeatureCard
   const CustomIcon = icon ? customIcons[icon] : null;
 
   return (
-    <div className="flex flex-col items-start p-6 rounded-xl glass-1 hover:glass-2 transition-all">
+    <div className="flex flex-col items-start p-6 rounded-xl bg-background/90 backdrop-blur-sm border border-border/50 shadow-sm hover:shadow-md transition-all">
       <div className="flex items-center gap-3 mb-3">
         {(IconComponent || CustomIcon) && (
           <div
