@@ -22,6 +22,41 @@ public/                # Static assets (images, fonts, favicons)
 .shipsite/             # Generated workspace (do NOT edit)
 ```
 
+## Navigation (shipsite.json)
+
+Navigation is configured in `shipsite.json` under `navigation`. Items can be simple links or dropdown submenus with optional featured items.
+
+\`\`\`json
+{
+  "navigation": {
+    "items": [
+      { "label": "Pricing", "href": "/pricing" },
+      {
+        "label": "Products",
+        "children": [
+          { "label": "Analytics", "href": "/analytics", "description": "Track your metrics" },
+          { "label": "Automation", "href": "/automation", "description": "Automate workflows" }
+        ],
+        "featured": {
+          "title": "New: AI Assistant",
+          "description": "Meet our latest product.",
+          "href": "/ai",
+          "image": "/images/ai-preview.png"
+        }
+      }
+    ],
+    "cta": { "label": "Get Started", "href": "/signup" }
+  }
+}
+\`\`\`
+
+**Navigation item types:**
+- **Link:** `{ label, href }` — simple nav link
+- **Submenu:** `{ label, children, featured? }` — dropdown with child links. Each child has `label`, `href`, and optional `description`. The optional `featured` object adds a highlighted card with image.
+- **CTA:** optional `cta` button shown at the right end of the navigation bar
+
+All text fields (`label`, `description`, `title`) accept `string` or `{ locale: "text" }` for i18n.
+
 ## Content Conventions
 
 - Each page is an MDX file at `content/{page-name}/{locale}.mdx`
@@ -96,7 +131,7 @@ description: "How we handle your data."
 ## Available Components
 
 ### Marketing
-- **Hero** — Full-width hero section with animated title, description, optional badge, primary/secondary CTAs, and a responsive device mockup image. Uses a top glow effect for visual emphasis.
+- **Hero** — Full-width hero section with animated title, description, optional badge, primary/secondary CTAs, and a responsive device mockup image. Uses a top glow effect for visual emphasis. Supports a compact size for landing pages with reduced padding and smaller typography.
 - **Feature** — Individual feature card with an optional icon, title, and description. Used as a child of the Features grid component.
 - **Features** — Section that displays a grid of Feature cards with an optional section title and description. Supports 2, 3, or 4 column layouts.
 - **AlternatingFeatureItem** — Individual bullet-point item within an AlternatingFeatureRow. Displays an optional icon, title, and description.
@@ -106,7 +141,7 @@ description: "How we handle your data."
 - **ComparisonRow** — Data-only component that defines a row in the pricing comparison table. Must be used as a child of PricingSection.
 - **ComparisonCategory** — Data-only component that adds a category header row in the pricing comparison table. Must be used as a child of PricingSection.
 - **PricingSection** — Full pricing section with plan cards, optional monthly/yearly toggle, and an optional feature comparison table. Consumes PricingPlan, ComparisonRow, and ComparisonCategory children.
-- **Companies** — Logo showcase section with two variants: a continuous marquee scroll animation or a static inline flex layout. Supports logo names, versions, and badges in inline mode.
+- **Companies** — Logo showcase section with two variants: a continuous marquee scroll animation or a static inline flex layout. Supports logo names, versions, and badges in inline mode. Grayscale can be disabled for full-color logos.
 - **Testimonial** — Single large testimonial quote block with author info, displayed in a centered glass card.
 - **TestimonialCard** — Compact testimonial card with optional star rating. Used as a child of the Testimonials grid component.
 - **Testimonials** — Grid section that displays multiple TestimonialCard components with an optional section title and description.
@@ -131,6 +166,12 @@ description: "How we handle your data."
 - **TabItem** — Data-only component that defines a single tab. Must be used as a child of TabsSection. Renders nothing on its own; its props are consumed by the parent.
 - **TabsSection** — Interactive tabbed section with pill-style tab buttons and a content panel that changes based on the active tab. Consumes TabItem children.
 - **PageHero** — Lightweight page hero section with centered title, optional description, badge, and children. Suitable for inner pages that do not need the full Hero with image and CTAs.
+- **ContactForm** — Contact form section with name, email, and message fields. Submits JSON to an external form backend (Formspree, Getform, Basin, etc.). Shows inline success/error states.
+- **NewsletterForm** — Compact email signup form with a single email input and submit button. Supports a full section layout or an inline layout for embedding inside BannerCTA or other components.
+- **WaitlistForm** — Waitlist signup form with optional name field and badge. Displays a centered section with a glass-1 card form and a success state after submission.
+- **FormField** — Data-only child component of Form. Defines a single field in a generic form. Renders nothing on its own — the parent Form component reads its props to build the form UI.
+- **Form** — Generic form section that renders a configurable form from FormField children. Supports multi-column layouts, various input types including select, and submits JSON to an external form backend. Uses the server-shell + client-island pattern.
+- **FormEmbed** — Embeds an external form (Tally, Typeform, or custom URL) via iframe. Supports an inline iframe mode or a popup mode that opens the form in a centered dialog.
 
 ### Blog
 - **BlogArticle** — Top-level wrapper for blog article content. Renders a centered, max-width article container with vertical padding.
@@ -150,5 +191,6 @@ description: "How we handle your data."
 5. **Use the component catalog above** to pick the right component for each section.
 6. **Use straight quotes only** — curly/typographic quotes (“ ” ‘ ’) break MDX parsing. Always use straight quotes (" ').
 7. **Anchor links** — all section-level components accept an optional `id` prop for anchor navigation (e.g. `<FAQ id="faq">` enables `#faq` links). Do not wrap components in extra `<div id="...">` elements.
+8. **Match the existing language** — when editing or adding content (labels, descriptions, placeholders, options), always match the language already used in that file. If the form labels are in German, new fields must also be in German. Never mix languages within a file.
 
 <!-- END SHIPSITE AUTO-GENERATED -->

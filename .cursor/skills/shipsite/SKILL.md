@@ -1,18 +1,31 @@
-<!-- BEGIN SHIPSITE AUTO-GENERATED - DO NOT EDIT THIS SECTION -->
-#   — ShipSite Project
+---
+name: shipsite
+description: Build and edit ShipSite marketing websites. Use when working with shipsite.json configuration, MDX content files, or ShipSite components like Hero, Features, PricingSection, ContactForm, etc.
+license: MIT
+allowed-tools:
+  - Bash
+  - Read
+  - Edit
+  - Write
+  - Glob
+  - Grep
+---
+
+# ShipSite — Project Guide
 
 ## Tech Stack
 
 - **Framework:** Next.js (App Router)
 - **Content:** MDX files in `content/` — processed by content-collections
 - **Styling:** Tailwind CSS v4 + shadcn/ui design tokens
-- **i18n:** next-intl (locales: de, en, es, fr — default: de)
+- **i18n:** next-intl (configure locales in `shipsite.json` under `i18n`)
 - **Components:** `@shipsite.dev/components` — pre-built marketing, blog & legal components
+- **CLI:** `npx shipsite` — scaffold pages, blog posts, and manage the workspace
 
 ## Project Structure
 
 ```
-shipsite.json          # Site configuration (pages, nav, footer, colors, i18n)
+shipsite.json          # Site configuration (pages, nav, footer, colors, fonts, i18n)
                        # Navigation & footer labels accept string | { locale: "text" } for i18n
 content/               # MDX content files, one folder per page
   {page-name}/
@@ -22,12 +35,24 @@ public/                # Static assets (images, fonts, favicons)
 .shipsite/             # Generated workspace (do NOT edit)
 ```
 
-## Navigation (shipsite.json)
+## shipsite.json Schema
 
-Navigation is configured in `shipsite.json` under `navigation`. Items can be simple links or dropdown submenus with optional featured items.
+The main configuration file controls site metadata, pages, navigation, footer, colors, fonts, socials, and i18n.
 
 \`\`\`json
 {
+  "name": "My Site",
+  "i18n": {
+    "locales": ["en", "de"],
+    "defaultLocale": "en"
+  },
+  "pages": [
+    { "name": "landing", "type": "landing", "path": "/" },
+    { "name": "pricing", "type": "page", "path": "/pricing" },
+    { "name": "blog", "type": "blog-index", "path": "/blog" },
+    { "name": "blog-article", "type": "blog-article", "path": "/blog/:slug" },
+    { "name": "privacy", "type": "legal", "path": "/privacy" }
+  ],
   "navigation": {
     "items": [
       { "label": "Pricing", "href": "/pricing" },
@@ -46,6 +71,32 @@ Navigation is configured in `shipsite.json` under `navigation`. Items can be sim
       }
     ],
     "cta": { "label": "Get Started", "href": "/signup" }
+  },
+  "footer": {
+    "columns": [
+      {
+        "title": "Product",
+        "links": [
+          { "label": "Features", "href": "/features" },
+          { "label": "Pricing", "href": "/pricing" }
+        ]
+      }
+    ],
+    "bottom": [
+      { "label": "Privacy", "href": "/privacy" },
+      { "label": "Terms", "href": "/terms" }
+    ]
+  },
+  "colors": {
+    "primary": "#6d28d9"
+  },
+  "fonts": {
+    "heading": "Cal Sans",
+    "body": "Inter"
+  },
+  "socials": {
+    "twitter": "https://twitter.com/example",
+    "github": "https://github.com/example"
   }
 }
 \`\`\`
@@ -182,6 +233,31 @@ description: "How we handle your data."
 - **ContentPage** — Top-level wrapper for text-heavy pages (legal, about, contact, etc.). Renders a narrow, centered container with a title and optional last-updated date.
 
 
+## CLI Commands
+
+```bash
+# Add a new page
+npx shipsite add page
+
+# Add a blog (index + article page)
+npx shipsite add blog
+
+# Regenerate workspace after shipsite.json changes
+npx shipsite generate
+```
+
+## Custom Components
+
+Create custom components in `components/` to extend MDX:
+
+```
+components/
+  MyWidget.tsx       # Auto-available as <MyWidget /> in MDX
+  PriceCalculator.tsx
+```
+
+Custom components are automatically registered and available in all MDX files without imports.
+
 ## Key Rules
 
 1. **Never edit files inside `.shipsite/`** — they are auto-generated and will be overwritten.
@@ -192,5 +268,3 @@ description: "How we handle your data."
 6. **Use straight quotes only** — curly/typographic quotes (“ ” ‘ ’) break MDX parsing. Always use straight quotes (" ').
 7. **Anchor links** — all section-level components accept an optional `id` prop for anchor navigation (e.g. `<FAQ id="faq">` enables `#faq` links). Do not wrap components in extra `<div id="...">` elements.
 8. **Match the existing language** — when editing or adding content (labels, descriptions, placeholders, options), always match the language already used in that file. If the form labels are in German, new fields must also be in German. Never mix languages within a file.
-
-<!-- END SHIPSITE AUTO-GENERATED -->
