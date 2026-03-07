@@ -36,8 +36,8 @@ export function CompactCTA({ title, subtext, buttonText, buttonHref, children }:
 
 export function CompactCTAFeature({ title, icon }: { title: string; icon?: string }) {
   return (
-    <div className="flex items-center gap-2 text-muted-foreground text-sm">
-      {icon && <span>{icon}</span>}
+    <div className="flex items-center gap-2 text-muted-foreground text-sm md:text-base">
+      {icon && <span className="text-base md:text-lg">{icon}</span>}
       <span>{title}</span>
     </div>
   );
