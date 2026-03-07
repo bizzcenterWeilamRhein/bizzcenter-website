@@ -16,6 +16,7 @@ interface AddonItem {
   label: string;
   priceTag?: number;
   priceMonat?: number;
+  pricePer?: Record<string, number>;
   displayPrice: string;
   note?: string;
   selectable: boolean;
@@ -36,8 +37,8 @@ const addons: AddonItem[] = [
   { id: 'geschaeftsadresse', label: 'Geschäftsadresse', priceMonat: 39, displayPrice: '+ EUR 39,- /Monat', note: 'Nur bei Monatsabo', selectable: true, requiresTarif: ['monatsabo'] },
   { id: 'meetingraum', label: 'Meeting- & Konferenzräume', displayPrice: 'Auf Tagesbasis buchbar', selectable: false },
   { id: 'parkplatz', label: 'Parkplatz', priceTag: 6, displayPrice: '+ EUR 6,- /Tag', selectable: true },
-  { id: 'kaffeeflat', label: 'Kaffee-Flatrate', priceTag: 5, priceMonat: 29, displayPrice: 'EUR 5,- /Tag · EUR 29,- /Monat', note: 'Bio-Kaffee, Tee & Wasser — so viel Sie möchten', selectable: true },
-  { id: 'teeflat', label: 'Tee-Flatrate', priceTag: 3, priceMonat: 19, displayPrice: 'EUR 3,- /Tag · EUR 19,- /Monat', note: 'Premium-Tees in großer Auswahl', selectable: true },
+  { id: 'kaffeeflat', label: 'Kaffee-Flatrate', priceTag: 3, priceMonat: 24, pricePer: { tagespass: 3, zehnerkarte: 27, monatspass: 24, monatsabo: 24 }, displayPrice: 'ab EUR 3,- /Tag', note: 'Bio-Kaffee — so viel Sie möchten', selectable: true },
+  { id: 'teeflat', label: 'Tee-Flatrate', priceTag: 2, priceMonat: 24, pricePer: { tagespass: 2, zehnerkarte: 18, monatspass: 24, monatsabo: 24 }, displayPrice: 'ab EUR 2,- /Tag', note: 'Premium-Tees in großer Auswahl', selectable: true },
 ];
 
 function StepBadge({ number, active }: { number: number; active: boolean }) {
@@ -71,7 +72,10 @@ export function BookingFlow({ title = 'In 4 Schritten zum Coworking-Platz' }: { 
     selectedAddons.forEach((addonId) => {
       const addon = addons.find((a) => a.id === addonId);
       if (!addon) return;
-      if (selectedTarifObj.unit === 'monat' && addon.priceMonat) {
+      // Use tarif-specific price if available
+      if (addon.pricePer && selectedTarifObj.id in addon.pricePer) {
+        sum += addon.pricePer[selectedTarifObj.id];
+      } else if (selectedTarifObj.unit === 'monat' && addon.priceMonat) {
         sum += addon.priceMonat;
       } else if (selectedTarifObj.unit === 'tag' && addon.priceTag) {
         sum += addon.priceTag;
