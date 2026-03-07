@@ -56,15 +56,15 @@ description: "Coworking Space in Weil am Rhein: Tagespass, 10er-Karte, Monatspas
   ]}
 />
 
-{/* ===== WAS ENTHALTEN IST + OPTIONAL ===== */}
-<IncludedBox title="Was im Coworking-Preis enthalten ist" optionalTitle="Optional hinzubuchbar" bookingTitle="Jetzt buchen">
-  <FeatureCard title="Voll ausgestatteter Arbeitsplatz" description="Ergonomischer Schreibtisch, Bürostuhl, Steckdosen und gutes Licht — sofort loslegen." icon="laptop" />
-  <FeatureCard title="Highspeed-Internet" description="Glasfaser-Anbindung mit WIFI 5/6 und Gigabit-LAN. Perfekt für Videokonferenzen und IP-Telefonie." icon="wifi" />
-  <FeatureCard title="Quiet-Cubes" description="Zwei schallisolierte Rückzugsräume für vertrauliche Gespräche und Calls — kostenlos nutzbar." icon="shield" />
-  <FeatureCard title="Küche & Chillout-Area" description="Tee-Küche mit Aufwärm- und Kühlmöglichkeit. Gemütliche Lounge zum Abschalten und Netzwerken." icon="coffee" />
-  <FeatureCard title="Nebenkosten inklusive" description="Strom, Heizung, Reinigung, Wasser — alles im Preis. Keine versteckten Zusatzkosten." icon="zap" />
-  <FeatureCard title="24/7 Zugang" description="Eigener Türcode für den Zugang rund um die Uhr, sieben Tage die Woche." icon="key" />
-</IncludedBox>
+{/* ===== WAS ENTHALTEN IST ===== */}
+<Features title="Was im Coworking-Preis enthalten ist" columns={3}>
+  <Feature title="Voll ausgestatteter Arbeitsplatz" description="Ergonomischer Schreibtisch, Bürostuhl, Steckdosen und gutes Licht — sofort loslegen." />
+  <Feature title="Highspeed-Internet" description="Glasfaser-Anbindung mit WIFI 5/6 und Gigabit-LAN. Perfekt für Videokonferenzen und IP-Telefonie." />
+  <Feature title="Quiet-Cubes" description="Zwei schallisolierte Rückzugsräume für vertrauliche Gespräche und Calls — kostenlos nutzbar." />
+  <Feature title="Küche & Chillout-Area" description="Tee-Küche mit Aufwärm- und Kühlmöglichkeit. Gemütliche Lounge zum Abschalten und Netzwerken." />
+  <Feature title="Nebenkosten inklusive" description="Strom, Heizung, Reinigung, Wasser — alles im Preis. Keine versteckten Zusatzkosten." />
+  <Feature title="24/7 Zugang" description="Eigener Türcode für den Zugang rund um die Uhr, sieben Tage die Woche." />
+</Features>
 
 {/* ===== STATS ===== */}
 <StatsTheme>
@@ -76,31 +76,8 @@ description: "Coworking Space in Weil am Rhein: Tagespass, 10er-Karte, Monatspas
 </Stats>
 </StatsTheme>
 
-<CoworkingTheme>
-
-{/* ===== SO FUNKTIONIERT'S ===== */}
-<Steps title="In 4 Schritten zum Coworking-Platz">
-  <Step title="Tarif wählen" description="Tagespass, 10er-Karte, Monatspass oder Monatsabo." />
-  <Step title="Starttermin aussuchen" description="Flexibel ab sofort oder zu Ihrem Wunschtermin." />
-  <Step title="Bezahlen" description="Einfach und sicher online bezahlen." />
-  <Step title="Zugangscode erhalten" description="Per sofort Ihren persönlichen Türcode erhalten — 24/7 Zugang." />
-</Steps>
-
-{/* ===== TARIFE DETAILS ===== */}
-<FeaturesWithBg title="Coworking-Tarife im Überblick" columns={2} backgroundImage="/images/standorte/weil-am-rhein/coworking-loungeecke-cropped.jpg">
-  <FeatureCard title="Tagespass — EUR 29,-" description="Freie Arbeitsplatzwahl in tageslichtdurchfluteten Räumen. Highspeed-WLAN, Küche, Chillout-Area inklusive. Ideal zum Reinschnuppern." icon="calendar" />
-  <FeatureCard title="10er-Karte — EUR 249,-" description="10 Tagespässe für flexibles Arbeiten an frei wählbaren Tagen. Perfekt für regelmäßige, aber nicht tägliche Nutzung." icon="file-text" />
-  <FeatureCard title="Monatspass — EUR 259,-" description="Ein voller Monat mit freier Arbeitsplatzwahl. Kündigungsfrist 1 Monat. Für alle, die regelmäßig vor Ort arbeiten." icon="clock" />
-  <FeatureCard title="Monatsabo — EUR 239,-" description="Wiederkehrendes Abo mit dem besten Preis. Kündigungsfrist 3 Monate zum Quartalsende. Für Dauernutzer die günstigste Option." icon="repeat" />
-</FeaturesWithBg>
-
-<BannerCTA
-  title="Jetzt Coworking-Platz sichern"
-  subtext="Füllen Sie das Formular aus — wir melden uns innerhalb von 24 Stunden."
-  buttonText="Zum Anfrageformular" buttonHref="#formular"
-/>
-
-</CoworkingTheme>
+{/* ===== INTERAKTIVER BUCHUNGSFLOW ===== */}
+<BookingFlow title="In 4 Schritten zum Coworking-Platz" />
 
 {/* ===== ÜBER UNS ===== */}
 <AlternatingFeatures>
