@@ -44,22 +44,21 @@ export function CompactHero({ title, description, image, imageAlt, buttonText, b
         </div>
       </section>
 
-      {/* Desktop: Bild links, Text + Bullets rechts */}
-      <section className="hidden md:block px-4 py-8 md:py-12">
-        <div className="container-main">
-          <div className="grid grid-cols-2 gap-10 items-center">
-            <div className="relative aspect-[3/2] rounded-2xl overflow-hidden">
-              <img
-                src={image}
-                alt={imageAlt || title}
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-            </div>
-            <div className="rounded-2xl border border-border bg-card p-8">
-              <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">{title}</h1>
-              {description && <p className="text-lg text-muted-foreground">{description}</p>}
-              {children}
-            </div>
+      {/* Desktop: Bild volle Breite, Text-Box drüber rechts */}
+      <section className="hidden md:block relative">
+        <div className="relative aspect-[21/9] overflow-hidden">
+          <img
+            src={image}
+            alt={imageAlt || title}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-black/20" />
+        </div>
+        <div className="absolute inset-0 flex items-center justify-end px-8 md:px-16 lg:px-24">
+          <div className="rounded-2xl border border-border bg-background/90 backdrop-blur-sm p-8 max-w-lg shadow-lg">
+            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">{title}</h1>
+            {description && <p className="text-lg text-muted-foreground">{description}</p>}
+            {children}
           </div>
         </div>
       </section>
