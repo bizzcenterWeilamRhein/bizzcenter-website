@@ -69,7 +69,7 @@ function ServiceCard({ service, isActive, onToggle }: { service: Service; isActi
   return (
     <div
       onClick={onToggle}
-      className="bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-shadow cursor-pointer h-full flex flex-col overflow-hidden"
+      className="bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-lg hover:-translate-y-1 hover:bg-blue-50/50 hover:border-blue-200 transition-all duration-200 cursor-pointer h-full flex flex-col overflow-hidden"
     >
       {/* Header - always visible */}
       <div className="p-5 flex items-start gap-3">
