@@ -13,12 +13,28 @@ description: "Coworking Space in Weil am Rhein: Tagespass, 10er-Karte, Monatspas
   buttonHref=""
   formId="formular"
 >
-  <ul className="mt-4 space-y-2 text-sm md:text-base text-foreground list-none">
-    <li className="flex items-start gap-2"><span className="text-primary font-bold mt-0.5">✓</span><span><strong>Tagespass</strong> — ab 29,- €/Tag zzgl. MwSt.</span></li>
-    <li className="flex items-start gap-2"><span className="text-primary font-bold mt-0.5">✓</span><span><strong>10er-Karte</strong> — ab 249,- € zzgl. MwSt.</span></li>
-    <li className="flex items-start gap-2"><span className="text-primary font-bold mt-0.5">✓</span><span><strong>Monatspass</strong> — ab 259,- €/Monat zzgl. MwSt.</span></li>
-    <li className="flex items-start gap-2"><span className="text-primary font-bold mt-0.5">✓</span><span><strong>Monatsabo</strong> — ab 239,- €/Monat zzgl. MwSt.</span></li>
-  </ul>
+  <div className="mt-4 grid grid-cols-2 gap-3">
+    <div className="rounded-xl border border-border bg-background/80 p-3 text-center">
+      <div className="text-xs text-muted-foreground mb-1">Tagespass</div>
+      <div className="text-lg font-bold text-primary">29,- €</div>
+      <div className="text-xs text-muted-foreground">pro Tag zzgl. MwSt.</div>
+    </div>
+    <div className="rounded-xl border border-border bg-background/80 p-3 text-center">
+      <div className="text-xs text-muted-foreground mb-1">10er-Karte</div>
+      <div className="text-lg font-bold text-primary">249,- €</div>
+      <div className="text-xs text-muted-foreground">10 Tage zzgl. MwSt.</div>
+    </div>
+    <div className="rounded-xl border border-border bg-background/80 p-3 text-center">
+      <div className="text-xs text-muted-foreground mb-1">Monatspass</div>
+      <div className="text-lg font-bold text-primary">259,- €</div>
+      <div className="text-xs text-muted-foreground">pro Monat zzgl. MwSt.</div>
+    </div>
+    <div className="rounded-xl border border-border bg-background/80 p-3 text-center">
+      <div className="text-xs text-muted-foreground mb-1">Monatsabo</div>
+      <div className="text-lg font-bold text-primary">239,- €</div>
+      <div className="text-xs text-muted-foreground">pro Monat zzgl. MwSt.</div>
+    </div>
+  </div>
 </CompactHero>
 
 {/* ===== PRICING CARDS ===== */}
