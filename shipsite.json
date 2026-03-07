@@ -2,7 +2,7 @@
     "$schema": "./node_modules/@shipsite.dev/core/shipsite.schema.json",
     "name": "bizzcenter",
     "url": "https://bizzcenter.de",
-    "logo": "/images/logo-bizzcenter.png",
+    "logo": "/images/logo-icon.png",
     "favicon": "/favicon.png",
     "ogImage": "/images/og/og-image.jpg",
     "colors": {
