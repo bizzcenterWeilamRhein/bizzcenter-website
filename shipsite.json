@@ -712,6 +712,14 @@
       "locales": [
         "de"
       ]
+    },
+    {
+      "slug": "test-contained",
+      "type": "page",
+      "content": "test-contained",
+      "locales": [
+        "de"
+      ]
     }
   ],
   "analytics": {
