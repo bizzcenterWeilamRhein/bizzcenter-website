@@ -10,3 +10,4 @@
 export { ServiceHero } from './ServiceHero';
 export { ServiceGrid } from './ServiceGrid';
 export { MemberLogos } from './MemberLogos';
+export { LocationMap } from './LocationMap';
