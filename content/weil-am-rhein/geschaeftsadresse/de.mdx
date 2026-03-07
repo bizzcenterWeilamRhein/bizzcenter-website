@@ -11,6 +11,7 @@ description: "Ladungsfähige Geschäftsadresse in Weil am Rhein mieten. Handelsr
   imageAlt="Green Office Weil am Rhein – zwei Coworker im Gespräch"
   buttonText=""
   buttonHref=""
+  formId="formular"
 >
   <ul className="mt-4 space-y-2 text-sm md:text-base text-foreground list-none">
     <li className="flex items-start gap-2"><span className="text-primary mt-0.5">✓</span> Basispakete ab 49,- €/Monat zzgl. MwSt.</li>
@@ -22,30 +23,6 @@ description: "Ladungsfähige Geschäftsadresse in Weil am Rhein mieten. Handelsr
     <li className="flex items-start gap-2"><span className="text-primary mt-0.5">✓</span> Innerhalb von 24 Stunden startklar</li>
   </ul>
 </CompactHero>
-
-{/* ===== FORMULAR ===== */}
-<div className="-mt-16" id="formular">
-<Form
-  action="#"
-  title=""
-  description=""
-  columns={2}
-  submitLabel="Kostenloses Angebot anfordern"
-  successTitle="Anfrage gesendet!"
-  successMessage="Wir melden uns innerhalb von 24 Stunden bei Ihnen."
->
-  <FormField name="anrede" label="Anrede" type="select" placeholder="Bitte wählen" options={["Herr", "Frau", "Herr Dr.", "Frau Dr."]} required colSpan={2} />
-  <FormField name="vorname" label="Vorname" type="text" required />
-  <FormField name="nachname" label="Nachname" type="text" required />
-  <FormField name="firma" label="Firma" type="text" required colSpan={2} />
-  <FormField name="strasse" label="Straße, Hausnummer" type="text" required colSpan={2} />
-  <FormField name="plz" label="Postleitzahl" type="text" required />
-  <FormField name="ort" label="Ort" type="text" required />
-  <FormField name="telefon" label="Telefonnummer" type="tel" required />
-  <FormField name="email" label="E-Mail" type="email" required />
-  <FormField name="nachricht" label="Ihre Nachricht" type="textarea" required colSpan={2} />
-</Form>
-</div>
 
 {/* ===== SOCIAL PROOF ===== */}
 <GoogleReviews
