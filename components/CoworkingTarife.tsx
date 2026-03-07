@@ -43,8 +43,8 @@ export function CoworkingTarife() {
               {t.info && <div className={`text-xs font-medium mt-1 text-muted-foreground`}>{t.info}</div>}
               <div className={`text-xs font-semibold mt-1 transition-opacity duration-200 ${
                 isSelected
-                  ? 'text-primary opacity-100'
-                  : 'text-primary opacity-0 group-hover:opacity-100'
+                  ? 'text-[#1e293b] opacity-100'
+                  : 'text-[#64748b] opacity-0 group-hover:opacity-100'
               }`}>
                 {isSelected ? '✓ Ausgewählt' : 'Auswählen'}
               </div>
@@ -54,7 +54,7 @@ export function CoworkingTarife() {
       </div>
       <a
         href="#formular"
-        className="mt-3 block w-full rounded-lg bg-[#1e293b] text-white text-center py-2.5 text-sm font-medium hover:bg-[#334155] transition-colors"
+        className="mt-3 block w-full rounded-lg bg-[#94a3b8] text-white text-center py-2.5 text-sm font-medium hover:bg-[#64748b] transition-colors"
       >
         Jetzt buchen und bezahlen
       </a>
