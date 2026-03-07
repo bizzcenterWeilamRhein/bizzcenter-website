@@ -140,16 +140,7 @@ export function IncludedBox({
                 );
               })}
             </div>
-            {selectedTarif && (
-              <div className="mt-4 text-center">
-                <a
-                  href="#formular"
-                  className="inline-block rounded-lg bg-[#a8a29e] text-white text-center py-2.5 px-8 text-sm font-medium hover:bg-[#8a8380] transition-colors no-underline"
-                >
-                  Jetzt buchen und bezahlen
-                </a>
-              </div>
-            )}
+            
           </div>
 
           {/* Divider */}
@@ -195,6 +186,14 @@ export function IncludedBox({
                   </button>
                 );
               })}
+            </div>
+            <div className="mt-6 text-center">
+              <a
+                href="#formular"
+                className="inline-block rounded-lg bg-[#a8a29e] text-white text-center py-3 px-10 text-base font-medium hover:bg-[#8a8380] transition-colors no-underline"
+              >
+                Jetzt buchen und bezahlen
+              </a>
             </div>
           </div>
         </div>
