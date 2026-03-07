@@ -154,7 +154,7 @@ export function BookingFlow({ title = 'In 4 Schritten zum Coworking-Platz' }: { 
                   >
                     <div className="flex items-center justify-center gap-1.5">
                       <span className="text-sm font-semibold text-foreground">{t.label}</span>
-                      {t.id !== 'tagespass' && <span className="text-[10px] font-bold bg-[#6b7f3e] text-white rounded-full px-1.5 py-0.5">−15%</span>}
+                      <span className="text-[10px] font-bold bg-[#6b7f3e] text-white rounded-full px-1.5 py-0.5">{t.id === 'tagespass' ? '−16%' : '−15%'}</span>
                     </div>
                     <div className="text-lg font-bold text-[#1e293b] mt-1">{t.display}</div>
                     <div className="text-xs text-muted-foreground mt-1">{t.sub}</div>
