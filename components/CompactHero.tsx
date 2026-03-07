@@ -59,14 +59,14 @@ export function CompactHero({ title, description, image, imageAlt, buttonText, b
             className="absolute inset-0 w-full h-full object-cover"
           />
         </div>
-        <div className="absolute inset-0 flex items-center justify-between px-8 xl:px-16 pt-12 gap-6">
-          <div className="rounded-2xl border border-border bg-background/95 backdrop-blur-sm p-8 shadow-lg shrink-0" style={{minWidth: '520px'}}>
+        <div className="absolute inset-0 flex items-stretch justify-center px-8 xl:px-16 py-8 gap-10">
+          <div className="rounded-2xl border border-border bg-background/95 backdrop-blur-sm p-8 shadow-lg shrink-0 flex flex-col justify-center" style={{minWidth: '520px'}}>
             <h1 className="text-3xl xl:text-4xl font-bold text-foreground mb-2 whitespace-nowrap">{title}</h1>
             {description && <p className="text-base text-muted-foreground mb-3 whitespace-nowrap">{description}</p>}
             {children}
           </div>
           {formId && (
-            <div className="rounded-2xl border border-border bg-background/95 backdrop-blur-sm p-6 shadow-lg shrink-0" style={{width: '420px'}} id={formId}>
+            <div className="rounded-2xl border border-border bg-background/95 backdrop-blur-sm p-6 shadow-lg shrink-0 flex flex-col justify-center" style={{width: '420px'}} id={formId}>
               <HeroForm />
             </div>
           )}
