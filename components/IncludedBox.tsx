@@ -1,38 +1,100 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 
 interface TarifItem {
+  id: string;
   label: string;
   price: string;
   sub: string;
+}
+
+interface AddonItem {
+  id: string;
+  label: string;
+  price: string;
+  note?: string;
+  selectable: boolean;
+  requiresTarif?: string[];
 }
 
 interface IncludedBoxProps {
   title?: string;
   optionalTitle?: string;
   bookingTitle?: string;
-  tarife?: TarifItem[];
   children: React.ReactNode;
 }
 
-const defaultTarife: TarifItem[] = [
-  { label: 'Tagespass', price: 'EUR 29,-', sub: 'pro Tag zzgl. MwSt.' },
-  { label: '10er-Karte', price: 'EUR 249,-', sub: '10 Tage zzgl. MwSt.' },
-  { label: 'Monatspass', price: 'EUR 259,-', sub: 'pro Monat zzgl. MwSt.' },
-  { label: 'Monatsabo', price: 'EUR 239,-', sub: 'pro Monat zzgl. MwSt.' },
+const tarife: TarifItem[] = [
+  { id: 'tagespass', label: 'Tagespass', price: 'EUR 29,-', sub: 'pro Tag zzgl. MwSt.' },
+  { id: 'zehnerkarte', label: '10er-Karte', price: 'EUR 249,-', sub: '10 Tage zzgl. MwSt.' },
+  { id: 'monatspass', label: 'Monatspass', price: 'EUR 259,-', sub: 'pro Monat zzgl. MwSt.' },
+  { id: 'monatsabo', label: 'Monatsabo', price: 'EUR 239,-', sub: 'pro Monat zzgl. MwSt.' },
+];
+
+const addons: AddonItem[] = [
+  { id: 'fixdesk', label: 'Fix Desk', price: '+ EUR 79,- /Monat', note: 'Nur bei Monatspass & Monatsabo', selectable: true, requiresTarif: ['monatspass', 'monatsabo'] },
+  { id: 'aktenschrank', label: 'Abschließbarer Aktenschrank', price: '+ EUR 19,- /Monat', selectable: true },
+  { id: 'monitor', label: '27" Curved Monitor', price: 'EUR 9,- /Tag · EUR 27,- /Monat', selectable: true },
+  { id: 'geschaeftsadresse', label: 'Geschäftsadresse', price: '+ EUR 39,- /Monat', note: 'Nur bei Monatsabo', selectable: true, requiresTarif: ['monatsabo'] },
+  { id: 'meetingraum', label: 'Meeting- & Konferenzräume', price: 'Auf Tagesbasis buchbar', selectable: false },
+  { id: 'parkplatz', label: 'Parkplatz', price: '+ EUR 6,- /Tag', selectable: true },
 ];
 
 export function IncludedBox({
   title = 'Was im Coworking-Preis enthalten ist',
   optionalTitle = 'Optional hinzubuchbar',
   bookingTitle = 'Jetzt buchen',
-  tarife = defaultTarife,
   children,
 }: IncludedBoxProps) {
+  const [selectedTarif, setSelectedTarif] = useState<string | null>(null);
+  const [selectedAddons, setSelectedAddons] = useState<Set<string>>(new Set());
+
   const childArray = React.Children.toArray(children);
   const includedItems = childArray.slice(0, 6);
-  const optionalItems = childArray.slice(6);
+
+  const handleTarifClick = (id: string) => {
+    const newTarif = selectedTarif === id ? null : id;
+    setSelectedTarif(newTarif);
+    // Remove addons that require a tarif that's no longer selected
+    if (newTarif !== selectedTarif) {
+      setSelectedAddons((prev) => {
+        const next = new Set(prev);
+        addons.forEach((a) => {
+          if (a.requiresTarif && !a.requiresTarif.includes(newTarif || '')) {
+            next.delete(a.id);
+          }
+        });
+        return next;
+      });
+    }
+    // Dispatch event for HeroForm
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('tarif-selected', { detail: newTarif ? { tarif: newTarif } : null }));
+    }
+  };
+
+  const handleAddonClick = (addon: AddonItem) => {
+    if (!addon.selectable) return;
+    if (addon.requiresTarif && (!selectedTarif || !addon.requiresTarif.includes(selectedTarif))) return;
+    setSelectedAddons((prev) => {
+      const next = new Set(prev);
+      if (next.has(addon.id)) {
+        next.delete(addon.id);
+      } else {
+        next.add(addon.id);
+      }
+      return next;
+    });
+  };
+
+  const isAddonAvailable = (addon: AddonItem) => {
+    if (!addon.selectable) return false;
+    if (addon.requiresTarif) {
+      return selectedTarif != null && addon.requiresTarif.includes(selectedTarif);
+    }
+    return true;
+  };
 
   return (
     <section className="py-12 md:py-16">
@@ -53,33 +115,86 @@ export function IncludedBox({
           <div className="p-8 md:p-10">
             <h3 className="text-xl md:text-2xl font-bold text-foreground text-center mb-6">{bookingTitle}</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {tarife.map((t) => (
-                <a
-                  key={t.label}
-                  href="#formular"
-                  className="rounded-xl border border-border bg-background p-4 text-center transition-all duration-250 hover:bg-[#f0f4e8] hover:border-[#6b7f3e] hover:shadow-sm block no-underline"
-                >
-                  <div className="text-sm font-semibold text-foreground">{t.label}</div>
-                  <div className="text-xl font-bold text-[#1e293b] mt-1">{t.price}</div>
-                  <div className="text-xs text-muted-foreground mt-1">{t.sub}</div>
-                </a>
-              ))}
+              {tarife.map((t) => {
+                const isSelected = selectedTarif === t.id;
+                return (
+                  <button
+                    key={t.id}
+                    onClick={() => handleTarifClick(t.id)}
+                    className={`rounded-xl border p-4 text-center transition-all duration-250 cursor-pointer ${
+                      isSelected
+                        ? 'border-[#6b7f3e] bg-[#e3e7d4] shadow-sm'
+                        : 'border-border bg-background hover:bg-[#f0f4e8] hover:border-[#6b7f3e] hover:shadow-sm'
+                    }`}
+                  >
+                    <div className="text-sm font-semibold text-foreground">{t.label}</div>
+                    <div className="text-xl font-bold text-[#1e293b] mt-1">{t.price}</div>
+                    <div className="text-xs text-muted-foreground mt-1">{t.sub}</div>
+                    <div className={`text-xs font-medium mt-2 transition-opacity duration-250 ${
+                      isSelected ? 'text-[#6b7f3e] opacity-100' : 'text-[#6b7f3e] opacity-0 group-hover:opacity-100'
+                    }`}>
+                      {isSelected ? '✓ Ausgewählt' : 'Auswählen'}
+                    </div>
+                  </button>
+                );
+              })}
             </div>
+            {selectedTarif && (
+              <div className="mt-4 text-center">
+                <a
+                  href="#formular"
+                  className="inline-block rounded-lg bg-[#a8a29e] text-white text-center py-2.5 px-8 text-sm font-medium hover:bg-[#8a8380] transition-colors no-underline"
+                >
+                  Jetzt buchen und bezahlen
+                </a>
+              </div>
+            )}
           </div>
 
-          {optionalItems.length > 0 && (
-            <>
-              {/* Divider */}
-              <div className="border-t border-border mx-8 md:mx-10" />
-              {/* Optional */}
-              <div className="p-8 md:p-10">
-                <h3 className="text-xl md:text-2xl font-bold text-foreground text-center mb-6">{optionalTitle}</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                  {optionalItems}
-                </div>
-              </div>
-            </>
-          )}
+          {/* Divider */}
+          <div className="border-t border-border mx-8 md:mx-10" />
+
+          {/* Optional Add-ons */}
+          <div className="p-8 md:p-10">
+            <h3 className="text-xl md:text-2xl font-bold text-foreground text-center mb-6">{optionalTitle}</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {addons.map((addon) => {
+                const available = isAddonAvailable(addon);
+                const isSelected = selectedAddons.has(addon.id);
+                const disabled = addon.requiresTarif && !available;
+
+                return (
+                  <button
+                    key={addon.id}
+                    onClick={() => handleAddonClick(addon)}
+                    disabled={!addon.selectable || !!disabled}
+                    className={`rounded-xl border p-4 text-left transition-all duration-250 ${
+                      !addon.selectable
+                        ? 'border-border bg-background/50 cursor-default'
+                        : disabled
+                        ? 'border-border bg-background/50 cursor-not-allowed opacity-60'
+                        : isSelected
+                        ? 'border-[#6b7f3e] bg-[#e3e7d4] shadow-sm cursor-pointer'
+                        : 'border-border bg-background hover:bg-[#f0f4e8] hover:border-[#6b7f3e] hover:shadow-sm cursor-pointer'
+                    }`}
+                  >
+                    <div className="text-sm font-semibold text-foreground">{addon.label}</div>
+                    <div className="text-sm font-bold text-[#1e293b] mt-1">{addon.price}</div>
+                    {addon.note && (
+                      <div className="text-xs text-muted-foreground mt-1 italic">{addon.note}</div>
+                    )}
+                    {addon.selectable && !disabled && (
+                      <div className={`text-xs font-medium mt-2 ${
+                        isSelected ? 'text-[#6b7f3e]' : 'text-[#6b7f3e] opacity-60'
+                      }`}>
+                        {isSelected ? '✓ Hinzugebucht' : '+ Hinzubuchen'}
+                      </div>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
     </section>
