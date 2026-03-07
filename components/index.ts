@@ -15,3 +15,4 @@ export { GoogleReviews } from './GoogleReviews';
 export { FeaturesWithBg } from './FeaturesWithBg';
 export { CompactHero } from './CompactHero';
 export { FeatureCard } from './FeatureCard';
+export { PricingCards } from './PricingCards';
