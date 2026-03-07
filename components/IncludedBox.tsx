@@ -119,8 +119,9 @@ export function IncludedBox({
                 const isSelected = selectedTarif === t.id;
                 return (
                   <button
+                    type="button"
                     key={t.id}
-                    onClick={() => handleTarifClick(t.id)}
+                    onClick={(e) => { e.preventDefault(); handleTarifClick(t.id); }}
                     className={`rounded-xl border p-4 text-center transition-all duration-250 cursor-pointer ${
                       isSelected
                         ? 'border-[#6b7f3e] bg-[#e3e7d4] shadow-sm'
@@ -165,8 +166,9 @@ export function IncludedBox({
 
                 return (
                   <button
+                    type="button"
                     key={addon.id}
-                    onClick={() => handleAddonClick(addon)}
+                    onClick={(e) => { e.preventDefault(); handleAddonClick(addon); }}
                     disabled={!addon.selectable || !!disabled}
                     className={`rounded-xl border p-4 text-left transition-all duration-250 ${
                       !addon.selectable
