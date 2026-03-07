@@ -78,8 +78,25 @@ export function CompactHero({ title, description, image, imageAlt, buttonText, b
   );
 }
 
+const tarifLabels: Record<string, string> = {
+  tagespass: 'Tagespass (29,- €)',
+  zehnerkarte: '10er-Karte (249,- €)',
+  monatspass: 'Monatspass (259,- €)',
+  monatsabo: 'Monatsabo (239,- €)',
+};
+
 function HeroForm() {
   const [status, setStatus] = React.useState<'idle' | 'sending' | 'sent'>('idle');
+  const [selectedTarif, setSelectedTarif] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    function onTarifSelected(e: Event) {
+      const detail = (e as CustomEvent).detail;
+      setSelectedTarif(detail);
+    }
+    window.addEventListener('tarif-selected', onTarifSelected);
+    return () => window.removeEventListener('tarif-selected', onTarifSelected);
+  }, []);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -97,8 +114,17 @@ function HeroForm() {
     );
   }
 
+  const buttonLabel = selectedTarif
+    ? 'Buchen und bezahlen'
+    : 'Kostenloses Angebot anfordern';
+
   return (
     <form onSubmit={handleSubmit} className="space-y-2">
+      {selectedTarif && (
+        <div className="rounded-lg bg-primary/10 border border-primary/30 px-3 py-2 text-sm text-primary font-semibold text-center">
+          {tarifLabels[selectedTarif] || selectedTarif}
+        </div>
+      )}
       <select name="anrede" required className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-muted-foreground">
         <option value="">Anrede</option>
         <option>Herr</option>
@@ -121,8 +147,9 @@ function HeroForm() {
         <input name="email" type="email" placeholder="E-Mail" required className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
       </div>
       <textarea name="nachricht" placeholder="Ihre Nachricht" required className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" rows={2}></textarea>
+      <input type="hidden" name="tarif" value={selectedTarif || ''} />
       <button type="submit" disabled={status === 'sending'} className="w-full rounded-lg bg-primary text-primary-foreground px-4 py-2.5 text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50">
-        {status === 'sending' ? 'Wird gesendet...' : 'Kostenloses Angebot anfordern'}
+        {status === 'sending' ? 'Wird gesendet...' : buttonLabel}
       </button>
     </form>
   );
