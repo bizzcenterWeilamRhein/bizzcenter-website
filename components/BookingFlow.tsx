@@ -132,7 +132,7 @@ export function BookingFlow({ title = 'In 4 Schritten zum Coworking-Platz' }: { 
           {/* Step 1: Tarif wählen */}
           <div className="rounded-2xl border border-border bg-card shadow-sm p-6 md:p-8">
             <div className="mb-4 rounded-lg bg-[#6b7f3e] text-white text-center py-2.5 px-4">
-              <p className="text-sm font-bold">🌿 Green Office Eröffnungsangebot — 15% Rabatt bis 30.09.</p>
+              <p className="text-sm font-bold">🌿 Green Office Eröffnungsangebot — 16% Rabatt bis 30.09.</p>
             </div>
             <div className="flex items-center gap-4 mb-5">
               <StepBadge number={1} active={!selectedTarif} />
@@ -154,7 +154,7 @@ export function BookingFlow({ title = 'In 4 Schritten zum Coworking-Platz' }: { 
                   >
                     <div className="flex items-center justify-center gap-1.5">
                       <span className="text-sm font-semibold text-foreground">{t.label}</span>
-                      <span className="text-[10px] font-bold bg-[#6b7f3e] text-white rounded-full px-1.5 py-0.5">{t.id === 'tagespass' ? '−16%' : '−15%'}</span>
+                      <span className="text-[10px] font-bold bg-[#6b7f3e] text-white rounded-full px-1.5 py-0.5">−16%</span>
                     </div>
                     <div className="text-lg font-bold text-[#1e293b] mt-1">{t.display}</div>
                     <div className="text-xs text-muted-foreground mt-1">{t.sub}</div>

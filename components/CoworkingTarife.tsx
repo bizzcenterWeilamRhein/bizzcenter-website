@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 
 const tarife = [
   { id: 'tagespass', label: 'Tagespass', price: 'EUR 29,-', sub: 'pro Tag inkl. MwSt.', info: 'Starttermin frei wählbar — Sofortstart möglich', badge: '−16%' },
-  { id: 'zehnerkarte', label: '10er-Karte', price: 'EUR 249,-', sub: 'inkl. MwSt.', info: '10 Tage Coworking an flexibel wählbaren Tagen', badge: '−15%' },
-  { id: 'monatspass', label: 'Monatspass', price: 'EUR 259,-', sub: 'pro Monat inkl. MwSt.', info: 'Ein Monat ohne Kündigungsfrist', badge: '−15%' },
-  { id: 'monatsabo', label: 'Monatsabo', price: 'EUR 239,-', sub: 'pro Monat inkl. MwSt.', info: 'Monatspass mit 3 Monaten Kündigungsfrist', badge: '−15%' },
+  { id: 'zehnerkarte', label: '10er-Karte', price: 'EUR 249,-', sub: 'inkl. MwSt.', info: '10 Tage Coworking an flexibel wählbaren Tagen', badge: '−16%' },
+  { id: 'monatspass', label: 'Monatspass', price: 'EUR 259,-', sub: 'pro Monat inkl. MwSt.', info: 'Ein Monat ohne Kündigungsfrist', badge: '−16%' },
+  { id: 'monatsabo', label: 'Monatsabo', price: 'EUR 239,-', sub: 'pro Monat inkl. MwSt.', info: 'Monatspass mit 3 Monaten Kündigungsfrist', badge: '−16%' },
 ];
 
 export function CoworkingTarife() {
@@ -24,7 +24,7 @@ export function CoworkingTarife() {
   return (
     <div className="mt-6">
       <div className="mb-3 rounded-lg bg-[#6b7f3e] text-white text-center py-2 px-3">
-        <p className="text-sm font-bold">🌿 Green Office Eröffnungsangebot — 15% Rabatt bis 30.09.</p>
+        <p className="text-sm font-bold">🌿 Green Office Eröffnungsangebot — 16% Rabatt bis 30.09.</p>
       </div>
       <p className="mb-3 text-base font-bold text-foreground">Sofortstart möglich — wähle jetzt deinen Tarif:</p>
       <div className="grid grid-cols-2 gap-3">
