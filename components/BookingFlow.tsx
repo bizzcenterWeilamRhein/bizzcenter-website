@@ -32,8 +32,8 @@ const tarife: TarifItem[] = [
 ];
 
 const addons: AddonItem[] = [
-  { id: 'fixdesk', label: 'Fix Desk', priceMonat: 79, displayPrice: '+ EUR 79,- /Monat', note: 'Nur bei Monatspass & Monatsabo', selectable: true, requiresTarif: ['monatspass', 'monatsabo'] },
-  { id: 'aktenschrank', label: 'Abschließbarer Aktenschrank', priceMonat: 19, displayPrice: '+ EUR 19,- /Monat', note: 'Nicht beim Tagespass', selectable: true, requiresTarif: ['zehnerkarte', 'monatspass', 'monatsabo'] },
+  { id: 'fixdesk', label: 'Fix Desk', priceMonat: 79, displayPrice: '+ EUR 79,- /Monat', selectable: true, requiresTarif: ['monatspass', 'monatsabo'] },
+  { id: 'aktenschrank', label: 'Abschließbarer Aktenschrank', priceMonat: 19, displayPrice: '+ EUR 19,- /Monat', selectable: true, requiresTarif: ['zehnerkarte', 'monatspass', 'monatsabo'] },
   { id: 'monitor', label: '27" Curved Monitor', priceTag: 9, priceMonat: 27, displayPrice: 'EUR 9,- /Tag · EUR 27,- /Monat', selectable: true },
   { id: 'geschaeftsadresse', label: 'Geschäftsadresse', priceMonat: 39, displayPrice: '+ EUR 39,- /Monat', note: 'Nur bei Monatsabo', selectable: true, requiresTarif: ['monatsabo'] },
   { id: 'meetingraum', label: 'Meeting- & Konferenzräume', displayPrice: 'Auf Tagesbasis buchbar', selectable: false },
@@ -182,19 +182,21 @@ export function BookingFlow({ title = 'In 4 Schritten zum Coworking-Platz' }: { 
               {addons.map((addon) => {
                 const available = isAddonAvailable(addon);
                 const isSelected = selectedAddons.has(addon.id);
-                const disabled = addon.requiresTarif && !available;
+
+                // Hide add-ons that require a specific tarif when the wrong one is selected
+                if (addon.requiresTarif && selectedTarif && !addon.requiresTarif.includes(selectedTarif)) {
+                  return null;
+                }
 
                 return (
                   <button
                     type="button"
                     key={addon.id}
                     onClick={(e) => { e.preventDefault(); handleAddonClick(addon); }}
-                    disabled={!addon.selectable || !!disabled}
+                    disabled={!addon.selectable}
                     className={`rounded-xl border p-4 text-left transition-all duration-250 ${
                       !addon.selectable
                         ? 'border-border bg-background/50 cursor-default'
-                        : disabled
-                        ? 'border-border bg-background/50 cursor-not-allowed opacity-50'
                         : isSelected
                         ? 'border-[#6b7f3e] bg-[#e3e7d4] shadow-sm cursor-pointer'
                         : 'border-border bg-background hover:bg-[#f0f4e8] hover:border-[#6b7f3e] hover:shadow-sm cursor-pointer'
@@ -207,7 +209,7 @@ export function BookingFlow({ title = 'In 4 Schritten zum Coworking-Platz' }: { 
                     {addon.note && (
                       <div className="text-xs text-muted-foreground mt-1 italic">{addon.note}</div>
                     )}
-                    {addon.selectable && !disabled && (
+                    {addon.selectable && (
                       <div className={`text-xs font-medium mt-2 ${
                         isSelected ? 'text-[#6b7f3e]' : 'text-[#6b7f3e] opacity-50'
                       }`}>
