@@ -16,3 +16,4 @@ export { FeaturesWithBg } from './FeaturesWithBg';
 export { CompactHero } from './CompactHero';
 export { CompactCTA, CompactCTAFeature } from './CompactCTA';
 export { FeatureCard } from './FeatureCard';
+export { ImageFeature, ImageFeatures } from './ImageFeature';
