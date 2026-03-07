@@ -1,18 +1,22 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 
 interface TarifItem {
   id: string;
   label: string;
-  price: string;
+  price: number;
+  display: string;
   sub: string;
+  unit: 'tag' | 'monat';
 }
 
 interface AddonItem {
   id: string;
   label: string;
-  price: string;
+  priceTag?: number;
+  priceMonat?: number;
+  displayPrice: string;
   note?: string;
   selectable: boolean;
   requiresTarif?: string[];
@@ -26,19 +30,19 @@ interface IncludedBoxProps {
 }
 
 const tarife: TarifItem[] = [
-  { id: 'tagespass', label: 'Tagespass', price: 'EUR 29,-', sub: 'pro Tag zzgl. MwSt.' },
-  { id: 'zehnerkarte', label: '10er-Karte', price: 'EUR 249,-', sub: '10 Tage zzgl. MwSt.' },
-  { id: 'monatspass', label: 'Monatspass', price: 'EUR 259,-', sub: 'pro Monat zzgl. MwSt.' },
-  { id: 'monatsabo', label: 'Monatsabo', price: 'EUR 239,-', sub: 'pro Monat zzgl. MwSt.' },
+  { id: 'tagespass', label: 'Tagespass', price: 29, display: 'EUR 29,-', sub: 'pro Tag zzgl. MwSt.', unit: 'tag' },
+  { id: 'zehnerkarte', label: '10er-Karte', price: 249, display: 'EUR 249,-', sub: '10 Tage zzgl. MwSt.', unit: 'tag' },
+  { id: 'monatspass', label: 'Monatspass', price: 259, display: 'EUR 259,-', sub: 'pro Monat zzgl. MwSt.', unit: 'monat' },
+  { id: 'monatsabo', label: 'Monatsabo', price: 239, display: 'EUR 239,-', sub: 'pro Monat zzgl. MwSt.', unit: 'monat' },
 ];
 
 const addons: AddonItem[] = [
-  { id: 'fixdesk', label: 'Fix Desk', price: '+ EUR 79,- /Monat', note: 'Nur bei Monatspass & Monatsabo', selectable: true, requiresTarif: ['monatspass', 'monatsabo'] },
-  { id: 'aktenschrank', label: 'Abschließbarer Aktenschrank', price: '+ EUR 19,- /Monat', selectable: true },
-  { id: 'monitor', label: '27" Curved Monitor', price: 'EUR 9,- /Tag · EUR 27,- /Monat', selectable: true },
-  { id: 'geschaeftsadresse', label: 'Geschäftsadresse', price: '+ EUR 39,- /Monat', note: 'Nur bei Monatsabo', selectable: true, requiresTarif: ['monatsabo'] },
-  { id: 'meetingraum', label: 'Meeting- & Konferenzräume', price: 'Auf Tagesbasis buchbar', selectable: false },
-  { id: 'parkplatz', label: 'Parkplatz', price: '+ EUR 6,- /Tag', selectable: true },
+  { id: 'fixdesk', label: 'Fix Desk', priceMonat: 79, displayPrice: '+ EUR 79,- /Monat', note: 'Nur bei Monatspass & Monatsabo', selectable: true, requiresTarif: ['monatspass', 'monatsabo'] },
+  { id: 'aktenschrank', label: 'Abschließbarer Aktenschrank', priceMonat: 19, displayPrice: '+ EUR 19,- /Monat', note: 'Nicht beim Tagespass', selectable: true, requiresTarif: ['zehnerkarte', 'monatspass', 'monatsabo'] },
+  { id: 'monitor', label: '27" Curved Monitor', priceTag: 9, priceMonat: 27, displayPrice: 'EUR 9,- /Tag · EUR 27,- /Monat', selectable: true },
+  { id: 'geschaeftsadresse', label: 'Geschäftsadresse', priceMonat: 39, displayPrice: '+ EUR 39,- /Monat', note: 'Nur bei Monatsabo', selectable: true, requiresTarif: ['monatsabo'] },
+  { id: 'meetingraum', label: 'Meeting- & Konferenzräume', displayPrice: 'Auf Tagesbasis buchbar', selectable: false },
+  { id: 'parkplatz', label: 'Parkplatz', priceTag: 6, displayPrice: '+ EUR 6,- /Tag', selectable: true },
 ];
 
 export function IncludedBox({
@@ -53,21 +57,48 @@ export function IncludedBox({
   const childArray = React.Children.toArray(children);
   const includedItems = childArray.slice(0, 6);
 
+  const selectedTarifObj = tarife.find((t) => t.id === selectedTarif);
+
+  const isAddonAvailable = (addon: AddonItem) => {
+    if (!addon.selectable) return false;
+    if (addon.requiresTarif) {
+      return selectedTarif != null && addon.requiresTarif.includes(selectedTarif);
+    }
+    return true;
+  };
+
+  const total = useMemo(() => {
+    if (!selectedTarifObj) return null;
+    let sum = selectedTarifObj.price;
+    selectedAddons.forEach((addonId) => {
+      const addon = addons.find((a) => a.id === addonId);
+      if (!addon) return;
+      if (selectedTarifObj.unit === 'monat' && addon.priceMonat) {
+        sum += addon.priceMonat;
+      } else if (selectedTarifObj.unit === 'tag' && addon.priceTag) {
+        sum += addon.priceTag;
+      } else if (addon.priceMonat) {
+        sum += addon.priceMonat;
+      } else if (addon.priceTag) {
+        sum += addon.priceTag;
+      }
+    });
+    return sum;
+  }, [selectedTarif, selectedAddons, selectedTarifObj]);
+
   const handleTarifClick = (id: string) => {
     const newTarif = selectedTarif === id ? null : id;
     setSelectedTarif(newTarif);
     // Remove addons that require a tarif that's no longer selected
-    if (newTarif !== selectedTarif) {
-      setSelectedAddons((prev) => {
-        const next = new Set(prev);
-        addons.forEach((a) => {
-          if (a.requiresTarif && !a.requiresTarif.includes(newTarif || '')) {
-            next.delete(a.id);
-          }
-        });
-        return next;
+    setSelectedAddons((prev) => {
+      const next = new Set(prev);
+      addons.forEach((a) => {
+        if (a.requiresTarif && !a.requiresTarif.includes(newTarif || '')) {
+          next.delete(a.id);
+        }
       });
-    }
+      return next;
+    });
     // Dispatch event for HeroForm
     if (typeof window !== 'undefined') {
       window.dispatchEvent(new CustomEvent('tarif-selected', { detail: newTarif ? { tarif: newTarif } : null }));
@@ -76,7 +107,7 @@ export function IncludedBox({
 
   const handleAddonClick = (addon: AddonItem) => {
     if (!addon.selectable) return;
-    if (addon.requiresTarif && (!selectedTarif || !addon.requiresTarif.includes(selectedTarif))) return;
+    if (!isAddonAvailable(addon)) return;
     setSelectedAddons((prev) => {
       const next = new Set(prev);
       if (next.has(addon.id)) {
@@ -88,13 +119,11 @@ export function IncludedBox({
     });
   };
 
-  const isAddonAvailable = (addon: AddonItem) => {
-    if (!addon.selectable) return false;
-    if (addon.requiresTarif) {
-      return selectedTarif != null && addon.requiresTarif.includes(selectedTarif);
-    }
-    return true;
+  const formatTotal = (amount: number) => {
+    return `EUR ${amount},-`;
   };
+
+  const unitLabel = selectedTarifObj?.unit === 'monat' ? '/Monat' : (selectedTarifObj?.id === 'zehnerkarte' ? '' : '/Tag');
 
   return (
     <section className="py-12 md:py-16">
@@ -129,10 +158,10 @@ export function IncludedBox({
                     }`}
                   >
                     <div className="text-sm font-semibold text-foreground">{t.label}</div>
-                    <div className="text-xl font-bold text-[#1e293b] mt-1">{t.price}</div>
+                    <div className="text-xl font-bold text-[#1e293b] mt-1">{t.display}</div>
                     <div className="text-xs text-muted-foreground mt-1">{t.sub}</div>
                     <div className={`text-xs font-medium mt-2 transition-opacity duration-250 ${
-                      isSelected ? 'text-[#6b7f3e] opacity-100' : 'text-[#6b7f3e] opacity-0 group-hover:opacity-100'
+                      isSelected ? 'text-[#6b7f3e] opacity-100' : 'text-[#6b7f3e] opacity-0'
                     }`}>
                       {isSelected ? '✓ Ausgewählt' : 'Auswählen'}
                     </div>
@@ -140,7 +169,6 @@ export function IncludedBox({
                 );
               })}
             </div>
-            
           </div>
 
           {/* Divider */}
@@ -172,7 +200,7 @@ export function IncludedBox({
                     }`}
                   >
                     <div className="text-sm font-semibold text-foreground">{addon.label}</div>
-                    <div className="text-sm font-bold text-[#1e293b] mt-1">{addon.price}</div>
+                    <div className="text-sm font-bold text-[#1e293b] mt-1">{addon.displayPrice}</div>
                     {addon.note && (
                       <div className="text-xs text-muted-foreground mt-1 italic">{addon.note}</div>
                     )}
@@ -187,12 +215,18 @@ export function IncludedBox({
                 );
               })}
             </div>
-            <div className="mt-6 text-center">
+
+            {/* CTA Button with total */}
+            <div className="mt-8 text-center">
               <a
                 href="#formular"
                 className="inline-block rounded-lg bg-[#a8a29e] text-white text-center py-3 px-10 text-base font-medium hover:bg-[#8a8380] transition-colors no-underline"
               >
-                Jetzt buchen und bezahlen
+                {total != null ? (
+                  <>Jetzt buchen — {formatTotal(total)} {unitLabel} zzgl. MwSt.</>
+                ) : (
+                  <>Jetzt buchen und bezahlen</>
+                )}
               </a>
             </div>
           </div>
