@@ -5,6 +5,8 @@ import {
   MapPin, Shield, TrendingUp, Zap, Mail, Package, Phone,
   Monitor, Users, Building2, Globe, Calendar, CheckCircle,
   Briefcase, Home, FileText, Scale, Clock, Key, Landmark,
+  Wifi, Sun, Leaf, Armchair, Columns, Laptop, Coffee, Heart,
+  Repeat, Map, Tag,
   type LucideIcon
 } from 'lucide-react';
 
@@ -29,6 +31,17 @@ const iconMap: Record<string, LucideIcon> = {
   'clock': Clock,
   'key': Key,
   'landmark': Landmark,
+  'wifi': Wifi,
+  'sun': Sun,
+  'leaf': Leaf,
+  'armchair': Armchair,
+  'columns': Columns,
+  'laptop': Laptop,
+  'coffee': Coffee,
+  'heart': Heart,
+  'repeat': Repeat,
+  'map': Map,
+  'tag': Tag,
 };
 
 interface FeatureCardProps {
