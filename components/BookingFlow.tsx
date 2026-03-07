@@ -25,10 +25,10 @@ interface AddonItem {
 }
 
 const tarife: TarifItem[] = [
-  { id: 'tagespass', label: 'Tagespass', price: 29, display: 'EUR 29,-', sub: 'pro Tag inkl. MwSt.', unit: 'tag' },
-  { id: 'zehnerkarte', label: '10er-Karte', price: 249, display: 'EUR 249,-', sub: 'inkl. MwSt.', unit: 'tag' },
-  { id: 'monatspass', label: 'Monatspass', price: 259, display: 'EUR 259,-', sub: 'pro Monat inkl. MwSt.', unit: 'monat' },
-  { id: 'monatsabo', label: 'Monatsabo', price: 239, display: 'EUR 239,-', sub: 'pro Monat inkl. MwSt.', unit: 'monat' },
+  { id: 'tagespass', label: 'Tagespass', price: 29, display: 'EUR 29,-', sub: 'pro Tag', unit: 'tag' },
+  { id: 'zehnerkarte', label: '10er-Karte', price: 249, display: 'EUR 249,-', sub: '', unit: 'tag' },
+  { id: 'monatspass', label: 'Monatspass', price: 259, display: 'EUR 259,-', sub: 'pro Monat', unit: 'monat' },
+  { id: 'monatsabo', label: 'Monatsabo', price: 239, display: 'EUR 239,-', sub: 'pro Monat', unit: 'monat' },
 ];
 
 const addons: AddonItem[] = [
@@ -157,7 +157,7 @@ export function BookingFlow({ title = 'In 4 Schritten zum Coworking-Platz' }: { 
                       <span className="text-[10px] font-bold bg-[#6b7f3e] text-white rounded-full px-1.5 py-0.5">−16%</span>
                     </div>
                     <div className="text-lg font-bold text-[#1e293b] mt-1">{t.display}</div>
-                    <div className="text-xs text-muted-foreground mt-1">{t.sub}</div>
+                    <div className="text-xs text-muted-foreground mt-1">{t.sub}{t.sub ? ' ' : ''}<span className="underline">inkl. MwSt.</span></div>
                     {isSelected && (
                       <div className="text-xs font-medium mt-2 text-[#6b7f3e]">✓ Ausgewählt</div>
                     )}
@@ -254,7 +254,7 @@ export function BookingFlow({ title = 'In 4 Schritten zum Coworking-Platz' }: { 
                 className="inline-block rounded-lg bg-[#a8a29e] text-white text-center py-3.5 px-12 text-base font-semibold hover:bg-[#8a8380] transition-colors no-underline shadow-sm"
               >
                 {total != null ? (
-                  <>Jetzt buchen — {`EUR ${total},-`} {unitLabel} inkl. MwSt.</>
+                  <>Jetzt buchen — {`EUR ${total},-`} {unitLabel} <span className="underline">inkl. MwSt.</span></>
                 ) : (
                   <>Jetzt buchen und bezahlen</>
                 )}
