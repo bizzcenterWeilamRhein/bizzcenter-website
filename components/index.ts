@@ -14,5 +14,4 @@ export { LocationMap } from './LocationMap';
 export { GoogleReviews } from './GoogleReviews';
 export { FeaturesWithBg } from './FeaturesWithBg';
 export { CompactHero } from './CompactHero';
-export { CompactCTA, CompactCTAFeature } from './CompactCTA';
 export { FeatureCard } from './FeatureCard';
