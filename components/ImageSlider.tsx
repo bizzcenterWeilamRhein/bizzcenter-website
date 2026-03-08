@@ -38,7 +38,7 @@ export function ImageSlider({ slides, title, interval = 4000 }: ImageSliderProps
           <h2 className="text-3xl md:text-4xl font-bold text-center text-foreground mb-8">{title}</h2>
         )}
         <div
-          className="relative rounded-2xl overflow-hidden aspect-[21/9] group"
+          className="relative rounded-2xl overflow-hidden aspect-[4/3] sm:aspect-[21/9] group"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
