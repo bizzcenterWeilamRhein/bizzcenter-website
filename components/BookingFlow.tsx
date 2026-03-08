@@ -179,7 +179,7 @@ export function BookingFlow({ title = 'In 4 Schritten zum Coworking-Platz' }: { 
                 <p className="text-sm text-muted-foreground mt-0.5">Nicht verpflichtend — einfach überspringen wenn nicht benötigt.</p>
               </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
               {addons.map((addon) => {
                 const available = isAddonAvailable(addon);
                 const isSelected = selectedAddons.has(addon.id);
