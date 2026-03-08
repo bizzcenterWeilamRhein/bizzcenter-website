@@ -59,7 +59,7 @@ function ServiceIcon({ icon }: { icon: string }) {
     ),
   };
   return (
-    <div className="w-12 h-12 rounded-xl bg-[var(--color-primary,#1a73b5)]/10 text-[var(--color-primary,#1a73b5)] flex items-center justify-center flex-shrink-0">
+    <div className="w-8 h-8 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-[var(--color-primary,#1a73b5)]/10 text-[var(--color-primary,#1a73b5)] flex items-center justify-center flex-shrink-0 [&>svg]:w-5 [&>svg]:h-5 sm:[&>svg]:w-8 sm:[&>svg]:h-8">
       {icons[icon] || icons.sparkles}
     </div>
   );
