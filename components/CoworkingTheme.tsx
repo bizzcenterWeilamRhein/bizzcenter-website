@@ -17,7 +17,7 @@ const statsStyles = `
   .stats-centered [class*="value"],
   .stats-centered [class*="stat"] h3,
   .stats-centered [class*="stat"] [class*="number"] {
-    color: #39B200 !important;
+    color: #6b7f3e !important;
     text-shadow: none !important;
     font-weight: 800 !important;
   }

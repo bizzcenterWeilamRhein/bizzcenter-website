@@ -47,7 +47,7 @@ const addons: AddonItem[] = [
 function StepBadge({ number, active }: { number: number; active: boolean }) {
   return (
     <div className={`w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold shrink-0 transition-colors duration-300 ${
-      active ? 'bg-[#39B200] text-white' : 'bg-[#d4e8c0] text-[#39B200]'
+      active ? 'bg-[#6b7f3e] text-white' : 'bg-[#e8e3d6] text-[#6b7f3e]'
     }`}>
       {number}
     </div>
@@ -133,7 +133,7 @@ export function BookingFlow({ title = 'In 4 Schritten zum Coworking-Platz' }: { 
         <div className="space-y-8">
           {/* Step 1: Tarif wählen */}
           <div className="rounded-2xl border border-border bg-card shadow-sm p-6 md:p-8">
-            <div className="mb-4 rounded-lg bg-[#39B200] text-white text-center py-2.5 px-4">
+            <div className="mb-4 rounded-lg bg-[#6b7f3e] text-white text-center py-2.5 px-4">
               <p className="text-sm font-bold">🌿 Green Office Eröffnungsangebot — 16% Rabatt bis 30.09.2026</p>
             </div>
             <div className="flex items-center gap-4 mb-5">
@@ -150,23 +150,23 @@ export function BookingFlow({ title = 'In 4 Schritten zum Coworking-Platz' }: { 
                     onClick={(e) => { e.preventDefault(); handleTarifClick(t.id); }}
                     className={`rounded-xl border p-4 text-center transition-all duration-250 cursor-pointer relative ${
                       isSelected
-                        ? 'border-[#39B200] bg-[#d9f5c7] shadow-sm'
+                        ? 'border-[#6b7f3e] bg-[#e3e7d4] shadow-sm'
                         : t.popular
-                        ? 'border-[#39B200] bg-background hover:bg-[#edfde0] shadow-sm ring-1 ring-[#39B200]/30'
-                        : 'border-border bg-background hover:bg-[#edfde0] hover:border-[#39B200] hover:shadow-sm'
+                        ? 'border-[#6b7f3e] bg-background hover:bg-[#f0f4e8] shadow-sm ring-1 ring-[#6b7f3e]/30'
+                        : 'border-border bg-background hover:bg-[#f0f4e8] hover:border-[#6b7f3e] hover:shadow-sm'
                     }`}
                   >
                     {t.popular && !isSelected && (
-                      <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 text-[10px] font-bold bg-[#39B200] text-white rounded-full px-2 py-0.5 whitespace-nowrap">Beliebt ⭐</div>
+                      <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 text-[10px] font-bold bg-[#6b7f3e] text-white rounded-full px-2 py-0.5 whitespace-nowrap">Beliebt ⭐</div>
                     )}
                     <div className="flex items-center justify-center gap-1.5">
                       <span className="text-sm font-semibold text-foreground">{t.label}</span>
-                      <span className="text-[10px] font-bold bg-[#39B200] text-white rounded-full px-1.5 py-0.5">−16%</span>
+                      <span className="text-[10px] font-bold bg-[#6b7f3e] text-white rounded-full px-1.5 py-0.5">−16%</span>
                     </div>
                     <div className="text-lg font-bold text-[#1e293b] mt-1">{t.display}</div>
                     <div className="text-xs text-muted-foreground mt-1">{t.sub}{t.sub ? ' ' : ''}<span className="underline">inkl. MwSt.</span></div>
                     {isSelected && (
-                      <div className="text-xs font-medium mt-2 text-[#39B200]">✓ Ausgewählt</div>
+                      <div className="text-xs font-medium mt-2 text-[#6b7f3e]">✓ Ausgewählt</div>
                     )}
                   </button>
                 );
@@ -205,13 +205,13 @@ export function BookingFlow({ title = 'In 4 Schritten zum Coworking-Platz' }: { 
                       !addon.selectable
                         ? 'border-border bg-background/50 cursor-default'
                         : isSelected
-                        ? 'border-[#39B200] bg-[#d9f5c7] shadow-sm cursor-pointer'
-                        : 'border-border bg-background hover:bg-[#edfde0] hover:border-[#39B200] hover:shadow-sm cursor-pointer'
+                        ? 'border-[#6b7f3e] bg-[#e3e7d4] shadow-sm cursor-pointer'
+                        : 'border-border bg-background hover:bg-[#f0f4e8] hover:border-[#6b7f3e] hover:shadow-sm cursor-pointer'
                     }`}
                   >
                     <div className="flex items-start justify-between gap-1">
                       <span className="text-sm font-semibold text-foreground leading-tight">{addon.label}</span>
-                      {addon.discount && <span className="text-[10px] font-bold bg-[#39B200] text-white rounded-full px-1.5 py-0.5 shrink-0">−16%</span>}
+                      {addon.discount && <span className="text-[10px] font-bold bg-[#6b7f3e] text-white rounded-full px-1.5 py-0.5 shrink-0">−16%</span>}
                     </div>
                     <div className="text-sm font-bold text-[#1e293b] mt-1">
                       {(selectedTarif && addon.displayPricePer?.[selectedTarif]) || addon.displayPrice}
@@ -222,7 +222,7 @@ export function BookingFlow({ title = 'In 4 Schritten zum Coworking-Platz' }: { 
                     )}
                     {addon.selectable && (
                       <div className={`text-xs font-medium mt-2 ${
-                        isSelected ? 'text-[#39B200]' : 'text-[#39B200] opacity-50'
+                        isSelected ? 'text-[#6b7f3e]' : 'text-[#6b7f3e] opacity-50'
                       }`}>
                         {isSelected ? '✓ Hinzugebucht' : '+ Hinzubuchen'}
                       </div>
@@ -247,7 +247,7 @@ export function BookingFlow({ title = 'In 4 Schritten zum Coworking-Platz' }: { 
                 min={minDate}
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="w-full rounded-lg border border-border bg-background px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-[#39B200] focus:border-[#39B200] transition-colors"
+                className="w-full rounded-lg border border-border bg-background px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] transition-colors"
               />
               <p className="text-xs text-muted-foreground mt-2">Sofortstart möglich — wählen Sie einfach das nächstmögliche Datum.</p>
             </div>

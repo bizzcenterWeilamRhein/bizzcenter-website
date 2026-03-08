@@ -23,7 +23,7 @@ export function CoworkingTarife() {
 
   return (
     <div className="mt-6">
-      <div className="mb-3 rounded-lg bg-[#39B200] text-white text-center py-2 px-3">
+      <div className="mb-3 rounded-lg bg-[#6b7f3e] text-white text-center py-2 px-3">
         <p className="text-sm font-bold">🌿 Green Office Eröffnungsangebot — 16% Rabatt bis 30.09.2026</p>
       </div>
       <p className="mb-3 text-base font-bold text-foreground">Sofortstart möglich — wähle jetzt deinen Tarif:</p>
@@ -37,12 +37,12 @@ export function CoworkingTarife() {
               className={`rounded-xl border-2 p-3 text-center transition-all duration-250 ease-in-out ${
                 isSelected
                   ? 'bg-[#e3e7fd] border-primary shadow-md'
-                  : 'border-border bg-background/80 hover:bg-[#edfde0] hover:border-[#39B200] hover:shadow-sm group'
+                  : 'border-border bg-background/80 hover:bg-[#f0f4e8] hover:border-[#6b7f3e] hover:shadow-sm group'
               }`}
             >
-              <div className="flex items-center justify-center gap-1.5">
+              <div className="text-center">
                 <span className={`text-xs font-medium text-muted-foreground`}>{t.label}</span>
-                {t.badge && <span className="text-[10px] font-bold bg-[#39B200] text-white rounded-full px-1.5 py-0.5">{t.badge}</span>}
+                {t.badge && <span className="text-[10px] font-bold bg-[#6b7f3e] text-white rounded-full px-1.5 py-0.5 ml-1">−16%</span>}
               </div>
               <div className={`text-lg font-bold text-[#1e293b]`}>{t.price}</div>
               <div className={`text-xs font-medium text-muted-foreground`}>{t.sub}{t.sub ? ' ' : ''}<span className="underline">inkl. MwSt.</span></div>
@@ -50,7 +50,7 @@ export function CoworkingTarife() {
               <div className={`text-xs font-semibold mt-1 transition-opacity duration-200 ${
                 isSelected
                   ? 'text-[#1e293b] opacity-100'
-                  : 'text-[#39B200] opacity-0 group-hover:opacity-100'
+                  : 'text-[#6b7f3e] opacity-0 group-hover:opacity-100'
               }`}>
                 {isSelected ? '✓ Ausgewählt' : 'Auswählen'}
               </div>
