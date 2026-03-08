@@ -203,9 +203,9 @@ export function BookingFlow({ title = 'In 4 Schritten zum Coworking-Platz' }: { 
                         : 'border-border bg-background hover:bg-[#f0f4e8] hover:border-[#6b7f3e] hover:shadow-sm cursor-pointer'
                     }`}
                   >
-                    <div className="flex items-center gap-1.5">
+                    <div>
                       <span className="text-sm font-semibold text-foreground">{addon.label}</span>
-                      {addon.discount && <span className="text-[10px] font-bold bg-[#6b7f3e] text-white rounded-full px-1.5 py-0.5">−16%</span>}
+                      {addon.discount && <span className="text-[10px] font-bold bg-[#6b7f3e] text-white rounded-full px-1.5 py-0.5 ml-1 inline-block mt-1 sm:mt-0">−16%</span>}
                     </div>
                     <div className="text-sm font-bold text-[#1e293b] mt-1">
                       {(selectedTarif && addon.displayPricePer?.[selectedTarif]) || addon.displayPrice}
