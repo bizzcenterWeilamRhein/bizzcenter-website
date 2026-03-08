@@ -201,7 +201,7 @@ export function BookingFlow({ title = 'In 4 Schritten zum Coworking-Platz' }: { 
                     key={addon.id}
                     onClick={(e) => { e.preventDefault(); handleAddonClick(addon); }}
                     disabled={!addon.selectable}
-                    className={`rounded-xl border p-4 text-left transition-all duration-250 ${
+                    className={`rounded-xl border p-3 text-left transition-all duration-250 overflow-hidden ${
                       !addon.selectable
                         ? 'border-border bg-background/50 cursor-default'
                         : isSelected
@@ -210,18 +210,18 @@ export function BookingFlow({ title = 'In 4 Schritten zum Coworking-Platz' }: { 
                     }`}
                   >
                     <div className="flex items-start justify-between gap-1">
-                      <span className="text-sm font-semibold text-foreground leading-tight">{addon.label}</span>
-                      {addon.discount && <span className="text-[10px] font-bold bg-[#6b7f3e] text-white rounded-full px-1.5 py-0.5 shrink-0">−16%</span>}
+                      <span className="text-xs sm:text-sm font-semibold text-foreground leading-tight">{addon.label}</span>
+                      {addon.discount && <span className="text-[9px] sm:text-[10px] font-bold bg-[#6b7f3e] text-white rounded-full px-1 sm:px-1.5 py-0.5 shrink-0">−16%</span>}
                     </div>
-                    <div className="text-sm font-bold text-[#1e293b] mt-1">
+                    <div className="text-xs sm:text-sm font-bold text-[#1e293b] mt-1">
                       {(selectedTarif && addon.displayPricePer?.[selectedTarif]) || addon.displayPrice}
                     </div>
-                    <div className="text-xs text-muted-foreground mt-0.5"><span className="underline">inkl. MwSt.</span></div>
+                    <div className="text-[10px] sm:text-xs text-muted-foreground mt-0.5"><span className="underline">inkl. MwSt.</span></div>
                     {addon.note && (
-                      <div className="text-xs text-muted-foreground mt-1 italic">{addon.note}</div>
+                      <div className="text-[10px] sm:text-xs text-muted-foreground mt-1 italic">{addon.note}</div>
                     )}
                     {addon.selectable && (
-                      <div className={`text-xs font-medium mt-2 ${
+                      <div className={`text-[10px] sm:text-xs font-medium mt-1.5 ${
                         isSelected ? 'text-[#6b7f3e]' : 'text-[#6b7f3e] opacity-50'
                       }`}>
                         {isSelected ? '✓ Hinzugebucht' : '+ Hinzubuchen'}
