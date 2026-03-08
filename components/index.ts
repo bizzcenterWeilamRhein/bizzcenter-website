@@ -21,3 +21,4 @@ export { ImageSlider } from './ImageSlider';
 export { IncludedBox } from './IncludedBox';
 export { StatsTheme, CoworkingTheme } from './CoworkingTheme';
 export { BookingFlow } from './BookingFlow';
+export { GalleryCarousel, GalleryCarouselItem } from './GalleryCarousel';
