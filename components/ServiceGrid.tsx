@@ -74,7 +74,7 @@ function ServiceCard({ service, isActive, onToggle }: { service: Service; isActi
       {/* Header */}
       <div className="p-3 sm:p-5 flex items-center gap-2 sm:gap-3">
         <ServiceIcon icon={service.icon} />
-        <h3 className="text-sm sm:text-base font-semibold text-gray-900 flex-grow leading-tight">{service.title}</h3>
+        <h3 className="text-sm sm:text-base font-semibold text-gray-900 flex-grow leading-tight break-words hyphens-auto">{service.title}</h3>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
