@@ -80,7 +80,7 @@ function ServiceCard({ service, isActive, onToggle }: { service: Service; isActi
       {/* Content area - either description or location picker */}
       <div className="px-5 pb-5 flex-grow flex flex-col">
         {!isActive ? (
-          <p className="text-sm text-gray-600 leading-relaxed">{service.description}</p>
+          <p className="text-sm text-gray-600 leading-relaxed line-clamp-3">{service.description}</p>
         ) : (
           <div className="flex flex-col gap-2">
             <p className="text-xs font-medium text-gray-500 mb-1">Standort wählen:</p>
