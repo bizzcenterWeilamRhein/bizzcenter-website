@@ -24,7 +24,7 @@ export function CoworkingTarife() {
   return (
     <div className="mt-6">
       <div className="mb-3 rounded-lg bg-[#6b7f3e] text-white text-center py-2 px-3">
-        <p className="text-sm font-bold">🌿 Green Office Eröffnungsangebot — 16% Rabatt bis 30.09.</p>
+        <p className="text-sm font-bold">🌿 Green Office Eröffnungsangebot — 16% Rabatt bis 30.09.2026</p>
       </div>
       <p className="mb-3 text-base font-bold text-foreground">Sofortstart möglich — wähle jetzt deinen Tarif:</p>
       <div className="grid grid-cols-2 gap-3">

@@ -9,6 +9,7 @@ interface TarifItem {
   display: string;
   sub: string;
   unit: 'tag' | 'monat';
+  popular?: boolean;
 }
 
 interface AddonItem {
@@ -28,7 +29,7 @@ interface AddonItem {
 const tarife: TarifItem[] = [
   { id: 'tagespass', label: 'Tagespass', price: 29, display: 'EUR 29,-', sub: 'pro Tag', unit: 'tag' },
   { id: 'zehnerkarte', label: '10er-Karte', price: 249, display: 'EUR 249,-', sub: '', unit: 'tag' },
-  { id: 'monatspass', label: 'Monatspass', price: 259, display: 'EUR 259,-', sub: 'pro Monat', unit: 'monat' },
+  { id: 'monatspass', label: 'Monatspass', price: 259, display: 'EUR 259,-', sub: 'pro Monat', unit: 'monat', popular: true },
   { id: 'monatsabo', label: 'Monatsabo', price: 239, display: 'EUR 239,-', sub: 'pro Monat', unit: 'monat' },
 ];
 
@@ -133,7 +134,7 @@ export function BookingFlow({ title = 'In 4 Schritten zum Coworking-Platz' }: { 
           {/* Step 1: Tarif wählen */}
           <div className="rounded-2xl border border-border bg-card shadow-sm p-6 md:p-8">
             <div className="mb-4 rounded-lg bg-[#6b7f3e] text-white text-center py-2.5 px-4">
-              <p className="text-sm font-bold">🌿 Green Office Eröffnungsangebot — 16% Rabatt bis 30.09.</p>
+              <p className="text-sm font-bold">🌿 Green Office Eröffnungsangebot — 16% Rabatt bis 30.09.2026</p>
             </div>
             <div className="flex items-center gap-4 mb-5">
               <StepBadge number={1} active={!selectedTarif} />
@@ -147,12 +148,17 @@ export function BookingFlow({ title = 'In 4 Schritten zum Coworking-Platz' }: { 
                     type="button"
                     key={t.id}
                     onClick={(e) => { e.preventDefault(); handleTarifClick(t.id); }}
-                    className={`rounded-xl border p-4 text-center transition-all duration-250 cursor-pointer ${
+                    className={`rounded-xl border p-4 text-center transition-all duration-250 cursor-pointer relative ${
                       isSelected
                         ? 'border-[#6b7f3e] bg-[#e3e7d4] shadow-sm'
+                        : t.popular
+                        ? 'border-[#6b7f3e] bg-background hover:bg-[#f0f4e8] shadow-sm ring-1 ring-[#6b7f3e]/30'
                         : 'border-border bg-background hover:bg-[#f0f4e8] hover:border-[#6b7f3e] hover:shadow-sm'
                     }`}
                   >
+                    {t.popular && !isSelected && (
+                      <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 text-[10px] font-bold bg-[#6b7f3e] text-white rounded-full px-2 py-0.5 whitespace-nowrap">Beliebt ⭐</div>
+                    )}
                     <div className="flex items-center justify-center gap-1.5">
                       <span className="text-sm font-semibold text-foreground">{t.label}</span>
                       <span className="text-[10px] font-bold bg-[#6b7f3e] text-white rounded-full px-1.5 py-0.5">−16%</span>
