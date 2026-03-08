@@ -24,7 +24,7 @@ export function ServiceHero({ backgroundImage, headline, services }: ServiceHero
       <div className="absolute inset-0 bg-black/15" />
 
       {/* Content */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-4 pt-[28vh] sm:pt-[30vh] pb-12 sm:pb-20">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-4 pt-[14vh] sm:pt-[30vh] pb-12 sm:pb-20">
         {headline && (
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white text-center mb-12 sm:mb-16 drop-shadow-lg">
             {headline}
