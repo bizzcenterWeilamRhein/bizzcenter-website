@@ -3,3 +3,4 @@ node_modules/
 .shipsite/
 .content-collections/
 *.tsbuildinfo
+.m365-credentials.json

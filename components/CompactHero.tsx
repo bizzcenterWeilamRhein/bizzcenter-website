@@ -65,6 +65,16 @@ export function CompactHero({ title, description, image, imageAlt, buttonText, b
               <h1 className="text-3xl xl:text-4xl font-bold text-foreground mb-2 whitespace-nowrap">{title}</h1>
               {description && <p className="text-base text-muted-foreground mb-3 whitespace-nowrap">{description}</p>}
               {children}
+              {buttonText && buttonHref && (
+                <div className="mt-4">
+                  <a
+                    href={buttonHref}
+                    className="inline-flex items-center justify-center rounded-lg bg-[#6b7f3e] text-white px-8 py-3 text-sm font-semibold hover:opacity-90 transition-opacity no-underline shadow-sm"
+                  >
+                    {buttonText} →
+                  </a>
+                </div>
+              )}
             </div>
             {formId && (
               <div className="rounded-2xl border border-border bg-background/95 backdrop-blur-sm p-6 shadow-lg shrink-0 flex flex-col justify-center" style={{width: '420px', scrollMarginTop: '100px'}} id={formId}>
@@ -114,12 +124,36 @@ function HeroForm() {
     );
   }
 
-  const buttonLabel = selectedTarif
-    ? 'Buchen und bezahlen'
-    : 'Kostenloses Angebot anfordern';
+  function handleSubmitWithRedirect(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setStatus('sending');
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    const data: Record<string, string> = {};
+    formData.forEach((v, k) => { data[k] = v.toString(); });
+
+    // Lead erfassen (fire-and-forget)
+    fetch('/api/lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...data, source: 'hero-formular', timestamp: new Date().toISOString() }),
+    }).catch(() => {});
+
+    // Weiterleitung zum Angebot
+    const params = new URLSearchParams({
+      ...(data.anrede && { anrede: data.anrede }),
+      ...(data.vorname && { vorname: data.vorname }),
+      ...(data.nachname && { nachname: data.nachname }),
+      ...(data.firma && { firma: data.firma }),
+      ...(data.email && { email: data.email }),
+      ...(data.telefon && { telefon: data.telefon }),
+    });
+    window.location.href = `/angebot/kunde-xyz?${params.toString()}`;
+  }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-2">
+    <form onSubmit={handleSubmitWithRedirect} className="space-y-2">
       {selectedTarif && (
         <div className="rounded-lg bg-primary/10 border border-primary/30 px-3 py-2 text-sm text-primary font-semibold text-center">
           {tarifLabels[selectedTarif] || selectedTarif}
@@ -137,19 +171,13 @@ function HeroForm() {
         <input name="nachname" type="text" placeholder="Nachname" required className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
       </div>
       <input name="firma" type="text" placeholder="Firma" required className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
-      <input name="strasse" type="text" placeholder="Straße, Hausnummer" required className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
       <div className="grid grid-cols-2 gap-2">
-        <input name="plz" type="text" placeholder="PLZ" required className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
-        <input name="ort" type="text" placeholder="Ort" required className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
-      </div>
-      <div className="grid grid-cols-2 gap-2">
-        <input name="telefon" type="tel" placeholder="Telefonnummer" required className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
         <input name="email" type="email" placeholder="E-Mail" required className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
+        <input name="telefon" type="tel" placeholder="Telefon (optional)" className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
       </div>
-      <textarea name="nachricht" placeholder="Ihre Nachricht" required className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" rows={2}></textarea>
       <input type="hidden" name="tarif" value={selectedTarif || ''} />
-      <button type="submit" disabled={status === 'sending'} className="w-full rounded-lg bg-primary text-primary-foreground px-4 py-2.5 text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50">
-        {status === 'sending' ? 'Wird gesendet...' : buttonLabel}
+      <button type="submit" disabled={status === 'sending'} className="w-full rounded-lg bg-[#6b7f3e] text-white px-4 py-2.5 text-sm font-semibold hover:opacity-90 transition-opacity disabled:opacity-50">
+        {status === 'sending' ? 'Angebot wird erstellt...' : 'Angebot erstellen'}
       </button>
     </form>
   );

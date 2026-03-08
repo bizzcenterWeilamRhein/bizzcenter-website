@@ -1,36 +1,121 @@
 ---
-title: "Büro mieten in Weil am Rhein – Ready-to-Work Büros"
-description: "Möbliertes Büro mieten in Weil am Rhein. Ready-to-Work mit LAN/WLAN, Telefon, Nebenkosten inklusive. Kurze Mietlaufzeiten im bizzcenter Dreiländereck."
+title: "Büro mieten in Weil am Rhein – Einzelbüro ab EUR 59,- /Tag"
+description: "Einzelbüro mieten in Weil am Rhein: Tagesbüro, 10er-Karte, Monatsmiete oder Langzeitmiete. Voll ausgestattet, Glasfaser, 24/7 Zugang. bizzcenter im Kesselhaus nahe Basel."
 ---
 
-<PageHero
-  title="Büro mieten in Weil am Rhein"
-  description="Profitieren Sie von unseren Büros – ready to work"
-  image="/images/standorte/weil-am-rhein/coworking-arbeitsplatz.jpg"
+{/* ===== HEADLINE + BILD ===== */}
+<CompactHero
+  title="Ihr eigenes Büro ab EUR 59,- /Tag"
+  description="Voll ausgestattet, sofort bezugsfertig — ohne Makler, ohne Investition, ohne Risiko."
+  image="/images/standorte/weil-am-rhein/coachingbuero.jpg"
+  imageAlt="Einzelbüro im bizzcenter Weil am Rhein"
+  buttonText="Tarif wählen & anfragen"
+  buttonHref="#buero-buchen"
+  formId=""
 />
 
-## Was bedeutet das genau?
+{/* ===== SOCIAL PROOF ===== */}
+<GoogleReviews
+  title="Das sagen unsere Büromieter"
+  reviews={[
+    {
+      author: "veprosa",
+      rating: 5,
+      text: "Tolles, helles Büro in attraktiver Lage – besser geht es nicht. Wir können das bizzcenter Weil am Rhein jedem nur wärmstens empfehlen!",
+      source: "Google Review"
+    },
+    {
+      author: "Katja Falkenburger",
+      rating: 5,
+      text: "Die Gemeinschafts- und virtuellen Büros bieten komfortable Räumlichkeiten und Flexibilität verknüpft mit einer attraktiven, grenznahen Lage zur Schweiz und nach Frankreich.",
+      source: "Google Review"
+    },
+    {
+      author: "Francesco Petrini",
+      rating: 5,
+      text: "Very well organized space and in development. Good WiFi network and easy parking. Perfect solution to work in Germany close to CH/France.",
+      source: "Google Review"
+    }
+  ]}
+/>
 
-Ein Büro zu mieten ist immer mit viel Aufwand und Kosten verbunden. Das haben wir schon 2004 erkannt, sodass wir Ihnen jeglichen Aufwand diesbezüglich abnehmen und Sie sich auf Ihre Geschäftstätigkeit fokussieren können.
+{/* ===== BILDERGALERIE ===== */}
+<ImageSlider
+  title="Einblicke in unsere Büros"
+  slides={[
+    { src: "/images/standorte/weil-am-rhein/coachingbuero.jpg", caption: "Einzelbüro — ruhig und abgeschlossen" },
+    { src: "/images/standorte/weil-am-rhein/coachingbuero-session.jpg", caption: "Büro für Beratung und konzentriertes Arbeiten" },
+    { src: "/images/standorte/weil-am-rhein/green-office.jpg", caption: "Green Office — Tageslicht und Begrünung" },
+    { src: "/images/standorte/weil-am-rhein/kueche-aufenthaltsraum.jpg", caption: "Küche und Aufenthaltsraum" },
+    { src: "/images/standorte/weil-am-rhein/meetingraum-green-office-4-6-personen.jpg", caption: "Meetingraum für 4–6 Personen" },
+    { src: "/images/standorte/weil-am-rhein/meetingraum-empore-5-personen.jpg", caption: "Empore mit Blick über den Coworking Space" }
+  ]}
+/>
 
-<Features title="Unsere Büros sind bereits ausgestattet mit:">
-  <FeatureCard title="Hochwertige Büroausstattung" description="Erstklassige Möbel und Ausstattung für produktives Arbeiten" icon="check" />
-  <FeatureCard title="LAN/WLAN" description="Highspeed-Internet für alle Anforderungen" icon="wifi" />
-  <FeatureCard title="Telefon/Fax" description="Optional verfügbar" icon="phone" />
+{/* ===== TARIF-KACHELN ===== */}
+<BueroTarife />
+
+{/* ===== WAS ENTHALTEN IST ===== */}
+<Features title="Was im Büroprois enthalten ist" columns={3}>
+  <Feature title="Voll möbliert" description="Schreibtisch, Bürostuhl, Regale — alles da. Sie bringen nur Ihren Laptop mit." />
+  <Feature title="Glasfaser-Internet" description="WIFI 5/6 und Gigabit-LAN. Stabil genug für Videokonferenzen, Cloud-Anwendungen und IP-Telefonie." />
+  <Feature title="Nebenkosten inklusive" description="Strom, Heizung, Wasser, Reinigung — keine versteckten Zusatzkosten." />
+  <Feature title="24/7 Zugang" description="Eigener Türcode für den Zugang rund um die Uhr, sieben Tage die Woche." />
+  <Feature title="Abschließbar & privat" description="Ihr eigenes Büro mit abschließbarer Tür — kein Großraum, keine Ablenkung." />
+  <Feature title="Postannahme" description="Brief- und Paketannahme inklusive. Optional Postweiterleitung und Scanservice." />
 </Features>
 
-<Steps title="Wir übernehmen für Sie:">
-  <Step title="Nebenkosten" description="Wasser und Strom sind inklusive" />
-  <Step title="Büroreinigung" description="Regelmäßige Reinigung sowie Müllgebühren (optional)" />
-  <Step title="Zusätzliche Räume" description="Bei Bedarf flexibel zusätzliche Büro- und Konferenzräume (stundenweise oder dauerhaft)" />
-  <Step title="Postbearbeitung" description="Bearbeitung für eingehende Post" />
-  <Step title="Kurze Mietlaufzeiten" description="Maximale Flexibilität für Ihr Unternehmen" />
-</Steps>
+{/* ===== STATS ===== */}
+<StatsTheme>
+<Stats title="Einzelbüro in Zahlen">
+  <Stat value="ab 59,-" label="EUR pro Tag" description="Tagesbüro ohne Bindung" />
+  <Stat value="ab 449,-" label="EUR pro Monat" description="Langzeitmiete ab 6 Mon." />
+  <Stat value="24/7" label="Zugang" description="Ihr eigener Türcode" />
+  <Stat value="0,-" label="Investitionskosten" description="Voll ausgestattet ab Tag 1" />
+</Stats>
+</StatsTheme>
 
-Wir stehen Ihnen als kompetenter Partner mit über 22 Jahren Erfahrung im Bereich flexibler Bürodienstleistungen sowie eigenen Unternehmungsgründungen in Deutschland und der Schweiz mit unserem Wissen und Erfahrung zur Verfügung.
+{/* ===== INTERAKTIVER BUCHUNGSFLOW ===== */}
+<div id="buero-buchen">
+<BueroBookingFlow title="In 4 Schritten zum eigenen Büro" />
+</div>
 
-<BannerCTA
-  title="Ihr Büro in Weil am Rhein"
-  subtext="Wir freuen uns über Ihre Anfrage und melden uns in der Regel innerhalb 24 Stunden bei Ihnen."
-  buttonText="Anfrage senden" buttonHref="/kontakt"
-/>
+{/* ===== ÜBER UNS ===== */}
+<AlternatingFeatures>
+  <AlternatingFeatureRow title="Ready-to-Work Büros" description="Unsere Einzelbüros sind komplett eingerichtet: Schreibtisch, Stuhl, Regale, Glasfaser-Internet — Sie bringen nur Ihren Laptop. Keine Maklercourtage, keine Einrichtungskosten. Ab dem ersten Tag produktiv." image="/images/standorte/weil-am-rhein/coachingbuero.jpg" imageAlt="Einzelbüro im bizzcenter" />
+  <AlternatingFeatureRow title="Im historischen Kesselhaus" description="Das bizzcenter befindet sich im denkmalgeschützten Kesselhaus in Weil am Rhein — 300m von der Schweizer Grenze. Gut erreichbar mit Tramlinie 8 von Basel (Haltestelle Riedlistrasse/Kesselhaus), nahe der A5 und mit Parkplätzen vor Ort." image="/images/hero/kesselhaus.jpg" imageAlt="Kesselhaus Weil am Rhein" />
+</AlternatingFeatures>
+
+{/* ===== FAQ ===== */}
+<FAQ title="Häufig gestellte Fragen zum Einzelbüro">
+  <FAQItem question="Für wen ist ein Einzelbüro geeignet?">
+    Für Selbstständige, kleine Unternehmen, Berater und Teams, die einen eigenen, abgeschlossenen Arbeitsbereich brauchen — ohne die Kosten und den Aufwand eines klassischen Mietvertrags.
+  </FAQItem>
+  <FAQItem question="Was ist der Unterschied zum Coworking?">
+    Im Einzelbüro haben Sie Ihren eigenen, abschließbaren Raum — ideal für vertrauliche Arbeit, Kundengespräche oder wenn Sie einfach Ruhe brauchen. Coworking ist offener und flexibler.
+  </FAQItem>
+  <FAQItem question="Kann ich ein Büro erst testen?">
+    Ja. Buchen Sie ein Tagesbüro oder eine 10er-Karte. Bei einer längerfristigen Buchung werden bereits gezahlte Tagespässe angerechnet.
+  </FAQItem>
+  <FAQItem question="Wie groß sind die Büros?">
+    Unsere Einzelbüros sind zwischen 10 und 20 m² groß — ideal für 1–3 Personen. Auf Anfrage sind auch größere Büros verfügbar.
+  </FAQItem>
+  <FAQItem question="Gibt es eine Mindestlaufzeit?">
+    Nein. Tagesbüro und 10er-Karte sind ohne Mindestlaufzeit. Bei Monats- und Langzeitmiete profitieren Sie von günstigeren Konditionen.
+  </FAQItem>
+  <FAQItem question="Kann ich die Adresse als Geschäftsadresse nutzen?">
+    Ja. Bei Monats- und Langzeitmiete ist die Nutzung als impressumsfähige Geschäftsadresse optional zubuchbar.
+  </FAQItem>
+  <FAQItem question="Gibt es Parkplätze?">
+    Ja. 90 Minuten kostenfrei auf dem Areal. Tages- und Monatsparkplätze sind optional buchbar.
+  </FAQItem>
+  <FAQItem question="Wie schnell ist das Internet?">
+    Glasfaser-Anbindung mit WIFI 5/6 und Gigabit-LAN — stabil genug für Videokonferenzen, Cloud-Anwendungen und IP-Telefonie.
+  </FAQItem>
+  <FAQItem question="Gibt es Meeting- oder Konferenzräume?">
+    Ja. Meeting- und Konferenzräume können flexibel stunden- oder tageweise dazugebucht werden.
+  </FAQItem>
+  <FAQItem question="Sind die Büros möbliert?">
+    Ja. Alle Büros sind komplett möbliert mit Schreibtisch, Bürostuhl und Regalen. Optional können Sie einen 27" Curved Monitor dazubuchen.
+  </FAQItem>
+</FAQ>

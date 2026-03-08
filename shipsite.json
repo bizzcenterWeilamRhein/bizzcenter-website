@@ -721,6 +721,22 @@
       "locales": [
         "de"
       ]
+    },
+    {
+      "slug": "angebot/kunde-xyz",
+      "type": "page",
+      "content": "angebot/kunde-xyz",
+      "locales": [
+        "de"
+      ]
+    },
+    {
+      "slug": "vertrag/kunde-xyz",
+      "type": "page",
+      "content": "vertrag/kunde-xyz",
+      "locales": [
+        "de"
+      ]
     }
   ],
   "analytics": {

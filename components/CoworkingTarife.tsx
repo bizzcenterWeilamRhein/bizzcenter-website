@@ -22,7 +22,7 @@ export function CoworkingTarife() {
   }
 
   return (
-    <div className="mt-6">
+    <div className="mt-6 max-w-2xl mx-auto">
       <div className="mb-3 rounded-lg bg-[#6b7f3e] text-white text-center py-2 px-3">
         <p className="text-sm font-bold">🌿 Green Office Eröffnungsangebot — 16% Rabatt bis 30.09.2026</p>
       </div>

@@ -77,7 +77,7 @@ export function ServiceHero({ backgroundImage, headline, services }: ServiceHero
     <section className="relative w-full min-h-[auto] sm:min-h-[90vh] flex items-start justify-center overflow-hidden">
       {/* Background Image */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        className="absolute inset-0 bg-cover bg-right sm:bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${backgroundImage})` }}
       />
       <div className="absolute inset-0 bg-black/15" />

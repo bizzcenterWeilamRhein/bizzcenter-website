@@ -76,11 +76,7 @@ description: "Ladungsfähige Geschäftsadresse in Weil am Rhein mieten. Handelsr
 </FeaturesWithBg>
 
 {/* ===== SO FUNKTIONIERT'S ===== */}
-<Steps title="In 3 Schritten zu Ihrer Geschäftsadresse">
-  <Step title="Anfrage senden" description="Per E-Mail, Telefon oder Kontaktformular. Wir erstellen Ihnen ein maßgeschneidertes Angebot." />
-  <Step title="Paket wählen" description="Geschäftsadresse pur oder mit Telefon-, Sekretariats- und Postservice. Transparent kalkuliert." />
-  <Step title="Sofort loslegen" description="Firmenname am Briefkasten, Post wird angenommen, Sie arbeiten von überall." />
-</Steps>
+<StepsInteractive standort="Weil am Rhein" />
 
 <BannerCTA
   title="Jetzt Angebot anfordern"
@@ -163,23 +159,9 @@ description: "Ladungsfähige Geschäftsadresse in Weil am Rhein mieten. Handelsr
 </FAQ>
 
 {/* ===== FINALER CTA MIT FORMULAR ===== */}
-<Form
-  action="#"
-  title="Geschäftsadresse ab EUR 49,-/Monat — Angebot in 24 Stunden"
-  description="Keine versteckten Kosten. Flexible Laufzeiten. Kostenlose Erstberatung."
-  columns={2}
-  submitLabel="Kostenloses Angebot anfordern"
-  successTitle="Anfrage gesendet!"
-  successMessage="Wir melden uns innerhalb von 24 Stunden bei Ihnen."
->
-  <FormField name="anrede" label="Anrede" type="select" placeholder="Bitte wählen" options={["Herr", "Frau", "Herr Dr.", "Frau Dr."]} required colSpan={2} />
-  <FormField name="vorname" label="Vorname" type="text" required />
-  <FormField name="nachname" label="Nachname" type="text" required />
-  <FormField name="firma" label="Firma" type="text" required colSpan={2} />
-  <FormField name="strasse" label="Straße, Hausnummer" type="text" required colSpan={2} />
-  <FormField name="plz" label="Postleitzahl" type="text" required />
-  <FormField name="ort" label="Ort" type="text" required />
-  <FormField name="telefon" label="Telefonnummer" type="tel" required />
-  <FormField name="email" label="E-Mail" type="email" required />
-  <FormField name="nachricht" label="Ihre Nachricht" type="textarea" required colSpan={2} />
-</Form>
+<LeadForm
+  standort="Weil am Rhein"
+  angebotSlug="kunde-xyz"
+  title="Angebot erstellen"
+  description="Kostenlos und unverbindlich. Sie sehen Ihr persönliches Angebot sofort."
+/>
