@@ -146,24 +146,4 @@ description: "Coworking Space in Weil am Rhein: Tagespass, 10er-Karte, Monatspas
   </FAQItem>
 </FAQ>
 
-{/* ===== FINALER CTA MIT FORMULAR ===== */}
-<Form
-  action="#"
-  title="Coworking-Platz anfragen — Antwort in 24 Stunden"
-  description="Keine versteckten Kosten. Flexible Tarife. Kostenlose Erstberatung."
-  columns={2}
-  submitLabel="Kostenloses Angebot anfordern"
-  successTitle="Anfrage gesendet!"
-  successMessage="Wir melden uns innerhalb von 24 Stunden bei Ihnen."
->
-  <FormField name="anrede" label="Anrede" type="select" placeholder="Bitte wählen" options={["Herr", "Frau", "Herr Dr.", "Frau Dr."]} required colSpan={2} />
-  <FormField name="vorname" label="Vorname" type="text" required />
-  <FormField name="nachname" label="Nachname" type="text" required />
-  <FormField name="firma" label="Firma" type="text" required colSpan={2} />
-  <FormField name="strasse" label="Straße, Hausnummer" type="text" required colSpan={2} />
-  <FormField name="plz" label="Postleitzahl" type="text" required />
-  <FormField name="ort" label="Ort" type="text" required />
-  <FormField name="telefon" label="Telefonnummer" type="tel" required />
-  <FormField name="email" label="E-Mail" type="email" required />
-  <FormField name="nachricht" label="Ihre Nachricht" type="textarea" required colSpan={2} />
-</Form>
+
