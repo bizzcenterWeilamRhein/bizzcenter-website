@@ -153,15 +153,15 @@ export function IncludedBox({
                     onClick={(e) => { e.preventDefault(); handleTarifClick(t.id); }}
                     className={`rounded-xl border p-4 text-center transition-all duration-250 cursor-pointer ${
                       isSelected
-                        ? 'border-[#6b7f3e] bg-[#e3e7d4] shadow-sm'
-                        : 'border-border bg-background hover:bg-[#f0f4e8] hover:border-[#6b7f3e] hover:shadow-sm'
+                        ? 'border-[#39B200] bg-[#d9f5c7] shadow-sm'
+                        : 'border-border bg-background hover:bg-[#edfde0] hover:border-[#39B200] hover:shadow-sm'
                     }`}
                   >
                     <div className="text-sm font-semibold text-foreground">{t.label}</div>
                     <div className="text-xl font-bold text-[#1e293b] mt-1">{t.display}</div>
                     <div className="text-xs text-muted-foreground mt-1">{t.sub}</div>
                     <div className={`text-xs font-medium mt-2 transition-opacity duration-250 ${
-                      isSelected ? 'text-[#6b7f3e] opacity-100' : 'text-[#6b7f3e] opacity-0'
+                      isSelected ? 'text-[#39B200] opacity-100' : 'text-[#39B200] opacity-0'
                     }`}>
                       {isSelected ? '✓ Ausgewählt' : 'Auswählen'}
                     </div>
@@ -195,8 +195,8 @@ export function IncludedBox({
                         : disabled
                         ? 'border-border bg-background/50 cursor-not-allowed opacity-60'
                         : isSelected
-                        ? 'border-[#6b7f3e] bg-[#e3e7d4] shadow-sm cursor-pointer'
-                        : 'border-border bg-background hover:bg-[#f0f4e8] hover:border-[#6b7f3e] hover:shadow-sm cursor-pointer'
+                        ? 'border-[#39B200] bg-[#d9f5c7] shadow-sm cursor-pointer'
+                        : 'border-border bg-background hover:bg-[#edfde0] hover:border-[#39B200] hover:shadow-sm cursor-pointer'
                     }`}
                   >
                     <div className="text-sm font-semibold text-foreground">{addon.label}</div>
@@ -206,7 +206,7 @@ export function IncludedBox({
                     )}
                     {addon.selectable && !disabled && (
                       <div className={`text-xs font-medium mt-2 ${
-                        isSelected ? 'text-[#6b7f3e]' : 'text-[#6b7f3e] opacity-60'
+                        isSelected ? 'text-[#39B200]' : 'text-[#39B200] opacity-60'
                       }`}>
                         {isSelected ? '✓ Hinzugebucht' : '+ Hinzubuchen'}
                       </div>

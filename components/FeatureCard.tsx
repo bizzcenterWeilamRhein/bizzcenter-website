@@ -70,7 +70,7 @@ interface FeatureCardProps {
 }
 
 export function FeatureCard({ title, description, icon, iconColor }: FeatureCardProps) {
-  const color = iconColor || 'var(--color-primary, #6b7f3e)';
+  const color = iconColor || 'var(--color-primary, #39B200)';
   const IconComponent = icon ? iconMap[icon] : null;
   const CustomIcon = icon ? customIcons[icon] : null;
 
