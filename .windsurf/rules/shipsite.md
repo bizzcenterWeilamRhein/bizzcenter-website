@@ -172,6 +172,8 @@ description: "How we handle your data."
 - **FormField** — Data-only child component of Form. Defines a single field in a generic form. Renders nothing on its own — the parent Form component reads its props to build the form UI.
 - **Form** — Generic form section that renders a configurable form from FormField children. Supports multi-column layouts, various input types including select, and submits JSON to an external form backend. Uses the server-shell + client-island pattern.
 - **FormEmbed** — Embeds an external form (Tally, Typeform, or custom URL) via iframe. Supports an inline iframe mode or a popup mode that opens the form in a centered dialog.
+- **LocationItem** — Data-only component that defines a single location. Must be used as a child of Location. Renders nothing on its own; its props are consumed by the parent.
+- **Location** — Section displaying one or more locations with embedded Google Maps, address, phone, email, and opening hours. Consumes LocationItem children.
 
 ### Blog
 - **BlogArticle** — Top-level wrapper for blog article content. Renders a centered, max-width article container with vertical padding.
