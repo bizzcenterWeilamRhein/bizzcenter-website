@@ -33,3 +33,4 @@ export { LeadForm } from './LeadForm';
 export { StepsInteractive } from './StepsInteractive';
 export { TeamSection } from './TeamSection';
 export { KonferenzBuchung } from './KonferenzBuchung';
+export { ActiveNavHighlight } from './ActiveNavHighlight';

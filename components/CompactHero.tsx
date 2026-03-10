@@ -162,14 +162,14 @@ function HeroForm() {
           {tarifLabels[selectedTarif] || selectedTarif}
         </div>
       )}
-      <select name="anrede" required className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-muted-foreground">
-        <option value="">Anrede</option>
-        <option>Herr</option>
-        <option>Frau</option>
-        <option>Herr Dr.</option>
-        <option>Frau Dr.</option>
-      </select>
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-[100px_1fr_1fr] gap-2">
+        <select name="anrede" required className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-muted-foreground">
+          <option value="">Anrede</option>
+          <option>Herr</option>
+          <option>Frau</option>
+          <option>Herr Dr.</option>
+          <option>Frau Dr.</option>
+        </select>
         <input name="vorname" type="text" placeholder="Vorname" required className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
         <input name="nachname" type="text" placeholder="Nachname" required className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
       </div>

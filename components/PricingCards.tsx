@@ -31,14 +31,20 @@ interface PricingCardsProps {
   ctaHref?: string;
 }
 
-function PricingCardItem({ card, ctaText, ctaHref }: { card: PricingCard; ctaText?: string; ctaHref?: string }) {
-  const [selected, setSelected] = useState<number | null>(null);
+function PricingCardItem({ card, ctaText, ctaHref, onImageClick }: { card: PricingCard; ctaText?: string; ctaHref?: string; onImageClick?: (src: string) => void }) {
+  const [selected, setSelected] = useState<{ index: number; tenner: boolean } | null>(null);
 
   const buildHref = () => {
     if (!ctaHref) return '#';
     const params = new URLSearchParams({
       raum: card.title,
-      ...(selected !== null && card.prices?.[selected] ? { tarif: card.prices[selected].label, preis: card.prices[selected].amount } : {}),
+      ...(selected !== null && card.prices?.[selected.index] ? {
+        tarif: card.prices[selected.index].label,
+        preis: selected.tenner && card.prices[selected.index].tenner
+          ? card.prices[selected.index].tenner!.amount
+          : card.prices[selected.index].amount,
+        karte: selected.tenner ? '10er' : 'einzel',
+      } : {}),
     });
     return `${ctaHref}?${params.toString()}`;
   };
@@ -55,11 +61,11 @@ function PricingCardItem({ card, ctaText, ctaHref }: { card: PricingCard; ctaTex
 
       {/* Image */}
       <div className="px-4">
-        <div className="relative aspect-[4/3] rounded-xl overflow-hidden">
+        <div className="relative aspect-[4/3] rounded-xl overflow-hidden cursor-pointer group" onClick={() => onImageClick?.(card.image || '')}>
           <img
             src={card.image}
             alt={card.title}
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
           />
         </div>
       </div>
@@ -78,41 +84,49 @@ function PricingCardItem({ card, ctaText, ctaHref }: { card: PricingCard; ctaTex
         )}
         {card.prices && card.prices.length > 0 && (
           <div className="space-y-2">
-            {card.prices.map((p, j) => (
-              <div key={j}>
-                <button
-                  type="button"
-                  onClick={() => setSelected(selected === j ? null : j)}
-                  className={`w-full relative rounded-lg px-4 py-3 transition-all cursor-pointer text-left ${
-                    selected === j
-                      ? 'bg-[#6b7f3e] ring-2 ring-[#6b7f3e] ring-offset-1'
-                      : 'bg-[#f0f4e8] hover:bg-[#e8eede]'
-                  }`}
-                >
-                  {/* Main price row */}
-                  <div className="grid grid-cols-[1fr_auto] items-center gap-2">
-                    <span className={`text-sm font-medium ${selected === j ? 'text-white' : 'text-gray-700'}`}>{p.label}</span>
-                    <span className={`text-base font-bold tabular-nums text-right ${selected === j ? 'text-white' : 'text-[#6b7f3e]'}`}>{p.amount}</span>
-                  </div>
-                  {/* Note */}
-                  {p.note && (
-                    <span className={`text-[11px] block mt-1 ${selected === j ? 'text-white/70' : 'text-gray-400'}`}>{p.note}</span>
-                  )}
-                  {/* 10er-Karte sub-row */}
-                  {p.tenner && (
-                    <div className={`mt-2.5 pt-2 ${selected === j ? 'border-t-[2px] border-white/50' : 'border-t-[2px] border-[#6b7f3e]/30'}`}>
-                      <div className="flex items-center justify-between">
-                        <span className={`text-xs ${selected === j ? 'text-white/80' : 'text-gray-500'}`}>10er-Karte</span>
-                        <div className="flex items-center gap-2">
-                          <span className={`text-[10px] font-bold rounded-full px-1.5 py-0.5 ${selected === j ? 'bg-white text-[#6b7f3e]' : 'bg-[#6b7f3e] text-white'}`}>−15%</span>
-                          <span className={`text-sm font-bold tabular-nums text-right ${selected === j ? 'text-white' : 'text-[#6b7f3e]'}`}>{p.tenner.amount}</span>
-                        </div>
-                      </div>
+            {card.prices.map((p, j) => {
+              const isSelectedNormal = selected?.index === j && !selected.tenner;
+              const isSelectedTenner = selected?.index === j && selected.tenner;
+              return (
+                <div key={j} className="space-y-1">
+                  {/* Normaler Preis */}
+                  <button
+                    type="button"
+                    onClick={() => setSelected(isSelectedNormal ? null : { index: j, tenner: false })}
+                    className={`w-full relative rounded-lg px-4 py-3 transition-all cursor-pointer text-left ${
+                      isSelectedNormal
+                        ? 'bg-[#6b7f3e] ring-2 ring-[#6b7f3e] ring-offset-1'
+                        : 'bg-[#f0f4e8] hover:bg-[#e8eede]'
+                    }`}
+                  >
+                    <div className="grid grid-cols-[1fr_auto] items-center gap-2">
+                      <span className={`text-sm font-medium ${isSelectedNormal ? 'text-white' : 'text-gray-700'}`}>{p.label}</span>
+                      <span className={`text-base font-bold tabular-nums text-right ${isSelectedNormal ? 'text-white' : 'text-[#6b7f3e]'}`}>{p.amount}</span>
                     </div>
+                    {p.note && (
+                      <span className={`text-[11px] block mt-1 ${isSelectedNormal ? 'text-white/70' : 'text-gray-400'}`}>{p.note}</span>
+                    )}
+                  </button>
+                  {/* 10er-Karte */}
+                  {p.tenner && (
+                    <button
+                      type="button"
+                      onClick={() => setSelected(isSelectedTenner ? null : { index: j, tenner: true })}
+                      className={`w-full rounded-lg px-4 py-2 transition-all cursor-pointer text-left ${
+                        isSelectedTenner
+                          ? 'bg-[#6b7f3e] ring-2 ring-[#6b7f3e] ring-offset-1'
+                          : 'bg-[#f0f4e8]/60 hover:bg-[#e8eede]'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className={`text-xs ${isSelectedTenner ? 'text-white/80' : 'text-gray-500'}`}>10er-Karte</span>
+                        <span className={`text-[10px] font-bold rounded-full px-1.5 py-0.5 ${isSelectedTenner ? 'bg-white text-[#6b7f3e]' : 'bg-[#6b7f3e] text-white'}`}>−15%</span>
+                      </div>
+                    </button>
                   )}
-                </button>
-              </div>
-            ))}
+                </div>
+              );
+            })}
           </div>
         )}
       </div>
@@ -123,7 +137,7 @@ function PricingCardItem({ card, ctaText, ctaHref }: { card: PricingCard; ctaTex
           <a
             href={buildHref()}
             className={`block text-center text-sm font-semibold py-2.5 px-4 rounded-lg transition-colors ${
-              selected !== null
+              selected
                 ? 'bg-[#6b7f3e] text-white hover:bg-[#5a6b35]'
                 : 'bg-gray-200 text-gray-500 hover:bg-gray-300'
             }`}
@@ -138,6 +152,7 @@ function PricingCardItem({ card, ctaText, ctaHref }: { card: PricingCard; ctaTex
 
 export function PricingCards({ cards, backgroundImage, headline, title, description, ctaText, ctaHref }: PricingCardsProps) {
   const displayTitle = title || headline;
+  const [lightbox, setLightbox] = useState<string | null>(null);
 
   return (
     <section className="relative overflow-hidden">
@@ -167,10 +182,27 @@ export function PricingCards({ cards, backgroundImage, headline, title, descript
         )}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {cards.map((card, i) => (
-            <PricingCardItem key={i} card={card} ctaText={ctaText} ctaHref={ctaHref} />
+            <PricingCardItem key={i} card={card} ctaText={ctaText} ctaHref={ctaHref} onImageClick={setLightbox} />
           ))}
         </div>
       </div>
+      {/* Lightbox */}
+      {lightbox && (
+        <div
+          className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center cursor-pointer"
+          onClick={() => setLightbox(null)}
+        >
+          <img
+            src={lightbox}
+            alt=""
+            className="max-w-[90vw] max-h-[85vh] object-contain rounded-xl shadow-2xl"
+          />
+          <button
+            className="absolute top-6 right-6 text-white text-3xl font-light hover:text-gray-300"
+            onClick={() => setLightbox(null)}
+          >✕</button>
+        </div>
+      )}
     </section>
   );
 }

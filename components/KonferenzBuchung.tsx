@@ -1,7 +1,71 @@
 'use client';
 
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { submitLead } from './submitLead';
+
+/* ── Hero Galerie ── */
+function HeroGallery({ images, title, subtitle, preisLabel }: {
+  images: string[]; title: string; subtitle: string; preisLabel: string;
+}) {
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    if (images.length <= 1) return;
+    const id = setInterval(() => setCurrent(i => (i + 1) % images.length), 5000);
+    return () => clearInterval(id);
+  }, [images.length]);
+
+  return (
+    <div style={{ position: 'relative', borderRadius: 16, overflow: 'hidden', border: '1px solid #e5e7eb' }}>
+      <div style={{ position: 'relative', width: '100%', height: 420, background: '#eee' }}>
+        <img
+          src={images[current]}
+          alt={title}
+          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+        />
+      </div>
+      {/* Gradient */}
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 40%, transparent 100%)', pointerEvents: 'none' }} />
+      {/* Pfeile */}
+      {images.length > 1 && (
+        <>
+          <button onClick={() => setCurrent(i => (i - 1 + images.length) % images.length)}
+            style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', width: 40, height: 40, borderRadius: '50%', background: 'rgba(0,0,0,0.3)', border: 'none', color: 'white', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20 }}>
+            ‹
+          </button>
+          <button onClick={() => setCurrent(i => (i + 1) % images.length)}
+            style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', width: 40, height: 40, borderRadius: '50%', background: 'rgba(0,0,0,0.3)', border: 'none', color: 'white', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20 }}>
+            ›
+          </button>
+        </>
+      )}
+      {/* Text */}
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '20px 32px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', pointerEvents: 'none' }}>
+        <div>
+          <h1 style={{ fontSize: 32, fontWeight: 700, color: 'white', margin: 0 }}>{title}</h1>
+          {subtitle && <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: 14, margin: '4px 0 0' }}>{subtitle}</p>}
+        </div>
+        <div style={{ textAlign: 'right' }}>
+          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 12, margin: 0 }}>ab</p>
+          <p style={{ fontSize: 24, fontWeight: 700, color: 'white', margin: 0 }}>{preisLabel}</p>
+          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 12, margin: 0 }}>halber Tag, zzgl. MwSt.</p>
+        </div>
+      </div>
+      {/* Dots */}
+      {images.length > 1 && (
+        <div style={{ position: 'absolute', bottom: 12, left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 8 }}>
+          {images.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrent(i)}
+              style={{ width: i === current ? 24 : 8, height: 8, borderRadius: 4, background: i === current ? 'white' : 'rgba(255,255,255,0.5)', border: 'none', cursor: 'pointer', transition: 'all 0.3s', padding: 0 }}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 /* ── Typen ── */
 interface RaumConfig {
@@ -9,6 +73,7 @@ interface RaumConfig {
   label: string;
   subtitle: string;
   image: string;
+  gallery?: string[];
   kapazitaet: number;
   preise: {
     stunde: number;
@@ -30,6 +95,7 @@ interface Addon {
   icon: string;
   mitMenge?: boolean;
   mengeLabel?: string;
+  nurRaeume?: string[];
 }
 
 interface KonferenzBuchungProps {
@@ -39,22 +105,28 @@ interface KonferenzBuchungProps {
 /* ── Konfiguration ── */
 const RAEUME: RaumConfig[] = [
   {
-    id: 'S', label: 'Meetingraum S', subtitle: 'Bis 2 Personen', kapazitaet: 2,
-    image: '/images/standorte/weil-am-rhein/coachingbuero.jpg',
+    id: 'S', label: 'Meetingraum bis 2 Personen', subtitle: '', kapazitaet: 2,
+    image: '/images/standorte/weil-am-rhein/green-office-buero-2-personen.jpg',
+    gallery: [
+      '/images/standorte/weil-am-rhein/green-office-buero-2-personen.jpg',
+      '/images/standorte/weil-am-rhein/meetingraum-weil.jpg',
+      '/images/standorte/weil-am-rhein/green-office.jpg',
+      '/images/standorte/weil-am-rhein/green-office-flurbereich.jpg',
+    ],
     preise: { stunde: 19, halberTag: 59, tag: 89, stunde10er: 16, halberTag10er: 49, tag10er: 76 },
   },
   {
-    id: 'M', label: 'Meetingraum M', subtitle: 'Bis 6 Personen', kapazitaet: 6,
+    id: 'M', label: 'Meetingraum bis 6 Personen', subtitle: '', kapazitaet: 6,
     image: '/images/standorte/weil-am-rhein/meetingraum-green-office-4-6-personen.jpg',
     preise: { stunde: 29, halberTag: 89, tag: 129, stunde10er: 25, halberTag10er: 76, tag10er: 109 },
   },
   {
-    id: 'L', label: 'Konferenzraum L', subtitle: 'Bis 15 Personen', kapazitaet: 15,
+    id: 'L', label: 'Meetingraum bis 15 Personen', subtitle: '', kapazitaet: 15,
     image: '/images/standorte/weil-am-rhein/konferenzraum-gross.jpg',
     preise: { stunde: 39, halberTag: 99, tag: 159, stunde10er: 33, halberTag10er: 85, tag10er: 135 },
   },
   {
-    id: 'XL', label: 'Konferenzraum XL', subtitle: 'Bis 25 Personen', kapazitaet: 25,
+    id: 'XL', label: 'Konferenzraum bis 25 Personen', subtitle: '', kapazitaet: 25,
     image: '/images/standorte/weil-am-rhein/konferenzraum-gross.jpg',
     preise: { stunde: 49, halberTag: 129, tag: 199, stunde10er: 42, halberTag10er: 109, tag10er: 169 },
   },
@@ -72,10 +144,13 @@ const AddonIcons: Record<string, React.ReactNode> = {
 };
 
 const ADDONS: Addon[] = [
-  { id: 'kaffeeflat', label: 'Kaffee-Flatrate', beschreibung: 'Kaffee, Tee, Wasser — unbegrenzt', preis: '', preisWert: 0, einheit: 'pro-stueck-tag', icon: '', mitMenge: true, mengeLabel: 'Personen' },
+  { id: 'kaffeeflat', label: 'Kaffee-Flatrate', beschreibung: 'Kaffee, Tee, Wasser — unbegrenzt', preis: 'EUR 8,- / Person', preisWert: 8, einheit: 'pro-stueck-tag', icon: '', mitMenge: true, mengeLabel: 'Personen' },
+  { id: 'getraenkeflat', label: 'Getränke-Flatrate', beschreibung: 'Softdrinks, Säfte, Schorlen — unbegrenzt', preis: 'EUR 8,- / Person', preisWert: 8, einheit: 'pro-stueck-tag', icon: '', mitMenge: true, mengeLabel: 'Personen' },
   { id: 'beamer', label: 'Beamer / Präsentationstechnik', beschreibung: 'Full-HD Beamer mit Anschlusskabel', preis: '', preisWert: 0, einheit: 'pauschal', icon: '' },
   { id: 'moderationskoffer', label: 'Moderationskoffer', beschreibung: 'Stifte, Karten, Pins, Flipchart-Papier', preis: 'EUR 29,- pauschal', preisWert: 29, einheit: 'pauschal', icon: '' },
   { id: 'catering-lunch', label: 'Business Lunch / Catering', beschreibung: 'Individuelles Catering auf Anfrage', preis: 'Preis auf Anfrage', preisWert: 0, einheit: 'pauschal', icon: '' },
+  { id: 'monitor', label: '27" Curved Monitor', beschreibung: 'Externer Bildschirm für Präsentationen oder Arbeitsplatz', preis: 'EUR 9,- / Tag', preisWert: 9, einheit: 'pro-stueck-tag', icon: '', mitMenge: true, mengeLabel: 'Monitore' },
+  { id: 'umbaupauschale', label: 'Umbaupauschale', beschreibung: 'Abweichend von Grundbestuhlung (Blockbestuhlung, 20 Plätze)', preis: 'EUR 59,- pauschal', preisWert: 59, einheit: 'pauschal', icon: '', nurRaeume: ['L', 'XL'] },
   { id: 'parkplatz', label: 'Parkplatz reserviert', beschreibung: 'Reservierter Stellplatz direkt am Gebäude', preis: 'EUR 6,- / Tag', preisWert: 6, einheit: 'pro-stueck-tag', icon: '', mitMenge: true, mengeLabel: 'Parkplätze' },
 ];
 
@@ -122,7 +197,7 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
   const [addonMengen, setAddonMengen] = useState<Record<string, number>>({});
   const [form, setForm] = useState({
     firma: '', anrede: '', name: '', strasse: '', plz: '', ort: '',
-    email: '', telefon: '', bemerkungen: '', agb: false,
+    email: '', telefon: '', bemerkungen: '', agb: false, privatmiete: false,
   });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -184,7 +259,7 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
 
   /* Dynamische Addon-Preise (dauerabhängig) */
   const ADDON_PRICES: Record<string, { halberTag: number; tag: number }> = {
-    kaffeeflat: { halberTag: 4, tag: 7 },
+
     beamer: { halberTag: 39, tag: 59 },
   };
 
@@ -268,7 +343,7 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
     setSubmitting(false);
   };
 
-  const canSubmit = selectedDates.length > 0 && form.firma && form.anrede && form.name && form.strasse && form.plz && form.ort && form.email && form.agb;
+  const canSubmit = selectedDates.length > 0 && (form.privatmiete || form.firma) && form.anrede && form.name && form.strasse && form.plz && form.ort && form.email && form.agb;
 
   if (submitted) {
     return (
@@ -294,22 +369,13 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
   return (
     <div className="w-full max-w-5xl mx-auto space-y-8">
 
-      {/* ══════ RAUM-HEADER ══════ */}
-      <div className="relative rounded-2xl overflow-hidden shadow-sm border border-gray-100">
-        <img src={selectedRaum.image} alt={selectedRaum.label} className="w-full h-48 sm:h-56 object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 p-5 flex items-end justify-between">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-white">{selectedRaum.label} buchen</h1>
-            <p className="text-white/80 text-sm mt-1">{selectedRaum.subtitle} · bizzcenter Weil am Rhein</p>
-          </div>
-          <div className="text-right">
-            <p className="text-white/60 text-xs">ab</p>
-            <p className="text-xl font-bold text-white">EUR {selectedRaum.preise.halberTag},-</p>
-            <p className="text-white/60 text-xs">halber Tag, zzgl. MwSt.</p>
-          </div>
-        </div>
-      </div>
+      {/* ══════ RAUM-HEADER MIT GALERIE ══════ */}
+      <HeroGallery
+        images={selectedRaum.gallery || [selectedRaum.image]}
+        title={`${selectedRaum.label} buchen`}
+        subtitle={`${selectedRaum.subtitle} · bizzcenter Weil am Rhein`}
+        preisLabel={`EUR ${selectedRaum.preise.halberTag},-`}
+      />
 
       {/* ══════ HAUPTBEREICH: Links Formular, Rechts Preis-Sticky ══════ */}
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
@@ -476,7 +542,7 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
             <h3 className="text-lg font-bold text-gray-900">3. Extras hinzubuchen <span className="text-sm font-normal text-gray-400">(optional)</span></h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {ADDONS.map(addon => {
+              {ADDONS.filter(a => !a.nurRaeume || a.nurRaeume.includes(selectedRaum.id)).map(addon => {
                 const active = selectedAddons[addon.id];
                 return (
                   <button
@@ -529,11 +595,18 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
           <section className="bg-white rounded-2xl border shadow-sm p-6 space-y-4">
             <h3 className="text-lg font-bold text-gray-900">4. Ihre Kontaktdaten</h3>
 
-            {/* Firma */}
+            {/* Firma + Privat-Checkbox */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Firma / Unternehmen *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Firma / Unternehmen {!form.privatmiete && '*'}
+              </label>
               <input value={form.firma} onChange={e => setForm(f => ({ ...f, firma: e.target.value }))}
-                className="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none" placeholder="Muster GmbH" />
+                disabled={form.privatmiete}
+                className={`w-full border rounded-xl px-4 h-[42px] text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none ${form.privatmiete ? 'bg-gray-50 text-gray-400' : ''}`} />
+              <label className="flex items-center gap-2 mt-2 cursor-pointer">
+                <input type="checkbox" checked={form.privatmiete} onChange={e => setForm(f => ({ ...f, privatmiete: e.target.checked, firma: e.target.checked ? '' : f.firma }))} className="accent-[#6b7f3e] w-4 h-4" />
+                <span className="text-xs text-gray-500">Ich miete privat (ohne Firma)</span>
+              </label>
             </div>
 
             {/* Anrede + Name */}
@@ -541,7 +614,8 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Anrede *</label>
                 <select value={form.anrede} onChange={e => setForm(f => ({ ...f, anrede: e.target.value }))}
-                  className="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none bg-white">
+                  className="w-full h-[42px] border rounded-xl px-4 text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none bg-white appearance-none"
+                  style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' viewBox=\'0 0 12 12\'%3E%3Cpath d=\'M6 8L1 3h10z\' fill=\'%236b7f3e\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center' }}>
                   <option value="">—</option>
                   <option value="Herr">Herr</option>
                   <option value="Frau">Frau</option>
@@ -551,7 +625,7 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Vor- und Nachname *</label>
                 <input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                  className="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none" placeholder="Max Mustermann" />
+                  className="w-full border rounded-xl px-4 h-[42px] text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none" />
               </div>
             </div>
 
@@ -559,7 +633,7 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Straße + Hausnummer *</label>
               <input value={form.strasse} onChange={e => setForm(f => ({ ...f, strasse: e.target.value }))}
-                className="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none" placeholder="Musterstraße 1" />
+                className="w-full border rounded-xl px-4 h-[42px] text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none" />
             </div>
 
             {/* PLZ + Ort */}
@@ -567,12 +641,12 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">PLZ *</label>
                 <input value={form.plz} onChange={e => setForm(f => ({ ...f, plz: e.target.value }))}
-                  className="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none" placeholder="79576" />
+                  className="w-full border rounded-xl px-4 h-[42px] text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Ort *</label>
                 <input value={form.ort} onChange={e => setForm(f => ({ ...f, ort: e.target.value }))}
-                  className="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none" placeholder="Weil am Rhein" />
+                  className="w-full border rounded-xl px-4 h-[42px] text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none" />
               </div>
             </div>
 
@@ -581,12 +655,12 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">E-Mail *</label>
                 <input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-                  className="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none" placeholder="max@firma.de" />
+                  className="w-full border rounded-xl px-4 h-[42px] text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Telefon</label>
                 <input value={form.telefon} onChange={e => setForm(f => ({ ...f, telefon: e.target.value }))}
-                  className="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none" placeholder="+49 ..." />
+                  className="w-full border rounded-xl px-4 h-[42px] text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none" />
               </div>
             </div>
 
@@ -594,19 +668,76 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Bemerkungen / Sonderwünsche</label>
               <textarea value={form.bemerkungen} onChange={e => setForm(f => ({ ...f, bemerkungen: e.target.value }))}
-                className="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none" rows={3}
-                placeholder="z.B. besondere Bestuhlung, spezielle Technik..." />
+                className="w-full border rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none" rows={3} />
             </div>
+
+            {/* Stornierungsbedingungen */}
+            <div className="bg-[#f0f4e8] rounded-xl p-4 text-xs text-gray-600 space-y-1">
+              <p className="font-semibold text-gray-700">Stornierungsbedingungen:</p>
+              <p>Bis 7 Tage vor Termin: kostenfreie Stornierung</p>
+              <p>3–6 Tage vor Termin: 50 % des Buchungsbetrags</p>
+              <p>Weniger als 3 Tage / Nichterscheinen: 100 % des Buchungsbetrags</p>
+              <p className="mt-1 text-gray-400">Umbuchungen auf einen anderen Termin sind bis 48h vorher kostenfrei möglich.</p>
+            </div>
+
             <label className="flex items-start gap-3 cursor-pointer">
               <input type="checkbox" checked={form.agb} onChange={e => setForm(f => ({ ...f, agb: e.target.checked }))} className="mt-1 accent-[#6b7f3e] w-4 h-4" />
               <span className="text-xs text-gray-600 leading-relaxed">
-                Ich akzeptiere die <a href="/agb" className="text-[#6b7f3e] underline">AGB</a> und <a href="/datenschutz" className="text-[#6b7f3e] underline">Datenschutzerklärung</a> des bizzcenter. Stornierung bis 24h vorher kostenfrei.
+                Ich akzeptiere die <a href="/agb" className="text-[#6b7f3e] underline">AGB</a>, <a href="/datenschutz" className="text-[#6b7f3e] underline">Datenschutzerklärung</a> und die oben genannten Stornierungsbedingungen des bizzcenter.
               </span>
             </label>
           </section>
 
-          {/* Submit Button — Mobile */}
-          <div className="lg:hidden">
+          {/* ══════ ZUSAMMENFASSUNG UNTEN (immer sichtbar) ══════ */}
+          <div className="bg-white rounded-2xl border shadow-sm p-5 space-y-4">
+            <h4 className="font-bold text-gray-900">Ihre Buchung</h4>
+
+            <div className="flex items-center gap-3">
+              <img src={selectedRaum.image} alt="" className="w-12 h-12 rounded-lg object-cover" />
+              <div>
+                <p className="text-sm font-semibold">{selectedRaum.label}</p>
+                <p className="text-xs text-gray-500">{selectedRaum.subtitle}</p>
+              </div>
+            </div>
+
+            <div className="text-sm text-gray-600">
+              <p>{dauer === 'tag' ? 'Ganzer Tag' : 'Halber Tag'} · {teilnehmer} {teilnehmer === 1 ? 'Person' : 'Personen'}</p>
+            </div>
+
+            {selectedDates.length > 0 ? (
+              <>
+                <div className="space-y-1 font-mono text-sm">
+                  {selectedDates.map(ds => (
+                    <div key={ds} className="flex justify-between">
+                      <span className="text-gray-600 tabular-nums">{formatDE(ds)}</span>
+                      <span className="text-gray-500 tabular-nums text-right min-w-[80px]">EUR {dauer === 'tag' ? selectedRaum.preise.tag : selectedRaum.preise.halberTag},-</span>
+                    </div>
+                  ))}
+                </div>
+
+                {preis.addons > 0 && (
+                  <div className="space-y-1">
+                    {ADDONS.filter(a => selectedAddons[a.id]).map(a => (
+                      <div key={a.id} className="flex justify-between text-sm text-gray-600">
+                        <span>{a.label}{a.mitMenge ? ` (${addonMengen[a.id] || 1}×)` : ''}</span>
+                        <span>EUR {getAddonPreis(a.id, a) * (a.mitMenge ? (addonMengen[a.id] || 1) : 1) * selectedDates.length},-</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <div className="border-t pt-3 space-y-1">
+                  <div className="flex justify-between font-bold text-[#6b7f3e] text-lg">
+                    <span>Gesamt</span>
+                    <span>EUR {preis.gesamt},-</span>
+                  </div>
+                  <p className="text-xs text-gray-400">zzgl. MwSt.</p>
+                </div>
+              </>
+            ) : (
+              <p className="text-sm text-gray-400 italic">Wählen Sie ein Datum im Kalender.</p>
+            )}
+
             <button
               onClick={handleSubmit}
               disabled={!canSubmit || submitting}
@@ -614,7 +745,7 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
             >
               {submitting ? 'Weiter zur Zahlung...' : `Kostenpflichtig buchen — EUR ${preis.gesamt},-`}
             </button>
-            <p className="text-center text-xs text-gray-400 mt-2">Alle Preise zzgl. MwSt.</p>
+            <p className="text-center text-xs text-gray-400">Alle Preise zzgl. MwSt.</p>
           </div>
         </div>
 
@@ -655,8 +786,8 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
                     <div className="space-y-1">
                       {ADDONS.filter(a => selectedAddons[a.id]).map(a => (
                         <div key={a.id} className="flex justify-between text-sm text-gray-600">
-                          <span>{a.label}</span>
-                          <span>{a.preis}</span>
+                          <span>{a.label}{a.mitMenge ? ` (${addonMengen[a.id] || 1}×)` : ''}</span>
+                          <span>EUR {getAddonPreis(a.id, a) * (a.mitMenge ? (addonMengen[a.id] || 1) : 1) * selectedDates.length},-</span>
                         </div>
                       ))}
                     </div>
