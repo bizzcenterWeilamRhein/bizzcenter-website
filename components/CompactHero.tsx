@@ -7,13 +7,14 @@ interface CompactHeroProps {
   description?: string;
   image: string;
   imageAlt?: string;
+  imagePosition?: string;
   buttonText?: string;
   buttonHref?: string;
   formId?: string;
   children?: React.ReactNode;
 }
 
-export function CompactHero({ title, description, image, imageAlt, buttonText, buttonHref, formId, children }: CompactHeroProps) {
+export function CompactHero({ title, description, image, imageAlt, imagePosition, buttonText, buttonHref, formId, children }: CompactHeroProps) {
   return (
     <>
       {/* Mobile: Bild mit Text-Overlay, Bullets darunter */}
@@ -23,6 +24,7 @@ export function CompactHero({ title, description, image, imageAlt, buttonText, b
             src={image}
             alt={imageAlt || title}
             className="absolute inset-0 w-full h-full object-cover"
+            style={imagePosition ? { objectPosition: imagePosition } : undefined}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
           <div className="absolute bottom-0 left-0 right-0 p-5">
@@ -56,7 +58,8 @@ export function CompactHero({ title, description, image, imageAlt, buttonText, b
           <img
             src={image}
             alt={imageAlt || title}
-            className="absolute inset-0 w-full h-full object-cover object-center"
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ objectPosition: imagePosition || 'center' }}
           />
         </div>
         <div className="absolute inset-0 flex items-center justify-center px-8 xl:px-16 gap-10">

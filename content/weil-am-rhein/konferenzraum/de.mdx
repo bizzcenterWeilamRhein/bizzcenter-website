@@ -3,27 +3,163 @@ title: "Konferenzraum mieten in Weil am Rhein – Meeting- & Tagungsräume"
 description: "Konferenzraum in Weil am Rhein mieten: 2-25 Personen, tageslichtdurchflutet, Catering, Highspeed-Internet. bizzcenter im Dreiländereck Basel."
 ---
 
-<PageHero
-  title="Konferenz- und Meetingräume im bizzcenter Weil"
-  description="Tageslichtdurchflutete Räume für Meetings, Tagungen und Konferenzen"
-  image="/images/standorte/konstanz/konferenzraum.jpg"
+{/* ===== HEADLINE + BILD ===== */}
+<CompactHero
+  title="Konferenz- & Meetingräume ab EUR 19,- /Std."
+  description="Tageslichtdurchflutete Räume für 2 bis 25 Personen — stundenweise oder ganztags, ohne Vertragsbindung."
+  image="/images/standorte/weil-am-rhein/konferenzraum-gross.jpg"
+  imageAlt="Konferenzraum im bizzcenter Weil am Rhein"
+  imagePosition="center top"
+  buttonText="Jetzt anfragen"
+  buttonHref="/kontakt"
+  formId=""
 />
 
-<Features title="Unsere Raumgrößen" subtitle="Für jede Gruppengröße der passende Raum">
-  <FeatureCard title="Bis 2 Personen" description="Tageslichtdurchfluteter Meetingraum. Parkplätze direkt vor dem Gebäude optional zum Tagestarif von EUR 6,-. Preise zzgl. MwSt." icon="users" />
-  <FeatureCard title="Bis 6 Personen" description="Tageslichtdurchfluteter Meetingraum. Parkplätze direkt vor dem Gebäude optional zum Tagestarif von EUR 6,-. Preise zzgl. MwSt." icon="users" />
-  <FeatureCard title="Bis 15 Personen" description="Tageslichtdurchfluteter Meetingraum. Parkplätze direkt vor dem Gebäude optional zum Tagestarif von EUR 6,-. Preise zzgl. MwSt." icon="users" />
-  <FeatureCard title="Bis 25 Personen" description="Tageslichtdurchfluteter Meetingraum. Parkplätze direkt vor dem Gebäude optional zum Tagestarif von EUR 6,-. Preise zzgl. MwSt." icon="users" />
+{/* ===== SOCIAL PROOF ===== */}
+<GoogleReviews
+  title="Das sagen unsere Kunden"
+  reviews={[
+    {
+      author: "Francesco Petrini",
+      rating: 5,
+      text: "Very well organized space and in development. Good WiFi network and easy parking. Perfect solution to work in Germany close to CH/France.",
+      source: "Google Review"
+    },
+    {
+      author: "Katja Falkenburger",
+      rating: 5,
+      text: "Die Gemeinschafts- und virtuellen Büros bieten komfortable Räumlichkeiten und Flexibilität verknüpft mit einer attraktiven, grenznahen Lage zur Schweiz und nach Frankreich.",
+      source: "Google Review"
+    },
+    {
+      author: "veprosa",
+      rating: 5,
+      text: "Tolles, helles Büro in attraktiver Lage – besser geht es nicht. Wir können das bizzcenter Weil am Rhein jedem nur wärmstens empfehlen!",
+      source: "Google Review"
+    }
+  ]}
+/>
+
+{/* ===== BILDERGALERIE ===== */}
+<ImageSlider
+  title="Unsere Konferenz- & Meetingräume"
+  slides={[
+    { src: "/images/standorte/weil-am-rhein/konferenzraum-gross.jpg", caption: "Großer Konferenzraum — bis zu 25 Personen" },
+    { src: "/images/standorte/weil-am-rhein/meetingraum-green-office-4-6-personen.jpg", caption: "Meetingraum im Green Office — 4 bis 6 Personen" },
+    { src: "/images/standorte/weil-am-rhein/meetingraum-empore-5-personen.jpg", caption: "Meetingraum auf der Empore — bis 5 Personen" },
+    { src: "/images/standorte/weil-am-rhein/coworking-loungeecke.jpg", caption: "Lounge-Ecke für informelle Meetings" },
+    { src: "/images/standorte/weil-am-rhein/kueche-aufenthaltsraum.jpg", caption: "Küche und Aufenthaltsraum für Ihre Pausen" }
+  ]}
+/>
+
+{/* ===== RAUMGRÖSSEN MIT PREISEN ===== */}
+<PricingCards
+  title="Für jede Gruppengröße der passende Raum"
+  description="Alle Räume sind tageslichtdurchflutet und mit moderner Präsentationstechnik ausgestattet. Preise zzgl. MwSt."
+  cards={[
+    {
+      title: "Meetingraum S",
+      subtitle: "Bis 2 Personen",
+      image: "/images/standorte/weil-am-rhein/meetingraum-empore-5-personen.jpg",
+      description: "Ideal für vertrauliche Gespräche, Bewerbungsgespräche oder Einzelcoachings.",
+      prices: [
+        { label: "Halbtags", amount: "EUR 59,-" },
+        { label: "Tagespreis", amount: "EUR 89,-" },
+        { label: "10er Halbtags", amount: "EUR 50,-", badge: "−15%" },
+        { label: "10er Tag", amount: "EUR 76,-", badge: "−15%" }
+      ]
+    },
+    {
+      title: "Meetingraum M",
+      subtitle: "Bis 6 Personen",
+      image: "/images/standorte/weil-am-rhein/meetingraum-green-office-4-6-personen.jpg",
+      description: "Perfekt für Team-Meetings, Workshops und Projektbesprechungen.",
+      prices: [
+        { label: "Halbtags", amount: "EUR 89,-" },
+        { label: "Tagespreis", amount: "EUR 129,-" },
+        { label: "10er Halbtags", amount: "EUR 76,-", badge: "−15%" },
+        { label: "10er Tag", amount: "EUR 110,-", badge: "−15%" }
+      ]
+    },
+    {
+      title: "Konferenzraum L",
+      subtitle: "Bis 15 Personen",
+      image: "/images/standorte/weil-am-rhein/konferenzraum-gross.jpg",
+      description: "Für größere Meetings, Schulungen und Präsentationen.",
+      prices: [
+        { label: "Tagespreis", amount: "EUR 199,-" },
+        { label: "10er Tag", amount: "EUR 169,-", badge: "−15%" }
+      ]
+    },
+    {
+      title: "Konferenzraum XL",
+      subtitle: "Bis 25 Personen",
+      image: "/images/standorte/weil-am-rhein/konferenzraum-gross.jpg",
+      description: "Für Tagungen, Konferenzen und größere Veranstaltungen.",
+      prices: [
+        { label: "Tagespreis", amount: "EUR 229,-" },
+        { label: "10er Tag", amount: "EUR 195,-", badge: "−15%" }
+      ]
+    }
+  ]}
+  ctaText="Jetzt anfragen"
+  ctaHref="/kontakt"
+/>
+
+{/* ===== WAS ENTHALTEN IST ===== */}
+<Features title="Alles für Ihr perfektes Meeting" columns={3}>
+  <Feature title="Glasfaser-Internet" description="WIFI 5/6 und Gigabit-LAN. Stabil genug für Videokonferenzen, Cloud-Anwendungen und IP-Telefonie." />
+  <Feature title="Präsentationstechnik" description="Beamer, Leinwand und Whiteboard in allen Konferenzräumen. Auf Wunsch auch Moderationskoffer." />
+  <Feature title="Catering" description="Komplette Meeting-Verpflegung: Kaffeepause, Getränke, Teilchen oder auf Wunsch Mittagslunch." />
+  <Feature title="Parkplätze" description="Direkt vor dem Gebäude. Optional zum Tagestarif von EUR 6,- zzgl. MwSt. buchbar." />
+  <Feature title="Küche & Lounge" description="Moderne Küche mit Aufwärm- und Kühlmöglichkeit. Lounge-Bereich für Pausengespräche." />
+  <Feature title="Flexible Buchung" description="Stundenweise oder ganztags buchbar. Keine Mindestvertragslaufzeit, keine versteckten Kosten." />
 </Features>
 
-<BentoGrid title="Nutzen Sie unsere Infrastruktur">
-  <BentoItem title="Catering" description="Komplette Meeting-Verpflegung, Kaffeepausen mit leckeren Teilchen oder Mittagslunch." />
-  <BentoItem title="Highspeed-Internet" description="Schnell dank Glasfaser. W-LAN (WIFI 5/6) und Gigabit-LAN in allen Räumen." />
-  <BentoItem title="Küche" description="Tee-Küche inkl. Aufwärm- und Kühlmöglichkeit." />
-</BentoGrid>
+{/* ===== STATS ===== */}
+<StatsTheme>
+<Stats title="Konferenzräume in Zahlen">
+  <Stat value="4" label="Raumgrößen" description="Von 2 bis 25 Personen" />
+  <Stat value="100%" label="Tageslicht" description="Alle Räume tageslichtdurchflutet" />
+  <Stat value="1 Gbit" label="Internet" description="Glasfaser-Anbindung" />
+  <Stat value="300m" label="Zur Schweiz" description="Direkt an der Grenze" />
+</Stats>
+</StatsTheme>
 
+{/* ===== ÜBER DEN STANDORT ===== */}
+<AlternatingFeatures>
+  <AlternatingFeatureRow title="Tagungen im Kesselhaus" description="Historisches Industriegebäude mit Charme: 7,50m Deckenhöhe, offene Architektur und viel Tageslicht. Ideal für Meetings, die mehr sein sollen als ein Besprechungsraum — inspirierend und repräsentativ." image="/images/hero/kesselhaus.jpg" imageAlt="Kesselhaus Weil am Rhein" />
+  <AlternatingFeatureRow title="Im Dreiländereck Basel" description="300m von der Schweizer Grenze, direkt an der Tramlinie 8 (Haltestelle Riedlistrasse/Kesselhaus), nahe der A5 und mit Parkplätzen vor Ort. Optimal erreichbar für Teams aus Deutschland, der Schweiz und Frankreich." image="/images/standorte/weil-am-rhein/green-office.jpg" imageAlt="Lage Weil am Rhein Dreiländereck" />
+</AlternatingFeatures>
+
+{/* ===== FAQ ===== */}
+<FAQ title="Häufig gestellte Fragen zu Konferenzräumen">
+  <FAQItem question="Wie kann ich einen Konferenzraum buchen?">
+    Einfach per Telefon, E-Mail oder über unser Kontaktformular anfragen. Wir bestätigen Ihnen die Verfügbarkeit kurzfristig.
+  </FAQItem>
+  <FAQItem question="Kann ich den Raum stundenweise buchen?">
+    Ja. Alle Räume sind stundenweise, halbtags oder ganztags buchbar — ganz nach Ihrem Bedarf.
+  </FAQItem>
+  <FAQItem question="Gibt es Catering?">
+    Ja. Von der einfachen Kaffeepause bis zum kompletten Mittagslunch organisieren wir gerne Ihre Meeting-Verpflegung.
+  </FAQItem>
+  <FAQItem question="Welche Technik ist vorhanden?">
+    Beamer, Leinwand, Whiteboard und Glasfaser-Internet (WIFI 5/6 + Gigabit-LAN) sind in allen Räumen verfügbar.
+  </FAQItem>
+  <FAQItem question="Gibt es Parkplätze?">
+    Ja. Parkplätze befinden sich direkt vor dem Gebäude und können optional zum Tagestarif von EUR 6,- zzgl. MwSt. gebucht werden. 90 Minuten kostenfrei.
+  </FAQItem>
+  <FAQItem question="Wie erreiche ich das bizzcenter mit dem ÖPNV?">
+    Tramlinie 8 ab Basel, Haltestelle Riedlistrasse/Kesselhaus — direkt vor der Tür.
+  </FAQItem>
+  <FAQItem question="Kann ich den Raum besichtigen?">
+    Ja. Vereinbaren Sie eine unverbindliche Besichtigung — wir zeigen Ihnen gerne die Räumlichkeiten.
+  </FAQItem>
+</FAQ>
+
+{/* ===== FINALER CTA ===== */}
 <BannerCTA
-  title="Konferenzraum in Weil am Rhein buchen"
-  subtext="Flexible Buchung – stundenweise oder ganztags. Im Dreiländereck nahe Basel."
+  title="Konferenzraum buchen"
+  subtext="Flexible Buchung — stundenweise oder ganztags. Im Dreiländereck nahe Basel."
   buttonText="Jetzt anfragen" buttonHref="/kontakt"
 />

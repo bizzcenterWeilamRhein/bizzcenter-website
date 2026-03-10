@@ -31,3 +31,4 @@ export { default as VertragView } from './VertragView';
 export { default as SignaturePad } from './SignaturePad';
 export { LeadForm } from './LeadForm';
 export { StepsInteractive } from './StepsInteractive';
+export { TeamSection } from './TeamSection';
