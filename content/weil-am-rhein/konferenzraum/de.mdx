@@ -40,18 +40,6 @@ description: "Konferenzraum in Weil am Rhein mieten: 2-25 Personen, tageslichtdu
   ]}
 />
 
-{/* ===== BILDERGALERIE ===== */}
-<ImageSlider
-  title="Unsere Konferenz- & Meetingräume"
-  slides={[
-    { src: "/images/standorte/weil-am-rhein/konferenzraum-gross.jpg", caption: "Großer Konferenzraum — bis zu 25 Personen" },
-    { src: "/images/standorte/weil-am-rhein/meetingraum-green-office-4-6-personen.jpg", caption: "Meetingraum im Green Office — 4 bis 6 Personen" },
-    { src: "/images/standorte/weil-am-rhein/meetingraum-empore-5-personen.jpg", caption: "Meetingraum auf der Empore — bis 5 Personen" },
-    { src: "/images/standorte/weil-am-rhein/coworking-loungeecke.jpg", caption: "Lounge-Ecke für informelle Meetings" },
-    { src: "/images/standorte/weil-am-rhein/kueche-aufenthaltsraum.jpg", caption: "Küche und Aufenthaltsraum für Ihre Pausen" }
-  ]}
-/>
-
 {/* ===== RAUMGRÖSSEN MIT PREISEN ===== */}
 <PricingCards
   title="Für jede Gruppengröße der passende Raum"
@@ -63,10 +51,11 @@ description: "Konferenzraum in Weil am Rhein mieten: 2-25 Personen, tageslichtdu
       image: "/images/standorte/weil-am-rhein/meetingraum-empore-5-personen.jpg",
       description: "Ideal für vertrauliche Gespräche, Bewerbungsgespräche oder Einzelcoachings.",
       prices: [
-        { label: "Halbtags", amount: "EUR 59,-" },
-        { label: "Tagespreis", amount: "EUR 89,-" },
-        { label: "10er Halbtags", amount: "EUR 50,-", badge: "−15%" },
-        { label: "10er Tag", amount: "EUR 76,-", badge: "−15%" }
+        { label: "Std.-Tarif", amount: "EUR 19,-", note: "nur mit 10er-Karte verfügbar" },
+        { label: "1/2 Tag", amount: "EUR 59,-" },
+        { label: "Tag", amount: "EUR 89,-" },
+        { label: "10er-Karte 1/2 Tag", amount: "EUR 49,-", badge: "−15%" },
+        { label: "10er-Karte Tag", amount: "EUR 76,-", badge: "−15%" }
       ]
     },
     {
@@ -75,10 +64,11 @@ description: "Konferenzraum in Weil am Rhein mieten: 2-25 Personen, tageslichtdu
       image: "/images/standorte/weil-am-rhein/meetingraum-green-office-4-6-personen.jpg",
       description: "Perfekt für Team-Meetings, Workshops und Projektbesprechungen.",
       prices: [
-        { label: "Halbtags", amount: "EUR 89,-" },
-        { label: "Tagespreis", amount: "EUR 129,-" },
-        { label: "10er Halbtags", amount: "EUR 76,-", badge: "−15%" },
-        { label: "10er Tag", amount: "EUR 110,-", badge: "−15%" }
+        { label: "Std.-Tarif", amount: "EUR 29,-", note: "nur mit 10er-Karte verfügbar" },
+        { label: "1/2 Tag", amount: "EUR 89,-" },
+        { label: "Tag", amount: "EUR 129,-" },
+        { label: "10er-Karte 1/2 Tag", amount: "EUR 76,-", badge: "−15%" },
+        { label: "10er-Karte Tag", amount: "EUR 109,-", badge: "−15%" }
       ]
     },
     {
@@ -87,8 +77,11 @@ description: "Konferenzraum in Weil am Rhein mieten: 2-25 Personen, tageslichtdu
       image: "/images/standorte/weil-am-rhein/konferenzraum-gross.jpg",
       description: "Für größere Meetings, Schulungen und Präsentationen.",
       prices: [
-        { label: "Tagespreis", amount: "EUR 199,-" },
-        { label: "10er Tag", amount: "EUR 169,-", badge: "−15%" }
+        { label: "Std.-Tarif", amount: "EUR 39,-", note: "nur mit 10er-Karte verfügbar" },
+        { label: "1/2 Tag", amount: "EUR 99,-" },
+        { label: "Tag", amount: "EUR 159,-" },
+        { label: "10er-Karte 1/2 Tag", amount: "EUR 85,-", badge: "−15%" },
+        { label: "10er-Karte Tag", amount: "EUR 135,-", badge: "−15%" }
       ]
     },
     {
@@ -97,13 +90,28 @@ description: "Konferenzraum in Weil am Rhein mieten: 2-25 Personen, tageslichtdu
       image: "/images/standorte/weil-am-rhein/konferenzraum-gross.jpg",
       description: "Für Tagungen, Konferenzen und größere Veranstaltungen.",
       prices: [
-        { label: "Tagespreis", amount: "EUR 229,-" },
-        { label: "10er Tag", amount: "EUR 195,-", badge: "−15%" }
+        { label: "Std.-Tarif", amount: "EUR 49,-", note: "nur mit 10er-Karte verfügbar" },
+        { label: "1/2 Tag", amount: "EUR 129,-" },
+        { label: "Tag", amount: "EUR 199,-" },
+        { label: "10er-Karte 1/2 Tag", amount: "EUR 109,-", badge: "−15%" },
+        { label: "10er-Karte Tag", amount: "EUR 169,-", badge: "−15%" }
       ]
     }
   ]}
-  ctaText="Jetzt anfragen"
+  ctaText="Buchen"
   ctaHref="/kontakt"
+/>
+
+{/* ===== BILDERGALERIE ===== */}
+<ImageSlider
+  title="Unsere Konferenz- & Meetingräume"
+  slides={[
+    { src: "/images/standorte/weil-am-rhein/konferenzraum-gross.jpg", caption: "Großer Konferenzraum — bis zu 25 Personen" },
+    { src: "/images/standorte/weil-am-rhein/meetingraum-green-office-4-6-personen.jpg", caption: "Meetingraum im Green Office — 4 bis 6 Personen" },
+    { src: "/images/standorte/weil-am-rhein/meetingraum-empore-5-personen.jpg", caption: "Meetingraum auf der Empore — bis 5 Personen" },
+    { src: "/images/standorte/weil-am-rhein/coworking-loungeecke.jpg", caption: "Lounge-Ecke für informelle Meetings" },
+    { src: "/images/standorte/weil-am-rhein/kueche-aufenthaltsraum.jpg", caption: "Küche und Aufenthaltsraum für Ihre Pausen" }
+  ]}
 />
 
 {/* ===== WAS ENTHALTEN IST ===== */}
