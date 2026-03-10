@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useMemo, useCallback } from 'react';
+import { submitLead } from './submitLead';
 
 /* ── Typen ── */
 interface RaumConfig {
@@ -230,8 +231,40 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
   /* Submit */
   const handleSubmit = async () => {
     setSubmitting(true);
-    await new Promise(r => setTimeout(r, 1500));
-    setSubmitted(true);
+    try {
+      const activeAddons = ADDONS.filter(a => selectedAddons[a.id]).map(a => {
+        const menge = addonMengen[a.id] || 1;
+        return a.mitMenge ? `${a.label} (${menge}×)` : a.label;
+      });
+
+      const result = await submitLead({
+        firma: form.firma,
+        anrede: form.anrede,
+        name: form.name,
+        email: form.email,
+        telefon: form.telefon || undefined,
+        strasse: form.strasse,
+        plz: form.plz,
+        ort: form.ort,
+        quelle: 'konferenzraum-buchung',
+        bemerkungen: form.bemerkungen || undefined,
+        raum: selectedRaum.label,
+        dauer: dauer === 'tag' ? 'Ganzer Tag' : 'Halber Tag',
+        termine: selectedDates,
+        addons: activeAddons.length > 0 ? activeAddons : undefined,
+        gesamtpreis: preis.gesamt,
+      });
+
+      if (!result.success) {
+        alert(result.error || 'Fehler beim Senden. Bitte versuchen Sie es erneut.');
+        setSubmitting(false);
+        return;
+      }
+
+      setSubmitted(true);
+    } catch {
+      alert('Netzwerkfehler — bitte versuchen Sie es erneut.');
+    }
     setSubmitting(false);
   };
 
