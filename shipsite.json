@@ -24,7 +24,8 @@
       "es",
       "fr"
     ],
-    "localePrefix": "as-needed"
+    "localePrefix": "as-needed",
+    "localeDetection": false
   },
   "navigation": {
     "items": [
