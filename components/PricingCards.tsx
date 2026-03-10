@@ -7,6 +7,9 @@ interface PriceItem {
   amount: string;
   badge?: string;
   note?: string;
+  tenner?: {
+    amount: string;
+  };
 }
 
 interface PricingCard {
@@ -80,25 +83,32 @@ function PricingCardItem({ card, ctaText, ctaHref }: { card: PricingCard; ctaTex
                 <button
                   type="button"
                   onClick={() => setSelected(selected === j ? null : j)}
-                  className={`w-full flex flex-col rounded-lg px-4 py-2.5 transition-all cursor-pointer text-left ${
+                  className={`w-full relative rounded-lg px-4 py-3 transition-all cursor-pointer text-left ${
                     selected === j
                       ? 'bg-[#6b7f3e] ring-2 ring-[#6b7f3e] ring-offset-1'
-                      : p.badge
-                        ? 'bg-[#6b7f3e]/10 hover:bg-[#6b7f3e]/20'
-                        : 'bg-[#f0f4e8] hover:bg-[#e8eede]'
+                      : 'bg-[#f0f4e8] hover:bg-[#e8eede]'
                   }`}
                 >
-                  <div className="flex items-center w-full">
-                    <span className={`text-sm font-medium flex-1 ${selected === j ? 'text-white' : 'text-gray-700'}`}>{p.label}</span>
-                    <span className={`text-base font-bold min-w-[90px] text-right ${selected === j ? 'text-white' : 'text-[#6b7f3e]'}`}>{p.amount}</span>
-                    {p.badge ? (
-                      <span className={`text-[10px] font-bold rounded-full px-1.5 py-0.5 ml-2 min-w-[36px] text-center ${selected === j ? 'bg-white text-[#6b7f3e]' : 'bg-[#6b7f3e] text-white'}`}>{p.badge}</span>
-                    ) : (
-                      <span className="ml-2 min-w-[36px]" />
-                    )}
+                  {/* Main price row */}
+                  <div className="grid grid-cols-[1fr_auto] items-center gap-2">
+                    <span className={`text-sm font-medium ${selected === j ? 'text-white' : 'text-gray-700'}`}>{p.label}</span>
+                    <span className={`text-base font-bold tabular-nums text-right ${selected === j ? 'text-white' : 'text-[#6b7f3e]'}`}>{p.amount}</span>
                   </div>
+                  {/* Note */}
                   {p.note && (
-                    <span className={`text-[11px] mt-0.5 ${selected === j ? 'text-white/70' : 'text-gray-400'}`}>{p.note}</span>
+                    <span className={`text-[11px] block mt-1 ${selected === j ? 'text-white/70' : 'text-gray-400'}`}>{p.note}</span>
+                  )}
+                  {/* 10er-Karte sub-row */}
+                  {p.tenner && (
+                    <div className={`mt-2.5 pt-2 ${selected === j ? 'border-t-[2px] border-white/50' : 'border-t-[2px] border-[#6b7f3e]/30'}`}>
+                      <div className="flex items-center justify-between">
+                        <span className={`text-xs ${selected === j ? 'text-white/80' : 'text-gray-500'}`}>10er-Karte</span>
+                        <div className="flex items-center gap-2">
+                          <span className={`text-[10px] font-bold rounded-full px-1.5 py-0.5 ${selected === j ? 'bg-white text-[#6b7f3e]' : 'bg-[#6b7f3e] text-white'}`}>−15%</span>
+                          <span className={`text-sm font-bold tabular-nums text-right ${selected === j ? 'text-white' : 'text-[#6b7f3e]'}`}>{p.tenner.amount}</span>
+                        </div>
+                      </div>
+                    </div>
                   )}
                 </button>
               </div>
