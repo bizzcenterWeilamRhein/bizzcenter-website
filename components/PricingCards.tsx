@@ -1,10 +1,22 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
+
+interface PriceItem {
+  label: string;
+  amount: string;
+  badge?: string;
+  note?: string;
+  tenner?: {
+    amount: string;
+  };
+}
 
 interface PricingCard {
   title: string;
-  price: string;
+  subtitle?: string;
+  price?: string;
+  prices?: PriceItem[];
   image: string;
   description: string;
 }
@@ -13,11 +25,135 @@ interface PricingCardsProps {
   cards: PricingCard[];
   backgroundImage?: string;
   headline?: string;
+  title?: string;
+  description?: string;
   ctaText?: string;
   ctaHref?: string;
 }
 
-export function PricingCards({ cards, backgroundImage, headline, ctaText, ctaHref }: PricingCardsProps) {
+function PricingCardItem({ card, ctaText, ctaHref, onImageClick }: { card: PricingCard; ctaText?: string; ctaHref?: string; onImageClick?: (src: string) => void }) {
+  const [selected, setSelected] = useState<{ index: number; tenner: boolean } | null>(null);
+
+  const buildHref = () => {
+    if (!ctaHref) return '#';
+    const params = new URLSearchParams({
+      raum: card.title,
+      ...(selected !== null && card.prices?.[selected.index] ? {
+        tarif: card.prices[selected.index].label,
+        preis: selected.tenner && card.prices[selected.index].tenner
+          ? card.prices[selected.index].tenner!.amount
+          : card.prices[selected.index].amount,
+        karte: selected.tenner ? '10er' : 'einzel',
+      } : {}),
+    });
+    return `${ctaHref}?${params.toString()}`;
+  };
+
+  return (
+    <div className="bg-white rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-200 overflow-hidden flex flex-col border border-gray-100 relative">
+      {/* Title + Subtitle */}
+      <div className="pt-5 pb-2 px-5 text-center">
+        <div className="font-bold text-lg text-gray-900">{card.title}</div>
+        {card.subtitle && (
+          <div className="text-sm text-[#6b7f3e] font-semibold mt-0.5">{card.subtitle}</div>
+        )}
+      </div>
+
+      {/* Image */}
+      <div className="px-4">
+        <div className="relative aspect-[4/3] rounded-xl overflow-hidden cursor-pointer group" onClick={() => onImageClick?.(card.image || '')}>
+          <img
+            src={card.image}
+            alt={card.title}
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+          />
+        </div>
+      </div>
+
+      {/* Description */}
+      <div className="px-5 pt-3 pb-3 text-sm text-gray-600 text-center leading-relaxed flex-grow">
+        {card.description}
+      </div>
+
+      {/* Prices — selectable */}
+      <div className="px-5 pb-4">
+        {card.price && (
+          <div className="text-center">
+            <span className="text-2xl font-bold text-[#6b7f3e]">{card.price}</span>
+          </div>
+        )}
+        {card.prices && card.prices.length > 0 && (
+          <div className="space-y-2">
+            {card.prices.map((p, j) => {
+              const isSelectedNormal = selected?.index === j && !selected.tenner;
+              const isSelectedTenner = selected?.index === j && selected.tenner;
+              return (
+                <div key={j} className="space-y-1">
+                  {/* Normaler Preis */}
+                  <button
+                    type="button"
+                    onClick={() => setSelected(isSelectedNormal ? null : { index: j, tenner: false })}
+                    className={`w-full relative rounded-lg px-4 py-3 transition-all cursor-pointer text-left ${
+                      isSelectedNormal
+                        ? 'bg-[#6b7f3e] ring-2 ring-[#6b7f3e] ring-offset-1'
+                        : 'bg-[#f0f4e8] hover:bg-[#e8eede]'
+                    }`}
+                  >
+                    <div className="grid grid-cols-[1fr_auto] items-center gap-2">
+                      <span className={`text-sm font-medium ${isSelectedNormal ? 'text-white' : 'text-gray-700'}`}>{p.label}</span>
+                      <span className={`text-base font-bold tabular-nums text-right ${isSelectedNormal ? 'text-white' : 'text-[#6b7f3e]'}`}>{p.amount}</span>
+                    </div>
+                    {p.note && (
+                      <span className={`text-[11px] block mt-1 ${isSelectedNormal ? 'text-white/70' : 'text-gray-400'}`}>{p.note}</span>
+                    )}
+                  </button>
+                  {/* 10er-Karte */}
+                  {p.tenner && (
+                    <button
+                      type="button"
+                      onClick={() => setSelected(isSelectedTenner ? null : { index: j, tenner: true })}
+                      className={`w-full rounded-lg px-4 py-2 transition-all cursor-pointer text-left ${
+                        isSelectedTenner
+                          ? 'bg-[#6b7f3e] ring-2 ring-[#6b7f3e] ring-offset-1'
+                          : 'bg-[#f0f4e8]/60 hover:bg-[#e8eede]'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className={`text-xs ${isSelectedTenner ? 'text-white/80' : 'text-gray-500'}`}>10er-Karte</span>
+                        <span className={`text-[10px] font-bold rounded-full px-1.5 py-0.5 ${isSelectedTenner ? 'bg-white text-[#6b7f3e]' : 'bg-[#6b7f3e] text-white'}`}>−15%</span>
+                      </div>
+                    </button>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* CTA */}
+      {ctaText && ctaHref && (
+        <div className="px-5 pb-5">
+          <a
+            href={buildHref()}
+            className={`block text-center text-sm font-semibold py-2.5 px-4 rounded-lg transition-colors ${
+              selected
+                ? 'bg-[#6b7f3e] text-white hover:bg-[#5a6b35]'
+                : 'bg-gray-200 text-gray-500 hover:bg-gray-300'
+            }`}
+          >
+            {ctaText}
+          </a>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export function PricingCards({ cards, backgroundImage, headline, title, description, ctaText, ctaHref }: PricingCardsProps) {
+  const displayTitle = title || headline;
+  const [lightbox, setLightbox] = useState<string | null>(null);
+
   return (
     <section className="relative overflow-hidden">
       {backgroundImage && (
@@ -30,47 +166,43 @@ export function PricingCards({ cards, backgroundImage, headline, ctaText, ctaHre
         </>
       )}
       <div className="relative z-10 container-main py-16 md:py-20">
-        {headline && (
-          <h2 className={`text-3xl md:text-4xl font-bold text-center mb-12 ${backgroundImage ? 'text-white' : 'text-foreground'}`}>
-            {headline}
-          </h2>
+        {(displayTitle || description) && (
+          <div className="text-center mb-12">
+            {displayTitle && (
+              <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${backgroundImage ? 'text-white' : 'text-foreground'}`}>
+                {displayTitle}
+              </h2>
+            )}
+            {description && (
+              <p className={`text-lg max-w-2xl mx-auto ${backgroundImage ? 'text-white/80' : 'text-muted-foreground'}`}>
+                {description}
+              </p>
+            )}
+          </div>
         )}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {cards.map((card, i) => (
-            <div
-              key={i}
-              className="bg-white rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-200 overflow-hidden flex flex-col"
-            >
-              <div className="font-bold text-lg text-center pt-5 pb-2 text-gray-900">{card.title}</div>
-              <div className="px-4">
-                <div className="relative aspect-[4/3] rounded-xl overflow-hidden">
-                  <img
-                    src={card.image}
-                    alt={card.title}
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                </div>
-              </div>
-              <div className="px-5 pt-3 pb-2 text-center">
-                <div className="text-2xl font-bold text-primary mb-1">{card.price}</div>
-              </div>
-              <div className="px-5 pb-4 text-sm text-gray-600 text-center leading-relaxed flex-grow">
-                {card.description}
-              </div>
-              {ctaText && ctaHref && (
-                <div className="px-5 pb-5">
-                  <a
-                    href={ctaHref}
-                    className="block text-center text-sm font-semibold py-2.5 px-4 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
-                  >
-                    {ctaText}
-                  </a>
-                </div>
-              )}
-            </div>
+            <PricingCardItem key={i} card={card} ctaText={ctaText} ctaHref={ctaHref} onImageClick={setLightbox} />
           ))}
         </div>
       </div>
+      {/* Lightbox */}
+      {lightbox && (
+        <div
+          className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center cursor-pointer"
+          onClick={() => setLightbox(null)}
+        >
+          <img
+            src={lightbox}
+            alt=""
+            className="max-w-[90vw] max-h-[85vh] object-contain rounded-xl shadow-2xl"
+          />
+          <button
+            className="absolute top-6 right-6 text-white text-3xl font-light hover:text-gray-300"
+            onClick={() => setLightbox(null)}
+          >✕</button>
+        </div>
+      )}
     </section>
   );
 }
