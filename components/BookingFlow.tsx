@@ -27,9 +27,9 @@ interface AddonItem {
 }
 
 const tarife: TarifItem[] = [
-  { id: 'tagespass', label: 'Tagespass', price: 29, display: 'EUR 29,-', sub: 'pro Tag', unit: 'tag' },
-  { id: 'zehnerkarte', label: '10er-Karte', price: 249, display: 'EUR 249,-', sub: '', unit: 'tag' },
-  { id: 'monatspass', label: 'Monatspass', price: 259, display: 'EUR 259,-', sub: 'pro Monat', unit: 'monat', popular: true },
+  { id: 'tagespass', label: 'Tagespass', price: 25, display: 'EUR 25,-', sub: 'pro Tag, zzgl. MwSt.', unit: 'tag' },
+  { id: 'zehnerkarte', label: '10er-Karte', price: 209, display: 'EUR 209,-', sub: 'zzgl. MwSt.', unit: 'tag' },
+  { id: 'monatspass', label: 'Monatspass', price: 219, display: 'EUR 219,-', sub: 'pro Monat, zzgl. MwSt.', unit: 'monat', popular: true },
   { id: 'monatsabo', label: 'Monatsabo', price: 239, display: 'EUR 239,-', sub: 'pro Monat', unit: 'monat' },
 ];
 
@@ -134,7 +134,7 @@ export function BookingFlow({ title = 'In 4 Schritten zum Coworking-Platz' }: { 
           {/* Step 1: Tarif wählen */}
           <div className="rounded-2xl border border-border bg-card shadow-sm p-6 md:p-8">
             <div className="mb-4 rounded-lg bg-[#6b7f3e] text-white text-center py-2.5 px-4">
-              <p className="text-sm font-bold">🌿 Green Office Eröffnungsangebot — 16% Rabatt bis 30.09.2026</p>
+              <p className="text-sm font-bold">Green Office Eröffnungsangebot — 16% Rabatt bis 30.09.2026</p>
             </div>
             <div className="flex items-center gap-4 mb-5">
               <StepBadge number={1} active={!selectedTarif} />

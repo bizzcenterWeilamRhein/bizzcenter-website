@@ -1,27 +1,55 @@
 ---
-title: "Kontakt – bizzcenter Weil am Rhein"
-description: "Kontaktieren Sie das bizzcenter an beiden Standorten. Telefon, E-Mail und Ansprechpartner für Bürolösungen, Coworking und Virtual Office."
+title: "Kontakt — bizzcenter Weil am Rhein"
+description: "Kontaktieren Sie das bizzcenter Weil am Rhein. Telefon, E-Mail oder persönlich vor Ort im Kesselhaus."
 ---
-
 
 <ActiveNavHighlight />
 <LanguageSwitcher />
-<PageHero
+
+<CompactHero
   title="Kontakt"
-  description="Ihre Ansprechpartner an beiden Standorten"
+  description="Wir freuen uns auf Ihre Nachricht — persönlich, telefonisch oder per E-Mail."
+  image="/images/hero/kesselhaus.jpg"
+  imageAlt="bizzcenter Weil am Rhein Kesselhaus"
+  buttonText=""
+  buttonHref=""
+  formId=""
 />
 
-{/* KONSTANZ: Kontakt Konstanz-Block ausgeblendet */}
-
-<Features title="bizzcenter Weil am Rhein" subtitle="Ihr Ansprechpartner im Dreiländereck">
-  <FeatureCard title="Adresse" description="Im Schwarzenbach 4, 79576 Weil am Rhein" icon="map-pin" />
-  <FeatureCard title="Telefon (DE)" description="+49 (0) 7621 916 55 47" icon="phone" />
-  <FeatureCard title="Telefon (CH)" description="+41 (0) 715 112 204" icon="phone" />
-  <FeatureCard title="E-Mail" description="weilamrhein@bizzcenter.de" icon="mail" />
-  <FeatureCard title="Ansprechpartner" description="Torben Götz – Geschäftsführer bizzcenter Weil am Rhein GmbH" icon="users" />
+<Features title="So erreichen Sie uns" columns={3}>
+  <FeatureCard title="Telefon" description="+49 (0) 7621 162 56 56" icon="phone" />
+  <FeatureCard title="E-Mail" description="info@bizzcenter.de" icon="mail" />
+  <FeatureCard title="Vor Ort" description="Am Kesselhaus 3, 79576 Weil am Rhein" icon="landmark" />
 </Features>
+
+<Features title="Öffnungszeiten" columns={2}>
+  <FeatureCard title="Bürozeiten" description="Mo–Fr 09:00–17:00 Uhr" icon="clock" />
+  <FeatureCard title="Coworking & Paketzugang" description="24/7 mit persönlichem Türcode" icon="key" />
+</Features>
+
+<LocationMap
+  title="Standort"
+  address="Am Kesselhaus 3, 79576 Weil am Rhein"
+  mapUrl="https://maps.google.com/maps?q=Am+Kesselhaus+3,+79576+Weil+am+Rhein&output=embed"
+  image="/images/standorte/weil-am-rhein/standortkarte.png"
+  imageAlt="Standortkarte bizzcenter Weil am Rhein"
+/>
+
+<FAQ title="Häufige Fragen">
+  <FAQItem question="Kann ich einen Besichtigungstermin vereinbaren?">
+    Ja, gerne! Rufen Sie uns an oder schreiben Sie eine E-Mail — wir zeigen Ihnen unsere Räume persönlich.
+  </FAQItem>
+  <FAQItem question="Wo kann ich parken?">
+    Direkt am Gebäude stehen Parkplätze zur Verfügung. Die ersten 90 Minuten sind kostenfrei, danach EUR 6,- Tagestarif.
+  </FAQItem>
+  <FAQItem question="Wie erreiche ich das bizzcenter mit dem ÖPNV?">
+    Tramlinie 8 von Basel, Haltestelle Riedlistrasse/Kesselhaus. Fußweg ca. 2 Minuten.
+  </FAQItem>
+</FAQ>
 
 <BannerCTA
   title="Jetzt Termin vereinbaren"
-  subtext="Wir beraten Sie gerne zu Virtual Office, Coworking, Bürovermietung und Konferenzräumen an beiden Standorten."
-  
+  subtext="Rufen Sie uns an unter +49 (0) 7621 162 56 56 oder schreiben Sie an info@bizzcenter.de"
+  buttonText="Anrufen"
+  buttonHref="tel:+497621162 5656"
+/>
