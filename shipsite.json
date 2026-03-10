@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/@shipsite.dev/core/shipsite.schema.json",
   "name": " ",
-  "url": "https://bizzcenter.de",
+  "url": "https://weil.bizzcenter.de",
   "logo": "/images/logo-bizzcenter.png",
   "favicon": "/favicon.png",
   "ogImage": "/images/og/og-image.jpg",
@@ -261,6 +261,14 @@
       "locales": [
         "de",
         "en"
+      ]
+    },
+    {
+      "slug": "weil-am-rhein/konferenzraum-buchen",
+      "type": "page",
+      "content": "weil-am-rhein/konferenzraum-buchen",
+      "locales": [
+        "de"
       ]
     },
     {
