@@ -5,6 +5,7 @@ description: "Konferenzraum in Weil am Rhein mieten: 2-25 Personen, tageslichtdu
 
 
 <ActiveNavHighlight />
+<LanguageSwitcher />
 {/* ===== HEADLINE + BILD ===== */}
 <CompactHero
   title="Konferenz- & Meetingräume ab EUR 19,- /Std."
@@ -12,8 +13,8 @@ description: "Konferenzraum in Weil am Rhein mieten: 2-25 Personen, tageslichtdu
   image="/images/standorte/weil-am-rhein/konferenzraum-gross.jpg"
   imageAlt="Konferenzraum im bizzcenter Weil am Rhein"
   imagePosition="center top"
-  buttonText="Jetzt anfragen"
-  buttonHref="/kontakt"
+  buttonText=""
+  buttonHref=""
   formId=""
 />
 
@@ -27,21 +28,23 @@ description: "Konferenzraum in Weil am Rhein mieten: 2-25 Personen, tageslichtdu
       subtitle: "Bis 2 Personen",
       image: "/images/standorte/weil-am-rhein/green-office-buero-2-personen.jpg",
       description: "Ideal für vertrauliche Gespräche, Bewerbungsgespräche oder Einzelcoachings.",
+      ctaHref: "/weil-am-rhein/konferenzraum-buchen",
       prices: [
-        { label: "Stunden-Tarif", amount: "EUR 19,-", note: "nur mit 10er-Karte verfügbar", tenner: { amount: "EUR 16,-" } },
-        { label: "Halber Tag", amount: "EUR 59,-", tenner: { amount: "EUR 49,-" } },
-        { label: "Tagespreis", amount: "EUR 89,-", tenner: { amount: "EUR 76,-" } }
+        { label: "Stunden-Tarif", amount: "EUR 19,-", note: "nur mit 10er-Karte verfügbar", tenner: {} },
+        { label: "Halber Tag", amount: "EUR 59,-", tenner: {} },
+        { label: "Tagespreis", amount: "EUR 89,-", tenner: {} }
       ]
     },
     {
       title: "Meetingraum M",
       subtitle: "Bis 6 Personen",
-      image: "/images/standorte/weil-am-rhein/meetingraum-green-office-4-6-personen.jpg",
+      image: "/images/standorte/weil-am-rhein/meetingraum-6-personen.jpg",
       description: "Perfekt für Team-Meetings, Workshops und Projektbesprechungen.",
+      ctaHref: "/weil-am-rhein/konferenzraum-6p-buchen",
       prices: [
-        { label: "Stunden-Tarif", amount: "EUR 29,-", note: "nur mit 10er-Karte verfügbar", tenner: { amount: "EUR 25,-" } },
-        { label: "Halber Tag", amount: "EUR 89,-", tenner: { amount: "EUR 76,-" } },
-        { label: "Tagespreis", amount: "EUR 129,-", tenner: { amount: "EUR 109,-" } }
+        { label: "Stunden-Tarif", amount: "EUR 29,-", note: "nur mit 10er-Karte verfügbar", tenner: {} },
+        { label: "Halber Tag", amount: "EUR 89,-", tenner: {} },
+        { label: "Tagespreis", amount: "EUR 129,-", tenner: {} }
       ]
     },
     {
@@ -49,10 +52,11 @@ description: "Konferenzraum in Weil am Rhein mieten: 2-25 Personen, tageslichtdu
       subtitle: "Bis 15 Personen",
       image: "/images/standorte/weil-am-rhein/konferenzraum-gross.jpg",
       description: "Für größere Meetings, Schulungen und Präsentationen.",
+      ctaHref: "/weil-am-rhein/konferenzraum-15p-buchen",
       prices: [
-        { label: "Stunden-Tarif", amount: "EUR 39,-", note: "nur mit 10er-Karte verfügbar", tenner: { amount: "EUR 33,-" } },
-        { label: "Halber Tag", amount: "EUR 99,-", tenner: { amount: "EUR 85,-" } },
-        { label: "Tagespreis", amount: "EUR 159,-", tenner: { amount: "EUR 135,-" } }
+        { label: "Stunden-Tarif", amount: "EUR 39,-", note: "nur mit 10er-Karte verfügbar", tenner: {} },
+        { label: "Halber Tag", amount: "EUR 99,-", tenner: {} },
+        { label: "Tagespreis", amount: "EUR 159,-", tenner: {} }
       ]
     },
     {
@@ -60,10 +64,11 @@ description: "Konferenzraum in Weil am Rhein mieten: 2-25 Personen, tageslichtdu
       subtitle: "Bis 25 Personen",
       image: "/images/standorte/weil-am-rhein/konferenzraum-gross.jpg",
       description: "Für Tagungen, Konferenzen und größere Veranstaltungen.",
+      ctaHref: "/weil-am-rhein/konferenzraum-25p-buchen",
       prices: [
-        { label: "Stunden-Tarif", amount: "EUR 49,-", note: "nur mit 10er-Karte verfügbar", tenner: { amount: "EUR 42,-" } },
-        { label: "Halber Tag", amount: "EUR 129,-", tenner: { amount: "EUR 109,-" } },
-        { label: "Tagespreis", amount: "EUR 199,-", tenner: { amount: "EUR 169,-" } }
+        { label: "Stunden-Tarif", amount: "EUR 49,-", note: "nur mit 10er-Karte verfügbar", tenner: {} },
+        { label: "Halber Tag", amount: "EUR 129,-", tenner: {} },
+        { label: "Tagespreis", amount: "EUR 199,-", tenner: {} }
       ]
     }
   ]}
@@ -101,7 +106,7 @@ description: "Konferenzraum in Weil am Rhein mieten: 2-25 Personen, tageslichtdu
   title="Unsere Konferenz- & Meetingräume"
   slides={[
     { src: "/images/standorte/weil-am-rhein/konferenzraum-gross.jpg", caption: "Großer Konferenzraum — bis zu 25 Personen" },
-    { src: "/images/standorte/weil-am-rhein/meetingraum-green-office-4-6-personen.jpg", caption: "Meetingraum im Green Office — 4 bis 6 Personen" },
+    { src: "/images/standorte/weil-am-rhein/meetingraum-6-personen.jpg", caption: "Meetingraum für 6 Personen" },
     { src: "/images/standorte/weil-am-rhein/meetingraum-empore-5-personen.jpg", caption: "Meetingraum auf der Empore — bis 5 Personen" },
     { src: "/images/standorte/weil-am-rhein/coworking-loungeecke.jpg", caption: "Lounge-Ecke für informelle Meetings" },
     { src: "/images/standorte/weil-am-rhein/kueche-aufenthaltsraum.jpg", caption: "Küche und Aufenthaltsraum für Ihre Pausen" }
@@ -110,7 +115,7 @@ description: "Konferenzraum in Weil am Rhein mieten: 2-25 Personen, tageslichtdu
 
 {/* ===== WAS ENTHALTEN IST ===== */}
 <Features title="Alles für Ihr perfektes Meeting" columns={3}>
-  <Feature title="Glasfaser-Internet" description="WIFI 5/6 und Gigabit-LAN. Stabil genug für Videokonferenzen, Cloud-Anwendungen und IP-Telefonie." />
+  <Feature title="Highspeed-Internet" description="WIFI 5/6 und LAN. Stabil genug für Videokonferenzen, Cloud-Anwendungen und IP-Telefonie." />
   <Feature title="Präsentationstechnik" description="Beamer, Leinwand und Whiteboard in allen Konferenzräumen. Auf Wunsch auch Moderationskoffer." />
   <Feature title="Catering" description="Komplette Meeting-Verpflegung: Kaffeepause, Getränke, Teilchen oder auf Wunsch Mittagslunch." />
   <Feature title="Parkplätze" description="Direkt vor dem Gebäude. Optional zum Tagestarif von EUR 6,- zzgl. MwSt. buchbar." />
@@ -123,7 +128,7 @@ description: "Konferenzraum in Weil am Rhein mieten: 2-25 Personen, tageslichtdu
 <Stats title="Konferenzräume in Zahlen">
   <Stat value="4" label="Raumgrößen" description="Von 2 bis 25 Personen" />
   <Stat value="100%" label="Tageslicht" description="Alle Räume tageslichtdurchflutet" />
-  <Stat value="1 Gbit" label="Internet" description="Glasfaser-Anbindung" />
+  <Stat value="High-Speed" label="Internet" description="WLAN und LAN in allen Räumen" />
   <Stat value="300m" label="Zur Schweiz" description="Direkt an der Grenze" />
 </Stats>
 </StatsTheme>
@@ -131,7 +136,7 @@ description: "Konferenzraum in Weil am Rhein mieten: 2-25 Personen, tageslichtdu
 {/* ===== ÜBER DEN STANDORT ===== */}
 <AlternatingFeatures>
   <AlternatingFeatureRow title="Tagungen im Kesselhaus" description="Historisches Industriegebäude mit Charme: 7,50m Deckenhöhe, offene Architektur und viel Tageslicht. Ideal für Meetings, die mehr sein sollen als ein Besprechungsraum — inspirierend und repräsentativ." image="/images/hero/kesselhaus.jpg" imageAlt="Kesselhaus Weil am Rhein" />
-  <AlternatingFeatureRow title="Im Dreiländereck Basel" description="300m von der Schweizer Grenze, direkt an der Tramlinie 8 (Haltestelle Riedlistrasse/Kesselhaus), nahe der A5 und mit Parkplätzen vor Ort. Optimal erreichbar für Teams aus Deutschland, der Schweiz und Frankreich." image="/images/standorte/weil-am-rhein/green-office.jpg" imageAlt="Lage Weil am Rhein Dreiländereck" />
+  <AlternatingFeatureRow title="Im Dreiländereck Basel" description="300m von der Schweizer Grenze, direkt an der Tramlinie 8 (Haltestelle Riedlistrasse/Kesselhaus), nahe der A5 und mit Parkplätzen vor Ort. Optimal erreichbar für Teams aus Deutschland, der Schweiz und Frankreich." image="/images/standorte/weil-am-rhein/standortkarte.png" imageAlt="Standortkarte bizzcenter Weil am Rhein — Dreiländereck Basel" />
 </AlternatingFeatures>
 
 {/* ===== FAQ ===== */}
@@ -146,7 +151,7 @@ description: "Konferenzraum in Weil am Rhein mieten: 2-25 Personen, tageslichtdu
     Ja. Von der einfachen Kaffeepause bis zum kompletten Mittagslunch organisieren wir gerne Ihre Meeting-Verpflegung.
   </FAQItem>
   <FAQItem question="Welche Technik ist vorhanden?">
-    Beamer, Leinwand, Whiteboard und Glasfaser-Internet (WIFI 5/6 + Gigabit-LAN) sind in allen Räumen verfügbar.
+    Beamer, Leinwand, Whiteboard und Highspeed-Internet (WIFI 5/6 + LAN) sind in allen Räumen verfügbar.
   </FAQItem>
   <FAQItem question="Gibt es Parkplätze?">
     Ja. Parkplätze befinden sich direkt vor dem Gebäude und können optional zum Tagestarif von EUR 6,- zzgl. MwSt. gebucht werden. 90 Minuten kostenfrei.
@@ -156,6 +161,30 @@ description: "Konferenzraum in Weil am Rhein mieten: 2-25 Personen, tageslichtdu
   </FAQItem>
   <FAQItem question="Kann ich den Raum besichtigen?">
     Ja. Vereinbaren Sie eine unverbindliche Besichtigung — wir zeigen Ihnen gerne die Räumlichkeiten.
+  </FAQItem>
+  <FAQItem question="Gibt es Verpflegung vor Ort?">
+    Ja — direkt im Kesselhaus befindet sich ein Restaurant mit täglichem Mittagstisch. Perfekt für längere Meetings oder Ganztags-Buchungen.
+  </FAQItem>
+  <FAQItem question="Wo genau befindet sich der Konferenzraum in Weil am Rhein?">
+    Im historischen Kesselhaus, Am Kesselhaus 3, 79576 Weil am Rhein — nur 300 Meter von der Schweizer Grenze. Direkt erreichbar mit der Tramlinie 8 von Basel (Haltestelle Riedlistrasse/Kesselhaus) und nahe der A5.
+  </FAQItem>
+  <FAQItem question="Kann ich einen Konferenzraum auch als Schweizer Unternehmen buchen?">
+    Ja. Viele unserer Kunden kommen aus Basel und der Nordwestschweiz. Die Grenze ist fußläufig erreichbar, und die Preise sind in Euro — deutlich günstiger als vergleichbare Räume in Basel.
+  </FAQItem>
+  <FAQItem question="Wie weit ist der Konferenzraum vom EuroAirport Basel entfernt?">
+    Der EuroAirport Basel-Mulhouse-Freiburg ist nur etwa 15 Autominuten entfernt. Ideal für Meetings mit internationalen Teilnehmern.
+  </FAQItem>
+  <FAQItem question="Eignen sich die Räume für Workshops und Schulungen?">
+    Ja. Besonders die Räume L (15 Personen) und XL (25 Personen) eignen sich hervorragend für ganztägige Workshops, Schulungen und Seminare. Umbaupauschale für alternative Bestuhlungen ist optional buchbar.
+  </FAQItem>
+  <FAQItem question="Kann ich den Konferenzraum auch am Wochenende buchen?">
+    Ja. Unsere Räume sind 7 Tage die Woche buchbar — auch an Samstagen und Sonntagen.
+  </FAQItem>
+  <FAQItem question="Was kostet ein Konferenzraum in Weil am Rhein?">
+    Ab EUR 19,- pro Stunde für den Meetingraum S (2 Personen). Halbtags- und Tagestarife sind verfügbar. Mit der 10er-Karte sparen Sie 15% auf alle Buchungen.
+  </FAQItem>
+  <FAQItem question="Gibt es einen Konferenzraum mit Tageslicht?">
+    Ja — alle unsere Räume sind tageslichtdurchflutet. Das Kesselhaus hat 7,50 Meter Deckenhöhe und große Fensterfronten.
   </FAQItem>
 </FAQ>
 

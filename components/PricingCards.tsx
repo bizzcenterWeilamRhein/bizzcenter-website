@@ -19,6 +19,7 @@ interface PricingCard {
   prices?: PriceItem[];
   image: string;
   description: string;
+  ctaHref?: string;
 }
 
 interface PricingCardsProps {
@@ -35,7 +36,8 @@ function PricingCardItem({ card, ctaText, ctaHref, onImageClick }: { card: Prici
   const [selected, setSelected] = useState<{ index: number; tenner: boolean } | null>(null);
 
   const buildHref = () => {
-    if (!ctaHref) return '#';
+    const href = card.ctaHref || ctaHref;
+    if (!href) return '#';
     const params = new URLSearchParams({
       raum: card.title,
       ...(selected !== null && card.prices?.[selected.index] ? {
@@ -46,7 +48,7 @@ function PricingCardItem({ card, ctaText, ctaHref, onImageClick }: { card: Prici
         karte: selected.tenner ? '10er' : 'einzel',
       } : {}),
     });
-    return `${ctaHref}?${params.toString()}`;
+    return `${href}?${params.toString()}`;
   };
 
   return (
@@ -83,19 +85,22 @@ function PricingCardItem({ card, ctaText, ctaHref, onImageClick }: { card: Prici
           </div>
         )}
         {card.prices && card.prices.length > 0 && (
-          <div className="space-y-2">
+          <div className="space-y-3">
             {card.prices.map((p, j) => {
               const isSelectedNormal = selected?.index === j && !selected.tenner;
               const isSelectedTenner = selected?.index === j && selected.tenner;
+              const isAnySelected = isSelectedNormal || isSelectedTenner;
               return (
-                <div key={j} className="space-y-1">
+                <div key={j} className={`rounded-xl border transition-all overflow-hidden ${
+                  isAnySelected ? 'border-[#6b7f3e] shadow-sm' : 'border-gray-200'
+                }`}>
                   {/* Normaler Preis */}
                   <button
                     type="button"
                     onClick={() => setSelected(isSelectedNormal ? null : { index: j, tenner: false })}
-                    className={`w-full relative rounded-lg px-4 py-3 transition-all cursor-pointer text-left ${
+                    className={`w-full px-4 py-3 transition-all cursor-pointer text-left ${
                       isSelectedNormal
-                        ? 'bg-[#6b7f3e] ring-2 ring-[#6b7f3e] ring-offset-1'
+                        ? 'bg-[#6b7f3e]'
                         : 'bg-[#f0f4e8] hover:bg-[#e8eede]'
                     }`}
                   >
@@ -112,14 +117,14 @@ function PricingCardItem({ card, ctaText, ctaHref, onImageClick }: { card: Prici
                     <button
                       type="button"
                       onClick={() => setSelected(isSelectedTenner ? null : { index: j, tenner: true })}
-                      className={`w-full rounded-lg px-4 py-2 transition-all cursor-pointer text-left ${
+                      className={`w-full px-4 py-2.5 transition-all cursor-pointer text-left border-t ${
                         isSelectedTenner
-                          ? 'bg-[#6b7f3e] ring-2 ring-[#6b7f3e] ring-offset-1'
-                          : 'bg-[#f0f4e8]/60 hover:bg-[#e8eede]'
+                          ? 'bg-[#6b7f3e] border-[#5a6b35]'
+                          : 'bg-white hover:bg-[#e8eede] border-gray-200'
                       }`}
                     >
-                      <div className="flex items-center justify-between">
-                        <span className={`text-xs ${isSelectedTenner ? 'text-white/80' : 'text-gray-500'}`}>10er-Karte</span>
+                      <div className="flex items-center justify-between gap-2">
+                        <span className={`text-xs font-medium ${isSelectedTenner ? 'text-white/80' : 'text-gray-500'}`}>10er-Karte</span>
                         <span className={`text-[10px] font-bold rounded-full px-1.5 py-0.5 ${isSelectedTenner ? 'bg-white text-[#6b7f3e]' : 'bg-[#6b7f3e] text-white'}`}>−15%</span>
                       </div>
                     </button>

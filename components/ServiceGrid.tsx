@@ -1,6 +1,4 @@
-'use client';
-
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 
 interface Service {
@@ -65,11 +63,11 @@ function ServiceIcon({ icon }: { icon: string }) {
   );
 }
 
-function ServiceCard({ service, isActive, onToggle }: { service: Service; isActive: boolean; onToggle: () => void }) {
+function ServiceCard({ service }: { service: Service }) {
   return (
-    <div
-      onClick={onToggle}
-      className="bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md hover:border-gray-200 transition-all duration-200 cursor-pointer h-full flex flex-col overflow-hidden"
+    <Link
+      href={`/weil-am-rhein/${service.slug}`}
+      className="bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md hover:border-gray-200 transition-all duration-200 cursor-pointer h-full flex flex-col overflow-hidden active:scale-[0.98]"
     >
       {/* Header */}
       <div className="p-3 sm:p-5 flex items-center gap-2 sm:gap-3">
@@ -81,43 +79,21 @@ function ServiceCard({ service, isActive, onToggle }: { service: Service; isActi
           viewBox="0 0 24 24"
           strokeWidth={2}
           stroke="currentColor"
-          className={`w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-200 sm:hidden ${isActive ? 'rotate-180' : ''}`}
+          className="w-4 h-4 text-gray-400 flex-shrink-0"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
         </svg>
       </div>
 
-      {/* Description - hidden on mobile unless active, always shown on desktop */}
-      <div className={`px-3 sm:px-5 pb-3 sm:pb-5 flex-grow flex flex-col ${!isActive ? 'hidden sm:flex' : 'flex'}`}>
-        {!isActive ? (
-          <p className="text-sm text-gray-600 leading-relaxed line-clamp-3">{service.description}</p>
-        ) : (
-          <div className="flex flex-col gap-2">
-            <p className="text-xs text-gray-600 leading-relaxed line-clamp-2 sm:hidden">{service.description}</p>
-            <p className="text-xs font-medium text-gray-500 mb-1 hidden sm:block">Standort wählen:</p>
-            <div className="flex gap-2 sm:flex-col" onClick={(e) => e.stopPropagation()}>
-              <Link
-                href={`/konstanz/${service.slug}`}
-                className="flex-1 text-center text-xs sm:text-sm font-semibold py-2 px-3 rounded-lg bg-[var(--color-primary,#1a73b5)] text-white hover:opacity-90 transition-opacity"
-              >
-                Konstanz
-              </Link>
-              <Link
-                href={`/weil-am-rhein/${service.slug}`}
-                className="flex-1 text-center text-xs sm:text-sm font-semibold py-2 px-3 rounded-lg bg-gray-100 text-gray-800 hover:bg-gray-200 border border-gray-200 transition-colors"
-              >
-                Weil am Rhein
-              </Link>
-            </div>
-          </div>
-        )}
+      {/* Description */}
+      <div className="px-3 sm:px-5 pb-3 sm:pb-5 flex-grow flex flex-col">
+        <p className="text-sm text-gray-600 leading-relaxed line-clamp-3">{service.description}</p>
       </div>
-    </div>
+    </Link>
   );
 }
 
 export function ServiceGrid({ title, services }: ServiceGridProps) {
-  const [activeService, setActiveService] = useState<string | null>(null);
 
   // Pad to multiple of 3 for symmetry (8 services → show all 8 in 3-col grid)
   return (
@@ -131,8 +107,6 @@ export function ServiceGrid({ title, services }: ServiceGridProps) {
           <ServiceCard
             key={service.slug}
             service={service}
-            isActive={activeService === service.slug}
-            onToggle={() => setActiveService(activeService === service.slug ? null : service.slug)}
           />
         ))}
       </div>

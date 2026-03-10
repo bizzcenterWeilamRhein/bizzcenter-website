@@ -96,11 +96,34 @@ interface Addon {
   mitMenge?: boolean;
   mengeLabel?: string;
   nurRaeume?: string[];
+  gruppe?: string;
 }
 
 interface KonferenzBuchungProps {
   raumId?: string;
 }
+
+
+/* PHYSISCHE RAUM-VERKNÜPFUNG:
+ * L und XL sind derselbe physische Raum.
+ * Wenn L gebucht ist, ist XL nicht verfügbar (und umgekehrt).
+ */
+const SHARED_ROOMS: Record<string, string[]> = {
+  'L': ['L', 'XL'],
+  'XL': ['L', 'XL'],
+};
+
+/* VERFÜGBARKEITSPRÜFUNG (PLATZHALTER)
+ * TODO: API-Call an CRM /api/buchung/verfuegbarkeit
+ * Gibt pro Raum-ID ein Array von gebuchten Datums-Strings zurück.
+ * Bei SHARED_ROOMS müssen alle verknüpften Räume abgefragt werden.
+ * 1. useEffect beim Laden: fetch verfuegbarkeit API
+ * 2. Gebuchte Tage im Kalender ausgrauen (disabled + visueller Hinweis)
+ * 3. Bei Raumwechsel: Verfügbarkeit der SHARED_ROOMS berücksichtigen
+ * 4. Tooltip: Dieser Raum ist an diesem Tag bereits belegt
+ */
+const _bookedDates: Record<string, string[]> = {}; // Platzhalter
+
 
 /* ── Konfiguration ── */
 const RAEUME: RaumConfig[] = [
@@ -117,7 +140,12 @@ const RAEUME: RaumConfig[] = [
   },
   {
     id: 'M', label: 'Meetingraum bis 6 Personen', subtitle: '', kapazitaet: 6,
-    image: '/images/standorte/weil-am-rhein/meetingraum-green-office-4-6-personen.jpg',
+    image: '/images/standorte/weil-am-rhein/meetingraum-6-personen.jpg',
+    gallery: [
+      '/images/standorte/weil-am-rhein/meetingraum-6-personen.jpg',
+      '/images/standorte/weil-am-rhein/meetingraum-green-office-4-6-personen.jpg',
+      '/images/standorte/weil-am-rhein/green-office.jpg',
+    ],
     preise: { stunde: 29, halberTag: 89, tag: 129, stunde10er: 25, halberTag10er: 76, tag10er: 109 },
   },
   {
@@ -134,24 +162,40 @@ const RAEUME: RaumConfig[] = [
 
 /* SVG Icons für Add-ons (Heroicons outline, strokeWidth 1.5) */
 const AddonIcons: Record<string, React.ReactNode> = {
-  kaffeeflat: <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>,
-  getraenkeflat: <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" /></svg>,
+  kaffeeflat: <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4 9h12a3 3 0 013 3v1a3 3 0 01-3 3H4V9z" /><path strokeLinecap="round" strokeLinejoin="round" d="M16 11h1.5a2.5 2.5 0 010 5H16" /><path strokeLinecap="round" strokeLinejoin="round" d="M6 20h8" /><path strokeLinecap="round" strokeLinejoin="round" d="M8 5v2m2-3v3m2-2v2" /></svg>,
+  extrastunde: <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
+  'extrastunde-10er': <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
+  'parkplatz-10er': <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" /></svg>,
+  spind: <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg>,
+  aktenschrank: <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" /></svg>,
+  getraenkeflat: <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M9.5 3v3.5L7 21h10l-2.5-14.5V3m-5 0h5M8.5 14h7" /></svg>,
   'catering-snack': <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8.25v-1.5m0 1.5c-1.355 0-2.697.056-4.024.166C6.845 8.51 6 9.473 6 10.608v2.513m6-4.871c1.355 0 2.697.056 4.024.166C17.155 8.51 18 9.473 18 10.608v2.513M15 8.25v-1.5m-6 1.5v-1.5m12 9.75l-1.5.75a3.354 3.354 0 01-3 0 3.354 3.354 0 00-3 0 3.354 3.354 0 01-3 0 3.354 3.354 0 00-3 0 3.354 3.354 0 01-3 0L3 16.5m15-3.379a48.474 48.474 0 00-6-.371c-2.032 0-4.034.126-6 .371m12 0c.39.049.777.102 1.163.16 1.07.16 1.837 1.094 1.837 2.175v5.169c0 .621-.504 1.125-1.125 1.125H4.125A1.125 1.125 0 013 20.625v-5.17c0-1.08.768-2.014 1.837-2.174A47.78 47.78 0 016 13.12" /></svg>,
   'catering-lunch': <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
   beamer: <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M6 20.25h12m-7.5-3v3m3-3v3m-10.125-3h17.25c.621 0 1.125-.504 1.125-1.125V4.875c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125z" /></svg>,
   moderationskoffer: <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" /></svg>,
+  monitor: <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25A2.25 2.25 0 015.25 3h13.5A2.25 2.25 0 0121 5.25z" /></svg>,
+  umbaupauschale: <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M11.42 15.17l-5.1-5.1a2.121 2.121 0 113-3l5.1 5.1m0 0L18 9.6m-6.58 5.57L18 21.75m-6.58-6.58L5.25 21.75m13.5-13.5L21 6l-2.25-2.25L16.5 6l2.25 2.25z" /></svg>,
+  'extrastunde-10er': <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
+  'parkplatz-10er': <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" /></svg>,
   parkplatz: <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H18.375m-7.5-8.25h3.75a1.125 1.125 0 011.079.82l.464 1.854a1.125 1.125 0 001.08.82h.39a1.125 1.125 0 011.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125H2.25A1.125 1.125 0 011.125 12V9.75c0-.621.504-1.125 1.125-1.125h.39a1.125 1.125 0 001.08-.82l.464-1.854A1.125 1.125 0 015.25 5.25h3.75" /></svg>,
 };
 
 const ADDONS: Addon[] = [
-  { id: 'kaffeeflat', label: 'Kaffee-Flatrate', beschreibung: 'Kaffee, Tee, Wasser — unbegrenzt', preis: 'EUR 8,- / Person', preisWert: 8, einheit: 'pro-stueck-tag', icon: '', mitMenge: true, mengeLabel: 'Personen' },
-  { id: 'getraenkeflat', label: 'Getränke-Flatrate', beschreibung: 'Softdrinks, Säfte, Schorlen — unbegrenzt', preis: 'EUR 8,- / Person', preisWert: 8, einheit: 'pro-stueck-tag', icon: '', mitMenge: true, mengeLabel: 'Personen' },
-  { id: 'beamer', label: 'Beamer / Präsentationstechnik', beschreibung: 'Full-HD Beamer mit Anschlusskabel', preis: '', preisWert: 0, einheit: 'pauschal', icon: '' },
-  { id: 'moderationskoffer', label: 'Moderationskoffer', beschreibung: 'Stifte, Karten, Pins, Flipchart-Papier', preis: 'EUR 29,- pauschal', preisWert: 29, einheit: 'pauschal', icon: '' },
-  { id: 'catering-lunch', label: 'Business Lunch / Catering', beschreibung: 'Individuelles Catering auf Anfrage', preis: 'Preis auf Anfrage', preisWert: 0, einheit: 'pauschal', icon: '' },
-  { id: 'monitor', label: '27" Curved Monitor', beschreibung: 'Externer Bildschirm für Präsentationen oder Arbeitsplatz', preis: 'EUR 9,- / Tag', preisWert: 9, einheit: 'pro-stueck-tag', icon: '', mitMenge: true, mengeLabel: 'Monitore' },
-  { id: 'umbaupauschale', label: 'Umbaupauschale', beschreibung: 'Abweichend von Grundbestuhlung (Blockbestuhlung, 20 Plätze)', preis: 'EUR 59,- pauschal', preisWert: 59, einheit: 'pauschal', icon: '', nurRaeume: ['L', 'XL'] },
-  { id: 'parkplatz', label: 'Parkplatz reserviert', beschreibung: 'Reservierter Stellplatz direkt am Gebäude', preis: 'EUR 6,- / Tag', preisWert: 6, einheit: 'pro-stueck-tag', icon: '', mitMenge: true, mengeLabel: 'Parkplätze' },
+  // --- Getränke ---
+  { id: 'kaffeeflat', label: 'Kaffee- & Tee-Flat', beschreibung: 'Kaffee und Tee — unbegrenzt', preis: 'EUR 8,- / Person', preisWert: 8, einheit: 'pro-stueck-tag', icon: '', mitMenge: true, mengeLabel: 'Personen', gruppe: 'Getränke' },
+  { id: 'getraenkeflat', label: 'Komplett-Flat', beschreibung: 'Kaffee, Tee, Mineralwasser und Säfte — unbegrenzt', preis: 'EUR 14,- / Person', preisWert: 14, einheit: 'pro-stueck-tag', icon: '', mitMenge: true, mengeLabel: 'Personen', gruppe: 'Getränke' },
+  // --- Technik ---
+  { id: 'beamer', label: 'Beamer / Präsentationstechnik', beschreibung: 'Full-HD Beamer mit Anschlusskabel', preis: '', preisWert: 0, einheit: 'pauschal', icon: '', gruppe: 'Technik' },
+  { id: 'monitor', label: '27" Curved Monitor', beschreibung: 'Externer Bildschirm für Präsentationen oder Arbeitsplatz', preis: 'EUR 9,- / Tag', preisWert: 9, einheit: 'pro-stueck-tag', icon: '', mitMenge: true, mengeLabel: 'Monitore', gruppe: 'Technik' },
+  { id: 'moderationskoffer', label: 'Moderationskoffer', beschreibung: 'Stifte, Karten, Pins, Flipchart-Papier', preis: 'EUR 29,- pauschal', preisWert: 29, einheit: 'pauschal', icon: '', gruppe: 'Technik' },
+  { id: 'umbaupauschale', label: 'Umbaupauschale', beschreibung: 'Abweichend von Grundbestuhlung (Blockbestuhlung, 20 Plätze)', preis: 'EUR 59,- pauschal', preisWert: 59, einheit: 'pauschal', icon: '', nurRaeume: ['L', 'XL'], gruppe: 'Technik' },
+  // --- Zeit & Flexibilität ---
+  { id: 'extrastunde', label: 'Extrastunde', beschreibung: 'Sie brauchen doch etwas mehr Zeit? Buchen Sie sich bequem eine Stunde hinzu.', preis: 'EUR 14,- / Stunde', preisWert: 14, einheit: 'pro-stueck-tag', icon: '', mitMenge: true, mengeLabel: 'Stunden', gruppe: 'Zeit & Flexibilität' },
+  { id: 'extrastunde-10er', label: '10er-Karte Extrastunden', beschreibung: '10 Extrastunden zum Vorteilspreis — 15% günstiger.', preis: 'EUR 119,- (10 Stunden)', preisWert: 119, einheit: 'pauschal', icon: '', gruppe: 'Zeit & Flexibilität' },
+  // --- Parkplatz & Lager ---
+  { id: 'parkplatz', label: 'Parkplatz reserviert', beschreibung: 'Reservierter Stellplatz direkt am Gebäude', preis: 'EUR 6,- / Tag', preisWert: 6, einheit: 'pro-stueck-tag', icon: '', mitMenge: true, mengeLabel: 'Parkplätze', gruppe: 'Parkplatz & Lager' },
+  { id: 'parkplatz-10er', label: '10er-Karte Parkplatz', beschreibung: '10 Tages-Parkplätze zum Vorteilspreis — 15% günstiger.', preis: 'EUR 51,- (10 Tage)', preisWert: 51, einheit: 'pauschal', icon: '', gruppe: 'Parkplatz & Lager' },
+
 ];
 
 /* ── Kalender-Helfer ── */
@@ -190,13 +234,14 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
   const [selectedDates, setSelectedDates] = useState<string[]>([]);
   const [rangeStart, setRangeStart] = useState<string | null>(null);
   const [dauer, setDauer] = useState<'halberTag' | 'tag'>('tag');
+  const [use10er, setUse10er] = useState(false);
   const [calMonth, setCalMonth] = useState(() => new Date().getMonth());
   const [calYear, setCalYear] = useState(() => new Date().getFullYear());
   const [teilnehmer, setTeilnehmer] = useState(2);
   const [selectedAddons, setSelectedAddons] = useState<Record<string, boolean>>({});
   const [addonMengen, setAddonMengen] = useState<Record<string, number>>({});
   const [form, setForm] = useState({
-    firma: '', anrede: '', name: '', strasse: '', plz: '', ort: '',
+    firma: '', anrede: '', name: '', strasse: '', hausnummer: '', plz: '', ort: '',
     email: '', telefon: '', bemerkungen: '', agb: false, privatmiete: false,
   });
   const [submitting, setSubmitting] = useState(false);
@@ -231,27 +276,31 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
     return days;
   }, [todayStr, maxDateStr]);
 
-  const handleDateClick = useCallback((ds: string) => {
-    if (ds < todayStr || ds > maxDateStr || isWeekend(ds)) return;
+  const lastClickedRef = React.useRef<string | null>(null);
 
-    if (rangeStart) {
-      // Zweiter Klick: Range auswählen
-      const range = getWeekdaysInRange(rangeStart, ds);
+  const handleDateClick = useCallback((ds: string) => {
+    if (ds < todayStr || ds > maxDateStr) return;
+
+    if (selectedDates.includes(ds)) {
+      // Klick auf bereits gewählten Tag: entfernen
+      setSelectedDates(prev => prev.filter(d => d !== ds));
+      lastClickedRef.current = null;
+    } else if (lastClickedRef.current && lastClickedRef.current !== ds) {
+      // Zweiter Klick auf neuen Tag: Bereich dazwischen füllen
+      const range = getWeekdaysInRange(lastClickedRef.current, ds);
       setSelectedDates(prev => {
         const set = new Set(prev);
         range.forEach(d => set.add(d));
         return [...set].sort();
       });
-      setRangeStart(null);
-    } else if (selectedDates.includes(ds)) {
-      // Klick auf bereits gewählten Tag: entfernen
-      setSelectedDates(prev => prev.filter(d => d !== ds));
+      lastClickedRef.current = ds;
     } else {
-      // Erster Klick: als Range-Start merken UND sofort auswählen
-      setRangeStart(ds);
+      // Einzelner Tag: auswählen
       setSelectedDates(prev => [...prev, ds].sort());
+      lastClickedRef.current = ds;
     }
-  }, [todayStr, maxDateStr, rangeStart, selectedDates, getWeekdaysInRange]);
+    setRangeStart(null);
+  }, [todayStr, maxDateStr, selectedDates, getWeekdaysInRange]);
 
   const toggleAddon = useCallback((id: string) => {
     setSelectedAddons(prev => ({ ...prev, [id]: !prev[id] }));
@@ -282,7 +331,9 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
   /* Preisberechnung */
   const preis = useMemo(() => {
     const tage = selectedDates.length;
-    const raumPreis = dauer === 'tag' ? selectedRaum.preise.tag : selectedRaum.preise.halberTag;
+    const raumPreis = use10er
+      ? (dauer === 'tag' ? selectedRaum.preise.tag10er : selectedRaum.preise.halberTag10er)
+      : (dauer === 'tag' ? selectedRaum.preise.tag : selectedRaum.preise.halberTag);
     const raumGesamt = raumPreis * tage;
 
     let addonGesamt = 0;
@@ -301,7 +352,7 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
     });
 
     return { raum: raumGesamt, addons: addonGesamt, gesamt: raumGesamt + addonGesamt, tage };
-  }, [selectedDates, dauer, selectedRaum, selectedAddons, teilnehmer, addonMengen, getAddonPreis]);
+  }, [selectedDates, dauer, use10er, selectedRaum, selectedAddons, teilnehmer, addonMengen, getAddonPreis]);
 
   /* Submit */
   const handleSubmit = async () => {
@@ -377,8 +428,8 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
         preisLabel={`EUR ${selectedRaum.preise.halberTag},-`}
       />
 
-      {/* ══════ HAUPTBEREICH: Links Formular, Rechts Preis-Sticky ══════ */}
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
+      {/* ══════ HAUPTBEREICH ══════ */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
 
         {/* ── LINKE SPALTE ── */}
         <div className="space-y-8">
@@ -387,24 +438,37 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
           <section className="bg-white rounded-2xl border shadow-sm p-6 space-y-6">
             <h3 className="text-lg font-bold text-gray-900">1. Dauer & Teilnehmer</h3>
 
-            {/* Dauer */}
-            <div className="flex gap-3">
-              {([
-                { key: 'halberTag' as const, label: 'Halber Tag', sub: '4 Stunden', preis: selectedRaum.preise.halberTag },
-                { key: 'tag' as const, label: 'Ganzer Tag', sub: '08:00–20:00 Uhr', preis: selectedRaum.preise.tag },
-              ]).map(opt => (
-                <button
-                  key={opt.key}
-                  onClick={() => setDauer(opt.key)}
-                  className={`flex-1 p-4 rounded-xl border-2 text-left transition-all ${
-                    dauer === opt.key ? 'border-[#6b7f3e] bg-[#f0f4e8]' : 'border-gray-200 hover:border-gray-300'
-                  }`}
-                >
-                  <p className="font-semibold text-gray-900">{opt.label}</p>
-                  <p className="text-xs text-gray-500">{opt.sub}</p>
-                  <p className="text-sm font-bold text-[#6b7f3e] mt-1">EUR {opt.preis},- <span className="text-xs font-normal text-gray-400">zzgl. MwSt.</span></p>
-                </button>
-              ))}
+            {/* Dauer — 4 Kästchen in einer Reihe: Halber Tag | 10er Halber Tag | Ganzer Tag | 10er Ganzer Tag */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '8px' }}>
+              {[
+                { d: 'halberTag' as const, ten: false, label: 'Halber Tag', sub: '4 Stunden', preis: selectedRaum.preise.halberTag },
+                { d: 'halberTag' as const, ten: true, label: '10er-Karte', sub: 'Halber Tag', preis: selectedRaum.preise.halberTag10er, badge: true },
+                { d: 'tag' as const, ten: false, label: 'Ganzer Tag', sub: '', preis: selectedRaum.preise.tag },
+                { d: 'tag' as const, ten: true, label: '10er-Karte', sub: 'Ganzer Tag', preis: selectedRaum.preise.tag10er, badge: true },
+              ].map((opt, i) => {
+                const active = dauer === opt.d && use10er === opt.ten;
+                return (
+                  <button
+                    key={i}
+                    onClick={() => { setDauer(opt.d); setUse10er(opt.ten); }}
+                    style={{
+                      padding: '12px 8px', textAlign: 'center', cursor: 'pointer',
+                      border: active ? '2px solid #6b7f3e' : '2px solid #e5e7eb',
+                      borderRadius: '12px', backgroundColor: active ? '#f0f4e8' : '#fff',
+                      transition: 'all 0.2s', position: 'relative',
+                    }}
+                  >
+                    {opt.badge && (
+                      <span style={{ position: 'absolute', top: '-8px', right: '-4px', fontSize: '9px', fontWeight: 700, backgroundColor: '#6b7f3e', color: '#fff', borderRadius: '9999px', padding: '2px 6px' }}>−15%</span>
+                    )}
+                    <p style={{ fontWeight: 600, color: '#111', margin: 0, fontSize: '13px' }}>{opt.label}</p>
+                    {opt.sub && <p style={{ fontSize: '11px', color: '#6b7280', margin: '2px 0 0' }}>{opt.sub}</p>}
+                    <p style={{ fontSize: '13px', fontWeight: 700, color: '#6b7f3e', margin: '6px 0 0' }}>
+                      EUR {opt.preis},-
+                    </p>
+                  </button>
+                );
+              })}
             </div>
 
             {/* Teilnehmer */}
@@ -435,7 +499,7 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
                     className="mt-3 w-full p-3 rounded-xl border-2 border-dashed border-[#6b7f3e]/40 bg-[#f0f4e8]/50 text-left hover:border-[#6b7f3e] hover:bg-[#f0f4e8] transition-all"
                   >
                     <p className="text-sm font-semibold text-[#6b7f3e]">Mehr Platz nötig?</p>
-                    <p className="text-xs text-gray-600">Wechseln zum <strong>{bigger.label}</strong> ({bigger.subtitle}) — ab EUR {bigger.preise.halberTag},- zzgl. MwSt.</p>
+                    <p className="text-xs text-gray-600">Wechseln zum <strong>{bigger.label}</strong> — ab EUR {bigger.preise.halberTag},- zzgl. MwSt.</p>
                   </button>
                 ) : null;
               })()}
@@ -454,7 +518,7 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
                 )}
               </h3>
               <p className="text-xs text-gray-400">
-                {rangeStart ? '→ Klicken Sie auf das Enddatum' : 'Klick = Start, 2. Klick = Bereich'}
+                {'Wählen Sie Ihre gewünschten Tage'}
               </p>
             </div>
 
@@ -476,13 +540,13 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
             </div>
 
             {/* Kalender Grid */}
-            <div>
-              <div className="grid grid-cols-7 gap-1 mb-2">
+            <div style={{ maxWidth: '380px', margin: '0 auto' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px', marginBottom: '4px' }}>
                 {['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'].map(d => (
-                  <div key={d} className="text-center text-xs font-medium text-gray-400 py-1">{d}</div>
+                  <div key={d} style={{ textAlign: 'center', fontSize: '11px', fontWeight: 500, color: '#9ca3af', padding: '2px 0' }}>{d}</div>
                 ))}
               </div>
-              <div className="grid grid-cols-7 gap-1">
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '3px' }}>
                 {getMonthDays(calYear, calMonth).map((day, i) => {
                   if (!day) return <div key={i} />;
                   const ds = dateStr(calYear, calMonth, day);
@@ -497,14 +561,23 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
                       key={i}
                       onClick={() => !disabled && handleDateClick(ds)}
                       disabled={disabled}
-                      className={`py-2.5 rounded-lg text-sm font-medium transition-all ${
-                        selected ? 'bg-[#6b7f3e] text-white shadow-sm' :
-                        ds === rangeStart ? 'bg-[#6b7f3e] text-white ring-2 ring-[#6b7f3e]/50' :
-                        disabled ? 'text-gray-300 cursor-not-allowed' :
-                        ds === todayStr ? 'bg-[#f0f4e8] text-[#6b7f3e] hover:bg-[#e0ecd0] font-bold ring-1 ring-[#6b7f3e]/30' :
-                        rangeStart ? 'hover:bg-[#f0f4e8] text-gray-700 cursor-pointer' :
-                        'hover:bg-gray-50 text-gray-700'
-                      }`}
+                      style={{
+                        aspectRatio: '1',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: '8px',
+                        fontSize: '13px',
+                        fontWeight: selected || ds === todayStr ? 700 : 500,
+                        cursor: disabled ? 'not-allowed' : 'pointer',
+                        transition: 'all 0.15s',
+                        backgroundColor: selected ? '#6b7f3e' : ds === rangeStart ? '#6b7f3e' : ds === todayStr ? '#f0f4e8' : 'transparent',
+                        color: selected || ds === rangeStart ? '#fff' : disabled ? '#d1d5db' : ds === todayStr ? '#6b7f3e' : '#374151',
+                        border: ds === todayStr && !selected ? '1px solid rgba(107,127,62,0.3)' : '1px solid transparent',
+                        boxShadow: selected ? '0 1px 3px rgba(107,127,62,0.3)' : 'none',
+                      }}
+                      onMouseEnter={e => { if (!disabled && !selected) (e.target as HTMLElement).style.backgroundColor = '#f0f4e8'; }}
+                      onMouseLeave={e => { if (!disabled && !selected) (e.target as HTMLElement).style.backgroundColor = ds === todayStr ? '#f0f4e8' : 'transparent'; }}
                     >
                       {day}
                     </button>
@@ -541,61 +614,70 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
           <section className="bg-white rounded-2xl border shadow-sm p-6 space-y-4">
             <h3 className="text-lg font-bold text-gray-900">3. Extras hinzubuchen <span className="text-sm font-normal text-gray-400">(optional)</span></h3>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {ADDONS.filter(a => !a.nurRaeume || a.nurRaeume.includes(selectedRaum.id)).map(addon => {
-                const active = selectedAddons[addon.id];
-                return (
-                  <button
-                    key={addon.id}
-                    onClick={() => toggleAddon(addon.id)}
-                    className={`p-4 rounded-xl border-2 text-left transition-all ${
-                      active ? 'border-[#6b7f3e] bg-[#f0f4e8]' : 'border-gray-200 hover:border-gray-300'
-                    }`}
-                  >
-                    <div className="flex items-start gap-3">
-                      <span className="text-[#6b7f3e] shrink-0 mt-0.5">{AddonIcons[addon.id]}</span>
-                      <div className="flex-1">
-                        <div className="flex items-center justify-between">
-                          <p className="font-semibold text-gray-900 text-sm">{addon.label}</p>
-                          <div className={`w-5 h-5 rounded border-2 flex items-center justify-center text-xs shrink-0 ${
-                            active ? 'bg-[#6b7f3e] border-[#6b7f3e] text-white' : 'border-gray-300'
-                          }`}>{active && '✓'}</div>
-                        </div>
-                        <p className="text-xs text-gray-500 mt-0.5">{addon.beschreibung}</p>
-                        <p className="text-xs font-semibold text-[#6b7f3e] mt-1">
-                          {addon.id === 'catering-lunch' ? (
-                            <span className="text-gray-500 font-normal italic">Preis auf Anfrage</span>
-                          ) : (
-                            <>{getAddonPreisLabel(addon.id, addon)} <span className="font-normal text-gray-400">zzgl. MwSt.</span></>
-                          )}
-                        </p>
-                        {addon.mitMenge && active && (
-                          <div className="flex items-center gap-2 mt-2" onClick={e => e.stopPropagation()}>
-                            <span className="text-xs text-gray-500">{addon.mengeLabel}:</span>
-                            <button
-                              onClick={() => setAddonMengen(m => ({ ...m, [addon.id]: Math.max(1, (m[addon.id] || 1) - 1) }))}
-                              className="w-7 h-7 rounded border flex items-center justify-center text-sm hover:bg-gray-50"
-                            >−</button>
-                            <span className="text-sm font-bold w-6 text-center">{addonMengen[addon.id] || 1}</span>
-                            <button
-                              onClick={() => setAddonMengen(m => ({ ...m, [addon.id]: Math.min(25, (m[addon.id] || 1) + 1) }))}
-                              className="w-7 h-7 rounded border flex items-center justify-center text-sm hover:bg-gray-50"
-                            >+</button>
+            {(() => {
+              const filtered = ADDONS.filter(a => !a.nurRaeume || a.nurRaeume.includes(selectedRaum.id));
+              const gruppen = [...new Set(filtered.map(a => a.gruppe || 'Sonstiges'))];
+              return gruppen.map(gruppe => (
+                <div key={gruppe} className="space-y-2">
+                  <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide">{gruppe}</p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {filtered.filter(a => (a.gruppe || 'Sonstiges') === gruppe).map(addon => {
+                      const active = selectedAddons[addon.id];
+                      return (
+                        <button
+                          key={addon.id}
+                          onClick={() => toggleAddon(addon.id)}
+                          className={`p-4 rounded-xl border-2 text-left transition-all ${
+                            active ? 'border-[#6b7f3e] bg-[#f0f4e8]' : 'border-gray-200 hover:border-gray-300'
+                          }`}
+                        >
+                          <div className="flex items-start gap-3">
+                            <span className="text-[#6b7f3e] shrink-0 mt-0.5">{AddonIcons[addon.id]}</span>
+                            <div className="flex-1">
+                              <div className="flex items-center justify-between">
+                                <p className="font-semibold text-gray-900 text-sm">{addon.label}</p>
+                                <div className={`w-5 h-5 rounded border-2 flex items-center justify-center text-xs shrink-0 ${
+                                  active ? 'bg-[#6b7f3e] border-[#6b7f3e] text-white' : 'border-gray-300'
+                                }`}>{active && '✓'}</div>
+                              </div>
+                              <p className="text-xs text-gray-500 mt-0.5">{addon.beschreibung}</p>
+                              <p className="text-xs font-semibold text-[#6b7f3e] mt-1">
+                                {addon.id === 'catering-lunch' ? (
+                                  <span className="text-gray-500 font-normal italic">Preis auf Anfrage</span>
+                                ) : (
+                                  <>{getAddonPreisLabel(addon.id, addon)} <span className="font-normal text-gray-400">zzgl. MwSt.</span></>
+                                )}
+                              </p>
+                              {addon.mitMenge && active && (
+                                <div className="flex items-center gap-2 mt-2" onClick={e => e.stopPropagation()}>
+                                  <span className="text-xs text-gray-500">{addon.mengeLabel}:</span>
+                                  <button
+                                    onClick={() => setAddonMengen(m => ({ ...m, [addon.id]: Math.max(1, (m[addon.id] || 1) - 1) }))}
+                                    className="w-7 h-7 rounded border flex items-center justify-center text-sm hover:bg-gray-50"
+                                  >−</button>
+                                  <span className="text-sm font-bold w-6 text-center">{addonMengen[addon.id] || 1}</span>
+                                  <button
+                                    onClick={() => setAddonMengen(m => ({ ...m, [addon.id]: Math.min(25, (m[addon.id] || 1) + 1) }))}
+                                    className="w-7 h-7 rounded border flex items-center justify-center text-sm hover:bg-gray-50"
+                                  >+</button>
+                                </div>
+                              )}
+                            </div>
                           </div>
-                        )}
-                      </div>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ));
+            })()}
           </section>
 
           {/* ── 4. Kontaktdaten ── */}
           <section className="bg-white rounded-2xl border shadow-sm p-6 space-y-4">
-            <h3 className="text-lg font-bold text-gray-900">4. Ihre Kontaktdaten</h3>
+            <h3 className="text-lg font-bold text-gray-900">4. Ihre Buchungsdaten</h3>
 
-            {/* Firma + Privat-Checkbox */}
+            {/* Zeile 1: Firma + Privat-Checkbox */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Firma / Unternehmen {!form.privatmiete && '*'}
@@ -609,13 +691,13 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
               </label>
             </div>
 
-            {/* Anrede + Name */}
-            <div className="grid grid-cols-[120px_1fr] gap-4">
+            {/* Zeile 2: Anrede + Vorname + Nachname */}
+            <div style={{ display: 'grid', gridTemplateColumns: '100px 1fr 1fr', gap: '12px' }}>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Anrede *</label>
                 <select value={form.anrede} onChange={e => setForm(f => ({ ...f, anrede: e.target.value }))}
-                  className="w-full h-[42px] border rounded-xl px-4 text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none bg-white appearance-none"
-                  style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' viewBox=\'0 0 12 12\'%3E%3Cpath d=\'M6 8L1 3h10z\' fill=\'%236b7f3e\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center' }}>
+                  className="w-full h-[42px] border rounded-xl px-3 text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none bg-white appearance-none"
+                  style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' viewBox=\'0 0 12 12\'%3E%3Cpath d=\'M6 8L1 3h10z\' fill=\'%236b7f3e\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 8px center' }}>
                   <option value="">—</option>
                   <option value="Herr">Herr</option>
                   <option value="Frau">Frau</option>
@@ -623,21 +705,33 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Vor- und Nachname *</label>
-                <input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                <label className="block text-sm font-medium text-gray-700 mb-1">Vorname *</label>
+                <input value={form.name.split(' ')[0] || ''} onChange={e => { const last = form.name.split(' ').slice(1).join(' '); setForm(f => ({ ...f, name: e.target.value + (last ? ' ' + last : '') })); }}
+                  className="w-full border rounded-xl px-4 h-[42px] text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Nachname *</label>
+                <input value={form.name.split(' ').slice(1).join(' ') || ''} onChange={e => { const first = form.name.split(' ')[0] || ''; setForm(f => ({ ...f, name: first + ' ' + e.target.value })); }}
                   className="w-full border rounded-xl px-4 h-[42px] text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none" />
               </div>
             </div>
 
-            {/* Straße */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Straße + Hausnummer *</label>
-              <input value={form.strasse} onChange={e => setForm(f => ({ ...f, strasse: e.target.value }))}
-                className="w-full border rounded-xl px-4 h-[42px] text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none" />
+            {/* Zeile 3: Straße + Hausnummer */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 120px', gap: '12px' }}>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Straße *</label>
+                <input value={form.strasse} onChange={e => setForm(f => ({ ...f, strasse: e.target.value }))}
+                  className="w-full border rounded-xl px-4 h-[42px] text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Nr. *</label>
+                <input value={form.hausnummer || ''} onChange={e => setForm(f => ({ ...f, hausnummer: e.target.value }))}
+                  className="w-full border rounded-xl px-4 h-[42px] text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none" />
+              </div>
             </div>
 
-            {/* PLZ + Ort */}
-            <div className="grid grid-cols-[120px_1fr] gap-4">
+            {/* Zeile 4: PLZ + Ort */}
+            <div style={{ display: 'grid', gridTemplateColumns: '120px 1fr', gap: '12px' }}>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">PLZ *</label>
                 <input value={form.plz} onChange={e => setForm(f => ({ ...f, plz: e.target.value }))}
@@ -650,8 +744,8 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
               </div>
             </div>
 
-            {/* E-Mail + Telefon */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Zeile 5: E-Mail + Telefon */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">E-Mail *</label>
                 <input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
@@ -677,7 +771,7 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
               <p>Bis 7 Tage vor Termin: kostenfreie Stornierung</p>
               <p>3–6 Tage vor Termin: 50 % des Buchungsbetrags</p>
               <p>Weniger als 3 Tage / Nichterscheinen: 100 % des Buchungsbetrags</p>
-              <p className="mt-1 text-gray-400">Umbuchungen auf einen anderen Termin sind bis 48h vorher kostenfrei möglich.</p>
+              <p className="mt-1 text-gray-400">Umbuchungen auf einen anderen Termin sind bis 3 Tage vorher kostenfrei möglich.</p>
             </div>
 
             <label className="flex items-start gap-3 cursor-pointer">
@@ -688,8 +782,8 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
             </label>
           </section>
 
-          {/* ══════ ZUSAMMENFASSUNG UNTEN (immer sichtbar) ══════ */}
-          <div className="bg-white rounded-2xl border shadow-sm p-5 space-y-4">
+          {/* ══════ ZUSAMMENFASSUNG UNTEN (nur Mobile) ══════ */}
+          <div className="lg:hidden bg-white rounded-2xl border shadow-sm p-5 space-y-4">
             <h4 className="font-bold text-gray-900">Ihre Buchung</h4>
 
             <div className="flex items-center gap-3">
@@ -727,11 +821,18 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
                 )}
 
                 <div className="border-t pt-3 space-y-1">
-                  <div className="flex justify-between font-bold text-[#6b7f3e] text-lg">
-                    <span>Gesamt</span>
+                  <div className="flex justify-between text-sm text-gray-600">
+                    <span>Netto</span>
                     <span>EUR {preis.gesamt},-</span>
                   </div>
-                  <p className="text-xs text-gray-400">zzgl. MwSt.</p>
+                  <div className="flex justify-between text-sm text-gray-600">
+                    <span>MwSt. (19%)</span>
+                    <span>EUR {(preis.gesamt * 0.19).toFixed(2).replace('.', ',')}</span>
+                  </div>
+                  <div className="flex justify-between font-bold text-[#6b7f3e] text-lg pt-1">
+                    <span>Gesamt (brutto)</span>
+                    <span>EUR {(preis.gesamt * 1.19).toFixed(2).replace('.', ',')}</span>
+                  </div>
                 </div>
               </>
             ) : (
@@ -741,79 +842,92 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
             <button
               onClick={handleSubmit}
               disabled={!canSubmit || submitting}
+              title={!canSubmit ? 'Bitte füllen Sie Ihre Buchungsdaten aus und akzeptieren Sie die AGB.' : ''}
               className="w-full bg-[#6b7f3e] text-white py-3.5 rounded-xl font-semibold text-base hover:bg-[#5a6b35] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
-              {submitting ? 'Weiter zur Zahlung...' : `Kostenpflichtig buchen — EUR ${preis.gesamt},-`}
+              {submitting ? 'Weiter zur Zahlung...' : 'Jetzt buchen'}
             </button>
-            <p className="text-center text-xs text-gray-400">Alle Preise zzgl. MwSt.</p>
           </div>
         </div>
 
-        {/* ── RECHTE SPALTE: Preis-Sticky ── */}
-        <div className="hidden lg:block">
-          <div className="sticky top-6 space-y-4">
-            <div className="bg-white rounded-2xl border shadow-sm p-5 space-y-4">
-              <h4 className="font-bold text-gray-900">Ihre Buchung</h4>
+        {/* ── BUCHUNGSÜBERSICHT: Bild links, Warenkorb rechts ── */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', alignItems: 'start' }}>
+          {/* Raumbild links */}
+          <div>
+            <img
+              src={selectedRaum.image}
+              alt={selectedRaum.label}
+              style={{ width: '100%', borderRadius: '16px', objectFit: 'cover', aspectRatio: '4/3' }}
+            />
+            <p style={{ textAlign: 'center', marginTop: '8px', fontSize: '14px', fontWeight: 600, color: '#374151' }}>{selectedRaum.label}</p>
+            <p style={{ textAlign: 'center', fontSize: '12px', color: '#6b7280' }}>{selectedRaum.subtitle}</p>
+          </div>
 
-              {/* Raum */}
-              <div className="flex items-center gap-3">
-                <img src={selectedRaum.image} alt="" className="w-12 h-12 rounded-lg object-cover" />
-                <div>
-                  <p className="text-sm font-semibold">{selectedRaum.label}</p>
-                  <p className="text-xs text-gray-500">{selectedRaum.subtitle}</p>
+          {/* Warenkorb rechts */}
+          <div className="bg-white rounded-2xl border shadow-sm p-5 space-y-4">
+            <h4 className="font-bold text-gray-900">Ihre Buchung</h4>
+
+            {/* Dauer, Teilnehmer & Basispreis */}
+            <div className="text-sm text-gray-600 space-y-1">
+              <div className="flex justify-between">
+                <span>{dauer === 'tag' ? 'Ganzer Tag' : 'Halber Tag'} · {teilnehmer} {teilnehmer === 1 ? 'Person' : 'Personen'}</span>
+                <span className="font-semibold text-[#6b7f3e]">EUR {use10er ? (dauer === 'tag' ? selectedRaum.preise.tag10er : selectedRaum.preise.halberTag10er) : (dauer === 'tag' ? selectedRaum.preise.tag : selectedRaum.preise.halberTag)},- <span className="text-xs font-normal text-gray-400">/ Tag</span></span>
+              </div>
+              {use10er && <p className="text-xs text-[#6b7f3e]">10er-Karte · −15%</p>}
+            </div>
+
+            {selectedDates.length > 0 ? (
+              <>
+                {/* Termine */}
+                <div className="space-y-1 font-mono text-sm">
+                  {selectedDates.map(ds => (
+                    <div key={ds} className="flex justify-between">
+                      <span className="text-gray-600 tabular-nums">{formatDE(ds)}</span>
+                      <span className="text-gray-500 tabular-nums text-right min-w-[80px]">EUR {dauer === 'tag' ? selectedRaum.preise.tag : selectedRaum.preise.halberTag},-</span>
+                    </div>
+                  ))}
                 </div>
-              </div>
 
-              {/* Dauer & Teilnehmer */}
-              <div className="text-sm text-gray-600 space-y-1">
-                <p>{dauer === 'tag' ? 'Ganzer Tag' : 'Halber Tag'} · {teilnehmer} {teilnehmer === 1 ? 'Person' : 'Personen'}</p>
-              </div>
-
-              {selectedDates.length > 0 ? (
-                <>
-                  {/* Termine */}
-                  <div className="space-y-1 font-mono text-sm">
-                    {selectedDates.map(ds => (
-                      <div key={ds} className="flex justify-between">
-                        <span className="text-gray-600 tabular-nums">{formatDE(ds)}</span>
-                        <span className="text-gray-500 tabular-nums text-right min-w-[80px]">EUR {dauer === 'tag' ? selectedRaum.preise.tag : selectedRaum.preise.halberTag},-</span>
+                {/* Add-ons */}
+                {preis.addons > 0 && (
+                  <div className="space-y-1">
+                    {ADDONS.filter(a => selectedAddons[a.id]).map(a => (
+                      <div key={a.id} className="flex justify-between text-sm text-gray-600">
+                        <span>{a.label}{a.mitMenge ? ` (${addonMengen[a.id] || 1}×)` : ''}</span>
+                        <span>EUR {getAddonPreis(a.id, a) * (a.mitMenge ? (addonMengen[a.id] || 1) : 1) * selectedDates.length},-</span>
                       </div>
                     ))}
                   </div>
+                )}
 
-                  {/* Add-ons */}
-                  {preis.addons > 0 && (
-                    <div className="space-y-1">
-                      {ADDONS.filter(a => selectedAddons[a.id]).map(a => (
-                        <div key={a.id} className="flex justify-between text-sm text-gray-600">
-                          <span>{a.label}{a.mitMenge ? ` (${addonMengen[a.id] || 1}×)` : ''}</span>
-                          <span>EUR {getAddonPreis(a.id, a) * (a.mitMenge ? (addonMengen[a.id] || 1) : 1) * selectedDates.length},-</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Gesamt */}
-                  <div className="border-t pt-3 space-y-1">
-                    <div className="flex justify-between font-bold text-[#6b7f3e] text-lg">
-                      <span>Gesamt</span>
-                      <span>EUR {preis.gesamt},-</span>
-                    </div>
-                    <p className="text-xs text-gray-400">zzgl. MwSt.</p>
+                {/* Gesamt */}
+                <div className="border-t pt-3 space-y-1">
+                  <div className="flex justify-between text-sm text-gray-600">
+                    <span>Netto</span>
+                    <span>EUR {preis.gesamt},-</span>
                   </div>
-                </>
-              ) : (
-                <p className="text-sm text-gray-400 italic">Wählen Sie ein Datum im Kalender.</p>
-              )}
+                  <div className="flex justify-between text-sm text-gray-600">
+                    <span>MwSt. (19%)</span>
+                    <span>EUR {(preis.gesamt * 0.19).toFixed(2).replace('.', ',')}</span>
+                  </div>
+                  <div className="flex justify-between font-bold text-[#6b7f3e] text-lg pt-1">
+                    <span>Gesamt (brutto)</span>
+                    <span>EUR {(preis.gesamt * 1.19).toFixed(2).replace('.', ',')}</span>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <p className="text-sm text-gray-400 italic">Wählen Sie ein Datum im Kalender.</p>
+            )}
 
-              <button
-                onClick={handleSubmit}
-                disabled={!canSubmit || submitting}
-                className="w-full bg-[#6b7f3e] text-white py-3 rounded-xl font-semibold hover:bg-[#5a6b35] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-              >
-                {submitting ? 'Weiter zur Zahlung...' : 'Kostenpflichtig buchen'}
-              </button>
-            </div>
+            <button
+              onClick={handleSubmit}
+              disabled={!canSubmit || submitting}
+              title={!canSubmit ? 'Bitte füllen Sie Ihre Buchungsdaten aus und akzeptieren Sie die AGB.' : ''}
+              className="w-full bg-[#6b7f3e] text-white py-3 rounded-xl font-semibold hover:bg-[#5a6b35] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            >
+              {submitting ? 'Weiter zur Zahlung...' : 'Jetzt buchen'}
+            </button>
           </div>
         </div>
       </div>

@@ -5,10 +5,11 @@ description: "Ladungsfähige Geschäftsadresse in Weil am Rhein mieten. Handelsr
 
 
 <ActiveNavHighlight />
+<LanguageSwitcher />
 {/* ===== HEADLINE + BILD ===== */}
 <CompactHero
   title="Ihre Geschäftsadresse in Weil am Rhein"
-  description="Ihre Geschäftsadresse für den EU-Marktzugang — direkt an der Grenze zu Basel."
+  description="Eröffnungsangebot bis 30.09. — Basispaket ohne Postversand ab EUR 49,- /Monat zzgl. MwSt."
   image="/images/standorte/weil-am-rhein/green-office.jpg"
   imageAlt="Green Office Weil am Rhein – zwei Coworker im Gespräch"
   buttonText=""
@@ -16,12 +17,12 @@ description: "Ladungsfähige Geschäftsadresse in Weil am Rhein mieten. Handelsr
   formId="formular"
 >
   <ul className="mt-4 space-y-2 text-sm md:text-base text-foreground list-none">
-    <li className="flex items-start gap-2"><span className="text-primary mt-0.5">✓</span> Basispakete ab EUR 49,-/Monat zzgl. MwSt.</li>
     <li className="flex items-start gap-2"><span className="text-primary mt-0.5">✓</span> Ladungsfähig für Handelsregister & Finanzamt</li>
     <li className="flex items-start gap-2"><span className="text-primary mt-0.5">✓</span> Nur 300 Meter von der Schweizer Grenze</li>
     <li className="flex items-start gap-2"><span className="text-primary mt-0.5">✓</span><span>Gewerbeanmeldung & HR-Eintrag in&nbsp;Deutschland möglich</span></li>
     <li className="flex items-start gap-2"><span className="text-primary mt-0.5">✓</span> Postannahme & Weiterleitung</li>
     <li className="flex items-start gap-2"><span className="text-primary mt-0.5">✓</span> Büro- & Konferenzräume stundenweise buchbar</li>
+    <li className="flex items-start gap-2"><span className="text-primary mt-0.5">✓</span> Repräsentative Geschäftsadresse innerhalb eines professionellen Business Center Setups</li>
     <li className="flex items-start gap-2"><span className="text-primary mt-0.5">✓</span> Innerhalb von 24 Stunden startklar</li>
   </ul>
 </CompactHero>
@@ -78,10 +79,12 @@ description: "Ladungsfähige Geschäftsadresse in Weil am Rhein mieten. Handelsr
 </FeaturesWithBg>
 
 {/* ===== SO FUNKTIONIERT'S ===== */}
+<div style={{ marginTop: '3rem' }}>
 <StepsInteractive standort="Weil am Rhein" />
+</div>
 
 <BannerCTA
-  title="Jetzt Angebot anfordern"
+  title="Jetzt buchen"
   subtext="Füllen Sie das Formular aus — wir melden uns innerhalb von 24 Stunden."
   buttonText="Zum Anfrageformular" buttonHref="#formular"
 />
@@ -103,9 +106,9 @@ description: "Ladungsfähige Geschäftsadresse in Weil am Rhein mieten. Handelsr
 
 {/* ===== CTA ===== */}
 <BannerCTA
-  title="Ihr maßgeschneidertes Angebot"
+  title="Jetzt buchen"
   subtext="Geschäftsadresse ab EUR 49,-/Monat. Flexible Laufzeiten. Keine versteckten Kosten."
-  buttonText="Angebot anfordern" buttonHref="#formular"
+  buttonText="Jetzt buchen" buttonHref="#formular"
 />
 
 {/* ===== ÜBER UNS ===== */}
@@ -147,7 +150,7 @@ description: "Ladungsfähige Geschäftsadresse in Weil am Rhein mieten. Handelsr
     Sobald der Vertrag unterschrieben und die Kaution beglichen ist, richten wir Ihre Geschäftsadresse innerhalb von 24 Stunden ein. In der Regel sind Sie noch am selben Tag startklar.
   </FAQItem>
   <FAQItem question="Gibt es Mindestlaufzeiten oder lange Vertragsbindungen?">
-    Nein. Die Modelle sind flexibel gehalten. Kurze Kündigungsfristen und transparente Preise ohne versteckte Kosten. Längere Kündigungsfristen bieten uns Planbarkeit, was wir mit attraktiven Konditionen honorieren.
+    Mindestlaufzeit 3 Monate, Kündigung zum Quartalsende. Längere Laufzeiten (12 oder 24 Monate) bieten attraktivere Konditionen. Transparente Preise ohne versteckte Kosten.
   </FAQItem>
   <FAQItem question="Kann ich zusätzlich Arbeitsplätze oder Meetingräume nutzen?">
     Ja. Kunden mit Geschäftsadressen können flexibel Coworking-Tagespässe, Fixdesks, Meetingräume und feste Büros zu Vorzugspreisen hinzubuchen.
@@ -160,10 +163,5 @@ description: "Ladungsfähige Geschäftsadresse in Weil am Rhein mieten. Handelsr
   </FAQItem>
 </FAQ>
 
-{/* ===== FINALER CTA MIT FORMULAR ===== */}
-<LeadForm
-  standort="Weil am Rhein"
-  angebotSlug="kunde-xyz"
-  title="Angebot erstellen"
-  description="Kostenlos und unverbindlich. Sie sehen Ihr persönliches Angebot sofort."
-/>
+{/* ===== FINALER CTA MIT BUCHUNG ===== */}
+<StepsInteractive standort="Weil am Rhein" />

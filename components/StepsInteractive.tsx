@@ -8,47 +8,42 @@ interface StepsInteractiveProps {
 
 export function StepsInteractive({ standort }: StepsInteractiveProps) {
   const [activeStep, setActiveStep] = useState(0);
+  const [postversand, setPostversand] = useState<'ohne' | 'mit'>('ohne');
   const [email, setEmail] = useState('');
   const [firma, setFirma] = useState('');
+
+  const postversandOptionen = [
+    { id: 'ohne' as const, label: 'Ohne Postversand', beschreibung: 'Post wird vor Ort gesammelt, 24/7 abholbar', aufpreis: 0 },
+    { id: 'mit' as const, label: 'Mit Postversand', beschreibung: 'Wöchentliche Weiterleitung Ihrer Post', aufpreis: 0 },
+  ];
+
+  const aufpreis = postversandOptionen.find(p => p.id === postversand)?.aufpreis || 0;
 
   const steps = [
     {
       number: 1,
-      title: 'Anfrage starten',
-      subtitle: 'In 30 Sekunden — kostenlos und unverbindlich',
+      title: 'Postversand',
+      subtitle: 'Wie soll Ihre Post bearbeitet werden?',
       content: (
-        <div className="space-y-3">
-          <p className="text-sm text-muted-foreground">
-            Geben Sie Ihre E-Mail und Firma ein — wir erstellen Ihnen sofort ein persönliches Angebot.
-          </p>
-          <div className="grid grid-cols-2 gap-3">
-            <input
-              type="text"
-              value={firma}
-              onChange={e => setFirma(e.target.value)}
-              placeholder="Ihre Firma"
-              className="rounded-lg border border-border bg-white px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]"
-            />
-            <input
-              type="email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              placeholder="Ihre E-Mail"
-              className="rounded-lg border border-border bg-white px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]"
-            />
-          </div>
-          <button
-            onClick={() => {
-              if (email || firma) setActiveStep(1);
-              else {
-                const el = document.getElementById('formular');
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-              }
-            }}
-            className="w-full rounded-lg bg-[#6b7f3e] text-white py-2.5 text-sm font-semibold hover:opacity-90 transition-opacity"
-          >
-            {email || firma ? 'Weiter — Paket wählen' : 'Jetzt Angebot anfordern'}
-          </button>
+        <div className="space-y-2">
+          {postversandOptionen.map(opt => (
+            <button
+              key={opt.id}
+              type="button"
+              onClick={() => { setPostversand(opt.id); setActiveStep(1); }}
+              className={`w-full p-3 rounded-lg border-2 text-left transition-all flex items-center justify-between ${
+                postversand === opt.id ? 'border-[#6b7f3e] bg-[#f0f4e8]' : 'border-border hover:border-gray-300'
+              }`}
+            >
+              <div>
+                <p className="font-semibold text-sm text-foreground">{opt.label}</p>
+                <p className="text-xs text-muted-foreground">{opt.beschreibung}</p>
+              </div>
+              <svg className={`w-5 h-5 flex-shrink-0 ${postversand === opt.id ? 'text-[#6b7f3e]' : 'text-gray-300'}`} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                {postversand === opt.id ? <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /> : <circle cx="12" cy="12" r="9" />}
+              </svg>
+            </button>
+          ))}
         </div>
       ),
     },
@@ -60,32 +55,35 @@ export function StepsInteractive({ standort }: StepsInteractiveProps) {
         <div className="space-y-3">
           <div className="grid grid-cols-3 gap-2">
             {[
-              { name: 'Flex', laufzeit: '6 Monate', preis: '139' },
-              { name: 'Standard', laufzeit: '12 Monate', preis: '109', popular: true },
-              { name: 'Langzeit', laufzeit: '24 Monate', preis: '89' },
-            ].map(t => (
-              <button
-                key={t.name}
-                onClick={() => {
-                  const params = new URLSearchParams({
-                    ...(firma && { firma }),
-                    ...(email && { email }),
-                  });
-                  window.location.href = `/angebot/kunde-xyz?${params.toString()}`;
-                }}
-                className={`rounded-lg border-2 p-3 text-center transition-all cursor-pointer hover:border-[#6b7f3e] hover:bg-[#f0f4e8] ${
-                  t.popular ? 'border-[#6b7f3e] bg-[#f0f4e8]' : 'border-border'
-                }`}
-              >
-                {t.popular && (
-                  <span className="text-[9px] font-bold bg-[#6b7f3e] text-white rounded-full px-2 py-0.5">Beliebt</span>
-                )}
-                <p className="font-bold text-foreground mt-1">EUR {t.preis},-</p>
-                <p className="text-[10px] text-muted-foreground">{t.name} · {t.laufzeit}</p>
-              </button>
-            ))}
+              { name: 'Langzeit', laufzeit: '12 Monate', kuendigung: 'zum Quartalsende', basis: 49, popular: true },
+              { name: 'Standard', laufzeit: '6 Monate', kuendigung: 'zum Quartalsende', basis: 69 },
+              { name: 'Flex', laufzeit: '3 Monate', kuendigung: 'zum Quartalsende', basis: 99 },
+            ].map(t => {
+              const gesamt = t.basis + aufpreis;
+              return (
+                <button
+                  key={t.name}
+                  onClick={() => {
+                    const el = document.getElementById('formular');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className={`rounded-lg border-2 p-3 text-center transition-all cursor-pointer hover:border-[#6b7f3e] hover:bg-[#f0f4e8] ${
+                    t.popular ? 'border-[#6b7f3e] bg-[#f0f4e8]' : 'border-border'
+                  }`}
+                >
+                  {t.popular && (
+                    <span className="text-[9px] font-bold bg-[#6b7f3e] text-white rounded-full px-2 py-0.5">Beliebt</span>
+                  )}
+                  <p className="font-bold text-foreground mt-1">EUR {gesamt},-</p>
+                  <p className="text-[10px] text-muted-foreground">{t.name} · {t.laufzeit}</p>
+                  <p className="text-[9px] text-muted-foreground">Kündigung {t.kuendigung}</p>
+                </button>
+              );
+            })}
           </div>
-          <p className="text-[10px] text-muted-foreground text-center">Alle Preise zzgl. MwSt. · Inkl. Post- & Paketannahme, eigenem Briefkasten</p>
+          <p className="text-[10px] text-muted-foreground text-center">
+            Alle Preise zzgl. MwSt. · {postversand === 'ohne' ? 'Ohne Postversand' : 'Inkl. Postversand'} · Inkl. Post- & Paketannahme, eigenem Briefkasten
+          </p>
         </div>
       ),
     },
@@ -121,6 +119,7 @@ export function StepsInteractive({ standort }: StepsInteractiveProps) {
       <h2 className="text-lg font-bold text-foreground text-center mb-6">
         In 3 Schritten zu Ihrer Geschäftsadresse
       </h2>
+
 
       <div className="space-y-3">
         {steps.map((step, i) => {

@@ -2,7 +2,7 @@
   "$schema": "./node_modules/@shipsite.dev/core/shipsite.schema.json",
   "name": " ",
   "url": "https://weil.bizzcenter.de",
-  "logo": "/images/logo-bizzcenter.png",
+  "logo": "/images/logo-header.svg",
   "favicon": "/favicon.png",
   "ogImage": "/images/og/og-image.jpg",
   "darkMode": false,
@@ -206,7 +206,7 @@
         ]
       }
     ],
-    "copyright": "© 2026 bizzcenter e.K. Inh. Timo Schneeweis | Alle Rechte vorbehalten"
+    "copyright": "© 2026 bizzcenter Weil am Rhein GmbH | Alle Rechte vorbehalten"
   },
   "pages": [
     {
@@ -267,6 +267,30 @@
       "slug": "weil-am-rhein/konferenzraum-buchen",
       "type": "page",
       "content": "weil-am-rhein/konferenzraum-buchen",
+      "locales": [
+        "de"
+      ]
+    },
+    {
+      "slug": "weil-am-rhein/konferenzraum-6p-buchen",
+      "type": "page",
+      "content": "weil-am-rhein/konferenzraum-6p-buchen",
+      "locales": [
+        "de"
+      ]
+    },
+    {
+      "slug": "weil-am-rhein/konferenzraum-15p-buchen",
+      "type": "page",
+      "content": "weil-am-rhein/konferenzraum-15p-buchen",
+      "locales": [
+        "de"
+      ]
+    },
+    {
+      "slug": "weil-am-rhein/konferenzraum-25p-buchen",
+      "type": "page",
+      "content": "weil-am-rhein/konferenzraum-25p-buchen",
       "locales": [
         "de"
       ]

@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
+import { useState } from 'react';
 
 interface ServiceCard {
   title: string;
@@ -17,62 +17,44 @@ interface ServiceHeroProps {
 }
 
 function MobileServiceCard({ service, index }: { service: ServiceCard; index: number }) {
-  const [showLocations, setShowLocations] = useState(false);
+  const href = service.links[0]?.href || '#';
 
   return (
-    <div
-      className="bg-white/90 backdrop-blur-sm rounded-xl shadow-xl p-4 flex flex-col cursor-pointer"
-      onClick={() => setShowLocations(!showLocations)}
+    <Link
+      href={href}
+      className="bg-white/90 backdrop-blur-sm rounded-xl shadow-xl p-4 flex items-center gap-3 active:scale-[0.98] transition-transform"
     >
-      <div className="flex items-center gap-3">
-        {service.image && (
-          <div className="w-14 h-14 rounded-lg overflow-hidden flex-shrink-0">
-            <img
-              src={service.image}
-              alt={service.title}
-              className="w-full h-full object-cover"
-              loading={index < 2 ? "eager" : "lazy"}
-            />
-          </div>
-        )}
-        <div className="flex-grow min-w-0">
-          <h3 className="text-base font-bold text-gray-900">{service.title}</h3>
-          <p className="text-xs text-gray-500 line-clamp-2 mt-0.5">{service.description}</p>
-        </div>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={2}
-          stroke="currentColor"
-          className={`w-5 h-5 text-gray-400 flex-shrink-0 transition-transform duration-200 ${showLocations ? 'rotate-180' : ''}`}
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-        </svg>
-      </div>
-
-      {showLocations && (
-        <div className="flex gap-2 mt-3 pt-3 border-t border-gray-200" onClick={(e) => e.stopPropagation()}>
-          {service.links.map((link, j) => (
-            <Link
-              key={j}
-              href={link.href}
-              className={`flex-1 text-center text-sm font-semibold py-2 px-3 rounded-lg transition-colors ${
-                j === 0
-                  ? 'bg-[var(--color-primary,#1a73b5)] text-white hover:opacity-90'
-                  : 'bg-gray-100 text-gray-800 hover:bg-gray-200 border border-gray-200'
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
+      {service.image && (
+        <div className="w-14 h-14 rounded-lg overflow-hidden flex-shrink-0">
+          <img
+            src={service.image}
+            alt={service.title}
+            className="w-full h-full object-cover"
+            loading={index < 2 ? "eager" : "lazy"}
+          />
         </div>
       )}
-    </div>
+      <div className="flex-grow min-w-0">
+        <h3 className="text-base font-bold text-gray-900">{service.title}</h3>
+        <p className="text-xs text-gray-500 line-clamp-2 mt-0.5">{service.description}</p>
+      </div>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={2}
+        stroke="currentColor"
+        className="w-5 h-5 text-[#6b7f3e] flex-shrink-0"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+      </svg>
+    </Link>
   );
 }
 
 export function ServiceHero({ backgroundImage, headline, services }: ServiceHeroProps) {
+  const [lightboxImage, setLightboxImage] = useState<{ src: string; alt: string } | null>(null);
+
   return (
     <section className="relative w-full min-h-[auto] sm:min-h-[90vh] flex items-start justify-center overflow-hidden">
       {/* Background Image */}
@@ -100,11 +82,14 @@ export function ServiceHero({ backgroundImage, headline, services }: ServiceHero
               <h3 className="text-lg font-bold text-gray-900 mb-2 text-center">{service.title}</h3>
               
               {service.image && (
-                <div className="w-full h-32 rounded-lg overflow-hidden mb-3">
+                <div
+                  className="w-full h-32 rounded-lg overflow-hidden mb-3 cursor-pointer group"
+                  onClick={() => setLightboxImage({ src: service.image, alt: service.title })}
+                >
                   <img
                     src={service.image}
                     alt={service.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                     loading={i < 2 ? "eager" : "lazy"}
                   />
                 </div>
@@ -140,6 +125,30 @@ export function ServiceHero({ backgroundImage, headline, services }: ServiceHero
           ))}
         </div>
       </div>
+
+      {/* Lightbox */}
+      {lightboxImage && (
+        <div
+          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 cursor-pointer"
+          onClick={() => setLightboxImage(null)}
+        >
+          <button
+            onClick={() => setLightboxImage(null)}
+            className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center text-white transition-colors"
+          >
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+          </button>
+          <img
+            src={lightboxImage.src}
+            alt={lightboxImage.alt}
+            className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
+            onClick={e => e.stopPropagation()}
+          />
+          <p className="absolute bottom-6 text-white text-sm font-medium drop-shadow-lg">{lightboxImage.alt}</p>
+        </div>
+      )}
     </section>
   );
 }

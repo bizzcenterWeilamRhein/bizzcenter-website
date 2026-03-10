@@ -1,16 +1,13 @@
 #!/bin/bash
-# Quick dev server restart with cache clear
-pkill -f "shipsite\|next" 2>/dev/null
+# Stabiler Dev-Server Start — killt alte Prozesse + räumt Turbopack-Cache auf
+cd "$(dirname "$0")"
+
+# Alte Prozesse killen
+ps aux | grep -E "next|shipsite" | grep -v grep | awk '{print $2}' | xargs kill -9 2>/dev/null
 sleep 2
-cd /data/.openclaw/workspace/bizzcenter-website
-rm -rf .next 2>/dev/null
-PORT=3000 npx shipsite dev > /tmp/shipsite.log 2>&1 &
-echo "Restarting dev server..."
-sleep 12
-if curl -m5 -s http://localhost:3000 -o /dev/null -w "%{http_code}" | grep -q 200; then
-  echo "✓ Dev server ready on port 3000"
-else
-  echo "✗ Dev server not ready yet, waiting..."
-  sleep 8
-  curl -m5 -s http://localhost:3000 -o /dev/null -w "%{http_code}"
-fi
+
+# Turbopack-Cache komplett löschen (verhindert .sst Korruption)
+rm -rf .shipsite/.next /tmp/next-panic* node_modules/.cache
+
+# Server starten ohne Turbopack Persistence
+NEXT_TURBOPACK_TASK_PERSISTENCE=false PORT=3000 npx shipsite dev

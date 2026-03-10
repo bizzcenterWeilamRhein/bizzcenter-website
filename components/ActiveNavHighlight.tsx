@@ -10,6 +10,13 @@ export function ActiveNavHighlight() {
     const header = document.querySelector('header');
     if (!header) return;
 
+    // Fix logo size to prevent header overflow
+    const logoImg = header.querySelector('a[href="/"] img') as HTMLImageElement | null;
+    if (logoImg) {
+      logoImg.style.maxWidth = '150px';
+      logoImg.style.height = 'auto';
+    }
+
     const links = header.querySelectorAll<HTMLAnchorElement>('a[href]');
     links.forEach(link => {
       const href = link.getAttribute('href');
