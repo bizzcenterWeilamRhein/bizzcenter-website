@@ -90,7 +90,7 @@ export function BueroAnfrage() {
 
   return (
     <section id="buero-anfrage" className="py-12 px-4">
-      <div className="max-w-6xl mx-auto" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px' }}>
+      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
         
         {/* Linke Spalte: Info */}
         <div className="bg-white rounded-2xl border shadow-sm p-8 flex flex-col">
