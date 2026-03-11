@@ -59,17 +59,17 @@
       },
       {
         "label": {
-          "de": "Coachingbüro",
-          "en": "Coaching Room"
-        },
-        "href": "/weil-am-rhein/coachingbuero"
-      },
-      {
-        "label": {
           "de": "Services",
           "en": "Services"
         },
         "children": [
+          {
+            "label": {
+              "de": "Coachingbüro",
+              "en": "Coaching Room"
+            },
+            "href": "/weil-am-rhein/coachingbuero"
+          },
           {
             "label": {
               "de": "Telefonservice",
@@ -113,6 +113,13 @@
               "de": "Schweizer Festnetznummer",
               "en": "Swiss landline number"
             }
+          },
+          {
+            "label": {
+              "de": "Beamer mieten",
+              "en": "Projector Rental"
+            },
+            "href": "/weil-am-rhein/beamer-mieten"
           }
         ]
       },
