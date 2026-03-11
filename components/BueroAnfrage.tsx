@@ -22,14 +22,51 @@ export function BueroAnfrage() {
   });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [showErrors, setShowErrors] = useState(false);
 
-  const canSubmit = (form.privat || form.firma) && form.anrede && form.vorname && form.nachname && form.strasse && form.plz && form.ort && form.email && form.arbeitsplaetze;
+  const missingFields: string[] = [];
+  if (!form.privat && !form.firma) missingFields.push('Firma');
+  if (!form.anrede) missingFields.push('Anrede');
+  if (!form.vorname) missingFields.push('Vorname');
+  if (!form.nachname) missingFields.push('Nachname');
+  if (!form.strasse) missingFields.push('Straße');
+  if (!form.plz) missingFields.push('PLZ');
+  if (!form.ort) missingFields.push('Ort');
+  if (!form.email) missingFields.push('E-Mail');
+
+  const canSubmit = missingFields.length === 0;
+
+  const isMissing = (field: string) => showErrors && !form[field as keyof typeof form];
 
   const handleSubmit = async () => {
-    if (!canSubmit || submitting) return;
+    if (!canSubmit) {
+      setShowErrors(true);
+      return;
+    }
+    if (submitting) return;
     setSubmitting(true);
-    // TODO: Stripe / API integration
-    await new Promise(r => setTimeout(r, 1500));
+    try {
+      await fetch('/api/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          vorname: form.vorname,
+          nachname: form.nachname,
+          firma: form.firma,
+          telefon: form.telefon,
+          email: form.email,
+          quelle: 'buero-anfrage',
+          product: 'privates-buero',
+          nachricht: [
+            form.anrede ? `Anrede: ${form.anrede}` : '',
+            `Arbeitsplätze: ${form.arbeitsplaetze}`,
+            form.einzug ? `Gewünschter Einzug: ${form.einzug}` : '',
+            `Adresse: ${form.strasse} ${form.hausnummer}, ${form.plz} ${form.ort}`,
+            form.bemerkungen ? `Bemerkungen: ${form.bemerkungen}` : '',
+          ].filter(Boolean).join('\n'),
+        }),
+      });
+    } catch { /* fire-and-forget */ }
     setSubmitted(true);
     setSubmitting(false);
   };
@@ -48,7 +85,7 @@ export function BueroAnfrage() {
     );
   }
 
-  const inputCls = "w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e]";
+  const inputCls = (field?: string) => `w-full px-3 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] ${field && isMissing(field) ? 'border-red-400 bg-red-50' : 'border-gray-200'}`;
   const labelCls = "block text-sm font-medium text-gray-700 mb-1";
 
   return (
@@ -149,7 +186,7 @@ export function BueroAnfrage() {
               {!form.privat && (
                 <div>
                   <label className={labelCls}>Firma / Unternehmen *</label>
-                  <input value={form.firma} onChange={e => setForm(f => ({ ...f, firma: e.target.value }))} className={inputCls} placeholder="Ihre Firma" />
+                  <input value={form.firma} onChange={e => setForm(f => ({ ...f, firma: e.target.value }))} className={inputCls('firma')} placeholder="Ihre Firma" />
                 </div>
               )}
             </div>
@@ -158,7 +195,7 @@ export function BueroAnfrage() {
             <div style={{ display: 'grid', gridTemplateColumns: '80px 1fr 1fr', gap: '8px' }}>
               <div>
                 <label className={labelCls}>Anrede *</label>
-                <select value={form.anrede} onChange={e => setForm(f => ({ ...f, anrede: e.target.value }))} className={inputCls}>
+                <select value={form.anrede} onChange={e => setForm(f => ({ ...f, anrede: e.target.value }))} className={inputCls('anrede')}>
                   <option value="">—</option>
                   <option value="Herr">Herr</option>
                   <option value="Frau">Frau</option>
@@ -167,11 +204,11 @@ export function BueroAnfrage() {
               </div>
               <div>
                 <label className={labelCls}>Vorname *</label>
-                <input value={form.vorname} onChange={e => setForm(f => ({ ...f, vorname: e.target.value }))} className={inputCls} />
+                <input value={form.vorname} onChange={e => setForm(f => ({ ...f, vorname: e.target.value }))} className={inputCls('vorname')} />
               </div>
               <div>
                 <label className={labelCls}>Nachname *</label>
-                <input value={form.nachname} onChange={e => setForm(f => ({ ...f, nachname: e.target.value }))} className={inputCls} />
+                <input value={form.nachname} onChange={e => setForm(f => ({ ...f, nachname: e.target.value }))} className={inputCls('nachname')} />
               </div>
             </div>
 
@@ -179,11 +216,11 @@ export function BueroAnfrage() {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 100px', gap: '8px' }}>
               <div>
                 <label className={labelCls}>Straße *</label>
-                <input value={form.strasse} onChange={e => setForm(f => ({ ...f, strasse: e.target.value }))} className={inputCls} />
+                <input value={form.strasse} onChange={e => setForm(f => ({ ...f, strasse: e.target.value }))} className={inputCls('strasse')} />
               </div>
               <div>
                 <label className={labelCls}>Nr. *</label>
-                <input value={form.hausnummer} onChange={e => setForm(f => ({ ...f, hausnummer: e.target.value }))} className={inputCls} />
+                <input value={form.hausnummer} onChange={e => setForm(f => ({ ...f, hausnummer: e.target.value }))} className={inputCls()} />
               </div>
             </div>
 
@@ -191,11 +228,11 @@ export function BueroAnfrage() {
             <div style={{ display: 'grid', gridTemplateColumns: '120px 1fr', gap: '8px' }}>
               <div>
                 <label className={labelCls}>PLZ *</label>
-                <input value={form.plz} onChange={e => setForm(f => ({ ...f, plz: e.target.value }))} className={inputCls} />
+                <input value={form.plz} onChange={e => setForm(f => ({ ...f, plz: e.target.value }))} className={inputCls('plz')} />
               </div>
               <div>
                 <label className={labelCls}>Ort *</label>
-                <input value={form.ort} onChange={e => setForm(f => ({ ...f, ort: e.target.value }))} className={inputCls} />
+                <input value={form.ort} onChange={e => setForm(f => ({ ...f, ort: e.target.value }))} className={inputCls('ort')} />
               </div>
             </div>
 
@@ -203,11 +240,11 @@ export function BueroAnfrage() {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
               <div>
                 <label className={labelCls}>E-Mail *</label>
-                <input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} className={inputCls} />
+                <input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} className={inputCls('email')} />
               </div>
               <div>
                 <label className={labelCls}>Telefon</label>
-                <input type="tel" value={form.telefon} onChange={e => setForm(f => ({ ...f, telefon: e.target.value }))} className={inputCls} />
+                <input type="tel" value={form.telefon} onChange={e => setForm(f => ({ ...f, telefon: e.target.value }))} className={inputCls()} />
               </div>
             </div>
 
@@ -215,7 +252,7 @@ export function BueroAnfrage() {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
               <div>
                 <label className={labelCls}>Anzahl Arbeitsplätze *</label>
-                <select value={form.arbeitsplaetze} onChange={e => setForm(f => ({ ...f, arbeitsplaetze: e.target.value }))} className={inputCls}>
+                <select value={form.arbeitsplaetze} onChange={e => setForm(f => ({ ...f, arbeitsplaetze: e.target.value }))} className={inputCls()}>
                   <option value="1">1 Arbeitsplatz</option>
                   <option value="2">2 Arbeitsplätze</option>
                   <option value="3">3 Arbeitsplätze</option>
@@ -225,21 +262,27 @@ export function BueroAnfrage() {
               </div>
               <div>
                 <label className={labelCls}>Gewünschter Einzug</label>
-                <input type="date" value={form.einzug} onChange={e => setForm(f => ({ ...f, einzug: e.target.value }))} className={inputCls} />
+                <input type="date" value={form.einzug} onChange={e => setForm(f => ({ ...f, einzug: e.target.value }))} className={inputCls()} />
               </div>
             </div>
 
             {/* Bemerkungen */}
             <div>
               <label className={labelCls}>Bemerkungen</label>
-              <textarea value={form.bemerkungen} onChange={e => setForm(f => ({ ...f, bemerkungen: e.target.value }))} className={inputCls} rows={3} placeholder="Besondere Anforderungen, Fragen..." />
+              <textarea value={form.bemerkungen} onChange={e => setForm(f => ({ ...f, bemerkungen: e.target.value }))} className={inputCls()} rows={3} placeholder="Besondere Anforderungen, Fragen..." />
             </div>
+
+            {/* Fehlermeldung */}
+            {showErrors && missingFields.length > 0 && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+                Bitte füllen Sie folgende Felder aus: <strong>{missingFields.join(', ')}</strong>
+              </div>
+            )}
 
             {/* Submit */}
             <button
               onClick={handleSubmit}
-              disabled={!canSubmit || submitting}
-              title={!canSubmit ? 'Bitte füllen Sie alle Pflichtfelder aus.' : ''}
+              disabled={submitting}
               className="w-full bg-[#6b7f3e] text-white py-3 rounded-xl font-semibold hover:bg-[#5a6b35] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
               {submitting ? 'Wird gesendet...' : 'Jetzt anfragen'}
