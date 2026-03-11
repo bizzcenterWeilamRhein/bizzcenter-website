@@ -124,12 +124,12 @@ function StepBadge({ number, done, active }: { number: number; done: boolean; ac
   );
 }
 
-function OptionCard({ selected, onClick, children, popular }: { selected: boolean; onClick: () => void; children: React.ReactNode; popular?: boolean }) {
+function OptionCard({ selected, onClick, children, popular, centered }: { selected: boolean; onClick: () => void; children: React.ReactNode; popular?: boolean; centered?: boolean }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`relative rounded-xl border-2 p-4 text-center transition-all cursor-pointer ${
+      className={`relative rounded-xl border-2 p-4 ${centered !== false ? 'text-center' : 'text-left'} transition-all cursor-pointer ${
         selected
           ? 'border-[#6b7f3e] bg-[#f0f4e8] shadow-sm'
           : popular
@@ -358,12 +358,19 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
             <BackButton onClick={() => setStep(0)} />
             <h3 className="text-lg font-bold text-gray-900 mb-4">Tarif wählen</h3>
             <p className="text-xs text-gray-500 mb-3">{postversand === 'mit' ? 'Inkl. Postversand' : 'Ohne Postversand'} · Alle Preise zzgl. MwSt.</p>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="space-y-2">
               {GA_TARIFE.map(t => (
-                <OptionCard key={t.id} selected={gaTarif === t.id} popular={t.popular} onClick={() => { setGaTarif(t.id); setStep(2); }}>
-                  <p className="text-lg font-bold">EUR {t.price},-</p>
-                  <p className="text-xs text-gray-500">{t.label} · {t.laufzeit}</p>
-                  <p className="text-[10px] text-gray-400">pro Monat zzgl. MwSt.</p>
+                <OptionCard key={t.id} selected={gaTarif === t.id} popular={t.popular} centered={false} onClick={() => { setGaTarif(t.id); setStep(2); }}>
+                  <div className="flex items-center justify-between w-full">
+                    <div>
+                      <span className="text-sm font-semibold">{t.label}</span>
+                      <span className="text-xs text-gray-500 ml-1">· {t.laufzeit}</span>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-base font-bold">EUR {t.price},-</span>
+                      <span className="text-xs text-gray-500 ml-1">/Mon. zzgl. MwSt.</span>
+                    </div>
+                  </div>
                 </OptionCard>
               ))}
             </div>
@@ -381,15 +388,19 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
               <p className="text-sm font-bold">Einführungsaktion Green Office — 16% Rabatt bis 30.09.2026</p>
             </div>
             <h3 className="text-lg font-bold text-gray-900 mb-4">Tarif wählen</h3>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-2">
               {CW_TARIFE.map(t => (
-                <OptionCard key={t.id} selected={cwTarif === t.id} popular={t.popular} onClick={() => { setCwTarif(t.id); setStep(1); }}>
-                  <div className="flex items-center justify-center gap-1">
-                    <span className="text-sm font-semibold">{t.label}</span>
-                    {t.badge && <span className="text-[9px] font-bold bg-[#6b7f3e] text-white rounded-full px-1.5 py-0.5">{t.badge}</span>}
+                <OptionCard key={t.id} selected={cwTarif === t.id} popular={t.popular} centered={false} onClick={() => { setCwTarif(t.id); setStep(1); }}>
+                  <div className="flex items-center justify-between w-full">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-semibold">{t.label}</span>
+                      {t.badge && <span className="text-[9px] font-bold bg-[#6b7f3e] text-white rounded-full px-1.5 py-0.5">{t.badge}</span>}
+                    </div>
+                    <div className="text-right">
+                      <span className="text-base font-bold">EUR {t.price},-</span>
+                      <span className="text-xs text-gray-500 ml-1">{t.sub} zzgl. MwSt.</span>
+                    </div>
                   </div>
-                  <p className="text-lg font-bold mt-1">EUR {t.price},-</p>
-                  <p className="text-xs text-gray-500">{t.sub} zzgl. MwSt.</p>
                 </OptionCard>
               ))}
             </div>
@@ -424,14 +435,18 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
             <p className="text-xs text-gray-500 mb-3">
               {KONF_ROOMS.find(r => r.id === konfRoom)?.label} · Alle Preise zzgl. MwSt.
             </p>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="space-y-2">
               {KONF_DAUER.map(d => {
                 const preis = konfRoom ? KONF_PREISE[konfRoom][d.id] : 0;
                 return (
-                  <OptionCard key={d.id} selected={konfDauer === d.id} onClick={() => { setKonfDauer(d.id); setStep(2); }}>
-                    <p className="font-semibold text-sm">{d.label}</p>
-                    <p className="text-lg font-bold mt-1">EUR {preis},-</p>
-                    <p className="text-[10px] text-gray-400">zzgl. MwSt.</p>
+                  <OptionCard key={d.id} selected={konfDauer === d.id} centered={false} onClick={() => { setKonfDauer(d.id); setStep(2); }}>
+                    <div className="flex items-center justify-between w-full">
+                      <span className="text-sm font-semibold">{d.label}</span>
+                      <div className="text-right">
+                        <span className="text-base font-bold">EUR {preis},-</span>
+                        <span className="text-xs text-gray-500 ml-1">zzgl. MwSt.</span>
+                      </div>
+                    </div>
                   </OptionCard>
                 );
               })}
