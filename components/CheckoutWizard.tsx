@@ -358,18 +358,16 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
             <BackButton onClick={() => setStep(0)} />
             <h3 className="text-lg font-bold text-gray-900 mb-4">Tarif wählen</h3>
             <p className="text-xs text-gray-500 mb-3">{postversand === 'mit' ? 'Inkl. Postversand' : 'Ohne Postversand'} · Alle Preise zzgl. MwSt.</p>
-            <div className="space-y-2">
+            <div className="grid grid-cols-3 gap-3">
               {GA_TARIFE.map(t => (
                 <OptionCard key={t.id} selected={gaTarif === t.id} popular={t.popular} centered={false} onClick={() => { setGaTarif(t.id); setStep(2); }}>
-                  <div className="flex items-center justify-between w-full">
-                    <div>
-                      <span className="text-sm font-semibold">{t.label}</span>
-                      <span className="text-xs text-gray-500 ml-1">· {t.laufzeit}</span>
-                    </div>
-                    <div className="text-right">
-                      <span className="text-base font-bold">EUR {t.price},-</span>
-                      <span className="text-xs text-gray-500 ml-1">/Mon. zzgl. MwSt.</span>
-                    </div>
+                  <div className="w-full">
+                    <p className="text-sm font-semibold">{t.label}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">{t.laufzeit}</p>
+                  </div>
+                  <div className="w-full mt-2">
+                    <p className="text-base font-bold">EUR {t.price},-</p>
+                    <p className="text-[10px] text-gray-400">/Mon. zzgl. MwSt.</p>
                   </div>
                 </OptionCard>
               ))}
@@ -388,17 +386,20 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
               <p className="text-sm font-bold">Einführungsaktion Green Office — 16% Rabatt bis 30.09.2026</p>
             </div>
             <h3 className="text-lg font-bold text-gray-900 mb-4">Tarif wählen</h3>
-            <div className="space-y-2">
+            <div className="grid grid-cols-2 gap-3">
               {CW_TARIFE.map(t => (
                 <OptionCard key={t.id} selected={cwTarif === t.id} popular={t.popular} centered={false} onClick={() => { setCwTarif(t.id); setStep(1); }}>
-                  <div className="flex items-center justify-between w-full">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-semibold">{t.label}</span>
-                      {t.badge && <span className="text-[9px] font-bold bg-[#6b7f3e] text-white rounded-full px-1.5 py-0.5">{t.badge}</span>}
+                  <div className="flex justify-between w-full">
+                    <div>
+                      <div className="flex items-center gap-1">
+                        <span className="text-sm font-semibold">{t.label}</span>
+                        {t.badge && <span className="text-[9px] font-bold bg-[#6b7f3e] text-white rounded-full px-1.5 py-0.5">{t.badge}</span>}
+                      </div>
+                      <p className="text-xs text-gray-500 mt-1">{t.sub}</p>
                     </div>
-                    <div className="text-right">
-                      <span className="text-base font-bold">EUR {t.price},-</span>
-                      <span className="text-xs text-gray-500 ml-1">{t.sub} zzgl. MwSt.</span>
+                    <div className="text-right shrink-0">
+                      <p className="text-base font-bold">EUR {t.price},-</p>
+                      <p className="text-[10px] text-gray-400">zzgl. MwSt.</p>
                     </div>
                   </div>
                 </OptionCard>
@@ -435,17 +436,17 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
             <p className="text-xs text-gray-500 mb-3">
               {KONF_ROOMS.find(r => r.id === konfRoom)?.label} · Alle Preise zzgl. MwSt.
             </p>
-            <div className="space-y-2">
+            <div className="grid grid-cols-3 gap-3">
               {KONF_DAUER.map(d => {
                 const preis = konfRoom ? KONF_PREISE[konfRoom][d.id] : 0;
                 return (
                   <OptionCard key={d.id} selected={konfDauer === d.id} centered={false} onClick={() => { setKonfDauer(d.id); setStep(2); }}>
-                    <div className="flex items-center justify-between w-full">
-                      <span className="text-sm font-semibold">{d.label}</span>
-                      <div className="text-right">
-                        <span className="text-base font-bold">EUR {preis},-</span>
-                        <span className="text-xs text-gray-500 ml-1">zzgl. MwSt.</span>
-                      </div>
+                    <div className="w-full">
+                      <p className="text-sm font-semibold">{d.label}</p>
+                    </div>
+                    <div className="w-full mt-2">
+                      <p className="text-base font-bold">EUR {preis},-</p>
+                      <p className="text-[10px] text-gray-400">zzgl. MwSt.</p>
                     </div>
                   </OptionCard>
                 );
