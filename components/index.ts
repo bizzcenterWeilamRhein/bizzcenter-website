@@ -36,3 +36,4 @@ export { TeamSection } from './TeamSection';
 export { KonferenzBuchung } from './KonferenzBuchung';
 export { ActiveNavHighlight } from './ActiveNavHighlight';
 export { LanguageSwitcher } from './LanguageSwitcher';
+export { CheckoutWizard } from './CheckoutWizard';
