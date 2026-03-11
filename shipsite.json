@@ -135,6 +135,13 @@
               "en": "Speaker Rental"
             },
             "href": "/weil-am-rhein/lautsprecher-mieten"
+          },
+          {
+            "label": {
+              "de": "Parkplatz mieten",
+              "en": "Parking Rental"
+            },
+            "href": "/weil-am-rhein/parkplatz-mieten"
           }
         ]
       },
@@ -536,6 +543,14 @@
       "slug": "weil-am-rhein/lautsprecher-mieten",
       "type": "page",
       "content": "weil-am-rhein/lautsprecher-mieten",
+      "locales": [
+        "de"
+      ]
+    },
+    {
+      "slug": "weil-am-rhein/parkplatz-mieten",
+      "type": "page",
+      "content": "weil-am-rhein/parkplatz-mieten",
       "locales": [
         "de"
       ]
