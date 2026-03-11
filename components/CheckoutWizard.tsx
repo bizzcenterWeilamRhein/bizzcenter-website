@@ -117,6 +117,12 @@ const CW_TAGESPASS_ADDONS = [
   { id: 'parkplatz_tag', label: 'Parkplatz', price: 'EUR 6,-', monthly: false },
 ];
 
+// 10er-Karte Add-ons (10x Tagespreis, einmalig)
+const CW_10ER_ADDONS = [
+  { id: 'kaffee_10er', label: '10x Kaffee-Flat', price: 'EUR 90,-', monthly: false },
+  { id: 'parkplatz_10er', label: '10x Parkplatz', price: 'EUR 60,-', monthly: false },
+];
+
 // ─── Helper Components ───────────────────────────────────────────────
 
 function StepBadge({ number, done, active }: { number: number; done: boolean; active: boolean }) {
@@ -332,8 +338,10 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
         break;
     }
     if (selectedAddons.size > 0) {
-      // Bei Coworking Tagespass/10er die Tages-Add-ons verwenden
-      const addonSource = (product === 'coworking' && (cwTarif === 'tagespass' || cwTarif === '10er'))
+      // Bei Coworking Tagespass/10er die passenden Add-ons verwenden
+      const addonSource = product === 'coworking' && cwTarif === '10er'
+        ? CW_10ER_ADDONS
+        : product === 'coworking' && cwTarif === 'tagespass'
         ? CW_TAGESPASS_ADDONS
         : ADDONS_BY_PRODUCT[product];
       addonSource
@@ -479,8 +487,10 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
 
     // ── ADD-ONS (shared) ──
     if (step === addonsStep) {
-      // Coworking: Tagespass/10er → Tages-Add-ons, Monatspass/Abo → monatliche Add-ons
-      const productAddons = (product === 'coworking' && (cwTarif === 'tagespass' || cwTarif === '10er'))
+      // Coworking: 10er → 10x Add-ons, Tagespass → Tages-Add-ons, Monatspass/Abo → monatliche Add-ons
+      const productAddons = product === 'coworking' && cwTarif === '10er'
+        ? CW_10ER_ADDONS
+        : product === 'coworking' && cwTarif === 'tagespass'
         ? CW_TAGESPASS_ADDONS
         : ADDONS_BY_PRODUCT[product];
       return (

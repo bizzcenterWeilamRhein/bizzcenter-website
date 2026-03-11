@@ -42,6 +42,8 @@ const PRICES = {
   'addon_firmenschild': 'price_1T9o4rJHXQhpcKhgKee1emBB',
   'addon_kaffee_tag': 'price_1T9pwHJHXQhpcKhge5UguPpX',
   'addon_parkplatz_tag': 'price_1T9pwMJHXQhpcKhgvhgn43QW',
+  'addon_kaffee_10er': 'price_1T9r4bJHXQhpcKhgPtF12IgU',
+  'addon_parkplatz_10er': 'price_1T9r4gJHXQhpcKhgMHWRIYix',
 };
 
 const RECURRING_KEYS = new Set(
