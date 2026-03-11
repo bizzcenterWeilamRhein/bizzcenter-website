@@ -97,7 +97,7 @@ const server = http.createServer(async (req, res) => {
   req.on('data', chunk => body += chunk);
   req.on('end', async () => {
     try {
-      const { priceId, addons, successUrl, cancelUrl, customerEmail, customerName, firma } = JSON.parse(body);
+      const { priceId, addons, successUrl, cancelUrl, customerEmail, customerName, customerPhone, firma } = JSON.parse(body);
 
       if (!priceId || !PRICES[priceId]) {
         res.writeHead(400, { 'Content-Type': 'application/json' });
@@ -133,6 +133,8 @@ const server = http.createServer(async (req, res) => {
       if (customerEmail) params['customer_email'] = customerEmail;
       if (firma) params['metadata[firma]'] = firma;
       if (customerName) params['metadata[customer_name]'] = customerName;
+      if (customerPhone) params['metadata[phone]'] = customerPhone;
+      if (customerPhone) params['phone_number_collection[enabled]'] = 'true';
 
       lineItems.forEach((item, i) => {
         params[`line_items[${i}][price]`] = item.price;
@@ -156,6 +158,7 @@ const server = http.createServer(async (req, res) => {
             last_name: nameParts.slice(1).join(' ') || undefined,
             organization_name: firma || undefined,
             email: customerEmail || undefined,
+            phone: customerPhone || undefined,
             description: `Quelle: stripe-checkout\nProdukt: ${priceId}\nAdd-ons: ${(addons || []).join(', ')}\nStripe Session: ${result.data.id}`,
             tags: ['website', 'stripe-checkout', priceId.split('_')[0]],
           },

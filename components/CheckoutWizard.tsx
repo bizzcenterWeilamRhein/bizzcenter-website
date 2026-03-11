@@ -206,6 +206,7 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
   const [name, setName] = useState('');
   const [firma, setFirma] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
 
   const toggleAddon = (id: string) => {
     setSelectedAddons(prev => {
@@ -262,6 +263,7 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
           addons: addonKeys,
           customerEmail: email,
           customerName: name,
+          customerPhone: phone,
           firma,
           successUrl: `${window.location.origin}/buchung-bestaetigt`,
           cancelUrl: window.location.href,
@@ -550,6 +552,16 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder="mail@beispiel.de"
+                className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e]"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-700 mb-1">Telefon / Handy</label>
+              <input
+                type="tel"
+                value={phone}
+                onChange={e => setPhone(e.target.value)}
+                placeholder="+49 123 456 789"
                 className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e]"
               />
             </div>
