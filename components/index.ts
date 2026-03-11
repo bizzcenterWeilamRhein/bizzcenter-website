@@ -37,3 +37,4 @@ export { KonferenzBuchung } from './KonferenzBuchung';
 export { ActiveNavHighlight } from './ActiveNavHighlight';
 export { LanguageSwitcher } from './LanguageSwitcher';
 export { CheckoutWizard } from './CheckoutWizard';
+export { InquiryForm } from './InquiryForm';

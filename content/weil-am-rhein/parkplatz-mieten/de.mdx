@@ -30,10 +30,11 @@ description: "Monatsparkplatz in Weil am Rhein Friedlingen mieten. Grenznah bei 
   <AlternatingFeatureRow title="Für Auswärtige & Besucher" description="Sie besuchen regelmäßig Weil am Rhein, Friedlingen oder das Dreiländereck? Ein fester Monatsparkplatz spart Zeit und Nerven. Ebenerdig, asphaltiert, gut beleuchtet — direkt am historischen Kesselhaus." image="/images/standorte/weil-am-rhein/kesselhaus-aussen.jpg" imageAlt="Kesselhaus Weil am Rhein — Außenansicht" />
 </AlternatingFeatures>
 
-{/* ===== LAGE ===== */}
-<Features title="Lage & Anbindung" columns={2}>
+{/* ===== LAGE & ZUGANG ===== */}
+<Features title="Lage & Zugang" columns={3}>
   <FeatureCard title="Adresse" description="Am Kesselhaus 3, 79576 Weil am Rhein (Stadtteil Friedlingen). Direkt an der B532 / Hauptstraße." icon="map-pin" />
-  <FeatureCard title="Anbindung" description="Tramlinie 8 Basel–Weil (Haltestelle Riedlistrasse). A5 Ausfahrt Weil am Rhein. 5 Min. zur Schweizer Grenze." icon="map" />
+  <FeatureCard title="Verfügbarkeit" description="24/7 zugänglich mit persönlichem Türcode. Keine Öffnungszeiten, kein Schranken." icon="key" />
+  <FeatureCard title="Besichtigung" description="Besichtigung vor Ort nur nach Terminvereinbarung. Schreiben Sie uns über das Formular." icon="calendar" />
 </Features>
 
 {/* ===== FAQ ===== */}
@@ -58,10 +59,9 @@ description: "Monatsparkplatz in Weil am Rhein Friedlingen mieten. Grenznah bei 
   </FAQItem>
 </FAQ>
 
-{/* ===== FINALER CTA ===== */}
-<BannerCTA
-  title="Parkplatz sichern"
-  buttonText="Jetzt anfragen"
-  buttonHref="/kontakt"
-  subtext="Per E-Mail an weilamrhein@bizzcenter.de oder telefonisch unter +49 7621 422 29 90."
+{/* ===== ANFRAGEFORMULAR ===== */}
+<InquiryForm
+  title="Parkplatz anfragen"
+  description="Füllen Sie das Formular aus und wir melden uns in Kürze bei Ihnen."
+  product="parkplatz-mieten"
 />
