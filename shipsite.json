@@ -52,10 +52,25 @@
       },
       {
         "label": {
-          "de": "Konferenzräume",
-          "en": "Meeting Rooms"
+          "de": "Räume",
+          "en": "Rooms"
         },
-        "href": "/weil-am-rhein/konferenzraum"
+        "children": [
+          {
+            "label": {
+              "de": "Konferenzräume",
+              "en": "Meeting Rooms"
+            },
+            "href": "/weil-am-rhein/konferenzraum"
+          },
+          {
+            "label": {
+              "de": "Coachingbüro",
+              "en": "Coaching Room"
+            },
+            "href": "/weil-am-rhein/coachingbuero"
+          }
+        ]
       },
       {
         "label": {
@@ -63,13 +78,6 @@
           "en": "Services"
         },
         "children": [
-          {
-            "label": {
-              "de": "Coachingbüro",
-              "en": "Coaching Room"
-            },
-            "href": "/weil-am-rhein/coachingbuero"
-          },
           {
             "label": {
               "de": "Telefonservice",
