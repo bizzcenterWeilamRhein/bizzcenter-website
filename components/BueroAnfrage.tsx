@@ -18,12 +18,12 @@ export function BueroAnfrage() {
     arbeitsplaetze: '1',
     einzug: '',
     bemerkungen: '',
-    agb: false,
+
   });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const canSubmit = (form.privat || form.firma) && form.anrede && form.vorname && form.nachname && form.strasse && form.plz && form.ort && form.email && form.arbeitsplaetze && form.agb;
+  const canSubmit = (form.privat || form.firma) && form.anrede && form.vorname && form.nachname && form.strasse && form.plz && form.ort && form.email && form.arbeitsplaetze;
 
   const handleSubmit = async () => {
     if (!canSubmit || submitting) return;
@@ -155,7 +155,7 @@ export function BueroAnfrage() {
             </div>
 
             {/* Anrede + Name */}
-            <div style={{ display: 'grid', gridTemplateColumns: '120px 1fr 1fr', gap: '8px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '80px 1fr 1fr', gap: '8px' }}>
               <div>
                 <label className={labelCls}>Anrede *</label>
                 <select value={form.anrede} onChange={e => setForm(f => ({ ...f, anrede: e.target.value }))} className={inputCls}>
@@ -235,19 +235,11 @@ export function BueroAnfrage() {
               <textarea value={form.bemerkungen} onChange={e => setForm(f => ({ ...f, bemerkungen: e.target.value }))} className={inputCls} rows={3} placeholder="Besondere Anforderungen, Fragen..." />
             </div>
 
-            {/* AGB */}
-            <label className="flex items-start gap-2 cursor-pointer">
-              <input type="checkbox" checked={form.agb} onChange={e => setForm(f => ({ ...f, agb: e.target.checked }))} className="mt-1 accent-[#6b7f3e]" />
-              <span className="text-xs text-gray-600">
-                Ich stimme den <a href="/agb" className="underline text-[#6b7f3e]">AGB</a> und der <a href="/datenschutz" className="underline text-[#6b7f3e]">Datenschutzerklärung</a> zu. *
-              </span>
-            </label>
-
             {/* Submit */}
             <button
               onClick={handleSubmit}
               disabled={!canSubmit || submitting}
-              title={!canSubmit ? 'Bitte füllen Sie alle Pflichtfelder aus und akzeptieren Sie die AGB.' : ''}
+              title={!canSubmit ? 'Bitte füllen Sie alle Pflichtfelder aus.' : ''}
               className="w-full bg-[#6b7f3e] text-white py-3 rounded-xl font-semibold hover:bg-[#5a6b35] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
               {submitting ? 'Wird gesendet...' : 'Jetzt anfragen'}
