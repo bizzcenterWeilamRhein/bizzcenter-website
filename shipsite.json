@@ -19,10 +19,7 @@
   "i18n": {
     "defaultLocale": "de",
     "locales": [
-      "de",
-      "en",
-      "es",
-      "fr"
+      "de"
     ],
     "localePrefix": "as-needed",
     "localeDetection": false
