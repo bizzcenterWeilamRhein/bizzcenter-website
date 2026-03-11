@@ -153,7 +153,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       product: data.product,
     }).catch(err => console.error('Email notification error:', err));
 
-    // 2. Create Zendesk Sell Lead
+    // 2. Create CRM Lead (fire-and-forget)
+    fetch('https://crm.bizzcenter.de/api/leads', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        firstName,
+        lastName: lastName || '(kein Nachname)',
+        email: data.email,
+        telefon: data.telefon,
+        firma: data.firma,
+        quelle: data.quelle,
+        product: data.product,
+        nachricht: description,
+      }),
+    }).catch(err => console.error('CRM lead creation error:', err));
+
+    // 3. Create Zendesk Sell Lead
     const zendeskPayload = {
       data: {
         first_name: firstName,
