@@ -6,6 +6,31 @@ import { usePathname } from 'next/navigation';
 export function ActiveNavHighlight() {
   const pathname = usePathname();
 
+  // Inject responsive header CSS once
+  useEffect(() => {
+    if (!document.getElementById('nav-responsive-css')) {
+      const style = document.createElement('style');
+      style.id = 'nav-responsive-css';
+      style.textContent = `
+        /* Desktop-Nav ab 1280px zeigen statt 768px — darunter Hamburger */
+        @media (max-width: 1279px) {
+          header [data-slot="navbar-right"] { display: none !important; }
+          header .md\\:hidden { display: flex !important; }
+        }
+        @media (min-width: 1280px) {
+          header [data-slot="navbar-right"] { display: flex !important; }
+          header .md\\:hidden { display: none !important; }
+        }
+        /* Kompaktere Nav bei 1280-1400px */
+        @media (min-width: 1280px) and (max-width: 1400px) {
+          header nav a, header nav button { font-size: 0.85rem !important; padding-left: 0.5rem !important; padding-right: 0.5rem !important; }
+          header nav { gap: 0.2rem !important; }
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }, []);
+
   useEffect(() => {
     const header = document.querySelector('header');
     if (!header) return;
