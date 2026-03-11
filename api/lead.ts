@@ -157,21 +157,71 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     // Parallel: CRM + E-Mail
     const results = await Promise.allSettled([
-      // 1. CRM Lead (public external route)
-      fetch('https://crm.bizzcenter.de/api/leads/external', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          firstName,
-          lastName: lastName || '(kein Nachname)',
-          email: data.email,
-          telefon: data.telefon,
-          firma: data.firma,
-          quelle: data.quelle,
-          product: data.product,
-          nachricht: description,
-        }),
-      }).then(r => r.ok ? 'crm-ok' : Promise.reject('CRM failed')),
+      // 1. CRM Lead - TEMP WORKAROUND: Direct DB insert statt API
+      (async () => {
+        try {
+          const { Client } = await import('pg');
+          const client = new Client({
+            connectionString: process.env.CRM_DATABASE_URL || 
+              'postgresql://postgres.lcsrgwtjzxwuvjbobqhp:BizzCRM2026!@aws-1-eu-west-1.pooler.supabase.com:5432/postgres',
+          });
+          await client.connect();
+          
+          // 1. Find or create Kontakt
+          let kontaktResult = data.email 
+            ? await client.query(
+                'SELECT id FROM kontakte WHERE email = $1 AND "deletedAt" IS NULL LIMIT 1',
+                [data.email]
+              )
+            : { rows: [] };
+          
+          let kontaktId;
+          if (kontaktResult.rows.length > 0) {
+            kontaktId = kontaktResult.rows[0].id;
+          } else {
+            const insertKontakt = await client.query(
+              `INSERT INTO kontakte (id, vorname, nachname, email, telefon, notizen, "createdAt", "updatedAt")
+               VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, NOW(), NOW())
+               RETURNING id`,
+              [firstName, lastName || '(kein Nachname)', data.email || null, data.telefon || null, description]
+            );
+            kontaktId = insertKontakt.rows[0].id;
+          }
+          
+          // 2. Find or create Unternehmen (if firma)
+          let unternehmenId = null;
+          if (data.firma) {
+            const untResult = await client.query(
+              'SELECT id FROM unternehmen WHERE firmenname = $1 AND "deletedAt" IS NULL LIMIT 1',
+              [data.firma]
+            );
+            if (untResult.rows.length > 0) {
+              unternehmenId = untResult.rows[0].id;
+            } else {
+              const insertUnt = await client.query(
+                `INSERT INTO unternehmen (id, firmenname, "createdAt", "updatedAt")
+                 VALUES (gen_random_uuid(), $1, NOW(), NOW())
+                 RETURNING id`,
+                [data.firma]
+              );
+              unternehmenId = insertUnt.rows[0].id;
+            }
+          }
+          
+          // 3. Create Lead
+          await client.query(
+            `INSERT INTO leads (id, "kontaktId", "unternehmenId", quelle, "bedarfKategorie", notizen, "createdAt", "updatedAt")
+             VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, NOW(), NOW())`,
+            [kontaktId, unternehmenId, data.quelle || 'WEBSITE_FORM', data.product || null, description]
+          );
+          
+          await client.end();
+          return 'crm-ok';
+        } catch (err) {
+          console.error('Direct CRM DB insert failed:', err);
+          throw err;
+        }
+      })(),
       
       // 2. E-Mail Notification
       sendNotificationEmail({
