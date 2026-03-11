@@ -328,10 +328,15 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
         break;
     }
     if (selectedAddons.size > 0) {
-      const addonLabels = ADDONS_BY_PRODUCT[product]
+      // Bei Coworking Tagespass die Tages-Add-ons verwenden
+      const addonSource = (product === 'coworking' && cwTarif === 'tagespass')
+        ? CW_TAGESPASS_ADDONS
+        : ADDONS_BY_PRODUCT[product];
+      addonSource
         .filter(a => selectedAddons.has(a.id))
-        .map(a => a.label);
-      items.push({ label: 'Add-ons', value: addonLabels.join(', ') });
+        .forEach(a => {
+          items.push({ label: a.label, value: a.price + ' zzgl. MwSt.' });
+        });
     }
     return items;
   }
