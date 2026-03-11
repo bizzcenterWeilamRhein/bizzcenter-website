@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 export function BueroAnfrage() {
+  const sectionRef = useRef<HTMLElement>(null);
   const [form, setForm] = useState({
     privat: false,
     firma: '',
@@ -38,7 +39,8 @@ export function BueroAnfrage() {
 
   const isMissing = (field: string) => showErrors && !form[field as keyof typeof form];
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e?: React.FormEvent) => {
+    e?.preventDefault();
     if (!canSubmit) {
       setShowErrors(true);
       return;
@@ -69,11 +71,13 @@ export function BueroAnfrage() {
     } catch { /* fire-and-forget */ }
     setSubmitted(true);
     setSubmitting(false);
+    // Scroll to success message
+    setTimeout(() => sectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
   };
 
   if (submitted) {
     return (
-      <section id="buero-anfrage" className="py-12 px-4">
+      <section ref={sectionRef} id="buero-anfrage" className="py-12 px-4">
         <div className="max-w-2xl mx-auto text-center bg-white rounded-2xl border shadow-sm p-8">
           <div className="w-16 h-16 bg-[#f0f4e8] rounded-full flex items-center justify-center mx-auto mb-4">
             <svg className="w-8 h-8 text-[#6b7f3e]" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
@@ -85,11 +89,12 @@ export function BueroAnfrage() {
     );
   }
 
-  const inputCls = (field?: string) => `w-full px-3 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] ${field && isMissing(field) ? 'border-red-400 bg-red-50' : 'border-gray-200'}`;
+  const inputCls = (field?: string) => `w-full h-10 px-3 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] ${field && isMissing(field) ? 'border-red-400 bg-red-50' : 'border-gray-200'}`;
+  const textareaCls = (field?: string) => `w-full px-3 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] resize-y ${field && isMissing(field) ? 'border-red-400 bg-red-50' : 'border-gray-200'}`;
   const labelCls = "block text-sm font-medium text-gray-700 mb-1";
 
   return (
-    <section id="buero-anfrage" className="py-12 px-4">
+    <section ref={sectionRef} id="buero-anfrage" className="py-12 px-4">
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
         
         {/* Linke Spalte: Info */}
@@ -175,7 +180,7 @@ export function BueroAnfrage() {
         {/* Rechte Spalte: Formular */}
         <div className="bg-white rounded-2xl border shadow-sm p-8">
           <h3 className="text-lg font-bold text-gray-900 mb-4">Büro anfragen</h3>
-          <div className="space-y-3">
+          <form onSubmit={handleSubmit} className="space-y-3">
 
             {/* Privat-Checkbox + Firma */}
             <div>
@@ -269,7 +274,7 @@ export function BueroAnfrage() {
             {/* Bemerkungen */}
             <div>
               <label className={labelCls}>Bemerkungen</label>
-              <textarea value={form.bemerkungen} onChange={e => setForm(f => ({ ...f, bemerkungen: e.target.value }))} className={inputCls()} rows={3} placeholder="Besondere Anforderungen, Fragen..." />
+              <textarea value={form.bemerkungen} onChange={e => setForm(f => ({ ...f, bemerkungen: e.target.value }))} className={textareaCls()} rows={3} placeholder="Besondere Anforderungen, Fragen..." />
             </div>
 
             {/* Fehlermeldung */}
@@ -281,14 +286,14 @@ export function BueroAnfrage() {
 
             {/* Submit */}
             <button
-              onClick={handleSubmit}
+              type="submit"
               disabled={submitting}
               className="w-full bg-[#6b7f3e] text-white py-3 rounded-xl font-semibold hover:bg-[#5a6b35] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
               {submitting ? 'Wird gesendet...' : 'Jetzt anfragen'}
             </button>
             <p className="text-xs text-gray-400 text-center">Wir melden uns umgehend.</p>
-          </div>
+          </form>
         </div>
 
       </div>
