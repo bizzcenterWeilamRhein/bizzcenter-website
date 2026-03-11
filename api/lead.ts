@@ -50,6 +50,21 @@ async function getM365Token(): Promise<string | null> {
   }
 }
 
+// Mapping quelle → lesbarer Name + Seite
+function getQuelleInfo(quelle: string): { name: string; seite: string } {
+  const map: Record<string, { name: string; seite: string }> = {
+    'buero-anfrage': { name: 'Büro-Anfrage-Formular', seite: '/weil-am-rhein/privates-buero (unten auf Seite)' },
+    'beamer-buchung': { name: 'Beamer-Buchungs-Formular', seite: '/weil-am-rhein/beamer-mieten (unten auf Seite)' },
+    'kontaktformular': { name: 'Kontaktformular', seite: '/kontakt (Haupt-Kontaktseite)' },
+    'hero-formular': { name: 'Hero-Formular (Startseite)', seite: '/ (oben im Banner)' },
+    'konferenzraum-buchung': { name: 'Konferenzraum-Buchung', seite: '/weil-am-rhein/konferenzraum-buchen' },
+    'coworking-buchung': { name: 'Coworking-Buchung', seite: '/weil-am-rhein/coworking' },
+    'geschaeftsadresse-buchung': { name: 'Geschäftsadresse-Buchung', seite: '/weil-am-rhein/geschaeftsadresse' },
+    'anfrage-formular': { name: 'Allgemeines Anfrage-Formular', seite: '(Service-Seiten: Parkplatz, Lautsprecher, etc.)' },
+  };
+  return map[quelle] || { name: quelle, seite: 'unbekannt' };
+}
+
 async function sendNotificationEmail(lead: { firstName: string; lastName: string; firma?: string; telefon?: string; email?: string; nachricht?: string; quelle: string; product?: string }) {
   const token = await getM365Token();
   if (!token) {
@@ -57,18 +72,20 @@ async function sendNotificationEmail(lead: { firstName: string; lastName: string
     return;
   }
 
-  const subject = `Neue Anfrage: ${lead.firstName} ${lead.lastName}${lead.firma ? ` (${lead.firma})` : ''} — ${lead.quelle}`;
+  const quelleInfo = getQuelleInfo(lead.quelle);
+  const subject = `Neue Anfrage: ${lead.firstName} ${lead.lastName}${lead.firma ? ` (${lead.firma})` : ''} — ${quelleInfo.name}`;
 
   const lines = [
-    `<h2>Neue Anfrage über ${lead.quelle}</h2>`,
+    `<h2>Neue Anfrage über ${quelleInfo.name}</h2>`,
+    `<p style="color:#666;font-size:13px;margin:0 0 16px 0;">Quelle: <strong>${quelleInfo.seite}</strong></p>`,
     `<table style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:14px;">`,
     `<tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Name:</td><td>${lead.firstName} ${lead.lastName}</td></tr>`,
     lead.firma ? `<tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Firma:</td><td>${lead.firma}</td></tr>` : '',
-    lead.telefon ? `<tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Telefon:</td><td>${lead.telefon}</td></tr>` : '',
-    lead.email ? `<tr><td style="padding:4px 12px 4px 0;font-weight:bold;">E-Mail:</td><td>${lead.email}</td></tr>` : '',
-    lead.product ? `<tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Produkt:</td><td>${lead.product}</td></tr>` : '',
+    lead.telefon ? `<tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Telefon:</td><td><a href="tel:${lead.telefon}">${lead.telefon}</a></td></tr>` : '',
+    lead.email ? `<tr><td style="padding:4px 12px 4px 0;font-weight:bold;">E-Mail:</td><td><a href="mailto:${lead.email}">${lead.email}</a></td></tr>` : '',
+    lead.product ? `<tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Produkt/Service:</td><td>${lead.product}</td></tr>` : '',
     `</table>`,
-    lead.nachricht ? `<h3>Nachricht:</h3><p style="background:#f5f5f5;padding:12px;border-radius:8px;white-space:pre-wrap;">${lead.nachricht}</p>` : '',
+    lead.nachricht ? `<h3 style="margin:20px 0 8px 0;">Nachricht:</h3><p style="background:#f5f5f5;padding:12px;border-radius:8px;white-space:pre-wrap;">${lead.nachricht}</p>` : '',
   ].filter(Boolean).join('\n');
 
   try {

@@ -40,7 +40,8 @@ export function InquiryForm({ title = 'Anfrage senden', description, product, fi
           email,
           telefon,
           nachricht,
-          quelle: product,
+          quelle: 'anfrage-formular',
+          product,
           timestamp: new Date().toISOString(),
         }),
       });

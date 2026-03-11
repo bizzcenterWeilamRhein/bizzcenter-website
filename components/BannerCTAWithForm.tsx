@@ -34,7 +34,7 @@ export function BannerCTAWithForm({
       const res = await fetch('/api/lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ vorname, nachname, firma, telefon, nachricht, quelle: 'kontaktformular', product: 'startseite' }),
+        body: JSON.stringify({ vorname, nachname, firma, telefon, nachricht, quelle: 'hero-formular', product: 'startseite' }),
       });
       if (!res.ok) throw new Error('Fehler');
       setSent(true);
