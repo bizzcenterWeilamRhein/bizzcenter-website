@@ -19,7 +19,7 @@ export function FeaturesWithBg({ title, description, columns = 3, backgroundImag
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: `url(${backgroundImage})` }}
       />
-      <div className="absolute inset-0 bg-background/30" />
+      {/* Kein Overlay — Bild in vollen Farben */}
       <div className="relative z-10 container-main">
         {(title || description) && (
           <div className="text-center mb-12 flex justify-center">
