@@ -1,8 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-const ZENDESK_TOKEN = process.env.ZENDESK_SELL_API_TOKEN || '';
-const ZENDESK_API = 'https://api.getbase.com/v2';
-
 // M365 Graph API for email notifications
 const MS_TENANT_ID = process.env.MS_TENANT_ID || '';
 const MS_CLIENT_ID = process.env.MS_CLIENT_ID || '';
@@ -141,74 +138,57 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const description = descParts.join('\n');
 
-    // 1. Send email notification (fire-and-forget)
-    sendNotificationEmail({
-      firstName,
-      lastName,
-      firma: data.firma,
-      telefon: data.telefon,
-      email: data.email,
-      nachricht: data.nachricht || data.bemerkungen,
-      quelle: data.quelle,
-      product: data.product,
-    }).catch(err => console.error('Email notification error:', err));
-
-    // 2. Create CRM Lead (fire-and-forget)
-    fetch('https://crm.bizzcenter.de/api/leads', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+    // Parallel: CRM + E-Mail
+    const results = await Promise.allSettled([
+      // 1. CRM Lead
+      fetch('https://crm.bizzcenter.de/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName,
+          lastName: lastName || '(kein Nachname)',
+          email: data.email,
+          telefon: data.telefon,
+          firma: data.firma,
+          quelle: data.quelle,
+          product: data.product,
+          nachricht: description,
+        }),
+      }).then(r => r.ok ? 'crm-ok' : Promise.reject('CRM failed')),
+      
+      // 2. E-Mail Notification
+      sendNotificationEmail({
         firstName,
-        lastName: lastName || '(kein Nachname)',
-        email: data.email,
-        telefon: data.telefon,
+        lastName,
         firma: data.firma,
+        telefon: data.telefon,
+        email: data.email,
+        nachricht: data.nachricht || data.bemerkungen,
         quelle: data.quelle,
         product: data.product,
-        nachricht: description,
-      }),
-    }).catch(err => console.error('CRM lead creation error:', err));
+      }).then(() => 'email-ok'),
+    ]);
 
-    // 3. Create Zendesk Sell Lead
-    const zendeskPayload = {
-      data: {
-        first_name: firstName,
-        last_name: lastName || '(kein Nachname)',
-        organization_name: data.firma || undefined,
-        email: data.email || undefined,
-        phone: data.telefon || undefined,
-        address: (data.strasse || data.plz || data.ort) ? {
-          line1: data.strasse || undefined,
-          postal_code: data.plz || undefined,
-          city: data.ort || undefined,
-          country: 'DE',
-        } : undefined,
-        description,
-        tags: ['website', data.quelle],
-      },
-    };
+    const crmSuccess = results[0].status === 'fulfilled';
+    const emailSuccess = results[1].status === 'fulfilled';
 
-    const zendeskRes = await fetch(`${ZENDESK_API}/leads`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${ZENDESK_TOKEN}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(zendeskPayload),
-    });
+    if (!crmSuccess) console.error('CRM lead creation failed:', results[0]);
+    if (!emailSuccess) console.error('Email notification failed:', results[1]);
 
-    const zendeskData = await zendeskRes.json();
-
-    if (!zendeskRes.ok) {
-      console.error('Zendesk Sell error:', JSON.stringify(zendeskData));
-      // Still return success — email was sent
-      return res.status(200).json({ success: true, warning: 'CRM-Eintrag fehlgeschlagen' });
+    // Success wenn mindestens einer erfolgreich
+    if (crmSuccess || emailSuccess) {
+      const warnings = [];
+      if (!crmSuccess) warnings.push('CRM');
+      if (!emailSuccess) warnings.push('E-Mail');
+      
+      return res.status(200).json({
+        success: true,
+        ...(warnings.length && { warning: `${warnings.join(' + ')} fehlgeschlagen` }),
+      });
     }
 
-    return res.status(200).json({
-      success: true,
-      leadId: zendeskData.data?.id,
-    });
+    // Beide fehlgeschlagen
+    return res.status(500).json({ error: 'Lead konnte nicht erstellt werden' });
   } catch (err) {
     console.error('Lead API error:', err);
     return res.status(500).json({ error: 'Interner Fehler' });
