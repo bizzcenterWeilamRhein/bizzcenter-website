@@ -31,7 +31,7 @@
     "items": [
       {
         "label": {
-          "de": "Geschäftsadresse",
+          "de": "Adresse",
           "en": "Virtual Office"
         },
         "href": "/weil-am-rhein/geschaeftsadresse"
@@ -45,7 +45,7 @@
       },
       {
         "label": {
-          "de": "Büro mieten",
+          "de": "Büros",
           "en": "Rent Office"
         },
         "href": "/weil-am-rhein/privates-buero"
