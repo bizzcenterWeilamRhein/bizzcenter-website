@@ -2,6 +2,8 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 const STRIPE_KEY = process.env.STRIPE_SECRET_KEY || '';
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://weil.bizzcenter.de';
+const ZENDESK_TOKEN = process.env.ZENDESK_SELL_API_TOKEN || '';
+const ZENDESK_API = 'https://api.getbase.com/v2';
 
 // Price IDs from Stripe
 const PRICES: Record<string, string> = {
@@ -129,6 +131,41 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!response.ok) {
       console.error('Stripe error:', session.error);
       return res.status(500).json({ error: session.error?.message || 'Stripe Fehler' });
+    }
+
+    // ─── Zendesk Sell Lead erstellen (parallel, non-blocking) ───
+    if (ZENDESK_TOKEN && (customerEmail || firma)) {
+      const nameParts = (customerName || '').trim().split(/\s+/);
+      const firstName = nameParts[0] || '';
+      const lastName = nameParts.slice(1).join(' ') || '';
+
+      // Build description with booking details
+      const descParts: string[] = [];
+      descParts.push(`Quelle: stripe-checkout`);
+      descParts.push(`Produkt: ${priceId}`);
+      if (addons?.length) descParts.push(`Add-ons: ${addons.join(', ')}`);
+      descParts.push(`Stripe Session: ${session.id}`);
+      descParts.push(`Modus: ${mode}`);
+      const description = descParts.join('\n');
+
+      // Fire-and-forget — don't block checkout on CRM
+      fetch(`${ZENDESK_API}/leads`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${ZENDESK_TOKEN}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          data: {
+            first_name: firstName,
+            last_name: lastName || undefined,
+            organization_name: firma || undefined,
+            email: customerEmail || undefined,
+            description,
+            tags: ['website', 'stripe-checkout', priceId.split('_')[0]],
+          },
+        }),
+      }).catch(err => console.error('Zendesk Sell lead error:', err));
     }
 
     return res.status(200).json({ url: session.url, sessionId: session.id });
