@@ -48,6 +48,9 @@ const PRICE_MAP: Record<string, string> = {
   'addon_schrank': 'price_1T9o4pJHXQhpcKhgFsScY4uu',
   'addon_scan': 'price_1T9o4qJHXQhpcKhgtzdpeiKG',
   'addon_firmenschild': 'price_1T9o4rJHXQhpcKhgKee1emBB',
+  // Tagespass Add-ons (Einzelpreise pro Tag)
+  'addon_kaffee_tag': 'price_1T9pwHJHXQhpcKhge5UguPpX',
+  'addon_parkplatz_tag': 'price_1T9pwMJHXQhpcKhgvhgn43QW',
 };
 
 // ─── Product Configs ─────────────────────────────────────────────────
@@ -107,6 +110,12 @@ const ADDONS_BY_PRODUCT: Record<ProductType, { id: string; label: string; price:
     { id: 'monitor', label: '27" Monitor', price: 'EUR 27,-/Mon.', monthly: true },
   ],
 };
+
+// Tagespass-spezifische Add-ons (Einzelpreise pro Tag, nicht monatlich)
+const CW_TAGESPASS_ADDONS = [
+  { id: 'kaffee_tag', label: 'Kaffee-Flat', price: 'EUR 9,-', monthly: false },
+  { id: 'parkplatz_tag', label: 'Parkplatz', price: 'EUR 6,-', monthly: false },
+];
 
 // ─── Helper Components ───────────────────────────────────────────────
 
@@ -459,7 +468,10 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
 
     // ── ADD-ONS (shared) ──
     if (step === addonsStep) {
-      const productAddons = ADDONS_BY_PRODUCT[product];
+      // Coworking Tagespass → spezielle Tages-Add-ons
+      const productAddons = (product === 'coworking' && cwTarif === 'tagespass')
+        ? CW_TAGESPASS_ADDONS
+        : ADDONS_BY_PRODUCT[product];
       return (
         <div>
           {step > 0 && <BackButton onClick={() => setStep(step - 1)} />}

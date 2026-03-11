@@ -40,12 +40,14 @@ const PRICES = {
   'addon_schrank': 'price_1T9o4pJHXQhpcKhgFsScY4uu',
   'addon_scan': 'price_1T9o4qJHXQhpcKhgtzdpeiKG',
   'addon_firmenschild': 'price_1T9o4rJHXQhpcKhgKee1emBB',
+  'addon_kaffee_tag': 'price_1T9pwHJHXQhpcKhge5UguPpX',
+  'addon_parkplatz_tag': 'price_1T9pwMJHXQhpcKhgvhgn43QW',
 };
 
 const RECURRING_KEYS = new Set(
   Object.keys(PRICES).filter(k =>
     k.startsWith('ga_') || k.startsWith('cw_monats') ||
-    (k.startsWith('addon_') && k !== 'addon_firmenschild')
+    (k.startsWith('addon_') && k !== 'addon_firmenschild' && !k.endsWith('_tag'))
   )
 );
 
@@ -118,11 +120,13 @@ const server = http.createServer(async (req, res) => {
 
       const params = {};
       params['mode'] = mode;
+      params['currency'] = 'eur';
       params['success_url'] = successUrl || 'https://weil.bizzcenter.de/buchung-bestaetigt';
       params['cancel_url'] = cancelUrl || 'https://weil.bizzcenter.de';
       params['billing_address_collection'] = 'required';
       params['customer_creation'] = 'always';
       params['locale'] = 'de';
+      params['payment_method_types[0]'] = 'card';
       params['tax_id_collection[enabled]'] = 'true';
       params['automatic_tax[enabled]'] = 'true';
 
