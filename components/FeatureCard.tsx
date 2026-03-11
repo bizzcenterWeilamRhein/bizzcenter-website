@@ -67,15 +67,16 @@ interface FeatureCardProps {
   description: string;
   icon?: string;
   iconColor?: string;
+  link?: string;
 }
 
-export function FeatureCard({ title, description, icon, iconColor }: FeatureCardProps) {
+export function FeatureCard({ title, description, icon, iconColor, link }: FeatureCardProps) {
   const color = iconColor || 'var(--color-primary, #6b7f3e)';
   const IconComponent = icon ? iconMap[icon] : null;
   const CustomIcon = icon ? customIcons[icon] : null;
 
-  return (
-    <div className="flex flex-col items-start p-6 rounded-xl bg-background/90 backdrop-blur-sm border border-border/50 shadow-sm hover:shadow-md transition-all">
+  const content = (
+    <>
       <div className="flex items-center gap-3 mb-3">
         {(IconComponent || CustomIcon) && (
           <div
@@ -88,6 +89,25 @@ export function FeatureCard({ title, description, icon, iconColor }: FeatureCard
         <h3 className="text-lg font-semibold text-foreground">{title}</h3>
       </div>
       <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>
+      {link && (
+        <span className="mt-3 text-sm font-medium inline-flex items-center gap-1" style={{ color }}>
+          Mehr erfahren →
+        </span>
+      )}
+    </>
+  );
+
+  if (link) {
+    return (
+      <a href={link} className="flex flex-col items-start p-6 rounded-xl bg-background/90 backdrop-blur-sm border border-border/50 shadow-sm hover:shadow-md hover:border-[#6b7f3e]/40 transition-all no-underline cursor-pointer">
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <div className="flex flex-col items-start p-6 rounded-xl bg-background/90 backdrop-blur-sm border border-border/50 shadow-sm hover:shadow-md transition-all">
+      {content}
     </div>
   );
 }
