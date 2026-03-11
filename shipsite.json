@@ -120,6 +120,13 @@
               "en": "Projector Rental"
             },
             "href": "/weil-am-rhein/beamer-mieten"
+          },
+          {
+            "label": {
+              "de": "Lautsprecher mieten",
+              "en": "Speaker Rental"
+            },
+            "href": "/weil-am-rhein/lautsprecher-mieten"
           }
         ]
       },
@@ -513,6 +520,14 @@
       "slug": "vertrag/kunde-xyz",
       "type": "page",
       "content": "vertrag/kunde-xyz",
+      "locales": [
+        "de"
+      ]
+    },
+    {
+      "slug": "weil-am-rhein/lautsprecher-mieten",
+      "type": "page",
+      "content": "weil-am-rhein/lautsprecher-mieten",
       "locales": [
         "de"
       ]
