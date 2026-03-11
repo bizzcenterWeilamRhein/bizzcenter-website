@@ -600,7 +600,7 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
   // ─── Step Progress Bar ──────────────────────────────────────────
 
   return (
-    <div className="mx-auto max-w-2xl pt-8" id="buchen">
+    <div className="mx-auto max-w-2xl pt-16" id="buchen">
       {title && <h2 className="text-xl font-bold text-gray-900 text-center mb-6">{title}</h2>}
 
       {/* Progress */}
