@@ -64,8 +64,8 @@ const GA_TARIFE = [
 const CW_TARIFE = [
   { id: 'tagespass', label: 'Tagespass', price: 25, sub: 'pro Tag', badge: '−16%' },
   { id: '10er', label: '10er-Karte', price: 209, sub: 'einmalig', badge: '−16%' },
-  { id: 'monatspass', label: 'Monatspass', price: 219, sub: 'pro Monat', popular: true, badge: '−16%' },
-  { id: 'monatsabo', label: 'Monatsabo', price: 199, sub: 'pro Monat', badge: '−16%' },
+  { id: 'monatspass', label: 'Monatspass', price: 219, sub: 'pro Monat · flexibel zum Monatsende kündbar', popular: true, badge: '−16%' },
+  { id: 'monatsabo', label: 'Monatsabo', price: 199, sub: 'pro Monat · 3 Monate Kündigungsfrist', badge: '−16%' },
 ];
 
 const KONF_ROOMS = [
