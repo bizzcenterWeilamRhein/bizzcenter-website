@@ -59,6 +59,13 @@
       },
       {
         "label": {
+          "de": "Coachingbüro",
+          "en": "Coaching Room"
+        },
+        "href": "/weil-am-rhein/coachingbuero"
+      },
+      {
+        "label": {
           "de": "Services",
           "en": "Services"
         },
