@@ -221,7 +221,11 @@ export function BeamerBuchung() {
             </div>
           </div>
 
-          <p className="text-xs text-gray-400">Abholung im Kesselhaus, Am Kesselhaus 3, 79576 Weil am Rhein. Keine Lieferung.</p>
+          <div className="bg-[#f5f0eb] rounded-lg px-4 py-3 text-sm text-gray-600 space-y-1">
+            <p className="font-semibold text-gray-700">Hinweise zur Abholung:</p>
+            <p>Abholung im Kesselhaus, Am Kesselhaus 3, 79576 Weil am Rhein. Keine Lieferung.</p>
+            <p>Bei Abholung: <strong>EUR 150,- Kaution</strong> (bar oder Karte) + <strong>Ausweiskopie</strong>. Kaution wird bei Rückgabe erstattet.</p>
+          </div>
 
           {error && <p className="text-red-600 text-sm">{error}</p>}
 
