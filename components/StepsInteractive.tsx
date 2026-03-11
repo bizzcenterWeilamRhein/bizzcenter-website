@@ -14,7 +14,7 @@ export function StepsInteractive({ standort }: StepsInteractiveProps) {
 
   const postversandOptionen = [
     { id: 'ohne' as const, label: 'Ohne Postversand', beschreibung: 'Post wird vor Ort gesammelt, 24/7 abholbar', aufpreis: 0 },
-    { id: 'mit' as const, label: 'Mit Postversand', beschreibung: 'Wöchentliche Weiterleitung Ihrer Post', aufpreis: 0 },
+    { id: 'mit' as const, label: 'Mit Postversand', beschreibung: 'Wöchentliche Weiterleitung an eine Adresse im DACH-Raum', aufpreis: 0 },
   ];
 
   const aufpreis = postversandOptionen.find(p => p.id === postversand)?.aufpreis || 0;

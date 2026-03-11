@@ -20,37 +20,42 @@ const loesungen = [
   { id: 'lager', label: 'Lagerservice', slug: 'lagerservice' },
 ];
 
+const postversandOptionen = [
+  { id: 'ohne', label: 'Ohne Postversand', beschreibung: 'Post wird vor Ort gesammelt, 24/7 abholbar' },
+  { id: 'mit', label: 'Mit Postversand', beschreibung: 'Wöchentliche Weiterleitung an eine Adresse im DACH-Raum' },
+];
+
 const tarife: Record<string, { id: string; label: string; price: string; sub: string; popular?: boolean }[]> = {
   geschaeftsadresse: [
-    { id: '6mon', label: '6 Monate', price: 'EUR 139,-', sub: 'pro Monat' },
-    { id: '12mon', label: '12 Monate', price: 'EUR 109,-', sub: 'pro Monat', popular: true },
-    { id: '24mon', label: '24 Monate', price: 'EUR 89,-', sub: 'pro Monat' },
+    { id: 'langzeit', label: 'Langzeit · 12 Monate', price: 'EUR 49,-', sub: 'pro Monat zzgl. MwSt.', popular: true },
+    { id: 'standard', label: 'Standard · 6 Monate', price: 'EUR 69,-', sub: 'pro Monat zzgl. MwSt.' },
+    { id: 'flex', label: 'Flex · 3 Monate', price: 'EUR 99,-', sub: 'pro Monat zzgl. MwSt.' },
   ],
   coworking: [
-    { id: 'tag', label: 'Tagespass', price: 'EUR 29,-', sub: 'pro Tag' },
-    { id: '10er', label: '10er-Karte', price: 'EUR 249,-', sub: '' },
-    { id: 'monat', label: 'Monatspass', price: 'EUR 259,-', sub: 'pro Monat', popular: true },
-    { id: 'abo', label: 'Monatsabo', price: 'EUR 239,-', sub: 'pro Monat' },
+    { id: 'tag', label: 'Tagespass', price: 'EUR 25,-', sub: 'pro Tag zzgl. MwSt.' },
+    { id: '10er', label: '10er-Karte', price: 'EUR 209,-', sub: 'zzgl. MwSt.' },
+    { id: 'monat', label: 'Monatspass', price: 'EUR 219,-', sub: 'pro Monat zzgl. MwSt.', popular: true },
+    { id: 'abo', label: 'Monatsabo', price: 'EUR 199,-', sub: 'pro Monat zzgl. MwSt.' },
   ],
   buero: [
-    { id: 'tag', label: 'Tagesbüro', price: 'EUR 59,-', sub: 'pro Tag' },
-    { id: 'monat', label: 'Monatlich', price: 'ab EUR 499,-', sub: 'pro Monat', popular: true },
+    { id: 'tag', label: 'Tagesbüro', price: 'EUR 59,-', sub: 'pro Tag zzgl. MwSt.' },
+    { id: 'monat', label: 'Monatlich', price: 'ab EUR 499,-', sub: 'pro Monat zzgl. MwSt.', popular: true },
   ],
   konferenz: [
-    { id: 'stunde', label: 'Stundenweise', price: 'ab EUR 19,-', sub: 'pro Stunde' },
-    { id: 'tag', label: 'Ganztags', price: 'ab EUR 89,-', sub: 'pro Tag', popular: true },
+    { id: 'stunde', label: 'Stundenweise', price: 'ab EUR 19,-', sub: 'pro Stunde zzgl. MwSt.' },
+    { id: 'tag', label: 'Ganztags', price: 'ab EUR 89,-', sub: 'pro Tag zzgl. MwSt.', popular: true },
   ],
   telefon: [
-    { id: 'basis', label: 'Basis', price: 'EUR 49,-', sub: 'pro Monat' },
-    { id: 'premium', label: 'Premium', price: 'EUR 99,-', sub: 'pro Monat', popular: true },
+    { id: 'basis', label: 'Basis', price: 'EUR 49,-', sub: 'pro Monat zzgl. MwSt.' },
+    { id: 'premium', label: 'Premium', price: 'EUR 99,-', sub: 'pro Monat zzgl. MwSt.', popular: true },
   ],
   lager: [
-    { id: 'klein', label: 'Klein', price: 'ab EUR 49,-', sub: 'pro Monat' },
-    { id: 'mittel', label: 'Mittel', price: 'ab EUR 99,-', sub: 'pro Monat', popular: true },
+    { id: 'klein', label: 'Klein', price: 'ab EUR 49,-', sub: 'pro Monat zzgl. MwSt.' },
+    { id: 'mittel', label: 'Mittel', price: 'ab EUR 99,-', sub: 'pro Monat zzgl. MwSt.', popular: true },
   ],
 };
 
-const addons = [
+const allAddons = [
   { id: 'scan', label: 'Scanpaket', price: '+ EUR 49,-/Mon.' },
   { id: 'parkplatz', label: 'Parkplatz', price: '+ EUR 49,-/Mon.' },
   { id: 'kaffee', label: 'Kaffee-Flat', price: '+ EUR 29,-/Mon.' },
@@ -58,6 +63,15 @@ const addons = [
   { id: 'monitor', label: '27" Monitor', price: '+ EUR 27,-/Mon.' },
   { id: 'firmenschild', label: 'Firmenschild', price: 'EUR 179,- einmalig' },
 ];
+
+const addonsByLoesung: Record<string, string[]> = {
+  geschaeftsadresse: ['scan', 'parkplatz', 'firmenschild'],
+  coworking: ['parkplatz', 'kaffee', 'monitor', 'schrank'],
+  buero: ['parkplatz', 'kaffee', 'monitor', 'schrank', 'firmenschild'],
+  konferenz: ['parkplatz', 'kaffee'],
+  telefon: [],
+  lager: [],
+};
 
 function StepIndicator({ step, total, labels }: { step: number; total: number; labels: string[] }) {
   return (
@@ -86,21 +100,33 @@ function StepIndicator({ step, total, labels }: { step: number; total: number; l
 export function StartFlow({ title = 'So starten Sie' }: { title?: string }) {
   const [step, setStep] = useState(0);
   const [loesung, setLoesung] = useState<string | null>(null);
+  const [postversand, setPostversand] = useState<string | null>(null);
   const [tarif, setTarif] = useState<string | null>(null);
   const [selectedAddons, setSelectedAddons] = useState<Set<string>>(new Set());
 
-  const stepLabels = ['Lösung', 'Tarif', 'Add-ons', 'Buchen'];
+  const needsPostversand = loesung === 'geschaeftsadresse';
+  const stepLabels = needsPostversand ? ['Lösung', 'Postversand', 'Tarif', 'Add-ons', 'Buchen'] : ['Lösung', 'Tarif', 'Add-ons', 'Buchen'];
 
   const handleLoesung = (id: string) => {
     setLoesung(id);
+    setPostversand(null);
     setTarif(null);
     setSelectedAddons(new Set());
-    setStep(1);
+    if (id === 'geschaeftsadresse') {
+      setStep(1); // → Postversand-Frage
+    } else {
+      setStep(1); // → direkt Tarif (step 1 ist Tarif für nicht-Geschäftsadresse)
+    }
+  };
+
+  const handlePostversand = (id: string) => {
+    setPostversand(id);
+    setStep(2); // → Tarif
   };
 
   const handleTarif = (id: string) => {
     setTarif(id);
-    setStep(2);
+    setStep(needsPostversand ? 3 : 2); // → Add-ons
   };
 
   const toggleAddon = (id: string) => {
@@ -151,14 +177,44 @@ export function StartFlow({ title = 'So starten Sie' }: { title?: string }) {
             </div>
           )}
 
-          {/* Step 1: Tarif */}
-          {step === 1 && loesung && (
+          {/* Step 1 (nur Geschäftsadresse): Postversand */}
+          {step === 1 && needsPostversand && (
+            <div>
+              <button onClick={goBack} className="text-xs text-muted-foreground hover:text-foreground mb-3 flex items-center gap-1">
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
+                Zurück
+              </button>
+              <h3 className="text-lg font-bold text-foreground mb-4">Wie soll Ihre Post bearbeitet werden?</h3>
+              <div className="grid grid-cols-2 gap-3">
+                {postversandOptionen.map(opt => (
+                  <button
+                    key={opt.id}
+                    onClick={() => handlePostversand(opt.id)}
+                    className={`p-4 rounded-xl border-2 text-center transition-all cursor-pointer ${
+                      postversand === opt.id ? 'border-[#6b7f3e] bg-[#e3e7d4] shadow-sm' : 'border-border bg-background hover:bg-[#f0f4e8] hover:border-[#6b7f3e]'
+                    }`}
+                  >
+                    <p className="font-semibold text-sm text-foreground">{opt.label}</p>
+                    <p className="text-xs text-muted-foreground mt-1">{opt.beschreibung}</p>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Tarif-Step (Step 1 für nicht-GA, Step 2 für GA) */}
+          {((step === 1 && !needsPostversand) || (step === 2 && needsPostversand)) && loesung && (
             <div>
               <button onClick={goBack} className="text-xs text-muted-foreground hover:text-foreground mb-3 flex items-center gap-1">
                 <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
                 Zurück
               </button>
               <h3 className="text-lg font-bold text-foreground mb-4">Tarif wählen</h3>
+              {needsPostversand && postversand && (
+                <p className="text-xs text-muted-foreground mb-3">
+                  {postversand === 'mit' ? 'Inkl. Postversand' : 'Ohne Postversand'} · Alle Preise zzgl. MwSt.
+                </p>
+              )}
               <div className="grid grid-cols-2 gap-3">
                 {(tarife[loesung] || []).map(t => (
                   <button
@@ -184,8 +240,8 @@ export function StartFlow({ title = 'So starten Sie' }: { title?: string }) {
             </div>
           )}
 
-          {/* Step 2: Add-ons */}
-          {step === 2 && (
+          {/* Add-ons Step */}
+          {((step === 2 && !needsPostversand) || (step === 3 && needsPostversand)) && (
             <div>
               <button onClick={goBack} className="text-xs text-muted-foreground hover:text-foreground mb-3 flex items-center gap-1">
                 <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
@@ -194,7 +250,7 @@ export function StartFlow({ title = 'So starten Sie' }: { title?: string }) {
               <h3 className="text-lg font-bold text-foreground mb-1">Optionale Add-ons</h3>
               <p className="text-xs text-muted-foreground mb-4">Nicht verpflichtend — einfach überspringen.</p>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                {addons.map(a => {
+                {allAddons.filter(a => (loesung && addonsByLoesung[loesung] || []).includes(a.id)).map(a => {
                   const isSelected = selectedAddons.has(a.id);
                   return (
                     <button
@@ -221,7 +277,7 @@ export function StartFlow({ title = 'So starten Sie' }: { title?: string }) {
                 })}
               </div>
               <button
-                onClick={() => setStep(3)}
+                onClick={() => setStep(needsPostversand ? 4 : 3)}
                 className="mt-4 w-full rounded-lg bg-[#6b7f3e] text-white text-center py-3 text-sm font-semibold hover:opacity-90 transition-opacity"
               >
                 Weiter zum Buchen
@@ -229,8 +285,8 @@ export function StartFlow({ title = 'So starten Sie' }: { title?: string }) {
             </div>
           )}
 
-          {/* Step 3: Zusammenfassung & Buchen */}
-          {step === 3 && (
+          {/* Zusammenfassung & Buchen */}
+          {((step === 3 && !needsPostversand) || (step === 4 && needsPostversand)) && (
             <div>
               <button onClick={goBack} className="text-xs text-muted-foreground hover:text-foreground mb-3 flex items-center gap-1">
                 <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
@@ -246,6 +302,12 @@ export function StartFlow({ title = 'So starten Sie' }: { title?: string }) {
                   <span className="text-muted-foreground">Lösung</span>
                   <span className="font-medium">{loesungObj?.label}</span>
                 </div>
+                {needsPostversand && postversand && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Postversand</span>
+                    <span className="font-medium">{postversand === 'mit' ? 'Inkl. Postversand' : 'Ohne Postversand'}</span>
+                  </div>
+                )}
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Tarif</span>
                   <span className="font-medium">{loesung && tarife[loesung]?.find(t => t.id === tarif)?.label} — {loesung && tarife[loesung]?.find(t => t.id === tarif)?.price}</span>
@@ -253,7 +315,7 @@ export function StartFlow({ title = 'So starten Sie' }: { title?: string }) {
                 {selectedAddons.size > 0 && (
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Add-ons</span>
-                    <span className="font-medium text-right">{addons.filter(a => selectedAddons.has(a.id)).map(a => a.label).join(', ')}</span>
+                    <span className="font-medium text-right">{allAddons.filter(a => selectedAddons.has(a.id)).map(a => a.label).join(', ')}</span>
                   </div>
                 )}
               </div>
