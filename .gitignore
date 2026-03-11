@@ -4,3 +4,4 @@ node_modules/
 .content-collections/
 *.tsbuildinfo
 .m365-credentials.json
+.env.local
