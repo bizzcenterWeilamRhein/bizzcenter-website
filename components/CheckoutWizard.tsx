@@ -490,7 +490,7 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
                 <span className="font-medium text-gray-900 text-right">{item.value}</span>
               </div>
             ))}
-            <p className="text-[10px] text-gray-400 mt-2">Alle Preise zzgl. MwSt. · MwSt. wird im Checkout berechnet</p>
+            <p className="text-[10px] text-gray-400 mt-2 text-right">Alle Preise zzgl. MwSt. · MwSt. wird im Checkout berechnet</p>
           </div>
 
           {/* Form */}
@@ -555,7 +555,7 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
   // ─── Step Progress Bar ──────────────────────────────────────────
 
   return (
-    <div className="mx-auto max-w-2xl" id="buchen">
+    <div className="mx-auto max-w-2xl pt-8" id="buchen">
       {title && <h2 className="text-xl font-bold text-gray-900 text-center mb-6">{title}</h2>}
 
       {/* Progress */}

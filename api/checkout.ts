@@ -49,11 +49,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   // CORS
-  const allowedOrigins = ['https://weil.bizzcenter.de', 'https://www.bizzcenter.de', 'https://bizzcenter.de'];
+  const allowedOrigins = ['https://weil.bizzcenter.de', 'https://www.bizzcenter.de', 'https://bizzcenter.de', 'https://bizzcenter-website.vercel.app'];
   const origin = req.headers.origin;
-  if (origin && allowedOrigins.includes(origin)) {
+  if (origin && (allowedOrigins.includes(origin) || origin.includes('ngrok-free.dev') || origin.includes('localhost'))) {
     res.setHeader('Access-Control-Allow-Origin', origin);
   }
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  if (req.method === 'OPTIONS') return res.status(200).end();
 
   try {
     const { priceId, addons, successUrl, cancelUrl, customerEmail, customerName, firma } = req.body;
