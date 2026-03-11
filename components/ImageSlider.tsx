@@ -13,17 +13,21 @@ interface ImageSliderProps {
   interval?: number;
 }
 
-export function ImageSlider({ slides, title, interval = 4000 }: ImageSliderProps) {
+export function ImageSlider({ slides = [], title, interval = 4000 }: ImageSliderProps) {
   const [current, setCurrent] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
+  const slideCount = slides?.length || 0;
+
   const next = useCallback(() => {
-    setCurrent((c) => (c + 1) % slides.length);
-  }, [slides.length]);
+    if (slideCount === 0) return;
+    setCurrent((c) => (c + 1) % slideCount);
+  }, [slideCount]);
 
   const prev = useCallback(() => {
-    setCurrent((c) => (c - 1 + slides.length) % slides.length);
-  }, [slides.length]);
+    if (slideCount === 0) return;
+    setCurrent((c) => (c - 1 + slideCount) % slideCount);
+  }, [slideCount]);
 
   useEffect(() => {
     if (isPaused) return;

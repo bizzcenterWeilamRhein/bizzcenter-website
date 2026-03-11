@@ -16,17 +16,55 @@ description: "Kontaktieren Sie das bizzcenter Weil am Rhein. Telefon, Kontaktfor
   formId=""
 />
 
-<Features title="So erreichen Sie uns" columns={2}>
-  <FeatureCard title="Telefon" description="+49 (0)7621 916 5547" icon="phone" />
-  <FeatureCard title="Vor Ort" description="Am Kesselhaus 3, 79576 Weil am Rhein" icon="landmark" />
-</Features>
+<section className="max-w-6xl mx-auto px-4 py-16">
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+    {/* Left: Form */}
+    <div>
+      <KontaktFormular />
+    </div>
 
-<KontaktFormular />
+    {/* Right: Info + Image */}
+    <div className="space-y-6">
+      <div className="bg-[#f5f0eb] rounded-2xl p-8">
+        <h3 className="text-xl font-bold text-gray-900 mb-4">Direkter Draht</h3>
+        <div className="space-y-4">
+          <div className="flex items-start gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-[#6b7f3e] mt-0.5 flex-shrink-0"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" /></svg>
+            <div>
+              <p className="font-semibold text-gray-900">Telefon</p>
+              <a href="tel:+4976219165547" className="text-[#6b7f3e] hover:underline">+49 (0)7621 916 5547</a>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-[#6b7f3e] mt-0.5 flex-shrink-0"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+            <div>
+              <p className="font-semibold text-gray-900">Bürozeiten</p>
+              <p className="text-gray-600">Mo–Fr 09:00–17:00 Uhr</p>
+              <p className="text-gray-500 text-sm mt-1">Coworking & Paketzugang: 24/7 mit Türcode</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="rounded-2xl overflow-hidden shadow-md">
+        <img src="/images/standorte/weil-am-rhein/green-office-eingangsbereich.jpeg" alt="Green Office Eingangsbereich" className="w-full h-64 object-cover" />
+      </div>
+    </div>
+  </div>
+</section>
 
-<Features title="Öffnungszeiten" columns={2}>
-  <FeatureCard title="Bürozeiten" description="Mo–Fr 09:00–17:00 Uhr" icon="clock" />
-  <FeatureCard title="Coworking & Paketzugang" description="24/7 mit persönlichem Türcode" icon="key" />
-</Features>
+<ImageSlider
+  title="Einblicke ins bizzcenter"
+  slides={[
+    { src: "/images/standorte/weil-am-rhein/kesselhaus-aussen.jpg", caption: "Kesselhaus – Außenansicht" },
+    { src: "/images/standorte/weil-am-rhein/green-office-kueche-empore.jpeg", caption: "Küche & Meetingbox auf der Empore" },
+    { src: "/images/standorte/weil-am-rhein/coworking-loungeecke.jpg", caption: "Lounge & Coworking" },
+    { src: "/images/standorte/weil-am-rhein/konferenzraum-gross.jpg", caption: "Konferenzraum" },
+    { src: "/images/standorte/weil-am-rhein/green-office-spielbox-loungeecke.jpeg", caption: "Spielecke & Loungebereich" },
+    { src: "/images/standorte/weil-am-rhein/meetingraum-empore-5-personen.jpg", caption: "Meetingraum Empore" },
+    { src: "/images/standorte/weil-am-rhein/coachingbuero.jpg", caption: "Coachingbüro" },
+    { src: "/images/standorte/weil-am-rhein/green-office-flurbereich.jpg", caption: "Green Office Flurbereich" },
+  ]}
+/>
 
 <AlternatingFeatures>
   <AlternatingFeatureRow title="Unser Standort" description="bizzcenter Weil am Rhein — Am Kesselhaus 3, 79576 Weil am Rhein. Nur 300 Meter von der Schweizer Grenze, direkt erreichbar mit der Tramlinie 8 von Basel. EuroAirport Basel nur 15 Autominuten entfernt." image="/images/standorte/weil-am-rhein/standortkarte.png" imageAlt="Standortkarte bizzcenter Weil am Rhein" />

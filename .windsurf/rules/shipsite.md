@@ -6,7 +6,7 @@
 - **Framework:** Next.js (App Router)
 - **Content:** MDX files in `content/` — processed by content-collections
 - **Styling:** Tailwind CSS v4 + shadcn/ui design tokens
-- **i18n:** next-intl (locales: de, en, es, fr — default: de)
+- **i18n:** next-intl (locales: de — default: de)
 - **Components:** `@shipsite.dev/components` — pre-built marketing, blog & legal components
 
 ## Project Structure
