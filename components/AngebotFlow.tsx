@@ -776,7 +776,7 @@ function AngebotFlowInner({
             <h2 className="text-xl font-bold text-foreground">Vielen Dank, {kontakt}!</h2>
             <p className="text-sm text-muted-foreground mt-2 max-w-md mx-auto">
               Ihre Anfrage für die {serviceLabel} bei bizzcenter {angebot.standort} ist eingegangen.
-              Wir melden uns innerhalb von 24 Stunden bei Ihnen.
+              Wir melden uns umgehend bei Ihnen.
             </p>
             <div className="mt-4 p-4 bg-white rounded-lg text-left text-sm max-w-sm mx-auto">
               <p className="font-semibold text-foreground mb-2">Nächste Schritte:</p>

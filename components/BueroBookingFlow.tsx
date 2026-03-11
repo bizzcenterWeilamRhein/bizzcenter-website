@@ -246,7 +246,7 @@ export function BueroBookingFlow({ title = 'In 4 Schritten zum eigenen Büro' }:
                 )}
               </a>
               <p className="text-sm text-muted-foreground mt-4">
-                Wir melden uns innerhalb von 24 Stunden mit einem individuellen Angebot.<br />
+                Wir melden uns umgehend mit einem individuellen Angebot.<br />
                 Oder rufen Sie direkt an: <a href="tel:+4917153949009" className="text-[#6b7f3e] font-medium">+49 171 539 49 09</a>
               </p>
             </div>

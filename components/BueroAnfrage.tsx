@@ -79,7 +79,7 @@ export function BueroAnfrage() {
             <svg className="w-8 h-8 text-[#6b7f3e]" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
           </div>
           <h3 className="text-xl font-bold text-gray-900 mb-2">Anfrage erhalten!</h3>
-          <p className="text-gray-600">Vielen Dank. Wir melden uns innerhalb von 24 Stunden mit einem passenden Angebot bei Ihnen.</p>
+          <p className="text-gray-600">Vielen Dank. Wir melden uns umgehend mit einem passenden Angebot bei Ihnen.</p>
         </div>
       </section>
     );
@@ -287,7 +287,7 @@ export function BueroAnfrage() {
             >
               {submitting ? 'Wird gesendet...' : 'Jetzt anfragen'}
             </button>
-            <p className="text-xs text-gray-400 text-center">Wir melden uns innerhalb von 24 Stunden.</p>
+            <p className="text-xs text-gray-400 text-center">Wir melden uns umgehend.</p>
           </div>
         </div>
 

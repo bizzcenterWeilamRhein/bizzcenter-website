@@ -253,7 +253,7 @@ export function LeadForm({ standort, angebotSlug, title, description }: LeadForm
             </div>
 
             <p className="text-[10px] text-muted-foreground text-center">
-              Kostenlos und unverbindlich. Wir melden uns innerhalb von 24 Stunden.
+              Kostenlos und unverbindlich. Wir melden uns umgehend.
             </p>
           </form>
         )}

@@ -115,7 +115,7 @@ function HeroForm() {
     return (
       <div className="text-center py-8">
         <p className="text-lg font-semibold text-foreground mb-2">Anfrage gesendet!</p>
-        <p className="text-sm text-muted-foreground">Wir melden uns innerhalb von 24 Stunden bei Ihnen.</p>
+        <p className="text-sm text-muted-foreground">Wir melden uns umgehend bei Ihnen.</p>
       </div>
     );
   }
