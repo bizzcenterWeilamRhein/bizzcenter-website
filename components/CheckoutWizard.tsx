@@ -244,8 +244,12 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
       setError('Bitte wählen Sie alle Optionen aus.');
       return;
     }
-    if (!email || !firma) {
+    if (!name || !email || !firma) {
       setError('Bitte füllen Sie alle Pflichtfelder aus.');
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError('Bitte geben Sie eine gültige E-Mail-Adresse ein.');
       return;
     }
 
@@ -328,8 +332,8 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
         break;
     }
     if (selectedAddons.size > 0) {
-      // Bei Coworking Tagespass die Tages-Add-ons verwenden
-      const addonSource = (product === 'coworking' && cwTarif === 'tagespass')
+      // Bei Coworking Tagespass/10er die Tages-Add-ons verwenden
+      const addonSource = (product === 'coworking' && (cwTarif === 'tagespass' || cwTarif === '10er'))
         ? CW_TAGESPASS_ADDONS
         : ADDONS_BY_PRODUCT[product];
       addonSource
@@ -475,8 +479,8 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
 
     // ── ADD-ONS (shared) ──
     if (step === addonsStep) {
-      // Coworking Tagespass → spezielle Tages-Add-ons
-      const productAddons = (product === 'coworking' && cwTarif === 'tagespass')
+      // Coworking: Tagespass/10er → Tages-Add-ons, Monatspass/Abo → monatliche Add-ons
+      const productAddons = (product === 'coworking' && (cwTarif === 'tagespass' || cwTarif === '10er'))
         ? CW_TAGESPASS_ADDONS
         : ADDONS_BY_PRODUCT[product];
       return (

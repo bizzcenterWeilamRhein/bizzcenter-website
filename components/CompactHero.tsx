@@ -92,10 +92,10 @@ export function CompactHero({ title, description, image, imageAlt, imagePosition
 }
 
 const tarifLabels: Record<string, string> = {
-  tagespass: 'Tagespass — EUR 29,- inkl. MwSt.',
-  zehnerkarte: '10er-Karte — EUR 249,- inkl. MwSt.',
-  monatspass: 'Monatspass — EUR 259,- inkl. MwSt.',
-  monatsabo: 'Monatsabo — EUR 239,- inkl. MwSt.',
+  tagespass: 'Tagespass — EUR 25,- zzgl. MwSt.',
+  zehnerkarte: '10er-Karte — EUR 209,- zzgl. MwSt.',
+  monatspass: 'Monatspass — EUR 219,- zzgl. MwSt.',
+  monatsabo: 'Monatsabo — EUR 199,- zzgl. MwSt.',
 };
 
 function HeroForm() {
@@ -110,13 +110,6 @@ function HeroForm() {
     window.addEventListener('tarif-selected', onTarifSelected);
     return () => window.removeEventListener('tarif-selected', onTarifSelected);
   }, []);
-
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setStatus('sending');
-    // Placeholder - wird später durch echtes Backend ersetzt
-    setTimeout(() => setStatus('sent'), 1000);
-  }
 
   if (status === 'sent') {
     return (
@@ -140,7 +133,7 @@ function HeroForm() {
     fetch('/api/lead', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...data, source: 'hero-formular', timestamp: new Date().toISOString() }),
+      body: JSON.stringify({ ...data, name: `${data.vorname || ''} ${data.nachname || ''}`.trim(), quelle: 'hero-formular', timestamp: new Date().toISOString() }),
     }).catch(() => {});
 
     // Weiterleitung zum Angebot

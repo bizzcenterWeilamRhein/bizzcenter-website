@@ -124,7 +124,9 @@ const server = http.createServer(async (req, res) => {
       params['success_url'] = successUrl || 'https://weil.bizzcenter.de/buchung-bestaetigt';
       params['cancel_url'] = cancelUrl || 'https://weil.bizzcenter.de';
       params['billing_address_collection'] = 'required';
-      params['customer_creation'] = 'always';
+      if (mode === 'payment') {
+        params['customer_creation'] = 'always';
+      }
       params['locale'] = 'de';
       params['payment_method_types[0]'] = 'card';
       params['tax_id_collection[enabled]'] = 'true';
@@ -134,7 +136,6 @@ const server = http.createServer(async (req, res) => {
       if (firma) params['metadata[firma]'] = firma;
       if (customerName) params['metadata[customer_name]'] = customerName;
       if (customerPhone) params['metadata[phone]'] = customerPhone;
-      if (customerPhone) params['phone_number_collection[enabled]'] = 'true';
 
       lineItems.forEach((item, i) => {
         params[`line_items[${i}][price]`] = item.price;

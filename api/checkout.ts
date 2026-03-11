@@ -52,33 +52,42 @@ const RECURRING_KEYS = new Set(
   )
 );
 
+const ALLOWED_ORIGINS = [
+  'https://weil.bizzcenter.de', 'https://www.bizzcenter.de', 'https://bizzcenter.de',
+  'https://bizzcenter-website.vercel.app',
+];
+
+function isAllowedOrigin(origin: string): boolean {
+  return ALLOWED_ORIGINS.includes(origin) || origin.includes('ngrok-free.dev') || origin.includes('localhost');
+}
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === 'OPTIONS') {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    return res.status(200).end();
-  }
-
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
-  // CORS
-  const allowedOrigins = [
-    'https://weil.bizzcenter.de', 'https://www.bizzcenter.de', 'https://bizzcenter.de',
-    'https://bizzcenter-website.vercel.app',
-  ];
   const origin = req.headers.origin || '';
-  if (allowedOrigins.includes(origin) || origin.includes('ngrok-free.dev') || origin.includes('localhost')) {
+  if (isAllowedOrigin(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
   }
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   try {
     const { priceId, addons, successUrl, cancelUrl, customerEmail, customerName, customerPhone, firma } = req.body;
 
     if (!priceId || !PRICES[priceId]) {
       return res.status(400).json({ error: 'Ungültiges Produkt' });
+    }
+
+    // Input validation
+    if (customerEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customerEmail)) {
+      return res.status(400).json({ error: 'Ungültige E-Mail-Adresse' });
+    }
+    if (customerName && customerName.length > 200) {
+      return res.status(400).json({ error: 'Name zu lang' });
+    }
+    if (firma && firma.length > 200) {
+      return res.status(400).json({ error: 'Firmenname zu lang' });
     }
 
     // Build line items
@@ -105,7 +114,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     params.append('success_url', successUrl || `${SITE_URL}/buchung-bestaetigt`);
     params.append('cancel_url', cancelUrl || SITE_URL);
     params.append('billing_address_collection', 'required');
-    params.append('customer_creation', 'always');
+    if (mode === 'payment') {
+      params.append('customer_creation', 'always');
+    }
     params.append('locale', 'de');
     params.append('payment_method_types[0]', 'card');
     params.append('tax_id_collection[enabled]', 'true');
@@ -116,7 +127,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (customerName) params.append('metadata[customer_name]', customerName);
     if (customerPhone) {
       params.append('metadata[phone]', customerPhone);
-      params.append('phone_number_collection[enabled]', 'true');
     }
 
     lineItems.forEach((item, i) => {
