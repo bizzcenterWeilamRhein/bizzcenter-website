@@ -140,8 +140,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     // Parallel: CRM + E-Mail
     const results = await Promise.allSettled([
-      // 1. CRM Lead
-      fetch('https://crm.bizzcenter.de/api/leads', {
+      // 1. CRM Lead (public external route)
+      fetch('https://crm.bizzcenter.de/api/leads/external', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
