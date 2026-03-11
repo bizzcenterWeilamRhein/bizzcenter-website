@@ -5,7 +5,6 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://weil.bizzcenter.de
 const ZENDESK_TOKEN = process.env.ZENDESK_SELL_API_TOKEN || '';
 const ZENDESK_API = 'https://api.getbase.com/v2';
 
-// Price IDs from Stripe
 const PRICES: Record<string, string> = {
   // Geschäftsadresse
   'ga_langzeit_ohne': 'price_1T9o4dJHXQhpcKhgA8cu5FcA',
@@ -34,32 +33,49 @@ const PRICES: Record<string, string> = {
   'konf_25pers_ganztags': 'price_1T9o4mJHXQhpcKhgrbx9LCJ8',
   // Tagesbüro
   'tb': 'price_1T9o4nJHXQhpcKhgqrQ95gxs',
-  // Add-ons
+  // Add-ons (monatlich)
   'addon_parkplatz': 'price_1T9o4oJHXQhpcKhgbEUDDEwb',
   'addon_kaffee': 'price_1T9o4oJHXQhpcKhgsLkqzfRu',
   'addon_monitor': 'price_1T9o4pJHXQhpcKhgyjto6kpz',
   'addon_schrank': 'price_1T9o4pJHXQhpcKhgFsScY4uu',
   'addon_scan': 'price_1T9o4qJHXQhpcKhgtzdpeiKG',
   'addon_firmenschild': 'price_1T9o4rJHXQhpcKhgKee1emBB',
+  // Add-ons (Tagespass)
+  'addon_kaffee_tag': 'price_1T9pwHJHXQhpcKhge5UguPpX',
+  'addon_parkplatz_tag': 'price_1T9pwMJHXQhpcKhgvhgn43QW',
 };
 
+const RECURRING_KEYS = new Set(
+  Object.keys(PRICES).filter(k =>
+    k.startsWith('ga_') || k.startsWith('cw_monats') ||
+    (k.startsWith('addon_') && k !== 'addon_firmenschild' && !k.endsWith('_tag'))
+  )
+);
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method === 'OPTIONS') {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    return res.status(200).end();
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   // CORS
-  const allowedOrigins = ['https://weil.bizzcenter.de', 'https://www.bizzcenter.de', 'https://bizzcenter.de', 'https://bizzcenter-website.vercel.app'];
-  const origin = req.headers.origin;
-  if (origin && (allowedOrigins.includes(origin) || origin.includes('ngrok-free.dev') || origin.includes('localhost'))) {
+  const allowedOrigins = [
+    'https://weil.bizzcenter.de', 'https://www.bizzcenter.de', 'https://bizzcenter.de',
+    'https://bizzcenter-website.vercel.app',
+  ];
+  const origin = req.headers.origin || '';
+  if (allowedOrigins.includes(origin) || origin.includes('ngrok-free.dev') || origin.includes('localhost')) {
     res.setHeader('Access-Control-Allow-Origin', origin);
   }
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  if (req.method === 'OPTIONS') return res.status(200).end();
 
   try {
-    const { priceId, addons, successUrl, cancelUrl, customerEmail, customerName, firma } = req.body;
+    const { priceId, addons, successUrl, cancelUrl, customerEmail, customerName, customerPhone, firma } = req.body;
 
     if (!priceId || !PRICES[priceId]) {
       return res.status(400).json({ error: 'Ungültiges Produkt' });
@@ -70,7 +86,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       { price: PRICES[priceId], quantity: 1 },
     ];
 
-    // Add selected add-ons
     if (addons && Array.isArray(addons)) {
       for (const addon of addons) {
         if (PRICES[addon]) {
@@ -79,42 +94,31 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     }
 
-    // Determine mode: subscription if any recurring price
-    const recurringKeys = new Set([
-      ...Object.keys(PRICES).filter(k => k.startsWith('ga_')),
-      ...Object.keys(PRICES).filter(k => k.startsWith('cw_monats')),
-      ...Object.keys(PRICES).filter(k => k.startsWith('addon_') && k !== 'addon_firmenschild'),
-    ]);
-    
     const allKeys = [priceId, ...(addons || [])];
-    const hasRecurring = allKeys.some(k => recurringKeys.has(k));
+    const hasRecurring = allKeys.some((k: string) => RECURRING_KEYS.has(k));
     const mode = hasRecurring ? 'subscription' : 'payment';
 
-    // Create Stripe Checkout Session
+    // Build Stripe params
     const params = new URLSearchParams();
     params.append('mode', mode);
+    params.append('currency', 'eur');
     params.append('success_url', successUrl || `${SITE_URL}/buchung-bestaetigt`);
-    params.append('cancel_url', cancelUrl || `${SITE_URL}`);
+    params.append('cancel_url', cancelUrl || SITE_URL);
     params.append('billing_address_collection', 'required');
     params.append('customer_creation', 'always');
     params.append('locale', 'de');
+    params.append('payment_method_types[0]', 'card');
     params.append('tax_id_collection[enabled]', 'true');
     params.append('automatic_tax[enabled]', 'true');
-    
-    // Pre-fill customer email
-    if (customerEmail) {
-      params.append('customer_email', customerEmail);
+
+    if (customerEmail) params.append('customer_email', customerEmail);
+    if (firma) params.append('metadata[firma]', firma);
+    if (customerName) params.append('metadata[customer_name]', customerName);
+    if (customerPhone) {
+      params.append('metadata[phone]', customerPhone);
+      params.append('phone_number_collection[enabled]', 'true');
     }
 
-    // Store customer data as metadata
-    if (firma) {
-      params.append('metadata[firma]', firma);
-    }
-    if (customerName) {
-      params.append('metadata[customer_name]', customerName);
-    }
-
-    // Line items
     lineItems.forEach((item, i) => {
       params.append(`line_items[${i}][price]`, item.price);
       params.append(`line_items[${i}][quantity]`, String(item.quantity));
@@ -136,22 +140,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(500).json({ error: session.error?.message || 'Stripe Fehler' });
     }
 
-    // ─── Zendesk Sell Lead erstellen (parallel, non-blocking) ───
+    // ─── Zendesk Sell Lead (fire-and-forget) ───
     if (ZENDESK_TOKEN && (customerEmail || firma)) {
       const nameParts = (customerName || '').trim().split(/\s+/);
       const firstName = nameParts[0] || '';
       const lastName = nameParts.slice(1).join(' ') || '';
 
-      // Build description with booking details
       const descParts: string[] = [];
       descParts.push(`Quelle: stripe-checkout`);
       descParts.push(`Produkt: ${priceId}`);
       if (addons?.length) descParts.push(`Add-ons: ${addons.join(', ')}`);
       descParts.push(`Stripe Session: ${session.id}`);
       descParts.push(`Modus: ${mode}`);
-      const description = descParts.join('\n');
 
-      // Fire-and-forget — don't block checkout on CRM
       fetch(`${ZENDESK_API}/leads`, {
         method: 'POST',
         headers: {
@@ -164,7 +165,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             last_name: lastName || undefined,
             organization_name: firma || undefined,
             email: customerEmail || undefined,
-            description,
+            phone: customerPhone || undefined,
+            description: descParts.join('\n'),
             tags: ['website', 'stripe-checkout', priceId.split('_')[0]],
           },
         }),
