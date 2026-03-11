@@ -77,39 +77,6 @@
         "children": [
           {
             "label": {
-              "de": "Telefonservice",
-              "en": "Phone Service"
-            },
-            "href": "/weil-am-rhein/telefonservice",
-            "description": {
-              "de": "Anrufannahme in Ihrem Firmennamen",
-              "en": "Call answering in your company name"
-            }
-          },
-          {
-            "label": {
-              "de": "Sekretariatsservice",
-              "en": "Secretary Service"
-            },
-            "href": "/weil-am-rhein/sekretariatsservice",
-            "description": {
-              "de": "Professioneller Sekretariatsservice",
-              "en": "Professional secretary service"
-            }
-          },
-          {
-            "label": {
-              "de": "Post-Bearbeitung",
-              "en": "Mail Handling"
-            },
-            "href": "/weil-am-rhein/post-bearbeitung",
-            "description": {
-              "de": "Postannahme und Weiterleitung",
-              "en": "Mail receiving and forwarding"
-            }
-          },
-          {
-            "label": {
               "de": "Schweizer Telefonnummer",
               "en": "Swiss Phone Number"
             },
@@ -139,6 +106,13 @@
               "en": "Parking Rental"
             },
             "href": "/weil-am-rhein/parkplatz-mieten"
+          },
+          {
+            "label": {
+              "de": "Musikbox mieten",
+              "en": "Music Box Rental"
+            },
+            "href": "/weil-am-rhein/musikbox-mieten"
           }
         ]
       },
@@ -548,6 +522,14 @@
       "slug": "weil-am-rhein/parkplatz-mieten",
       "type": "page",
       "content": "weil-am-rhein/parkplatz-mieten",
+      "locales": [
+        "de"
+      ]
+    },
+    {
+      "slug": "weil-am-rhein/musikbox-mieten",
+      "type": "page",
+      "content": "weil-am-rhein/musikbox-mieten",
       "locales": [
         "de"
       ]
