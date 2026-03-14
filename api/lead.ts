@@ -155,6 +155,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const description = descParts.join('\n');
 
+    // Map website form source to DB enum (LeadSource)
+    const quelleToEnum: Record<string, string> = {
+      'buero-anfrage': 'WEBSITE_FORM',
+      'beamer-buchung': 'WEBSITE_FORM',
+      'kontaktformular': 'WEBSITE_FORM',
+      'hero-formular': 'WEBSITE_FORM',
+      'konferenzraum-buchung': 'WEBSITE_FORM',
+      'coworking-buchung': 'WEBSITE_FORM',
+      'geschaeftsadresse-buchung': 'WEBSITE_FORM',
+      'anfrage-formular': 'WEBSITE_FORM',
+    };
+    const dbQuelle = quelleToEnum[data.quelle] || 'WEBSITE_FORM';
+
     // Parallel: CRM + E-Mail
     const results = await Promise.allSettled([
       // 1. CRM Lead - TEMP WORKAROUND: Direct DB insert statt API
@@ -208,11 +221,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             }
           }
           
-          // 3. Create Lead
+          // 3. Create Lead (dbQuelle = valid enum value, original quelle preserved in notizen)
           await client.query(
             `INSERT INTO leads (id, "kontaktId", "unternehmenId", quelle, "bedarfKategorie", notizen, "createdAt", "updatedAt")
              VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, NOW(), NOW())`,
-            [kontaktId, unternehmenId, data.quelle || 'WEBSITE_FORM', data.product || null, description]
+            [kontaktId, unternehmenId, dbQuelle, data.product || null, description]
           );
           
           await client.end();
