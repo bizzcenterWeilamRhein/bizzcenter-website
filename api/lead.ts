@@ -252,8 +252,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const crmSuccess = results[0].status === 'fulfilled';
     const emailSuccess = results[1].status === 'fulfilled';
 
-    if (!crmSuccess) console.error('CRM lead creation failed:', results[0]);
-    if (!emailSuccess) console.error('Email notification failed:', results[1]);
+    const crmError = !crmSuccess && results[0].status === 'rejected' 
+      ? (results[0].reason?.message || String(results[0].reason)) 
+      : undefined;
+    const emailError = !emailSuccess && results[1].status === 'rejected'
+      ? (results[1].reason?.message || String(results[1].reason))
+      : undefined;
+
+    if (!crmSuccess) console.error('CRM lead creation failed:', crmError);
+    if (!emailSuccess) console.error('Email notification failed:', emailError);
 
     // Success wenn mindestens einer erfolgreich
     if (crmSuccess || emailSuccess) {
@@ -263,12 +270,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       
       return res.status(200).json({
         success: true,
-        ...(warnings.length && { warning: `${warnings.join(' + ')} fehlgeschlagen` }),
+        ...(warnings.length && { 
+          warning: `${warnings.join(' + ')} fehlgeschlagen`,
+          debug: { crmError, emailError },
+        }),
       });
     }
 
     // Beide fehlgeschlagen
-    return res.status(500).json({ error: 'Lead konnte nicht erstellt werden' });
+    return res.status(500).json({ error: 'Lead konnte nicht erstellt werden', debug: { crmError, emailError } });
   } catch (err) {
     console.error('Lead API error:', err);
     return res.status(500).json({ error: 'Interner Fehler' });
