@@ -176,7 +176,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           const { Client } = await import('pg');
           const client = new Client({
             connectionString: process.env.CRM_DATABASE_URL || 
-              'postgresql://postgres.lcsrgwtjzxwuvjbobqhp:BizzCRM2026!@aws-1-eu-west-1.pooler.supabase.com:5432/postgres',
+              'postgresql://postgres.stvzofvgwrkuucisesgr:mjb.FWM*ptw1jnt9vtg@aws-1-eu-west-1.pooler.supabase.com:5432/postgres',
           });
           await client.connect();
           
