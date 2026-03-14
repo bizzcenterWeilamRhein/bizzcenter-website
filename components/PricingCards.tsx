@@ -32,7 +32,7 @@ interface PricingCardsProps {
   ctaHref?: string;
 }
 
-function PricingCardItem({ card, ctaText, ctaHref, onImageClick }: { card: PricingCard; ctaText?: string; ctaHref?: string; onImageClick?: (src: string) => void }) {
+function PricingCardItem({ card, ctaText, ctaHref }: { card: PricingCard; ctaText?: string; ctaHref?: string }) {
   const [selected, setSelected] = useState<{ index: number; tenner: boolean } | null>(null);
 
   const buildHref = () => {
@@ -61,15 +61,15 @@ function PricingCardItem({ card, ctaText, ctaHref, onImageClick }: { card: Prici
         )}
       </div>
 
-      {/* Image */}
+      {/* Image — links to detail page */}
       <div className="px-4">
-        <div className="relative aspect-[4/3] rounded-xl overflow-hidden cursor-pointer group" onClick={() => onImageClick?.(card.image || '')}>
+        <a href={card.ctaHref || ctaHref || '#'} className="relative aspect-[4/3] rounded-xl overflow-hidden block group">
           <img
             src={card.image}
             alt={card.title}
             className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
           />
-        </div>
+        </a>
       </div>
 
       {/* Description */}
@@ -157,7 +157,6 @@ function PricingCardItem({ card, ctaText, ctaHref, onImageClick }: { card: Prici
 
 export function PricingCards({ cards, backgroundImage, headline, title, description, ctaText, ctaHref }: PricingCardsProps) {
   const displayTitle = title || headline;
-  const [lightbox, setLightbox] = useState<string | null>(null);
 
   return (
     <section className="relative overflow-hidden">
@@ -187,27 +186,11 @@ export function PricingCards({ cards, backgroundImage, headline, title, descript
         )}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {cards.map((card, i) => (
-            <PricingCardItem key={i} card={card} ctaText={ctaText} ctaHref={ctaHref} onImageClick={setLightbox} />
+            <PricingCardItem key={i} card={card} ctaText={ctaText} ctaHref={ctaHref} />
           ))}
         </div>
       </div>
-      {/* Lightbox */}
-      {lightbox && (
-        <div
-          className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center cursor-pointer"
-          onClick={() => setLightbox(null)}
-        >
-          <img
-            src={lightbox}
-            alt=""
-            className="max-w-[90vw] max-h-[85vh] object-contain rounded-xl shadow-2xl"
-          />
-          <button
-            className="absolute top-6 right-6 text-white text-3xl font-light hover:text-gray-300"
-            onClick={() => setLightbox(null)}
-          >✕</button>
-        </div>
-      )}
+
     </section>
   );
 }
