@@ -193,10 +193,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             kontaktId = kontaktResult.rows[0].id;
           } else {
             const insertKontakt = await client.query(
-              `INSERT INTO kontakte (id, vorname, nachname, email, telefon, notizen, "createdAt", "updatedAt")
-               VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, NOW(), NOW())
+              `INSERT INTO kontakte (id, vorname, nachname, email, telefon, "createdAt", "updatedAt")
+               VALUES (gen_random_uuid(), $1, $2, $3, $4, NOW(), NOW())
                RETURNING id`,
-              [firstName, lastName || '(kein Nachname)', data.email || null, data.telefon || null, description]
+              [firstName, lastName || '(kein Nachname)', data.email || null, data.telefon || null]
             );
             kontaktId = insertKontakt.rows[0].id;
           }
@@ -272,13 +272,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         success: true,
         ...(warnings.length && { 
           warning: `${warnings.join(' + ')} fehlgeschlagen`,
-          debug: { crmError, emailError },
         }),
       });
     }
 
     // Beide fehlgeschlagen
-    return res.status(500).json({ error: 'Lead konnte nicht erstellt werden', debug: { crmError, emailError } });
+    return res.status(500).json({ error: 'Lead konnte nicht erstellt werden' });
   } catch (err) {
     console.error('Lead API error:', err);
     return res.status(500).json({ error: 'Interner Fehler' });
