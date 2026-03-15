@@ -417,18 +417,11 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
             <div className="grid grid-cols-2 gap-3">
               {CW_TARIFE.map(t => (
                 <OptionCard key={t.id} selected={cwTarif === t.id} popular={t.popular} centered={false} onClick={() => { setCwTarif(t.id); setStep(1); }}>
-                  <div className="flex justify-between w-full">
-                    <div>
-                      <div className="flex items-center gap-1">
-                        <span className="text-sm font-semibold">{t.label}</span>
-                        {t.badge && <span className="text-[9px] font-bold bg-[#6b7f3e] text-white rounded-full px-1.5 py-0.5">{t.badge}</span>}
-                      </div>
-                      <p className="text-xs text-gray-500 mt-1">{t.sub}</p>
-                    </div>
-                    <div className="text-right shrink-0">
-                      <p className="text-base font-bold">EUR {t.price},-</p>
-                      <p className="text-[10px] text-gray-400">zzgl. MwSt.</p>
-                    </div>
+                  <div className="w-full text-center">
+                    <div className="text-xs sm:text-sm font-semibold">{t.label}</div>
+                    <div className="text-base sm:text-lg font-bold text-[#1e293b] my-0.5 whitespace-nowrap">EUR {t.price},-</div>
+                    <p className="text-[10px] sm:text-xs text-gray-500">{t.sub}</p>
+                    {t.badge && <span className="inline-block mt-1 text-[9px] font-bold bg-[#6b7f3e] text-white rounded-full px-1.5 py-0.5">{t.badge}</span>}
                   </div>
                 </OptionCard>
               ))}
