@@ -65,6 +65,11 @@ function getQuelleInfo(quelle: string): { name: string; seite: string } {
   return map[quelle] || { name: quelle, seite: 'unbekannt' };
 }
 
+// HTML-Escape to prevent XSS in email templates
+function esc(str: string): string {
+  return str.replace(/[&<>"']/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m] || m));
+}
+
 async function sendNotificationEmail(lead: { firstName: string; lastName: string; firma?: string; telefon?: string; email?: string; nachricht?: string; quelle: string; product?: string }) {
   const token = await getM365Token();
   if (!token) {
@@ -73,19 +78,19 @@ async function sendNotificationEmail(lead: { firstName: string; lastName: string
   }
 
   const quelleInfo = getQuelleInfo(lead.quelle);
-  const subject = `Neue Anfrage: ${lead.firstName} ${lead.lastName}${lead.firma ? ` (${lead.firma})` : ''} — ${quelleInfo.name}`;
+  const subject = `Neue Anfrage: ${esc(lead.firstName)} ${esc(lead.lastName)}${lead.firma ? ` (${esc(lead.firma)})` : ''} — ${quelleInfo.name}`;
 
   const lines = [
-    `<h2>Neue Anfrage über ${quelleInfo.name}</h2>`,
-    `<p style="color:#666;font-size:13px;margin:0 0 16px 0;">Quelle: <strong>${quelleInfo.seite}</strong></p>`,
+    `<h2>Neue Anfrage über ${esc(quelleInfo.name)}</h2>`,
+    `<p style="color:#666;font-size:13px;margin:0 0 16px 0;">Quelle: <strong>${esc(quelleInfo.seite)}</strong></p>`,
     `<table style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:14px;">`,
-    `<tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Name:</td><td>${lead.firstName} ${lead.lastName}</td></tr>`,
-    lead.firma ? `<tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Firma:</td><td>${lead.firma}</td></tr>` : '',
-    lead.telefon ? `<tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Telefon:</td><td><a href="tel:${lead.telefon}">${lead.telefon}</a></td></tr>` : '',
-    lead.email ? `<tr><td style="padding:4px 12px 4px 0;font-weight:bold;">E-Mail:</td><td><a href="mailto:${lead.email}">${lead.email}</a></td></tr>` : '',
-    lead.product ? `<tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Produkt/Service:</td><td>${lead.product}</td></tr>` : '',
+    `<tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Name:</td><td>${esc(lead.firstName)} ${esc(lead.lastName)}</td></tr>`,
+    lead.firma ? `<tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Firma:</td><td>${esc(lead.firma)}</td></tr>` : '',
+    lead.telefon ? `<tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Telefon:</td><td><a href="tel:${esc(lead.telefon)}">${esc(lead.telefon)}</a></td></tr>` : '',
+    lead.email ? `<tr><td style="padding:4px 12px 4px 0;font-weight:bold;">E-Mail:</td><td><a href="mailto:${esc(lead.email)}">${esc(lead.email)}</a></td></tr>` : '',
+    lead.product ? `<tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Produkt/Service:</td><td>${esc(lead.product)}</td></tr>` : '',
     `</table>`,
-    lead.nachricht ? `<h3 style="margin:20px 0 8px 0;">Nachricht:</h3><p style="background:#f5f5f5;padding:12px;border-radius:8px;white-space:pre-wrap;">${lead.nachricht}</p>` : '',
+    lead.nachricht ? `<h3 style="margin:20px 0 8px 0;">Nachricht:</h3><p style="background:#f5f5f5;padding:12px;border-radius:8px;white-space:pre-wrap;">${esc(lead.nachricht)}</p>` : '',
   ].filter(Boolean).join('\n');
 
   try {
