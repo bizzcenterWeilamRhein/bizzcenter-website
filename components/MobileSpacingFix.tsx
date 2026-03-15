@@ -1,6 +1,10 @@
 export function MobileSpacingFix() {
   return (
     <style>{`
+      /* Prevent horizontal scroll sitewide */
+      html, body {
+        overflow-x: hidden;
+      }
       @media (max-width: 639px) {
         /* Reduce section padding on mobile */
         section[data-slot="section"] {

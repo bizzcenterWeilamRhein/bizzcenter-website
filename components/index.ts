@@ -41,3 +41,5 @@ export { InquiryForm } from './InquiryForm';
 export { KontaktFormular } from './KontaktFormular';
 export { BannerCTAWithForm } from './BannerCTAWithForm';
 export { BeamerBuchung } from './BeamerBuchung';
+
+export { GlobalOverflowFix } from './GlobalOverflowFix';

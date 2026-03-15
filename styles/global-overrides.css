@@ -1,0 +1,4 @@
+/* Prevent horizontal scroll on all pages — fixes marquee overflow on mobile */
+html, body {
+  overflow-x: hidden;
+}
