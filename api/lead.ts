@@ -179,10 +179,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       (async () => {
         try {
           const { Client } = await import('pg');
-          const client = new Client({
-            connectionString: process.env.CRM_DATABASE_URL || 
-              'postgresql://postgres.stvzofvgwrkuucisesgr:mjb.FWM*ptw1jnt9vtg@aws-1-eu-west-1.pooler.supabase.com:5432/postgres',
-          });
+          const dbUrl = process.env.CRM_DATABASE_URL;
+          if (!dbUrl) throw new Error('CRM_DATABASE_URL not configured');
+          const client = new Client({ connectionString: dbUrl });
           await client.connect();
           
           // 1. Find or create Kontakt
