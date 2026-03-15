@@ -21,7 +21,7 @@ export function MemberLogos({ title, logos, speed = 30 }: MemberLogosProps) {
         </p>
       )}
 
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden" style={{ contain: 'paint' }}>
         {/* Left fade */}
         <div className="absolute left-0 top-0 bottom-0 w-20 sm:w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
         {/* Right fade */}
@@ -29,7 +29,7 @@ export function MemberLogos({ title, logos, speed = 30 }: MemberLogosProps) {
 
         {/* Scrolling track */}
         <div
-          className="flex items-center gap-16 sm:gap-20 w-max"
+          className="flex items-center gap-16 sm:gap-20 w-max will-change-transform"
           style={{
             animation: `memberScroll ${speed}s linear infinite`,
           }}
