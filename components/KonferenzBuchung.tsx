@@ -688,7 +688,7 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
             </div>
 
             {/* Zeile 2: Anrede + Vorname + Nachname */}
-            <div style={{ display: 'grid', gridTemplateColumns: '100px 1fr 1fr', gap: '12px' }}>
+            <div className="grid grid-cols-[80px_1fr] sm:grid-cols-[100px_1fr_1fr] gap-3">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Anrede *</label>
                 <select value={form.anrede} onChange={e => setForm(f => ({ ...f, anrede: e.target.value }))}
@@ -705,7 +705,7 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
                 <input value={form.name.split(' ')[0] || ''} onChange={e => { const last = form.name.split(' ').slice(1).join(' '); setForm(f => ({ ...f, name: e.target.value + (last ? ' ' + last : '') })); }}
                   className="w-full border rounded-xl px-4 h-[42px] text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none" />
               </div>
-              <div>
+              <div className="col-span-2 sm:col-span-1">
                 <label className="block text-sm font-medium text-gray-700 mb-1">Nachname *</label>
                 <input value={form.name.split(' ').slice(1).join(' ') || ''} onChange={e => { const first = form.name.split(' ')[0] || ''; setForm(f => ({ ...f, name: first + ' ' + e.target.value })); }}
                   className="w-full border rounded-xl px-4 h-[42px] text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none" />
@@ -713,7 +713,7 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
             </div>
 
             {/* Zeile 3: Straße + Hausnummer */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 120px', gap: '12px' }}>
+            <div className="grid grid-cols-[1fr_80px] sm:grid-cols-[1fr_120px] gap-3">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Straße *</label>
                 <input value={form.strasse} onChange={e => setForm(f => ({ ...f, strasse: e.target.value }))}
@@ -727,7 +727,7 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
             </div>
 
             {/* Zeile 4: PLZ + Ort */}
-            <div style={{ display: 'grid', gridTemplateColumns: '120px 1fr', gap: '12px' }}>
+            <div className="grid grid-cols-[100px_1fr] sm:grid-cols-[120px_1fr] gap-3">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">PLZ *</label>
                 <input value={form.plz} onChange={e => setForm(f => ({ ...f, plz: e.target.value }))}
@@ -741,7 +741,7 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
             </div>
 
             {/* Zeile 5: E-Mail + Telefon */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">E-Mail *</label>
                 <input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
