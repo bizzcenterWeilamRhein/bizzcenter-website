@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 export function BueroAnfrage() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -89,8 +89,29 @@ export function BueroAnfrage() {
     );
   }
 
-  const inputCls = (field?: string) => `w-full h-10 px-3 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] ${field && isMissing(field) ? 'border-red-400 bg-red-50' : 'border-gray-200'}`;
-  const textareaCls = (field?: string) => `w-full px-3 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] resize-y ${field && isMissing(field) ? 'border-red-400 bg-red-50' : 'border-gray-200'}`;
+  const formRef = useRef<HTMLFormElement>(null);
+
+  // Smooth scroll on mobile keyboard open — single scroll, no jumps
+  useEffect(() => {
+    const form = formRef.current;
+    if (!form) return;
+
+    const handleFocusIn = (e: FocusEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT') {
+        // Wait for keyboard to finish opening, then scroll once
+        setTimeout(() => {
+          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 350);
+      }
+    };
+
+    form.addEventListener('focusin', handleFocusIn);
+    return () => form.removeEventListener('focusin', handleFocusIn);
+  }, []);
+
+  const inputCls = (field?: string) => `w-full h-10 px-3 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] scroll-mt-32 ${field && isMissing(field) ? 'border-red-400 bg-red-50' : 'border-gray-200'}`;
+  const textareaCls = (field?: string) => `w-full px-3 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] resize-y scroll-mt-32 ${field && isMissing(field) ? 'border-red-400 bg-red-50' : 'border-gray-200'}`;
   const labelCls = "block text-sm font-medium text-gray-700 mb-1";
 
   return (
@@ -180,7 +201,7 @@ export function BueroAnfrage() {
         {/* Rechte Spalte: Formular */}
         <div className="bg-white rounded-2xl border shadow-sm p-8">
           <h3 className="text-lg font-bold text-gray-900 mb-4">Büro anfragen</h3>
-          <form onSubmit={handleSubmit} className="space-y-3">
+          <form ref={formRef} onSubmit={handleSubmit} className="space-y-3">
 
             {/* Privat-Checkbox + Firma */}
             <div>
@@ -196,8 +217,8 @@ export function BueroAnfrage() {
               )}
             </div>
 
-            {/* Anrede + Name */}
-            <div style={{ display: 'grid', gridTemplateColumns: '80px 1fr 1fr', gap: '8px' }}>
+            {/* Anrede + Name — stacked on mobile */}
+            <div className="grid grid-cols-[80px_1fr] sm:grid-cols-[80px_1fr_1fr] gap-2">
               <div>
                 <label className={labelCls}>Anrede *</label>
                 <select value={form.anrede} onChange={e => setForm(f => ({ ...f, anrede: e.target.value }))} className={inputCls('anrede')}>
@@ -211,14 +232,14 @@ export function BueroAnfrage() {
                 <label className={labelCls}>Vorname *</label>
                 <input value={form.vorname} onChange={e => setForm(f => ({ ...f, vorname: e.target.value }))} className={inputCls('vorname')} />
               </div>
-              <div>
+              <div className="col-span-2 sm:col-span-1">
                 <label className={labelCls}>Nachname *</label>
                 <input value={form.nachname} onChange={e => setForm(f => ({ ...f, nachname: e.target.value }))} className={inputCls('nachname')} />
               </div>
             </div>
 
             {/* Straße + Nr */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 100px', gap: '8px' }}>
+            <div className="grid grid-cols-[1fr_80px] sm:grid-cols-[1fr_100px] gap-2">
               <div>
                 <label className={labelCls}>Straße *</label>
                 <input value={form.strasse} onChange={e => setForm(f => ({ ...f, strasse: e.target.value }))} className={inputCls('strasse')} />
@@ -230,7 +251,7 @@ export function BueroAnfrage() {
             </div>
 
             {/* PLZ + Ort */}
-            <div style={{ display: 'grid', gridTemplateColumns: '120px 1fr', gap: '8px' }}>
+            <div className="grid grid-cols-[100px_1fr] sm:grid-cols-[120px_1fr] gap-2">
               <div>
                 <label className={labelCls}>PLZ *</label>
                 <input value={form.plz} onChange={e => setForm(f => ({ ...f, plz: e.target.value }))} className={inputCls('plz')} />
@@ -242,7 +263,7 @@ export function BueroAnfrage() {
             </div>
 
             {/* E-Mail + Telefon */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               <div>
                 <label className={labelCls}>E-Mail *</label>
                 <input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} className={inputCls('email')} />
@@ -254,7 +275,7 @@ export function BueroAnfrage() {
             </div>
 
             {/* Arbeitsplätze + gewünschter Einzug */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               <div>
                 <label className={labelCls}>Anzahl Arbeitsplätze *</label>
                 <select value={form.arbeitsplaetze} onChange={e => setForm(f => ({ ...f, arbeitsplaetze: e.target.value }))} className={inputCls()}>
