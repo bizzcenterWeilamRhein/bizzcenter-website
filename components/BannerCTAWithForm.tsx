@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 interface BannerCTAWithFormProps {
   title?: string;
@@ -21,6 +21,26 @@ export function BannerCTAWithForm({
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState('');
+  const formRef = useRef<HTMLFormElement>(null);
+
+  // Scroll focused input into view when mobile keyboard opens
+  useEffect(() => {
+    const form = formRef.current;
+    if (!form) return;
+
+    const handleFocusIn = (e: FocusEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
+        // Small delay to let the keyboard finish opening
+        setTimeout(() => {
+          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 300);
+      }
+    };
+
+    form.addEventListener('focusin', handleFocusIn);
+    return () => form.removeEventListener('focusin', handleFocusIn);
+  }, []);
 
   const canSubmit = vorname.length >= 2 && nachname.length >= 2 && telefon.length >= 6 && nachricht.length >= 10;
 
@@ -46,7 +66,7 @@ export function BannerCTAWithForm({
   };
 
   return (
-    <section className="relative py-20 px-4 overflow-hidden">
+    <section className="relative py-20 pb-28 sm:pb-20 px-4 overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0">
         <img src={backgroundImage} alt="" className="w-full h-full object-cover" />
@@ -70,7 +90,7 @@ export function BannerCTAWithForm({
               <p className="text-gray-600">Vielen Dank! Wir melden uns zeitnah bei Ihnen.</p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-3">
                 <input
                   type="text" value={vorname} onChange={(e) => setVorname(e.target.value)}
