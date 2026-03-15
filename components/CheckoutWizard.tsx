@@ -606,6 +606,66 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
 
   // ─── Step Progress Bar ──────────────────────────────────────────
 
+  const isLastStep = step === maxSteps - 1;
+
+  // Last step ("Ihre Daten"): fullscreen overlay on mobile
+  if (isLastStep) {
+    return (
+      <>
+        {/* Mobile: fullscreen overlay */}
+        <div className="fixed inset-0 z-50 bg-white overflow-y-auto sm:hidden">
+          <div className="px-4 py-6 pb-20">
+            {/* Back button */}
+            <button
+              onClick={() => setStep(step - 1)}
+              className="flex items-center gap-1 text-sm text-gray-500 mb-4"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+              </svg>
+              Zurück
+            </button>
+
+            {/* Progress */}
+            <div className="flex items-center justify-center gap-1 mb-6">
+              {stepLabels.map((label, i) => (
+                <React.Fragment key={i}>
+                  <StepBadge number={i + 1} done={step > i} active={step === i} />
+                  {i < stepLabels.length - 1 && (
+                    <div className={`w-6 h-0.5 ${step > i ? 'bg-[#6b7f3e]' : 'bg-gray-200'}`} />
+                  )}
+                </React.Fragment>
+              ))}
+            </div>
+
+            {renderCurrentStep()}
+          </div>
+        </div>
+
+        {/* Desktop: normal inline */}
+        <div className="mx-auto max-w-2xl pt-16 hidden sm:block" id="buchen">
+          {title && <h2 className="text-xl font-bold text-gray-900 text-center mb-6">{title}</h2>}
+          <div className="flex items-center justify-center gap-1 mb-6">
+            {stepLabels.map((label, i) => (
+              <React.Fragment key={i}>
+                <div className="flex items-center gap-1">
+                  <StepBadge number={i + 1} done={step > i} active={step === i} />
+                  <span className="text-[11px] font-medium text-gray-700">{label}</span>
+                </div>
+                {i < stepLabels.length - 1 && (
+                  <div className={`w-10 h-0.5 ${step > i ? 'bg-[#6b7f3e]' : 'bg-gray-200'}`} />
+                )}
+              </React.Fragment>
+            ))}
+          </div>
+          <div className="rounded-2xl border border-gray-200 bg-white shadow-sm p-5 md:p-8">
+            {renderCurrentStep()}
+          </div>
+        </div>
+      </>
+    );
+  }
+
   return (
     <div className="mx-auto max-w-2xl pt-16" id="buchen">
       {title && <h2 className="text-xl font-bold text-gray-900 text-center mb-6">{title}</h2>}
