@@ -14,7 +14,7 @@ export function MemberLogos({ title, logos, speed = 30 }: MemberLogosProps) {
   const doubled = [...logos, ...logos];
 
   return (
-    <section className="w-full py-12 sm:py-16 bg-white">
+    <section className="w-full py-12 sm:py-16 bg-white overflow-x-clip">
       {title && (
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-400 text-center mb-10">
           {title}

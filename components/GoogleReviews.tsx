@@ -23,7 +23,7 @@ export function GoogleReviews({ title, reviews, speed = 35 }: GoogleReviewsProps
   const doubled = [...reviews, ...reviews];
 
   return (
-    <section className="w-full py-12 sm:py-16 bg-gray-50">
+    <section className="w-full py-12 sm:py-16 bg-gray-50 overflow-x-clip">
       {title && (
         <div className="text-center mb-10">
           <h2 className="text-2xl sm:text-3xl font-bold">{title}</h2>
