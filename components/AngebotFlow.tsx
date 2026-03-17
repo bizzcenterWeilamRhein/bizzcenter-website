@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { AngebotPrintView } from './AngebotPrintView';
 
 /* ───────────────────────────── TYPES ───────────────────────────── */
 
@@ -271,7 +272,29 @@ function AngebotFlowInner({
   };
 
   return (
-    <div className="min-h-screen bg-[#fafaf8]">
+    <div className="min-h-screen bg-[#fafaf8] angebot-print-root">
+      {/* ── PRINT VIEW (hidden on screen, shown on print) ── */}
+      <AngebotPrintView
+        angebot={angebot}
+        selectedTarif={selectedTarifObj || null}
+        allTarife={tarifList}
+        selectedAddons={selectedAddons}
+        addonList={addonList}
+        inklusivLeistungen={inklusivLeistungen}
+        monatlichNetto={monatlichNetto}
+        einmalig={einmalig}
+        kaution={kaution}
+        jahresvorauskasse={jahresvorauskasse}
+        monatlichNettoRabatt={monatlichNettoRabatt}
+        firmenname={firmenname}
+        rechtsformLabel={selectedRechtsform?.label || ''}
+        vertreterName={vertreterName}
+        kontakt={kontakt}
+        email={email}
+      />
+
+      {/* ── SCREEN VIEW ── */}
+      <div className="angebot-screen-view">
       {/* ── HERO IMAGE ── */}
       <div className="relative h-[40vh] md:h-[50vh] overflow-hidden">
         <img
@@ -835,6 +858,7 @@ function AngebotFlowInner({
           </div>
         </div>
       )}
+      </div>{/* /angebot-screen-view */}
     </div>
   );
 }
