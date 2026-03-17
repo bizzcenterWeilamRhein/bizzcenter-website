@@ -56,9 +56,9 @@ interface Review {
 
 const defaultTarife: Record<string, Tarif[]> = {
   geschaeftsadresse: [
-    { id: 'flex', name: 'Flex', label: '6 Monate', kuendigung: '6 Monate zum Quartalsende', priceNetto: 139, priceBrutto: 165.41 },
-    { id: 'standard', name: 'Standard', label: '12 Monate', kuendigung: '12 Monate zum Quartalsende', priceNetto: 109, priceBrutto: 129.71, popular: true },
     { id: 'langzeit', name: 'Langzeit', label: '24 Monate', kuendigung: '24 Monate zum Quartalsende', priceNetto: 89, priceBrutto: 105.91 },
+    { id: 'standard', name: 'Standard', label: '12 Monate', kuendigung: '12 Monate zum Quartalsende', priceNetto: 109, priceBrutto: 129.71, popular: true },
+    { id: 'flex', name: 'Flex', label: '6 Monate', kuendigung: '6 Monate zum Quartalsende', priceNetto: 139, priceBrutto: 165.41 },
   ],
   servicebuero: [
     { id: 'flex', name: 'Flex', label: '6 Monate', kuendigung: '6 Monate zum Quartalsende', priceNetto: 499, priceBrutto: 593.81 },
@@ -104,8 +104,9 @@ const defaultReviews: Review[] = [
 ];
 
 const inklusivLeistungen = [
-  { label: 'Post- & Paketannahme', desc: 'Wir nehmen Ihre Post und Pakete entgegen.' },
-  { label: 'Vollumfängliche Adresse', desc: 'Keine c/o-Adresse — Ihr Firmenname steht allein auf dem Briefkasten.' },
+  { label: 'Impressumsfähige Adresse', desc: 'Vollumfängliche, ladungsfähige Geschäftsadresse — keine c/o-Adresse. Ihr Firmenname steht allein auf dem Briefkasten.' },
+  { label: 'Postannahme', desc: 'Wir nehmen Ihre Geschäftspost zuverlässig in Ihrem Firmennamen entgegen.' },
+  { label: 'Paketannahme', desc: 'Pakete werden angenommen und sicher verwahrt — Abholung 24/7 mit eigenem Türcode.' },
   { label: 'Küche & Bio-Kaffee', desc: 'Bei Besuchen vor Ort: Küche, Kaffee und Aufenthaltsraum inklusive.' },
   { label: 'Green Office', desc: 'Moderner, begrünter Arbeitsbereich im historischen Kesselhaus.' },
   { label: 'Business Community', desc: 'Zugang zum bizzcenter-Netzwerk mit regelmäßigen Events.' },
@@ -380,7 +381,7 @@ function AngebotFlowInner({
             ))}
           </div>
           <div className="mt-3 text-xs text-muted-foreground bg-[#f0f4e8] rounded-lg p-3">
-            <strong>Ihre Adresse:</strong> {angebot.firma}, {angebot.adresse} — vollumfängliche, impressumsfähige Geschäftsadresse (keine c/o-Adresse).
+            <strong>Ihre Adresse:</strong> {angebot.firma}, {angebot.adresse}
           </div>
         </div>
 

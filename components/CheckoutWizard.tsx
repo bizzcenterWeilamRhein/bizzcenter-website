@@ -643,7 +643,7 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
         </div>
 
         {/* Desktop: normal inline */}
-        <div className="mx-auto max-w-2xl pt-16 hidden sm:block" id="buchen">
+        <div className="mx-auto max-w-2xl pt-16 pb-16 hidden sm:block" id="buchen">
           {title && <h2 className="text-xl font-bold text-gray-900 text-center mb-6">{title}</h2>}
           <div className="flex items-center justify-center gap-1 mb-6">
             {stepLabels.map((label, i) => (
@@ -667,7 +667,7 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
   }
 
   return (
-    <div className="mx-auto max-w-2xl pt-16" id="buchen">
+    <div className="mx-auto max-w-2xl pt-16 pb-16" id="buchen">
       {title && <h2 className="text-xl font-bold text-gray-900 text-center mb-6">{title}</h2>}
 
       {/* Progress */}
