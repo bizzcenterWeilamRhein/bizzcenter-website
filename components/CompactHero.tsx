@@ -18,7 +18,7 @@ export function CompactHero({ title, description, image, imageAlt, imagePosition
   return (
     <>
       {/* Mobile: Bild mit Text-Overlay, Bullets darunter */}
-      <section className="lg:hidden relative">
+      <section className="xl:hidden relative">
         <div className="relative aspect-[16/9] overflow-hidden">
           <img
             src={image}
@@ -53,7 +53,7 @@ export function CompactHero({ title, description, image, imageAlt, imagePosition
       </section>
 
       {/* Desktop: Bild volle Breite, Info links + Formular rechts */}
-      <section className="hidden lg:block relative">
+      <section className="hidden xl:block relative">
         <div className="relative overflow-hidden" style={{aspectRatio: '21/10'}}>
           <img
             src={image}
