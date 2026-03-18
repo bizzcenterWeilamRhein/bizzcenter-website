@@ -62,11 +62,11 @@ export function CompactHero({ title, description, image, imageAlt, imagePosition
             style={{ objectPosition: imagePosition || 'center' }}
           />
         </div>
-        <div className="absolute inset-0 flex items-center justify-center px-8 xl:px-16 gap-10">
-          <div className="flex items-stretch gap-10">
-            <div className="rounded-2xl border border-border bg-background/95 backdrop-blur-sm p-8 shadow-lg shrink-0" style={{minWidth: '520px'}}>
-              <h1 className="text-3xl xl:text-4xl font-bold text-foreground mb-2 whitespace-nowrap">{title}</h1>
-              {description && <p className="text-base text-muted-foreground mb-3 whitespace-nowrap">{description}</p>}
+        <div className="absolute inset-0 flex items-center justify-center px-8 xl:px-16">
+          <div className="flex flex-wrap items-stretch justify-center gap-6 xl:gap-10 max-w-6xl w-full">
+            <div className="rounded-2xl border border-border bg-background/95 backdrop-blur-sm p-8 shadow-lg min-w-0 flex-1" style={{minWidth: '340px', maxWidth: '560px'}}>
+              <h1 className="text-2xl xl:text-4xl font-bold text-foreground mb-2">{title}</h1>
+              {description && <p className="text-sm xl:text-base text-muted-foreground mb-3">{description}</p>}
               {children}
               {buttonText && buttonHref && (
                 <div className="mt-4">
@@ -80,7 +80,7 @@ export function CompactHero({ title, description, image, imageAlt, imagePosition
               )}
             </div>
             {formId && (
-              <div className="rounded-2xl border border-border bg-background/95 backdrop-blur-sm p-6 shadow-lg shrink-0 flex flex-col justify-center" style={{width: '420px', scrollMarginTop: '100px'}} id={formId}>
+              <div className="rounded-2xl border border-border bg-background/95 backdrop-blur-sm p-6 shadow-lg flex flex-col justify-center min-w-0 flex-1" style={{minWidth: '320px', maxWidth: '420px', scrollMarginTop: '100px'}} id={formId}>
                 <HeroForm />
               </div>
             )}
