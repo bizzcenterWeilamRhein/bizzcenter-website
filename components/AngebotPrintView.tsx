@@ -77,7 +77,7 @@ const PRINT_CSS = `
 
   @page {
     size: A4 portrait;
-    margin: 20mm 25mm 28mm 25mm;
+    margin: 15mm 20mm 22mm 20mm;
   }
 
   body { margin: 0 !important; padding: 0 !important; background: #fff !important; }
@@ -152,8 +152,8 @@ const PRINT_CSS = `
   border-bottom: 0.5pt solid #ccc;
   padding-bottom: 1mm;
   margin-bottom: 3mm;
-  max-width: 85mm;
   text-decoration: underline;
+  white-space: nowrap;
 }
 
 /* ─── Address blocks ─── */
@@ -164,7 +164,7 @@ const PRINT_CSS = `
 }
 .angebot-print-view .addr-left { max-width: 85mm; }
 .angebot-print-view .addr-right {
-  text-align: right;
+  text-align: left;
   font-size: 9pt;
   max-width: 65mm;
 }
@@ -326,11 +326,7 @@ export function AngebotPrintView({
           </div>
         </div>
 
-        <div style={{ textAlign: 'right', marginBottom: '4mm', fontSize: '10pt', clear: 'both' }}>
-          {angebot.datum}
-        </div>
-
-        <h2 style={{ fontSize: '15pt', margin: '0 0 4mm 0' }}>
+        <h2 style={{ fontSize: '15pt', margin: '0 0 4mm 0', clear: 'both' }}>
           Angebot Geschäftsadresse — {angebot.standort}
         </h2>
 
