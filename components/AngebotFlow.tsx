@@ -592,25 +592,20 @@ function AngebotFlowInner({
                     <span className="text-[#6b7f3e]">{formatCurrency(monatlichNetto)}</span>
                   </div>
                 )}
-                <div className="border-t border-dashed border-border pt-2 mt-2" />
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Einrichtungsgebühr (einmalig)</span>
-                  <span>{formatCurrency(199)}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Kaution (3 Brutto-Monatsmieten)</span>
-                  <span>{formatCurrency(jahresvorauskasse ? monatlichRabatt * 3 : monatlich * 3)}</span>
-                </div>
                 {einmalig > 0 && (
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Einmalige Zusatzkosten</span>
-                    <span>{formatCurrency(einmalig)}</span>
-                  </div>
+                  <>
+                    <div className="border-t border-dashed border-border pt-2 mt-2" />
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Einmalige Zusatzkosten</span>
+                      <span>{formatCurrency(einmalig)}</span>
+                    </div>
+                  </>
                 )}
               </div>
             </div>
             <p className="text-[10px] text-muted-foreground mt-3">
               Alle Preise zzgl. 19% MwSt.{jahresvorauskasse ? ' · 10% Rabatt bei Jahresvorauskasse bereits eingerechnet.' : ''}
+              {' '}· Einrichtungsgebühr (EUR 199,-) und Kaution (3 Brutto-Monatsmieten) werden nach Vertragsunterzeichnung separat in Rechnung gestellt.
             </p>
           </div>
         )}
@@ -632,8 +627,8 @@ function AngebotFlowInner({
               <div><p className="font-semibold text-foreground">2. Leistungsumfang</p><p>Im Basispaket enthalten: Post- und Paketannahme, eigener Briefkasten mit Firmenbeschriftung, Nutzung der Adresse für alle geschäftlichen Zwecke. Zusatzleistungen werden gesondert vereinbart.</p></div>
               <div><p className="font-semibold text-foreground">3. Vertragslaufzeit & Kündigung</p><p>Die Mindestvertragslaufzeit beträgt {selectedTarifObj?.label || 'die gewählte Laufzeit'}. Kündigungsfrist: {selectedTarifObj?.kuendigung || 'gemäß Tarif'}. Automatische Verlängerung bei nicht fristgerechter Kündigung.</p></div>
               <div><p className="font-semibold text-foreground">4. Zahlungsbedingungen</p><p>Monatliche Vorauszahlung zum 1. des Monats. Bei Jahresvorauskasse 10% Rabatt. Alle Preise zzgl. 19% MwSt.</p></div>
-              <div><p className="font-semibold text-foreground">5. Kaution</p><p>Drei Brutto-Monatsmieten, unverzinst. Rückerstattung nach Vertragsende und ordnungsgemäßer Abwicklung.</p></div>
-              <div><p className="font-semibold text-foreground">6. Einrichtungsgebühr</p><p>Einmalig EUR 199,- zzgl. MwSt. für Briefkasten-Einrichtung, Firmenschild und Administration.</p></div>
+              <div><p className="font-semibold text-foreground">5. Kaution</p><p>Drei Brutto-Monatsmieten, unverzinst. Wird nach Vertragsunterzeichnung separat in Rechnung gestellt. Rückerstattung nach Vertragsende und ordnungsgemäßer Abwicklung.</p></div>
+              <div><p className="font-semibold text-foreground">6. Einrichtungsgebühr</p><p>Einmalig EUR 199,- zzgl. MwSt. Wird nach Vertragsunterzeichnung separat in Rechnung gestellt.</p></div>
               <div><p className="font-semibold text-foreground">7. Postbearbeitung</p><p>Post und Pakete werden entgegengenommen und sicher verwahrt. Weiterleitung und Scan-Services separat zubuchbar.</p></div>
               <div><p className="font-semibold text-foreground">8. Nutzungsbedingungen</p><p>Ausschließlich legale gewerbliche Nutzung. Fristlose Kündigung bei Missbrauch vorbehalten.</p></div>
               <div><p className="font-semibold text-foreground">9. Haftung</p><p>Haftung für Post/Pakete nur bei grober Fahrlässigkeit oder Vorsatz, max. EUR 500.</p></div>
@@ -787,7 +782,7 @@ function AngebotFlowInner({
               : 'Bitte zuerst Tarif wählen'}
           </button>
           <p className="text-[10px] text-muted-foreground text-center mt-2">
-            Sie erhalten eine Bestätigung per E-Mail. Der Vertrag kommt nach Identitätsprüfung und Kautionszahlung zustande.
+            Sie erhalten eine Bestätigung per E-Mail. Der Vertrag kommt nach Identitätsprüfung zustande. Kaution und Einrichtungsgebühr werden separat berechnet.
           </p>
         </div>
 
@@ -805,7 +800,7 @@ function AngebotFlowInner({
               <ol className="list-decimal list-inside space-y-1 text-muted-foreground text-xs">
                 <li>Bestätigungsmail mit Angebot als PDF</li>
                 <li>Identitätsprüfung (Personalausweis)</li>
-                <li>Kautionszahlung & Vertragsbeginn</li>
+                <li>Vertragsbeginn (Kaution + Einrichtung werden separat berechnet)</li>
                 <li>Willkommenspaket & Zugangsdaten</li>
               </ol>
             </div>
