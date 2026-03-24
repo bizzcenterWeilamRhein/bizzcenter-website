@@ -820,7 +820,21 @@ function AngebotFlowInner({
             Vollständigen Vertrag ansehen
           </a>
           <button
-            onClick={() => window.print()}
+            onClick={async () => {
+              const el = document.querySelector('.angebot-print-view') as HTMLElement;
+              if (!el) return;
+              el.style.display = 'block';
+              const html2pdf = (await import('html2pdf.js')).default;
+              await html2pdf().set({
+                margin: [15, 20, 22, 20],
+                filename: `Angebot_Geschaeftsadresse_${firmenname || angebot.firma}.pdf`,
+                image: { type: 'jpeg', quality: 0.95 },
+                html2canvas: { scale: 2, useCORS: true, logging: false },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                pagebreak: { mode: ['css', 'legacy'], before: '.page-break' },
+              }).from(el).save();
+              el.style.display = 'none';
+            }}
             className="inline-flex items-center gap-2 rounded-lg border border-border bg-white px-5 py-2.5 text-sm font-medium text-foreground hover:bg-[#f5f5f0] transition-colors shadow-sm"
           >
             Angebot als PDF speichern

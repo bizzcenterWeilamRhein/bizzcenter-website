@@ -17,6 +17,7 @@
     "@shipsite.dev/core": "^0.2.46",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "html2pdf.js": "^0.14.0",
     "lucide-react": "^0.475.0",
     "next": "^16.2.0",
     "next-themes": "^0.4.4",
