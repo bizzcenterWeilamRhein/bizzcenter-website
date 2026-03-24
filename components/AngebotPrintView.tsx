@@ -289,7 +289,7 @@ function Footer({ pageNum, totalPages }: { pageNum: number; totalPages: number }
 function Logo() {
   return (
     <div className="logo-block">
-      <img src="/images/logo-bizzcenter-print.svg" alt="bizzcenter" />
+      <img src="/images/logo-bizzcenter.png" alt="bizzcenter" />
     </div>
   );
 }
