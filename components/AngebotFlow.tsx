@@ -404,23 +404,26 @@ function AngebotFlowInner({
               <p className="text-xs text-muted-foreground mt-0.5">Je länger die Laufzeit, desto günstiger Ihr Monatspreis.</p>
             </div>
           </div>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-3 gap-3 items-end">
             {tarifList.map(t => {
               const isSelected = selectedTarif === t.id;
               return (
                 <button key={t.id} onClick={() => handleTarifSelect(t.id)}
-                  className={`rounded-xl border-2 p-4 text-center transition-all cursor-pointer relative ${
-                    isSelected ? 'border-[#6b7f3e] bg-[#e3e7d4] shadow-md scale-[1.02]'
-                    : t.popular ? 'border-[#6b7f3e] bg-white ring-1 ring-[#6b7f3e]/20 hover:bg-[#f0f4e8] hover:shadow-sm'
-                    : 'border-border bg-white hover:bg-[#f0f4e8] hover:border-[#6b7f3e] hover:shadow-sm'
+                  className={`rounded-xl border-2 text-center transition-all cursor-pointer relative ${
+                    isSelected ? 'border-[#6b7f3e] bg-[#e3e7d4] shadow-md scale-[1.02] p-4'
+                    : t.popular ? 'border-[#6b7f3e] bg-[#f0f4e8] shadow-sm p-5 ring-2 ring-[#6b7f3e]/30'
+                    : 'border-border bg-white hover:bg-[#f0f4e8] hover:border-[#6b7f3e] hover:shadow-sm p-4'
                   }`}
                 >
                   {t.popular && !isSelected && (
-                    <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 text-[10px] font-bold bg-[#6b7f3e] text-white rounded-full px-2.5 py-0.5 whitespace-nowrap">Empfohlen ★</div>
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-[11px] font-bold bg-[#6b7f3e] text-white rounded-full px-3 py-1 whitespace-nowrap shadow-sm">Beliebteste Wahl</div>
                   )}
-                  <div className="text-base font-bold text-[#6b7f3e]">{t.name}</div>
+                  {isSelected && t.popular && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-[11px] font-bold bg-[#6b7f3e] text-white rounded-full px-3 py-1 whitespace-nowrap shadow-sm">Beliebteste Wahl</div>
+                  )}
+                  <div className={`font-bold ${t.popular ? 'text-lg text-[#6b7f3e]' : 'text-base text-[#6b7f3e]'}`}>{t.name}</div>
                   <div className="text-xs text-muted-foreground mt-0.5">{t.label} Laufzeit</div>
-                  <div className="text-2xl font-bold text-[#1e293b] mt-3">{formatCurrency(t.priceNetto)}</div>
+                  <div className={`font-bold text-[#1e293b] mt-3 ${t.popular ? 'text-3xl' : 'text-2xl'}`}>{formatCurrency(t.priceNetto)}</div>
                   <div className="text-[11px] text-muted-foreground">/Monat zzgl. MwSt.</div>
                   {isSelected && <div className="text-xs font-semibold mt-2 text-[#6b7f3e]">✓ Gewählt</div>}
                 </button>
@@ -529,80 +532,6 @@ function AngebotFlowInner({
 
         </div>
 
-        {/* ── VERTRAGSBEDINGUNGEN (aufklappbar) ── */}
-        <div className="rounded-2xl border border-border bg-white shadow-sm p-5 md:p-8">
-          <button
-            type="button"
-            onClick={() => setShowVertragsbedingungen(!showVertragsbedingungen)}
-            className="inline-flex items-center gap-2 rounded-lg border-2 border-[#6b7f3e] bg-white px-4 py-2.5 text-sm font-semibold text-[#6b7f3e] hover:bg-[#f0f4e8] transition-colors cursor-pointer"
-          >
-            <span className={`transition-transform duration-200 text-xs ${showVertragsbedingungen ? 'rotate-90' : ''}`}>▶</span>
-            Vertragsbedingungen einsehen
-          </button>
-          {showVertragsbedingungen && (
-            <div className="mt-3 rounded-lg bg-[#f5f5f0] p-5 text-sm text-muted-foreground space-y-4 leading-relaxed max-h-[70vh] overflow-y-auto">
-              <h4 className="font-bold text-foreground text-sm">Vertragsbedingungen Geschäftsadresse</h4>
-
-              <div>
-                <p className="font-semibold text-foreground">1. Vertragsgegenstand</p>
-                <p>Die bizzcenter Weil am Rhein GmbH stellt dem Kunden eine vollumfängliche, impressumsfähige Geschäftsadresse am Standort Am Kesselhaus 3, 79576 Weil am Rhein zur Verfügung. Die Adresse darf für Gewerbeanmeldung, Handelsregister, Impressum und Geschäftsverkehr verwendet werden. Eine c/o-Bezeichnung wird nicht verwendet.</p>
-              </div>
-
-              <div>
-                <p className="font-semibold text-foreground">2. Leistungsumfang</p>
-                <p>Im Basispaket enthalten: Post- und Paketannahme, eigener Briefkasten mit Firmenbeschriftung, Nutzung der Adresse für alle geschäftlichen Zwecke. Zusatzleistungen (Scanpaket, Coworking, Parkplatz etc.) werden gesondert vereinbart und berechnet.</p>
-              </div>
-
-              <div>
-                <p className="font-semibold text-foreground">3. Vertragslaufzeit & Kündigung</p>
-                <p>Die Mindestvertragslaufzeit beträgt {selectedTarifObj?.label || 'die gewählte Laufzeit'}. Die Kündigungsfrist beträgt {selectedTarifObj?.kuendigung || 'gemäß gewähltem Tarif'}. Der Vertrag verlängert sich automatisch um die vereinbarte Laufzeit, sofern er nicht fristgerecht schriftlich gekündigt wird.</p>
-              </div>
-
-              <div>
-                <p className="font-semibold text-foreground">4. Zahlungsbedingungen</p>
-                <p>Die monatliche Miete ist jeweils zum 1. des Monats im Voraus fällig. Bei Jahresvorauskasse wird der Gesamtbetrag für 12 Monate zu Vertragsbeginn fällig und ein Rabatt von 10% gewährt. Alle Preise verstehen sich zzgl. 19% MwSt.</p>
-              </div>
-
-              <div>
-                <p className="font-semibold text-foreground">5. Kaution</p>
-                <p>Zu Vertragsbeginn ist eine Kaution in Höhe von drei Brutto-Monatsmieten zu leisten. Die Kaution wird nach Vertragsende und ordnungsgemäßer Abwicklung unverzinst zurückerstattet.</p>
-              </div>
-
-              <div>
-                <p className="font-semibold text-foreground">6. Einrichtungsgebühr</p>
-                <p>Bei Vertragsbeginn wird eine einmalige Einrichtungsgebühr von EUR 199,00 zzgl. MwSt. erhoben. Diese deckt Briefkasten-Einrichtung, Firmenschild-Konfiguration und administrative Aufwände.</p>
-              </div>
-
-              <div>
-                <p className="font-semibold text-foreground">7. Postbearbeitung</p>
-                <p>Eingehende Post und Pakete werden entgegengenommen und sicher verwahrt. Die Abholung erfolgt durch den Kunden oder eine bevollmächtigte Person. Weiterleitung und Scan-Services sind separat zubuchbar.</p>
-              </div>
-
-              <div>
-                <p className="font-semibold text-foreground">8. Nutzungsbedingungen</p>
-                <p>Der Kunde verpflichtet sich, die Geschäftsadresse ausschließlich für legale gewerbliche Zwecke zu nutzen. Die bizzcenter Weil am Rhein GmbH behält sich das Recht vor, den Vertrag bei Missbrauch fristlos zu kündigen.</p>
-              </div>
-
-              <div>
-                <p className="font-semibold text-foreground">9. Haftung</p>
-                <p>Die bizzcenter Weil am Rhein GmbH haftet nicht für Verlust oder Beschädigung von Post und Paketen, soweit dies nicht auf grobe Fahrlässigkeit oder Vorsatz zurückzuführen ist. Die Haftung ist auf den Warenwert, maximal EUR 500, begrenzt.</p>
-              </div>
-
-              <div>
-                <p className="font-semibold text-foreground">10. Datenschutz</p>
-                <p>Personenbezogene Daten werden gemäß DSGVO verarbeitet und ausschließlich zur Vertragsabwicklung verwendet. Details entnehmen Sie unserer Datenschutzerklärung.</p>
-              </div>
-
-              <div>
-                <p className="font-semibold text-foreground">11. Schlussbestimmungen</p>
-                <p>Es gilt deutsches Recht. Gerichtsstand ist Lörrach. Änderungen des Vertrags bedürfen der Schriftform. Sollten einzelne Bestimmungen unwirksam sein, bleibt der Vertrag im Übrigen wirksam.</p>
-              </div>
-
-              <p className="text-[10px] italic mt-2">Stand: März 2026 · bizzcenter Weil am Rhein GmbH, Im Schwarzenbach 4, 79576 Weil am Rhein</p>
-            </div>
-          )}
-        </div>
-
         {/* ── KOSTENÜBERSICHT (live) ── */}
         {selectedTarif && (
           <div className="rounded-2xl border-2 border-[#6b7f3e] bg-white shadow-sm p-5 md:p-8" id="kosten">
@@ -685,6 +614,35 @@ function AngebotFlowInner({
             </p>
           </div>
         )}
+
+        {/* ── VERTRAGSBEDINGUNGEN (aufklappbar) ── */}
+        <div className="rounded-2xl border border-border bg-white shadow-sm p-5 md:p-8">
+          <button
+            type="button"
+            onClick={() => setShowVertragsbedingungen(!showVertragsbedingungen)}
+            className="inline-flex items-center gap-2 text-sm font-medium text-[#6b7f3e] hover:text-[#5a6b35] transition-colors cursor-pointer"
+          >
+            <span className={`transition-transform duration-200 text-xs ${showVertragsbedingungen ? 'rotate-90' : ''}`}>▶</span>
+            Vertragsbedingungen einsehen
+          </button>
+          {showVertragsbedingungen && (
+            <div className="mt-3 rounded-lg bg-[#f5f5f0] p-5 text-sm text-muted-foreground space-y-4 leading-relaxed max-h-[70vh] overflow-y-auto">
+              <h4 className="font-bold text-foreground text-sm">Vertragsbedingungen Geschäftsadresse</h4>
+              <div><p className="font-semibold text-foreground">1. Vertragsgegenstand</p><p>Die bizzcenter Weil am Rhein GmbH stellt dem Kunden eine vollumfängliche, impressumsfähige Geschäftsadresse am Standort Am Kesselhaus 3, 79576 Weil am Rhein zur Verfügung. Die Adresse darf für Gewerbeanmeldung, Handelsregister, Impressum und Geschäftsverkehr verwendet werden.</p></div>
+              <div><p className="font-semibold text-foreground">2. Leistungsumfang</p><p>Im Basispaket enthalten: Post- und Paketannahme, eigener Briefkasten mit Firmenbeschriftung, Nutzung der Adresse für alle geschäftlichen Zwecke. Zusatzleistungen werden gesondert vereinbart.</p></div>
+              <div><p className="font-semibold text-foreground">3. Vertragslaufzeit & Kündigung</p><p>Die Mindestvertragslaufzeit beträgt {selectedTarifObj?.label || 'die gewählte Laufzeit'}. Kündigungsfrist: {selectedTarifObj?.kuendigung || 'gemäß Tarif'}. Automatische Verlängerung bei nicht fristgerechter Kündigung.</p></div>
+              <div><p className="font-semibold text-foreground">4. Zahlungsbedingungen</p><p>Monatliche Vorauszahlung zum 1. des Monats. Bei Jahresvorauskasse 10% Rabatt. Alle Preise zzgl. 19% MwSt.</p></div>
+              <div><p className="font-semibold text-foreground">5. Kaution</p><p>Drei Brutto-Monatsmieten, unverzinst. Rückerstattung nach Vertragsende und ordnungsgemäßer Abwicklung.</p></div>
+              <div><p className="font-semibold text-foreground">6. Einrichtungsgebühr</p><p>Einmalig EUR 199,- zzgl. MwSt. für Briefkasten-Einrichtung, Firmenschild und Administration.</p></div>
+              <div><p className="font-semibold text-foreground">7. Postbearbeitung</p><p>Post und Pakete werden entgegengenommen und sicher verwahrt. Weiterleitung und Scan-Services separat zubuchbar.</p></div>
+              <div><p className="font-semibold text-foreground">8. Nutzungsbedingungen</p><p>Ausschließlich legale gewerbliche Nutzung. Fristlose Kündigung bei Missbrauch vorbehalten.</p></div>
+              <div><p className="font-semibold text-foreground">9. Haftung</p><p>Haftung für Post/Pakete nur bei grober Fahrlässigkeit oder Vorsatz, max. EUR 500.</p></div>
+              <div><p className="font-semibold text-foreground">10. Datenschutz</p><p>Verarbeitung gemäß DSGVO, ausschließlich zur Vertragsabwicklung.</p></div>
+              <div><p className="font-semibold text-foreground">11. Schlussbestimmungen</p><p>Es gilt deutsches Recht. Gerichtsstand: Lörrach. Schriftformerfordernis für Änderungen.</p></div>
+              <p className="text-[10px] italic mt-2">Stand: März 2026 · bizzcenter Weil am Rhein GmbH, Im Schwarzenbach 4, 79576 Weil am Rhein</p>
+            </div>
+          )}
+        </div>
 
         {/* ── SCHRITT 3: Kontaktdaten & Abschluss ── */}
         <div className={`rounded-2xl border border-border bg-white shadow-sm p-5 md:p-8 transition-opacity duration-300 ${
@@ -825,7 +783,7 @@ function AngebotFlowInner({
             }`}
           >
             {selectedTarifObj
-              ? 'Vertrag erstellen'
+              ? 'Geschäftsadresse sichern'
               : 'Bitte zuerst Tarif wählen'}
           </button>
           <p className="text-[10px] text-muted-foreground text-center mt-2">
