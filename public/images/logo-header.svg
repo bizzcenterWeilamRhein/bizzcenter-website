@@ -1,5 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 310 60" fill="none">
   <text x="0" y="44" fill="#2C4A7C" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="40" font-weight="700" letter-spacing="-0.5">bizzcenter</text>
-  <rect x="252" y="8" width="32" height="32" rx="6" fill="#6b7f3e" transform="rotate(-5 268 24)"/>
-  <rect x="266" y="2" width="26" height="26" rx="5" fill="#5a6b35" transform="rotate(5 279 15)"/>
+  <!-- Quadrate: im rechten Winkel zueinander, überlappend -->
+  <rect x="254" y="4" width="28" height="28" rx="5" fill="#6b7f3e" opacity="0.9" transform="rotate(-12 268 18)"/>
+  <rect x="264" y="14" width="28" height="28" rx="5" fill="#5a6b35" opacity="0.85" transform="rotate(78 278 28)"/>
 </svg>
