@@ -14,10 +14,6 @@ const LOCALES = ['de', 'en', 'es', 'fr'];
 const DEFAULT_LOCALE = 'de';
 
 export function LanguageSwitcher() {
-  // Temporarily disabled — only German content available.
-  // Re-enable when EN/ES/FR translations are added.
-  return null;
-
   const pathname = usePathname();
 
   useEffect(() => {
