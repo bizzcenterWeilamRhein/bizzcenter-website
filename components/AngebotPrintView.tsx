@@ -511,7 +511,7 @@ export function AngebotPrintView({
 
         <div className="logo-inline"><img src="/images/logo-bizzcenter.png" alt="bizzcenter" /></div>
 
-        <h2 style={{ marginTop: '0', textDecoration: 'underline', textUnderlineOffset: '2mm' }}>Vertragsbedingungen</h2>
+        <h2 style={{ marginTop: '0' }}>Vertragsbedingungen</h2>
 
         <div style={{ marginTop: '2mm' }}>
           <div className="vb-item"><strong>1. Preise:</strong> Alle Preise zzgl. 19 % MwSt. sowie Nebenkosten (Porto, Telefon, Druck, Kopien, Scan).</div>
