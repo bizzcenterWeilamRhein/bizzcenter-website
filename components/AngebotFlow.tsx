@@ -228,7 +228,7 @@ function AngebotFlowInner({
   const effectiveGueltigBis = React.useMemo(() => {
     if (isFromHeroForm) {
       const d = new Date();
-      d.setDate(d.getDate() + 30);
+      d.setDate(d.getDate() + 14);
       return `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}.${d.getFullYear()}`;
     }
     return angebot.gueltigBis;
@@ -345,7 +345,7 @@ function AngebotFlowInner({
         <div className="bg-amber-50 border-b border-amber-200 py-4 px-4">
           <div className="max-w-3xl mx-auto text-center">
             <p className="text-sm font-medium text-amber-800 mb-3">
-              Die Gültigkeit dieses Angebots ist abgelaufen — die Konditionen können sich geändert haben.
+              Dieses Angebot ist abgelaufen — Sie können es jederzeit verlängern oder direkt buchen.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-2">
               <button
@@ -356,7 +356,7 @@ function AngebotFlowInner({
                 }}
                 className="inline-flex items-center justify-center rounded-lg bg-[#6b7f3e] text-white px-5 py-2 text-sm font-semibold hover:opacity-90 transition-opacity"
               >
-                Neues Angebot erstellen
+                Angebot verlängern
               </button>
               <a
                 href={`/weil-am-rhein/${angebot.service === 'geschaeftsadresse' ? 'geschaeftsadresse' : angebot.service}`}
