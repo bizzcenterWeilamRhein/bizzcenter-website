@@ -295,7 +295,7 @@ function AngebotFlowInner({
     <div className="min-h-screen bg-[#fafaf8] angebot-print-root">
       {/* ── PRINT VIEW (hidden on screen, shown on print) ── */}
       <AngebotPrintView
-        angebot={angebot}
+        angebot={{ ...angebot, datum: effectiveDatum, gueltigBis: effectiveGueltigBis }}
         selectedTarif={selectedTarifObj || null}
         allTarife={tarifList}
         selectedAddons={selectedAddons}

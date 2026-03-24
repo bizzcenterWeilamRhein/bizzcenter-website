@@ -74,7 +74,6 @@ const PRINT_CSS = `
   /* Show print view, hide screen */
   .angebot-print-root .angebot-screen-view { display: none !important; }
   .angebot-print-root div.angebot-print-view { display: block !important; }
-  body > *:not(.angebot-print-root) { display: none !important; }
   nav, header, footer, [class*="sticky"], [class*="fixed"], [class*="backdrop"] { display: none !important; }
 
   @page { size: A4 portrait; margin: 0; }
