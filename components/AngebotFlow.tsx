@@ -529,6 +529,80 @@ function AngebotFlowInner({
 
         </div>
 
+        {/* ── VERTRAGSBEDINGUNGEN (aufklappbar) ── */}
+        <div className="rounded-2xl border border-border bg-white shadow-sm p-5 md:p-8">
+          <button
+            type="button"
+            onClick={() => setShowVertragsbedingungen(!showVertragsbedingungen)}
+            className="inline-flex items-center gap-2 rounded-lg border-2 border-[#6b7f3e] bg-white px-4 py-2.5 text-sm font-semibold text-[#6b7f3e] hover:bg-[#f0f4e8] transition-colors cursor-pointer"
+          >
+            <span className={`transition-transform duration-200 text-xs ${showVertragsbedingungen ? 'rotate-90' : ''}`}>▶</span>
+            Vertragsbedingungen einsehen
+          </button>
+          {showVertragsbedingungen && (
+            <div className="mt-3 rounded-lg bg-[#f5f5f0] p-5 text-sm text-muted-foreground space-y-4 leading-relaxed max-h-[70vh] overflow-y-auto">
+              <h4 className="font-bold text-foreground text-sm">Vertragsbedingungen Geschäftsadresse</h4>
+
+              <div>
+                <p className="font-semibold text-foreground">1. Vertragsgegenstand</p>
+                <p>Die bizzcenter Weil am Rhein GmbH stellt dem Kunden eine vollumfängliche, impressumsfähige Geschäftsadresse am Standort Am Kesselhaus 3, 79576 Weil am Rhein zur Verfügung. Die Adresse darf für Gewerbeanmeldung, Handelsregister, Impressum und Geschäftsverkehr verwendet werden. Eine c/o-Bezeichnung wird nicht verwendet.</p>
+              </div>
+
+              <div>
+                <p className="font-semibold text-foreground">2. Leistungsumfang</p>
+                <p>Im Basispaket enthalten: Post- und Paketannahme, eigener Briefkasten mit Firmenbeschriftung, Nutzung der Adresse für alle geschäftlichen Zwecke. Zusatzleistungen (Scanpaket, Coworking, Parkplatz etc.) werden gesondert vereinbart und berechnet.</p>
+              </div>
+
+              <div>
+                <p className="font-semibold text-foreground">3. Vertragslaufzeit & Kündigung</p>
+                <p>Die Mindestvertragslaufzeit beträgt {selectedTarifObj?.label || 'die gewählte Laufzeit'}. Die Kündigungsfrist beträgt {selectedTarifObj?.kuendigung || 'gemäß gewähltem Tarif'}. Der Vertrag verlängert sich automatisch um die vereinbarte Laufzeit, sofern er nicht fristgerecht schriftlich gekündigt wird.</p>
+              </div>
+
+              <div>
+                <p className="font-semibold text-foreground">4. Zahlungsbedingungen</p>
+                <p>Die monatliche Miete ist jeweils zum 1. des Monats im Voraus fällig. Bei Jahresvorauskasse wird der Gesamtbetrag für 12 Monate zu Vertragsbeginn fällig und ein Rabatt von 10% gewährt. Alle Preise verstehen sich zzgl. 19% MwSt.</p>
+              </div>
+
+              <div>
+                <p className="font-semibold text-foreground">5. Kaution</p>
+                <p>Zu Vertragsbeginn ist eine Kaution in Höhe von drei Brutto-Monatsmieten zu leisten. Die Kaution wird nach Vertragsende und ordnungsgemäßer Abwicklung unverzinst zurückerstattet.</p>
+              </div>
+
+              <div>
+                <p className="font-semibold text-foreground">6. Einrichtungsgebühr</p>
+                <p>Bei Vertragsbeginn wird eine einmalige Einrichtungsgebühr von EUR 199,00 zzgl. MwSt. erhoben. Diese deckt Briefkasten-Einrichtung, Firmenschild-Konfiguration und administrative Aufwände.</p>
+              </div>
+
+              <div>
+                <p className="font-semibold text-foreground">7. Postbearbeitung</p>
+                <p>Eingehende Post und Pakete werden entgegengenommen und sicher verwahrt. Die Abholung erfolgt durch den Kunden oder eine bevollmächtigte Person. Weiterleitung und Scan-Services sind separat zubuchbar.</p>
+              </div>
+
+              <div>
+                <p className="font-semibold text-foreground">8. Nutzungsbedingungen</p>
+                <p>Der Kunde verpflichtet sich, die Geschäftsadresse ausschließlich für legale gewerbliche Zwecke zu nutzen. Die bizzcenter Weil am Rhein GmbH behält sich das Recht vor, den Vertrag bei Missbrauch fristlos zu kündigen.</p>
+              </div>
+
+              <div>
+                <p className="font-semibold text-foreground">9. Haftung</p>
+                <p>Die bizzcenter Weil am Rhein GmbH haftet nicht für Verlust oder Beschädigung von Post und Paketen, soweit dies nicht auf grobe Fahrlässigkeit oder Vorsatz zurückzuführen ist. Die Haftung ist auf den Warenwert, maximal EUR 500, begrenzt.</p>
+              </div>
+
+              <div>
+                <p className="font-semibold text-foreground">10. Datenschutz</p>
+                <p>Personenbezogene Daten werden gemäß DSGVO verarbeitet und ausschließlich zur Vertragsabwicklung verwendet. Details entnehmen Sie unserer Datenschutzerklärung.</p>
+              </div>
+
+              <div>
+                <p className="font-semibold text-foreground">11. Schlussbestimmungen</p>
+                <p>Es gilt deutsches Recht. Gerichtsstand ist Lörrach. Änderungen des Vertrags bedürfen der Schriftform. Sollten einzelne Bestimmungen unwirksam sein, bleibt der Vertrag im Übrigen wirksam.</p>
+              </div>
+
+              <p className="text-[10px] italic mt-2">Stand: März 2026 · bizzcenter Weil am Rhein GmbH, Im Schwarzenbach 4, 79576 Weil am Rhein</p>
+            </div>
+          )}
+        </div>
+
         {/* ── KOSTENÜBERSICHT (live) ── */}
         {selectedTarif && (
           <div className="rounded-2xl border-2 border-[#6b7f3e] bg-white shadow-sm p-5 md:p-8" id="kosten">
@@ -733,80 +807,6 @@ function AngebotFlowInner({
               <textarea value={nachricht} onChange={e => setNachricht(e.target.value)} rows={2} placeholder="Fragen oder Anmerkungen..."
                 className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e] resize-none" />
             </div>
-            {/* Vertragsbedingungen aufklappbar */}
-            <div className="border-t border-border pt-3 mt-1">
-              <button
-                type="button"
-                onClick={() => setShowVertragsbedingungen(!showVertragsbedingungen)}
-                className="inline-flex items-center gap-2 rounded-lg border-2 border-[#6b7f3e] bg-white px-4 py-2.5 text-sm font-semibold text-[#6b7f3e] hover:bg-[#f0f4e8] transition-colors cursor-pointer"
-              >
-                <span className={`transition-transform duration-200 text-xs ${showVertragsbedingungen ? 'rotate-90' : ''}`}>▶</span>
-                Vertragsbedingungen einsehen
-              </button>
-              {showVertragsbedingungen && (
-                <div className="mt-3 rounded-lg bg-[#f5f5f0] p-5 text-sm text-muted-foreground space-y-4 leading-relaxed max-h-[70vh] overflow-y-auto">
-                  <h4 className="font-bold text-foreground text-sm">Vertragsbedingungen Geschäftsadresse</h4>
-
-                  <div>
-                    <p className="font-semibold text-foreground">1. Vertragsgegenstand</p>
-                    <p>Die bizzcenter Weil am Rhein GmbH stellt dem Kunden eine vollumfängliche, impressumsfähige Geschäftsadresse am Standort Am Kesselhaus 3, 79576 Weil am Rhein zur Verfügung. Die Adresse darf für Gewerbeanmeldung, Handelsregister, Impressum und Geschäftsverkehr verwendet werden. Eine c/o-Bezeichnung wird nicht verwendet.</p>
-                  </div>
-
-                  <div>
-                    <p className="font-semibold text-foreground">2. Leistungsumfang</p>
-                    <p>Im Basispaket enthalten: Post- und Paketannahme, eigener Briefkasten mit Firmenbeschriftung, Nutzung der Adresse für alle geschäftlichen Zwecke. Zusatzleistungen (Scanpaket, Coworking, Parkplatz etc.) werden gesondert vereinbart und berechnet.</p>
-                  </div>
-
-                  <div>
-                    <p className="font-semibold text-foreground">3. Vertragslaufzeit & Kündigung</p>
-                    <p>Die Mindestvertragslaufzeit beträgt {selectedTarifObj?.label || 'die gewählte Laufzeit'}. Die Kündigungsfrist beträgt {selectedTarifObj?.kuendigung || 'gemäß gewähltem Tarif'}. Der Vertrag verlängert sich automatisch um die vereinbarte Laufzeit, sofern er nicht fristgerecht schriftlich gekündigt wird.</p>
-                  </div>
-
-                  <div>
-                    <p className="font-semibold text-foreground">4. Zahlungsbedingungen</p>
-                    <p>Die monatliche Miete ist jeweils zum 1. des Monats im Voraus fällig. Bei Jahresvorauskasse wird der Gesamtbetrag für 12 Monate zu Vertragsbeginn fällig und ein Rabatt von 10% gewährt. Alle Preise verstehen sich zzgl. 19% MwSt.</p>
-                  </div>
-
-                  <div>
-                    <p className="font-semibold text-foreground">5. Kaution</p>
-                    <p>Zu Vertragsbeginn ist eine Kaution in Höhe von drei Brutto-Monatsmieten zu leisten. Die Kaution wird nach Vertragsende und ordnungsgemäßer Abwicklung unverzinst zurückerstattet.</p>
-                  </div>
-
-                  <div>
-                    <p className="font-semibold text-foreground">6. Einrichtungsgebühr</p>
-                    <p>Bei Vertragsbeginn wird eine einmalige Einrichtungsgebühr von EUR 199,00 zzgl. MwSt. erhoben. Diese deckt Briefkasten-Einrichtung, Firmenschild-Konfiguration und administrative Aufwände.</p>
-                  </div>
-
-                  <div>
-                    <p className="font-semibold text-foreground">7. Postbearbeitung</p>
-                    <p>Eingehende Post und Pakete werden entgegengenommen und sicher verwahrt. Die Abholung erfolgt durch den Kunden oder eine bevollmächtigte Person. Weiterleitung und Scan-Services sind separat zubuchbar.</p>
-                  </div>
-
-                  <div>
-                    <p className="font-semibold text-foreground">8. Nutzungsbedingungen</p>
-                    <p>Der Kunde verpflichtet sich, die Geschäftsadresse ausschließlich für legale gewerbliche Zwecke zu nutzen. Die bizzcenter Weil am Rhein GmbH behält sich das Recht vor, den Vertrag bei Missbrauch fristlos zu kündigen.</p>
-                  </div>
-
-                  <div>
-                    <p className="font-semibold text-foreground">9. Haftung</p>
-                    <p>Die bizzcenter Weil am Rhein GmbH haftet nicht für Verlust oder Beschädigung von Post und Paketen, soweit dies nicht auf grobe Fahrlässigkeit oder Vorsatz zurückzuführen ist. Die Haftung ist auf den Warenwert, maximal EUR 500, begrenzt.</p>
-                  </div>
-
-                  <div>
-                    <p className="font-semibold text-foreground">10. Datenschutz</p>
-                    <p>Personenbezogene Daten werden gemäß DSGVO verarbeitet und ausschließlich zur Vertragsabwicklung verwendet. Details entnehmen Sie unserer Datenschutzerklärung.</p>
-                  </div>
-
-                  <div>
-                    <p className="font-semibold text-foreground">11. Schlussbestimmungen</p>
-                    <p>Es gilt deutsches Recht. Gerichtsstand ist Lörrach. Änderungen des Vertrags bedürfen der Schriftform. Sollten einzelne Bestimmungen unwirksam sein, bleibt der Vertrag im Übrigen wirksam.</p>
-                  </div>
-
-                  <p className="text-[10px] italic mt-2">Stand: März 2026 · bizzcenter Weil am Rhein GmbH, Im Schwarzenbach 4, 79576 Weil am Rhein</p>
-                </div>
-              )}
-            </div>
-
             <label className="flex items-start gap-2 cursor-pointer mt-2">
               <input type="checkbox" checked={agbAccepted} onChange={e => setAgbAccepted(e.target.checked)}
                 className="mt-0.5 accent-[#6b7f3e]" />
