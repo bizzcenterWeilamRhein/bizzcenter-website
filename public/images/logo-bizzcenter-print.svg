@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 60" fill="none">
+  <!-- Schriftzug in Logo-Blau #2C4A7C -->
+  <text x="0" y="44" fill="#2C4A7C" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="40" font-weight="700" letter-spacing="-0.5">bizzcenter</text>
+  <!-- Quadrate in Olive #6b7f3e -->
+  <rect x="220" y="8" width="32" height="32" rx="6" fill="#6b7f3e" transform="rotate(-5 236 24)"/>
+  <rect x="234" y="2" width="26" height="26" rx="5" fill="#5a6b35" transform="rotate(5 247 15)"/>
+</svg>

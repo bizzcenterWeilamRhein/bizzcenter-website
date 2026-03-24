@@ -91,8 +91,6 @@ const PRINT_CSS = `
 .angebot-print-view .page {
   width: 210mm;
   min-height: 297mm;
-  max-height: 297mm;
-  overflow: hidden;
   padding: 22mm 25mm 38mm 25mm;
   position: relative;
   box-sizing: border-box;
@@ -109,7 +107,7 @@ const PRINT_CSS = `
   position: absolute;
   top: 18mm;
   right: 25mm;
-  width: 48mm;
+  width: 38mm;
 }
 .angebot-print-view .logo-block img {
   width: 100%;
@@ -291,7 +289,7 @@ function Footer({ pageNum, totalPages }: { pageNum: number; totalPages: number }
 function Logo() {
   return (
     <div className="logo-block">
-      <img src="/images/logo-bizzcenter.png" alt="bizzcenter" />
+      <img src="/images/logo-bizzcenter-print.svg" alt="bizzcenter" />
     </div>
   );
 }
@@ -365,9 +363,9 @@ export function AngebotPrintView({
           </div>
 
           {/* Betreff */}
-          <h1 style={{ fontSize: '15pt', fontWeight: 700, color: '#1a1a1a', margin: '0 0 5mm 0', lineHeight: 1.3 }}>
+          <h1 style={{ fontSize: '15pt', fontWeight: 700, color: '#2C4A7C', margin: '0 0 5mm 0', lineHeight: 1.3 }}>
             Angebot Geschäftsadresse<br />
-            <span style={{ color: '#2C4A7C' }}>{angebot.standort}</span>
+            {angebot.standort}
           </h1>
 
           {/* Intro-Text */}
@@ -381,7 +379,7 @@ export function AngebotPrintView({
             <img
               src={angebot.heroImage || '/images/standorte/weil-am-rhein/green-office.jpg'}
               alt={`bizzcenter ${angebot.standort}`}
-              style={{ width: '100%', height: '85mm', objectFit: 'cover', display: 'block' }}
+              style={{ width: '100%', height: '60mm', objectFit: 'cover', display: 'block' }}
             />
           </div>
 
