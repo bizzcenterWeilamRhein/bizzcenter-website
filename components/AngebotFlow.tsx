@@ -222,7 +222,27 @@ function AngebotFlowInner({
   const vertreterLabel = selectedRechtsform?.vertreter || 'Vertretungsberechtigte/r';
 
   const selectedTarifObj = tarifList.find(t => t.id === selectedTarif);
-  const remainingDays = daysUntil(angebot.gueltigBis);
+
+  // Dynamisches Gültigkeitsdatum: Wenn via HeroForm (URL-Params), immer +30 Tage ab heute
+  const isFromHeroForm = !!(paramVorname || paramNachname || paramEmail);
+  const effectiveGueltigBis = React.useMemo(() => {
+    if (isFromHeroForm) {
+      const d = new Date();
+      d.setDate(d.getDate() + 30);
+      return `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}.${d.getFullYear()}`;
+    }
+    return angebot.gueltigBis;
+  }, [isFromHeroForm, angebot.gueltigBis]);
+
+  const effectiveDatum = React.useMemo(() => {
+    if (isFromHeroForm) {
+      const d = new Date();
+      return `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}.${d.getFullYear()}`;
+    }
+    return angebot.datum;
+  }, [isFromHeroForm, angebot.datum]);
+
+  const remainingDays = daysUntil(effectiveGueltigBis);
 
   const { monatlich, monatlichNetto, monatlichRabatt, monatlichNettoRabatt, einmalig, kaution, jahresBrutto, jahresNetto } = useMemo(() => {
     if (!selectedTarifObj) return { monatlich: 0, monatlichNetto: 0, monatlichRabatt: 0, monatlichNettoRabatt: 0, einmalig: 0, kaution: 0, jahresBrutto: 0, jahresNetto: 0 };
@@ -317,15 +337,35 @@ function AngebotFlowInner({
       {remainingDays <= 14 && remainingDays > 0 && (
         <div className="bg-amber-50 border-b border-amber-200 py-2.5 px-4">
           <p className="text-center text-sm font-medium text-amber-800">
-            Dieses Angebot ist noch <strong>{remainingDays} {remainingDays === 1 ? 'Tag' : 'Tage'}</strong> gültig — bis {angebot.gueltigBis}
+            Dieses Angebot ist noch <strong>{remainingDays} {remainingDays === 1 ? 'Tag' : 'Tage'}</strong> gültig — bis {effectiveGueltigBis}
           </p>
         </div>
       )}
       {remainingDays === 0 && (
-        <div className="bg-red-50 border-b border-red-200 py-2.5 px-4">
-          <p className="text-center text-sm font-medium text-red-800">
-            Dieses Angebot ist heute abgelaufen. Kontaktieren Sie uns für ein aktualisiertes Angebot.
-          </p>
+        <div className="bg-amber-50 border-b border-amber-200 py-4 px-4">
+          <div className="max-w-3xl mx-auto text-center">
+            <p className="text-sm font-medium text-amber-800 mb-3">
+              Die Gültigkeit dieses Angebots ist abgelaufen — die Konditionen können sich geändert haben.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2">
+              <button
+                onClick={() => {
+                  const params = new URLSearchParams(window.location.search);
+                  params.set('refreshed', Date.now().toString());
+                  window.location.href = `${window.location.pathname}?${params.toString()}`;
+                }}
+                className="inline-flex items-center justify-center rounded-lg bg-[#6b7f3e] text-white px-5 py-2 text-sm font-semibold hover:opacity-90 transition-opacity"
+              >
+                Neues Angebot erstellen
+              </button>
+              <a
+                href={`/weil-am-rhein/${angebot.service === 'geschaeftsadresse' ? 'geschaeftsadresse' : angebot.service}`}
+                className="inline-flex items-center justify-center rounded-lg border border-[#6b7f3e] text-[#6b7f3e] bg-white px-5 py-2 text-sm font-semibold hover:bg-[#f0f4e8] transition-colors no-underline"
+              >
+                Direkt buchen
+              </a>
+            </div>
+          </div>
         </div>
       )}
 
@@ -350,8 +390,8 @@ function AngebotFlowInner({
             </div>
           </div>
           <div className="mt-3 text-xs text-muted-foreground flex items-center gap-4">
-            <span>Angebot vom {angebot.datum}</span>
-            <span>Gültig bis {angebot.gueltigBis}</span>
+            <span>Angebot vom {effectiveDatum}</span>
+            <span>Gültig bis {effectiveGueltigBis}</span>
           </div>
         </div>
 
@@ -836,7 +876,7 @@ function AngebotFlowInner({
 
         {/* ── Footer ── */}
         <div className="text-center text-xs text-muted-foreground py-4">
-          <p>Angebot-ID: {angebot.slug} · Erstellt am {angebot.datum} · Gültig bis {angebot.gueltigBis}</p>
+          <p>Angebot-ID: {angebot.slug} · Erstellt am {effectiveDatum} · Gültig bis {effectiveGueltigBis}</p>
         </div>
       </div>
 
