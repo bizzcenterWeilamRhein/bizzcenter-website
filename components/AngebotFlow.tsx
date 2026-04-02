@@ -791,21 +791,27 @@ function AngebotFlowInner({
         {step >= 3 && (
           <div className="rounded-2xl border-2 border-[#6b7f3e] bg-[#f0f4e8] shadow-sm p-5 md:p-8 text-center">
             <div className="w-14 h-14 mx-auto rounded-full bg-[#6b7f3e] flex items-center justify-center text-white text-2xl font-bold mb-3">✓</div>
-            <h2 className="text-xl font-bold text-foreground">Vielen Dank, {kontakt}!</h2>
+            <h2 className="text-xl font-bold text-foreground">Fast geschafft, {kontakt}!</h2>
             <p className="text-sm text-muted-foreground mt-2 max-w-md mx-auto">
-              Ihre Anfrage für die {serviceLabel} bei bizzcenter {angebot.standort} ist eingegangen.
-              Wir melden uns umgehend bei Ihnen.
+              Ihr Angebot für die {serviceLabel} bei bizzcenter {angebot.standort} ist erstellt.
+              Im nächsten Schritt können Sie den Vertrag direkt online unterschreiben.
             </p>
             <div className="mt-4 p-4 bg-white rounded-lg text-left text-sm max-w-sm mx-auto">
-              <p className="font-semibold text-foreground mb-2">Nächste Schritte:</p>
+              <p className="font-semibold text-foreground mb-2">So geht’s weiter:</p>
               <ol className="list-decimal list-inside space-y-1 text-muted-foreground text-xs">
-                <li>Bestätigungsmail mit Angebot als PDF</li>
-                <li>Identitätsprüfung (Personalausweis)</li>
-                <li>Vertragsbeginn (Kaution + Einrichtung werden separat berechnet)</li>
-                <li>Willkommenspaket & Zugangsdaten</li>
+                <li>Vertrag online prüfen und unterschreiben</li>
+                <li>Dokumente hochladen (Ausweis, Handelsregister etc.)</li>
+                <li>Zahlungsmethode über Stripe hinterlegen</li>
+                <li>Ihre Geschäftsadresse wird zum Starttermin aktiviert</li>
               </ol>
             </div>
-            <div className="mt-5 text-sm">
+            <a
+              href={`/vertrag/${angebot.slug}${paramGclid ? `?gclid=${paramGclid}` : ''}`}
+              className="mt-5 inline-flex items-center gap-2 rounded-lg bg-[#6b7f3e] text-white px-8 py-3.5 text-sm font-bold hover:opacity-90 transition-opacity shadow-sm no-underline"
+            >
+              Jetzt Vertrag unterschreiben
+            </a>
+            <div className="mt-4 text-sm">
               <p className="text-muted-foreground">Fragen? Direkt anrufen:</p>
               <a href={`tel:${angebot.ansprechpartnerTel}`} className="text-[#6b7f3e] font-bold text-lg">{angebot.ansprechpartnerTel}</a>
             </div>
