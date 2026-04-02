@@ -247,13 +247,84 @@ export default function VertragView({ vertrag, readOnly = false }: { vertrag: Ve
 
   return (
     <div className="min-h-screen bg-[#faf9f6] print:bg-white">
-      {/* Print-only header */}
-      <div className="hidden print:block text-center py-4 border-b border-gray-300 mb-6">
-        <p className="text-lg font-bold">{kundeSignatur ? 'Vertrag' : 'Vertragsentwurf'}</p>
-        <p className="text-sm text-gray-600">Dienstleistungsvertrag Geschäftsadresse</p>
-        <p className="text-xs text-gray-500">zwischen bizzcenter Weil am Rhein GmbH und {vertrag.firma}</p>
+      {/* ══════════════════════════════════════════════════════════════ */}
+      {/* PRINT-ONLY: Sauberes Vertrags-PDF wie NAXCON-Referenz        */}
+      {/* ══════════════════════════════════════════════════════════════ */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        @media print {
+          header, footer, nav, [role="banner"], [role="contentinfo"], [role="navigation"] { display: none !important; }
+          body { margin: 0 !important; padding: 0 !important; }
+          @page { margin: 18mm 20mm 25mm 20mm; size: A4; }
+          .web-view { display: none !important; }
+          .print-view { display: block !important; }
+        }
+        @media screen {
+          .print-view { display: none !important; }
+        }
+      `}} />
+
+      <div className="print-view" style={{ fontFamily: 'Arial, Helvetica, sans-serif', fontSize: '11pt', lineHeight: '1.5', color: '#000' }}>
+        {/* Titel */}
+        <div style={{ textAlign: 'center', marginBottom: '24pt' }}>
+          <h1 style={{ fontSize: '16pt', fontWeight: 'bold', margin: '0 0 6pt 0' }}>
+            Dienstleistungsvertrag Geschäftsadresse
+          </h1>
+        </div>
+
+        {/* Parteien */}
+        <p style={{ marginBottom: '12pt' }}>zwischen</p>
+        <p style={{ marginBottom: '2pt' }}><strong>bizzcenter Weil am Rhein GmbH</strong> – bizzcenter –</p>
+        <p style={{ marginBottom: '2pt' }}>- vertreten durch den Geschäftsführer Herrn Torben Götz -</p>
+        <p style={{ marginBottom: '2pt' }}>Im Schwarzenbach 4</p>
+        <p style={{ marginBottom: '16pt' }}>79576 Weil am Rhein</p>
+
+        <p style={{ marginBottom: '12pt' }}>und</p>
+        <p style={{ marginBottom: '2pt' }}><strong>{vertrag.firma}</strong> – Kunde –</p>
+        <p style={{ marginBottom: '2pt' }}>- vertreten durch {vertrag.vertreterLabel === 'Inhaber' ? 'den Inhaber' : `den ${vertrag.vertreterLabel}`} {vertrag.vertreterAnrede} {vertrag.vertreter} -</p>
+        <p style={{ marginBottom: '2pt' }}>{vertrag.kundeAdresse ? vertrag.kundeAdresse.split(',')[0]?.trim() : ''}</p>
+        <p style={{ marginBottom: '24pt' }}>{vertrag.kundeAdresse ? vertrag.kundeAdresse.split(',').slice(1).join(',').trim() : ''}</p>
+
+        {/* §§ */}
+        {sections.map((s) => (
+          <div key={s.id} style={{ marginBottom: '12pt' }}>
+            <p style={{ fontWeight: 'bold', marginBottom: '4pt' }}>{s.title}</p>
+            <div style={{ fontSize: '10.5pt' }}>{s.content}</div>
+          </div>
+        ))}
+
+        {/* Unterschriften */}
+        <div style={{ marginTop: '36pt', pageBreakInside: 'avoid' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', gap: '40pt' }}>
+            <div style={{ flex: 1 }}>
+              <p style={{ marginBottom: '4pt', fontSize: '10pt' }}>Weil am Rhein, den ______________________</p>
+              <div style={{ borderBottom: '1px solid #000', height: '60pt', marginBottom: '4pt' }}>
+                {/* bizzcenter Unterschrift */}
+              </div>
+              <p style={{ fontSize: '9pt' }}>bizzcenter Weil am Rhein GmbH / Unterschrift</p>
+            </div>
+            <div style={{ flex: 1 }}>
+              <p style={{ marginBottom: '4pt', fontSize: '10pt' }}>_____________________, den ______________________</p>
+              <div style={{ borderBottom: '1px solid #000', height: '60pt', marginBottom: '4pt', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                {kundeSignatur && (
+                  <img src={kundeSignatur.dataUrl} alt="Unterschrift" style={{ maxHeight: '56pt', maxWidth: '200pt' }} />
+                )}
+              </div>
+              <p style={{ fontSize: '9pt' }}>Kunde (Unterschrift + Name)</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer auf jeder Seite */}
+        <div style={{ position: 'fixed', bottom: '0', left: '0', right: '0', textAlign: 'center', fontSize: '7.5pt', color: '#666', borderTop: '0.5pt solid #ccc', paddingTop: '4pt', paddingBottom: '0' }}>
+          bizzcenter Weil am Rhein GmbH | Business Center Weil &nbsp;&middot;&nbsp; Im Schwarzenbach 4 | 79576 Weil am Rhein &nbsp;&middot;&nbsp; Geschäftsführer: Torben Götz<br />
+          Registergericht: AG Freiburg | Registernummer: HRB 720019
+        </div>
       </div>
-      <div className="mx-auto max-w-3xl px-4 py-8 md:py-14 space-y-6 print:py-0 print:px-0">
+
+      {/* ══════════════════════════════════════════════════════════════ */}
+      {/* WEB-VIEW: Interaktive Ansicht (nur auf Screen)                */}
+      {/* ══════════════════════════════════════════════════════════════ */}
+      <div className="web-view mx-auto max-w-3xl px-4 py-8 md:py-14 space-y-6">
 
         {/* ── Navigation ── */}
         <div className="flex items-center justify-between print:hidden">
@@ -269,9 +340,9 @@ export default function VertragView({ vertrag, readOnly = false }: { vertrag: Ve
         </div>
 
         {/* ── Header ── */}
-        <div className="rounded-2xl border border-border bg-white shadow-sm p-6 md:p-8">
+        <div className="rounded-2xl border border-border bg-white shadow-sm p-6 md:p-8 print-no-break">
           <div className="text-center space-y-3">
-            <div className="w-16 h-16 mx-auto rounded-full bg-[#f0f4e8] flex items-center justify-center">
+            <div className="w-16 h-16 mx-auto rounded-full bg-[#f0f4e8] flex items-center justify-center print:hidden">
               <svg className="w-7 h-7 text-[#6b7f3e]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
             </div>
             <h1 className="text-xl md:text-2xl font-bold text-foreground">
@@ -302,7 +373,7 @@ export default function VertragView({ vertrag, readOnly = false }: { vertrag: Ve
         </div>
 
         {/* ── Vertragsübersicht (Kurzfassung) ── */}
-        <div className="rounded-2xl border border-border bg-white shadow-sm p-6 md:p-8">
+        <div className="rounded-2xl border border-border bg-white shadow-sm p-6 md:p-8 print-no-break">
           <h2 className="text-lg font-bold text-foreground mb-4">Vertragsübersicht</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
             <div className="rounded-lg bg-[#f0f4e8] p-3">
@@ -328,7 +399,7 @@ export default function VertragView({ vertrag, readOnly = false }: { vertrag: Ve
         <div className="rounded-2xl border border-border bg-white shadow-sm divide-y divide-border overflow-hidden">
           <div className="p-6 md:px-8">
             <h2 className="text-lg font-bold text-foreground">Vertragsbedingungen</h2>
-            <p className="text-xs text-muted-foreground mt-1">Klicken Sie auf einen Paragraphen, um die Details einzusehen.</p>
+            <p className="text-xs text-muted-foreground mt-1 print:hidden">Klicken Sie auf einen Paragraphen, um die Details einzusehen.</p>
           </div>
           {sections.map((s) => (
             <div key={s.id}>
@@ -398,7 +469,10 @@ export default function VertragView({ vertrag, readOnly = false }: { vertrag: Ve
                 label="Kunde"
                 onSignature={async (data) => {
                   setKundeSignatur(data);
-                  
+                  // Titel im Browser-Tab aktualisieren
+                  if (typeof window !== 'undefined') {
+                    document.title = `Vertrag Geschäftsadresse – ${vertrag.firma}`;
+                  }
                   // Google Ads Conversion: Vertrag unterschrieben
                   if (typeof window !== 'undefined') {
                     (window as any).dataLayer = (window as any).dataLayer || [];
