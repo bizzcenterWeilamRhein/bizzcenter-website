@@ -31,7 +31,7 @@
           "de": "Geschäftsadresse",
           "en": "Virtual Office"
         },
-        "href": "/weil-am-rhein/geschaeftsadresse"
+        "href": "/weil-am-rhein/geschaeftsadresse-mieten"
       },
       {
         "label": {
@@ -55,17 +55,17 @@
         "children": [
           {
             "label": {
-              "de": "Konferenzräume",
-              "en": "Meeting Rooms"
+              "de": "Konferenzraum mieten",
+              "en": "Meeting Room Rental"
             },
-            "href": "/weil-am-rhein/konferenzraum"
+            "href": "/weil-am-rhein/konferenzraum-mieten"
           },
           {
             "label": {
-              "de": "Coachingbüro",
-              "en": "Coaching Room"
+              "de": "Coachingbüro mieten",
+              "en": "Coaching Room Rental"
             },
-            "href": "/weil-am-rhein/coachingbuero"
+            "href": "/weil-am-rhein/coachingbuero-mieten"
           }
         ]
       },
@@ -152,7 +152,7 @@
               "de": "Geschäftsadresse",
               "en": "Virtual Office"
             },
-            "href": "/weil-am-rhein/geschaeftsadresse"
+            "href": "/weil-am-rhein/geschaeftsadresse-mieten"
           },
           {
             "label": {
@@ -173,7 +173,7 @@
               "de": "Konferenzraum",
               "en": "Meeting Room"
             },
-            "href": "/weil-am-rhein/konferenzraum"
+            "href": "/weil-am-rhein/konferenzraum-mieten"
           },
           {
             "label": {
@@ -243,9 +243,9 @@
       ]
     },
     {
-      "slug": "weil-am-rhein/geschaeftsadresse",
+      "slug": "weil-am-rhein/geschaeftsadresse-mieten",
       "type": "page",
-      "content": "weil-am-rhein/geschaeftsadresse",
+      "content": "weil-am-rhein/geschaeftsadresse-mieten",
       "locales": [
         "de",
         "en"
@@ -270,9 +270,9 @@
       ]
     },
     {
-      "slug": "weil-am-rhein/konferenzraum",
+      "slug": "weil-am-rhein/konferenzraum-mieten",
       "type": "page",
-      "content": "weil-am-rhein/konferenzraum",
+      "content": "weil-am-rhein/konferenzraum-mieten",
       "locales": [
         "de",
         "en"
@@ -438,17 +438,17 @@
       ]
     },
     {
-      "slug": "weil-am-rhein/coachingbuero",
+      "slug": "weil-am-rhein/coachingbuero-mieten",
       "type": "page",
-      "content": "weil-am-rhein/coachingbuero",
+      "content": "weil-am-rhein/coachingbuero-mieten",
       "locales": [
         "de"
       ]
     },
     {
-      "slug": "weil-am-rhein/tagesbuero",
+      "slug": "weil-am-rhein/tagesbuero-mieten",
       "type": "page",
-      "content": "weil-am-rhein/tagesbuero",
+      "content": "weil-am-rhein/tagesbuero-mieten",
       "locales": [
         "de"
       ]
