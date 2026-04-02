@@ -42,10 +42,10 @@
       },
       {
         "label": {
-          "de": "Büros",
+          "de": "Büro mieten",
           "en": "Rent Office"
         },
-        "href": "/weil-am-rhein/privates-buero"
+        "href": "/weil-am-rhein/buero-mieten"
       },
       {
         "label": {
@@ -163,10 +163,10 @@
           },
           {
             "label": {
-              "de": "Privates Büro",
-              "en": "Private Office"
+              "de": "Büro mieten",
+              "en": "Rent Office"
             },
-            "href": "/weil-am-rhein/privates-buero"
+            "href": "/weil-am-rhein/buero-mieten"
           },
           {
             "label": {
@@ -261,9 +261,9 @@
       ]
     },
     {
-      "slug": "weil-am-rhein/privates-buero",
+      "slug": "weil-am-rhein/buero-mieten",
       "type": "page",
-      "content": "weil-am-rhein/privates-buero",
+      "content": "weil-am-rhein/buero-mieten",
       "locales": [
         "de",
         "en"
