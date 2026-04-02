@@ -12,13 +12,6 @@ interface Tarif {
 
 const TARIFE: Tarif[] = [
   {
-    id: 'beamer-only',
-    label: 'Nur Beamer',
-    preis: 39,
-    beschreibung: 'Profi-Beamer ohne Leinwand',
-    details: ['Full-HD-Projektor', 'HDMI-Kabel + VGA-Adapter', 'Fernbedienung', 'Transporttasche'],
-  },
-  {
     id: 'beamer-leinwand',
     label: 'Beamer + Leinwand',
     preis: 59,
@@ -42,15 +35,8 @@ const STAFFEL_LEINWAND: StaffelPreis[] = [
   { minTage: 4, maxTage: 7, label: 'Woche', gesamtpreis: 199 },
 ];
 
-const STAFFEL_ONLY: StaffelPreis[] = [
-  { minTage: 1, maxTage: 1, label: '1 Tag', gesamtpreis: 39 },
-  { minTage: 2, maxTage: 2, label: '2 Tage', gesamtpreis: 69 },
-  { minTage: 3, maxTage: 3, label: 'Wochenende (Fr–So)', gesamtpreis: 89 },
-  { minTage: 4, maxTage: 7, label: 'Woche', gesamtpreis: 139 },
-];
-
 function getStaffelPreis(tarif: string, tage: number): number {
-  const staffel = tarif === 'beamer-leinwand' ? STAFFEL_LEINWAND : STAFFEL_ONLY;
+  const staffel = STAFFEL_LEINWAND;
   // Find matching tier
   for (const s of [...staffel].reverse()) {
     if (tage >= s.minTage) return s.gesamtpreis;
@@ -74,16 +60,9 @@ function parseDate(s: string): Date {
 export function BeamerBuchung() {
   const [selectedTarif, setSelectedTarif] = useState<string>('beamer-leinwand');
 
-  // Pick up tarif from URL hash (e.g. #buchen?tarif=beamer-only)
+  // Only one tarif now
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const hash = window.location.hash;
-      if (hash.includes('tarif=beamer-only')) {
-        setSelectedTarif('beamer-only');
-      } else if (hash.includes('tarif=beamer-leinwand')) {
-        setSelectedTarif('beamer-leinwand');
-      }
-    }
+    setSelectedTarif('beamer-leinwand');
   }, []);
   const [viewMonth, setViewMonth] = useState(() => new Date().getMonth());
   const [viewYear, setViewYear] = useState(() => new Date().getFullYear());
@@ -288,36 +267,23 @@ export function BeamerBuchung() {
         <p className="text-gray-500 mb-8">Verfügbarkeit prüfen, Paket wählen und direkt online bezahlen.</p>
 
         <form onSubmit={handleSubmit} className="space-y-8">
-          {/* 1. Tarif */}
+          {/* 1. Paket-Info (nur noch Beamer + Leinwand) */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wide">1. Paket wählen</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {TARIFE.map((t) => (
-                <button
-                  key={t.id}
-                  type="button"
-                  onClick={() => setSelectedTarif(t.id)}
-                  className={`text-left p-5 rounded-xl border-2 transition-all ${
-                    selectedTarif === t.id
-                      ? 'border-[#6b7f3e] bg-[#f0f4e8] shadow-md'
-                      : 'border-gray-200 hover:border-gray-300 hover:shadow-sm'
-                  }`}
-                >
-                  <div className="flex justify-between items-start mb-2">
-                    <span className="font-bold text-gray-900">{t.label}</span>
-                    <span className="text-[#6b7f3e] font-bold text-lg">EUR {t.preis},-</span>
-                  </div>
-                  <p className="text-sm text-gray-500 mb-3">{t.beschreibung}</p>
-                  <ul className="space-y-1">
-                    {t.details.map((d, i) => (
-                      <li key={i} className="text-xs text-gray-600 flex items-center gap-1.5">
-                        <span className="text-[#6b7f3e]">✓</span> {d}
-                      </li>
-                    ))}
-                  </ul>
-                  <p className="text-xs text-gray-400 mt-2">pro Tag zzgl. MwSt.</p>
-                </button>
-              ))}
+            <h3 className="text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wide">1. Ihr Paket</h3>
+            <div className="p-5 rounded-xl border-2 border-[#6b7f3e] bg-[#f0f4e8]">
+              <div className="flex justify-between items-start mb-2">
+                <span className="font-bold text-gray-900">Beamer + Leinwand</span>
+                <span className="text-[#6b7f3e] font-bold text-lg">ab EUR 59,-</span>
+              </div>
+              <p className="text-sm text-gray-500 mb-3">Komplett-Set mit Stativ-Leinwand</p>
+              <ul className="space-y-1">
+                <li className="text-xs text-gray-600 flex items-center gap-1.5"><span className="text-[#6b7f3e]">✓</span> Full-HD-Projektor</li>
+                <li className="text-xs text-gray-600 flex items-center gap-1.5"><span className="text-[#6b7f3e]">✓</span> Portable Stativ-Leinwand</li>
+                <li className="text-xs text-gray-600 flex items-center gap-1.5"><span className="text-[#6b7f3e]">✓</span> HDMI-Kabel + VGA-Adapter</li>
+                <li className="text-xs text-gray-600 flex items-center gap-1.5"><span className="text-[#6b7f3e]">✓</span> Fernbedienung + Verlängerungskabel</li>
+                <li className="text-xs text-gray-600 flex items-center gap-1.5"><span className="text-[#6b7f3e]">✓</span> Transporttasche</li>
+              </ul>
+              <p className="text-xs text-gray-400 mt-2">Staffelpreise zzgl. MwSt.</p>
             </div>
           </div>
 
@@ -397,10 +363,10 @@ export function BeamerBuchung() {
             {/* Staffelpreise */}
             <div className="mt-3 border border-gray-200 rounded-lg overflow-hidden">
               <div className="bg-gray-50 px-4 py-2 border-b border-gray-200">
-                <span className="text-xs font-semibold text-gray-700 uppercase tracking-wide">Mehrtages-Rabatt ({selectedTarif === 'beamer-leinwand' ? 'Beamer + Leinwand' : 'Nur Beamer'})</span>
+                <span className="text-xs font-semibold text-gray-700 uppercase tracking-wide">Mehrtages-Rabatt (Beamer + Leinwand)</span>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-gray-200">
-                {(selectedTarif === 'beamer-leinwand' ? STAFFEL_LEINWAND : STAFFEL_ONLY).map((s, i) => (
+                {STAFFEL_LEINWAND.map((s, i) => (
                   <div key={i} className={`px-3 py-2.5 text-center ${tage >= s.minTage && tage <= s.maxTage ? 'bg-[#f0f4e8]' : ''}`}>
                     <div className="text-xs text-gray-500">{s.label}</div>
                     <div className="font-bold text-gray-900">EUR {s.gesamtpreis},-</div>
