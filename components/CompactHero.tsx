@@ -135,7 +135,7 @@ function HeroForm() {
       ...(data.vorname && { vorname: data.vorname }),
       ...(data.nachname && { nachname: data.nachname }),
       ...(data.email && { email: data.email }),
-      ...(data.status && { status: data.status }),
+      ...(data.firma && { firma: data.firma }),
       ...(urlGclid && { gclid: urlGclid }),
       ...(selectedTarif && { tarif: selectedTarif }),
     });
@@ -154,13 +154,8 @@ function HeroForm() {
         <input name="vorname" type="text" placeholder="Vorname" required className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
         <input name="nachname" type="text" placeholder="Nachname" required className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
       </div>
-      <input name="email" type="email" placeholder="Ihre E-Mail-Adresse" required className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
-      <select name="status" required className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#6b7f3e] appearance-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' viewBox=\'0 0 12 12\'%3E%3Cpath d=\'M6 8L1 3h10z\' fill=\'%236b7f3e\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center' }}>
-        <option value="">Was trifft auf Sie zu?</option>
-        <option value="firma">Ich habe bereits eine Firma</option>
-        <option value="gruendung">Firma in Gründung</option>
-        <option value="freiberufler">Freiberufler / Einzelunternehmen</option>
-      </select>
+      <input name="email" type="email" placeholder="E-Mail-Adresse" required className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
+      <input name="firma" type="text" placeholder="Firmenname (optional)" className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
       <button type="submit" disabled={status === 'sending'} className="w-full rounded-lg bg-[#6b7f3e] text-white px-4 py-3 text-sm font-bold hover:opacity-90 transition-opacity disabled:opacity-50 shadow-sm">
         {status === 'sending' ? 'Wird erstellt...' : 'Angebot erstellen →'}
       </button>
