@@ -431,7 +431,7 @@ export default function VertragView({ vertrag, readOnly = false }: { vertrag: Ve
         </div>
 
         {/* ── Unterschriften-Block ── */}
-        <div className="rounded-2xl border border-border bg-white shadow-sm p-6 md:p-8">
+        <div data-section="unterschrift" className="rounded-2xl border border-border bg-white shadow-sm p-6 md:p-8">
           {readOnly ? (
             <div className="text-center space-y-4">
               <h2 className="text-lg font-bold text-foreground">Vertragsvorschau</h2>
@@ -824,20 +824,37 @@ export default function VertragView({ vertrag, readOnly = false }: { vertrag: Ve
         })()}
 
         {/* ── Actions ── */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 print:hidden">
+        {!kundeSignatur && (
+          <div className="text-center">
+            <a
+              href="#unterschrift"
+              onClick={(e) => {
+                e.preventDefault();
+                document.querySelector('[data-section="unterschrift"]')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="inline-flex items-center gap-2 rounded-lg bg-[#6b7f3e] text-white px-8 py-3.5 text-base font-bold hover:opacity-90 transition-opacity shadow-sm no-underline"
+            >
+              Jetzt Vertrag unterschreiben
+            </a>
+          </div>
+        )}
+        <div className="flex items-center justify-center gap-4 text-sm print:hidden">
           <button
             onClick={() => window.print()}
-            className="inline-flex items-center gap-2 rounded-lg bg-[#6b7f3e] text-white px-6 py-3 text-sm font-semibold hover:opacity-90 transition-opacity shadow-sm"
+            className="text-muted-foreground hover:text-[#6b7f3e] underline cursor-pointer transition-colors"
           >
-            {kundeSignatur ? 'Vertrag als PDF speichern' : 'Vertragsentwurf als PDF speichern'}
+            {kundeSignatur ? 'Vertrag als PDF speichern' : 'Entwurf als PDF speichern'}
           </button>
           {!kundeSignatur && (
-            <a
-              href={`/angebot/${vertrag.angebotSlug}`}
-              className="inline-flex items-center gap-2 rounded-lg border border-border bg-white px-6 py-3 text-sm font-medium text-foreground hover:bg-[#f5f5f0] transition-colors shadow-sm no-underline"
-            >
-              ← Zurück zum Angebot
-            </a>
+            <>
+              <span className="text-border">·</span>
+              <a
+                href={`/angebot/${vertrag.angebotSlug}`}
+                className="text-muted-foreground hover:text-[#6b7f3e] underline no-underline transition-colors"
+              >
+                Zurück zum Angebot
+              </a>
+            </>
           )}
         </div>
 
