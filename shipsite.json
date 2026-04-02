@@ -145,7 +145,7 @@
               "de": "Übersicht",
               "en": "Overview"
             },
-            "href": "/weil-am-rhein"
+            "href": "/uebersicht"
           },
           {
             "label": {
@@ -234,9 +234,9 @@
       ]
     },
     {
-      "slug": "weil-am-rhein",
+      "slug": "uebersicht",
       "type": "page",
-      "content": "weil-am-rhein/uebersicht",
+      "content": "uebersicht",
       "locales": [
         "de",
         "en"
@@ -245,7 +245,7 @@
     {
       "slug": "geschaeftsadresse-mieten",
       "type": "page",
-      "content": "weil-am-rhein/geschaeftsadresse-mieten",
+      "content": "geschaeftsadresse-mieten",
       "locales": [
         "de",
         "en"
@@ -254,7 +254,7 @@
     {
       "slug": "coworking",
       "type": "page",
-      "content": "weil-am-rhein/coworking",
+      "content": "coworking",
       "locales": [
         "de",
         "en"
@@ -263,7 +263,7 @@
     {
       "slug": "buero-mieten",
       "type": "page",
-      "content": "weil-am-rhein/buero-mieten",
+      "content": "buero-mieten",
       "locales": [
         "de",
         "en"
@@ -272,7 +272,7 @@
     {
       "slug": "konferenzraum-mieten",
       "type": "page",
-      "content": "weil-am-rhein/konferenzraum-mieten",
+      "content": "konferenzraum-mieten",
       "locales": [
         "de",
         "en"
@@ -281,7 +281,7 @@
     {
       "slug": "konferenzraum-buchen",
       "type": "page",
-      "content": "weil-am-rhein/konferenzraum-buchen",
+      "content": "konferenzraum-buchen",
       "locales": [
         "de"
       ]
@@ -289,7 +289,7 @@
     {
       "slug": "konferenzraum-6p-buchen",
       "type": "page",
-      "content": "weil-am-rhein/konferenzraum-6p-buchen",
+      "content": "konferenzraum-6p-buchen",
       "locales": [
         "de"
       ]
@@ -297,7 +297,7 @@
     {
       "slug": "konferenzraum-15p-buchen",
       "type": "page",
-      "content": "weil-am-rhein/konferenzraum-15p-buchen",
+      "content": "konferenzraum-15p-buchen",
       "locales": [
         "de"
       ]
@@ -305,7 +305,7 @@
     {
       "slug": "konferenzraum-25p-buchen",
       "type": "page",
-      "content": "weil-am-rhein/konferenzraum-25p-buchen",
+      "content": "konferenzraum-25p-buchen",
       "locales": [
         "de"
       ]
@@ -358,7 +358,7 @@
     {
       "slug": "beamer-mieten",
       "type": "page",
-      "content": "weil-am-rhein/beamer-mieten",
+      "content": "beamer-mieten",
       "locales": [
         "de"
       ]
@@ -366,7 +366,7 @@
     {
       "slug": "schweizer-telefonnummer",
       "type": "page",
-      "content": "weil-am-rhein/schweizer-telefonnummer",
+      "content": "schweizer-telefonnummer",
       "locales": [
         "de"
       ]
@@ -374,7 +374,7 @@
     {
       "slug": "telefonservice",
       "type": "page",
-      "content": "weil-am-rhein/telefonservice",
+      "content": "telefonservice",
       "locales": [
         "de"
       ]
@@ -382,7 +382,7 @@
     {
       "slug": "lagerservice",
       "type": "page",
-      "content": "weil-am-rhein/lagerservice",
+      "content": "lagerservice",
       "locales": [
         "de"
       ]
@@ -390,7 +390,7 @@
     {
       "slug": "sekretariatsservice",
       "type": "page",
-      "content": "weil-am-rhein/sekretariatsservice",
+      "content": "sekretariatsservice",
       "locales": [
         "de"
       ]
@@ -398,7 +398,7 @@
     {
       "slug": "fulfillment",
       "type": "page",
-      "content": "weil-am-rhein/fulfillment",
+      "content": "fulfillment",
       "locales": [
         "de"
       ]
@@ -406,7 +406,7 @@
     {
       "slug": "post-bearbeitung",
       "type": "page",
-      "content": "weil-am-rhein/post-bearbeitung",
+      "content": "post-bearbeitung",
       "locales": [
         "de"
       ]
@@ -414,7 +414,7 @@
     {
       "slug": "individueller-service",
       "type": "page",
-      "content": "weil-am-rhein/individueller-service",
+      "content": "individueller-service",
       "locales": [
         "de"
       ]
@@ -422,7 +422,7 @@
     {
       "slug": "anfahrt",
       "type": "page",
-      "content": "weil-am-rhein/anfahrt",
+      "content": "anfahrt",
       "locales": [
         "de",
         "en"
@@ -431,7 +431,7 @@
     {
       "slug": "green-office",
       "type": "page",
-      "content": "weil-am-rhein/green-office",
+      "content": "green-office",
       "locales": [
         "de",
         "en"
@@ -440,7 +440,7 @@
     {
       "slug": "coachingbuero-mieten",
       "type": "page",
-      "content": "weil-am-rhein/coachingbuero-mieten",
+      "content": "coachingbuero-mieten",
       "locales": [
         "de"
       ]
@@ -448,39 +448,7 @@
     {
       "slug": "tagesbuero-mieten",
       "type": "page",
-      "content": "weil-am-rhein/tagesbuero-mieten",
-      "locales": [
-        "de"
-      ]
-    },
-    {
-      "slug": "geschaeftsadresse",
-      "type": "page",
-      "content": "geschaeftsadresse",
-      "locales": [
-        "de"
-      ]
-    },
-    {
-      "slug": "coworking",
-      "type": "page",
-      "content": "coworking",
-      "locales": [
-        "de"
-      ]
-    },
-    {
-      "slug": "buero-mieten",
-      "type": "page",
-      "content": "buero-mieten",
-      "locales": [
-        "de"
-      ]
-    },
-    {
-      "slug": "konferenzraum",
-      "type": "page",
-      "content": "konferenzraum",
+      "content": "tagesbuero-mieten",
       "locales": [
         "de"
       ]
@@ -488,15 +456,7 @@
     {
       "slug": "coworking-vitra-campus",
       "type": "page",
-      "content": "weil-am-rhein/coworking-vitra-campus",
-      "locales": [
-        "de"
-      ]
-    },
-    {
-      "slug": "test-contained",
-      "type": "page",
-      "content": "test-contained",
+      "content": "coworking-vitra-campus",
       "locales": [
         "de"
       ]
@@ -520,7 +480,7 @@
     {
       "slug": "lautsprecher-mieten",
       "type": "page",
-      "content": "weil-am-rhein/lautsprecher-mieten",
+      "content": "lautsprecher-mieten",
       "locales": [
         "de"
       ]
@@ -528,7 +488,7 @@
     {
       "slug": "parkplatz-mieten",
       "type": "page",
-      "content": "weil-am-rhein/parkplatz-mieten",
+      "content": "parkplatz-mieten",
       "locales": [
         "de"
       ]
@@ -536,7 +496,7 @@
     {
       "slug": "musikbox-mieten",
       "type": "page",
-      "content": "weil-am-rhein/musikbox-mieten",
+      "content": "musikbox-mieten",
       "locales": [
         "de"
       ]
