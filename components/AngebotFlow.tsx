@@ -814,12 +814,19 @@ function AngebotFlowInner({
 
         {/* ── PDF Download + Vertrag Link ── */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-          <a
-            href={`/vertrag/${angebot.slug}${paramGclid ? `?gclid=${paramGclid}` : ''}`}
-            className="inline-flex items-center gap-2 rounded-lg bg-[#6b7f3e] text-white px-5 py-2.5 text-sm font-semibold hover:opacity-90 transition-opacity shadow-sm no-underline"
-          >
-            Vollständigen Vertrag ansehen
-          </a>
+          {firmenname && rechtsform && starttermin && kontakt && email ? (
+            <a
+              href={`/vertrag/${angebot.slug}${paramGclid ? `?gclid=${paramGclid}` : ''}`}
+              className="inline-flex items-center gap-2 rounded-lg bg-[#6b7f3e] text-white px-5 py-2.5 text-sm font-semibold hover:opacity-90 transition-opacity shadow-sm no-underline"
+            >
+              Vollständigen Vertrag ansehen
+            </a>
+          ) : (
+            <span className="inline-flex items-center gap-2 rounded-lg bg-gray-200 text-gray-400 px-5 py-2.5 text-sm font-semibold cursor-not-allowed">
+              Vollständigen Vertrag ansehen
+              <span className="text-[10px] font-normal">(Daten oben ausfüllen)</span>
+            </span>
+          )}
           <button
             onClick={async () => {
               const el = document.querySelector('.angebot-print-view') as HTMLElement;

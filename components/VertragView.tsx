@@ -38,7 +38,7 @@ interface VertragData {
 // Rechtsformen ohne Transparenzregisterpflicht
 const keinTransparenzregister = ['einzelunternehmen', 'freiberufler', 'ek'];
 
-export default function VertragView({ vertrag }: { vertrag: VertragData }) {
+export default function VertragView({ vertrag, readOnly = false }: { vertrag: VertragData; readOnly?: boolean }) {
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
   const [kundeSignatur, setKundeSignatur] = useState<{ dataUrl: string; timestamp: string; method: string } | null>(null);
 
@@ -360,6 +360,19 @@ export default function VertragView({ vertrag }: { vertrag: VertragData }) {
 
         {/* ── Unterschriften-Block ── */}
         <div className="rounded-2xl border border-border bg-white shadow-sm p-6 md:p-8">
+          {readOnly ? (
+            <div className="text-center space-y-4">
+              <h2 className="text-lg font-bold text-foreground">Vertragsvorschau</h2>
+              <p className="text-sm text-muted-foreground">Dies ist eine Vorschau der Vertragsbedingungen. Um den Vertrag zu unterschreiben, kehren Sie zur Angebotsseite zurück und füllen Sie alle Pflichtfelder aus.</p>
+              <a
+                href={`/angebot/${vertrag.angebotSlug}`}
+                className="inline-flex items-center gap-2 rounded-lg bg-[#6b7f3e] text-white px-6 py-3 text-sm font-semibold hover:opacity-90 transition-opacity shadow-sm no-underline"
+              >
+                ← Zurück zum Angebot
+              </a>
+            </div>
+          ) : (
+            <>
           <h2 className="text-lg font-bold text-foreground mb-2">Vertrag unterschreiben</h2>
           <p className="text-xs text-muted-foreground mb-6">
             Mit Ihrer Unterschrift schließen Sie den Vertrag rechtskräftig ab. Der Vertrag tritt nach Prüfung Ihrer Unterlagen durch bizzcenter in Kraft.
@@ -449,6 +462,8 @@ export default function VertragView({ vertrag }: { vertrag: VertragData }) {
                 </div>
               </div>
             </div>
+          )}
+            </>
           )}
         </div>
 
