@@ -781,7 +781,7 @@ function AngebotFlowInner({
             </label>
           </div>
           {(() => {
-            const allFilled = !!(firmenname && rechtsform && vertreterAnrede && vertreterName && starttermin && kontakt && email && agbAccepted && (ansprechpartnerIstZeichnungsberechtigt || zeichnungsName));
+            const allFilled = !!(firmenname && rechtsform && vertreterAnrede && vertreterName && starttermin && kontaktVorname && kontaktNachname && email && agbAccepted && (ansprechpartnerIstZeichnungsberechtigt || zeichnungsName));
             return (
               <div className="mt-5 flex flex-col sm:flex-row gap-3">
                 <button
@@ -839,7 +839,7 @@ function AngebotFlowInner({
               </div>
             );
           })()}
-          {!(firmenname && rechtsform && vertreterAnrede && vertreterName && starttermin && kontakt && email && agbAccepted && (ansprechpartnerIstZeichnungsberechtigt || zeichnungsName)) && (
+          {!(firmenname && rechtsform && vertreterAnrede && vertreterName && starttermin && kontaktVorname && kontaktNachname && email && agbAccepted && (ansprechpartnerIstZeichnungsberechtigt || zeichnungsName)) && (
             <p className="text-[10px] text-muted-foreground text-center mt-2">
               Bitte füllen Sie alle Pflichtfelder aus, um den Vertrag zu erstellen.
             </p>
