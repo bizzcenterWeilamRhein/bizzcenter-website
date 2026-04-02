@@ -113,13 +113,14 @@ async function sendContractNotification(data: ContractSubmission, clientIp: stri
       </table>
       <p><strong>Nächste Schritte:</strong></p>
       <ol>
-        <li>Wir prüfen Ihre eingereichten Unterlagen</li>
+        <li>Laden Sie die erforderlichen Dokumente hoch (Ausweis, Handelsregister etc.)</li>
+        <li>Richten Sie Ihre Zahlungsmethode über Stripe ein</li>
+        <li>Wir prüfen Ihre Unterlagen (innerhalb von 24 Stunden)</li>
         <li>Sie erhalten den gegengezeichneten Vertrag als PDF per E-Mail</li>
-        <li>Kaution und Einrichtungsgebühr werden separat in Rechnung gestellt</li>
-        <li>Nach Eingang der Kaution ist Ihre Geschäftsadresse innerhalb von 24 Stunden aktiv</li>
+        <li>Ihre Geschäftsadresse wird zum vereinbarten Starttermin aktiviert</li>
       </ol>
-      <p>Sie können Ihren Vertrag jederzeit online einsehen:<br/>
-      <a href="https://weil.bizzcenter.de/vertrag/${esc(data.slug)}" style="color:#6b7f3e;font-weight:bold;">Vertrag ansehen</a></p>
+      <p style="margin:16px 0;"><a href="https://weil.bizzcenter.de/vertrag/${esc(data.slug)}" style="display:inline-block;background:#6b7f3e;color:#fff;padding:12px 24px;text-decoration:none;border-radius:6px;font-weight:bold;">Dokumente hochladen & Zahlung einrichten</a></p>
+      <p style="font-size:12px;color:#666;">Oder kopieren Sie diesen Link: https://weil.bizzcenter.de/vertrag/${esc(data.slug)}</p>
       <p>Bei Fragen erreichen Sie uns unter:<br/>
       <strong>Torben Götz</strong> · <a href="tel:+4917153949009">+49 171 539 49 09</a> · <a href="mailto:weilamrhein@bizzcenter.de">weilamrhein@bizzcenter.de</a></p>
       <p style="color:#999;font-size:12px;margin-top:24px;">bizzcenter Weil am Rhein GmbH · Im Schwarzenbach 4 · 79576 Weil am Rhein</p>

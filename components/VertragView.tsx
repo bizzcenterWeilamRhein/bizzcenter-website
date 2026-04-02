@@ -45,8 +45,9 @@ export default function VertragView({ vertrag, readOnly = false }: { vertrag: Ve
   const brauchtTransparenzregister = !keinTransparenzregister.includes(vertrag.rechtsform.toLowerCase());
   const [allSectionsRead, setAllSectionsRead] = useState<Set<string>>(new Set());
   const [uploads, setUploads] = useState<Record<string, { name: string; size: string; timestamp: string }>>({});
-  const [zahlungsOption, setZahlungsOption] = useState<'auto' | 'rechnung' | null>(null);
-  const [zahlungHinterlegt, setZahlungHinterlegt] = useState(false);
+  const [zahlungHinterlegt, setZahlungHinterlegt] = useState(
+    typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('zahlung') === 'erfolgreich'
+  );
   const [docsSkipped, setDocsSkipped] = useState(false);
 
   const markRead = (id: string) => {
@@ -708,8 +709,7 @@ export default function VertragView({ vertrag, readOnly = false }: { vertrag: Ve
           </div>
         )}
 
-        {/* ── Zahlungsmethode (nach Unterschrift + Dokumente vollständig) ── */}
-        <div className="print:hidden">
+        {/* ── Zahlung via Stripe (nach Unterschrift + Dokumente) ── */}
         {kundeSignatur && (() => {
           const requiredDocs = brauchtTransparenzregister
             ? ['ausweis', 'handelsregister', 'transparenzregister']
@@ -723,118 +723,90 @@ export default function VertragView({ vertrag, readOnly = false }: { vertrag: Ve
                   <svg className="w-5 h-5 text-[#6b7f3e]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" /></svg>
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-foreground">Zahlungsmethode wählen</h2>
-                  <p className="text-xs text-muted-foreground">Letzter Schritt — wählen Sie Ihre bevorzugte Zahlungsart.</p>
+                  <h2 className="text-lg font-bold text-foreground">Zahlung einrichten</h2>
+                  <p className="text-xs text-muted-foreground">Letzter Schritt — hinterlegen Sie Ihre Zahlungsmethode über unseren sicheren Zahlungsdienstleister Stripe.</p>
                 </div>
               </div>
 
               {!zahlungHinterlegt ? (
-                <div className="mt-5 space-y-3">
-                  {/* Option A: Automatische Zahlung */}
+                <div className="mt-5 space-y-4">
+                  <div className="rounded-lg bg-[#f5f5f0] p-4">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-muted-foreground">Monatliche Miete</span>
+                      <span className="font-bold text-foreground">EUR {gesamtBrutto.toFixed(2)} brutto</span>
+                    </div>
+                    <div className="flex items-center justify-between text-xs text-muted-foreground mt-1">
+                      <span>EUR {gesamtNetto.toFixed(2)} netto + EUR {gesamtMwst.toFixed(2)} MwSt.</span>
+                      <span>Abbuchung monatlich im Voraus</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-center gap-2">
+                    <span className="text-xs px-2 py-0.5 bg-[#f5f5f0] rounded border border-border">Visa</span>
+                    <span className="text-xs px-2 py-0.5 bg-[#f5f5f0] rounded border border-border">Mastercard</span>
+                    <span className="text-xs px-2 py-0.5 bg-[#f5f5f0] rounded border border-border">SEPA</span>
+                    <span className="text-xs px-2 py-0.5 bg-[#f5f5f0] rounded border border-border">Giropay</span>
+                  </div>
+
                   <button
                     type="button"
-                    onClick={() => setZahlungsOption('auto')}
-                    className={`w-full rounded-lg border-2 p-5 text-left transition-all cursor-pointer ${
-                      zahlungsOption === 'auto'
-                        ? 'border-[#6b7f3e] bg-[#f0f4e8]'
-                        : 'border-border bg-[#f5f5f0] hover:border-[#6b7f3e]/50'
-                    }`}
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 ${
-                        zahlungsOption === 'auto' ? 'border-[#6b7f3e] bg-[#6b7f3e]' : 'border-border'
-                      }`}>
-                        {zahlungsOption === 'auto' && <div className="w-2 h-2 rounded-full bg-white" />}
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <p className="font-semibold text-sm text-foreground">Automatische Zahlung</p>
-                          <span className="text-[10px] bg-[#6b7f3e] text-white px-1.5 py-0.5 rounded font-medium">Empfohlen</span>
-                        </div>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          Kreditkarte, Debitkarte oder SEPA-Lastschrift hinterlegen. Die monatliche Miete wird automatisch abgebucht — kein Überweisungsaufwand.
-                        </p>
-                        <div className="flex items-center gap-2 mt-2">
-                          <span className="text-xs px-2 py-0.5 bg-white rounded border border-border">Visa</span>
-                          <span className="text-xs px-2 py-0.5 bg-white rounded border border-border">Mastercard</span>
-                          <span className="text-xs px-2 py-0.5 bg-white rounded border border-border">SEPA</span>
-                          <span className="text-xs px-2 py-0.5 bg-white rounded border border-border">Giropay</span>
-                        </div>
-                      </div>
-                    </div>
-                  </button>
+                    onClick={async () => {
+                      try {
+                        // Tarif-Key für Stripe bestimmen
+                        const tarifMap: Record<string, string> = {
+                          'Langzeit': vertrag.addons.length > 0 ? 'ga_langzeit_mit' : 'ga_langzeit_ohne',
+                          'Standard': vertrag.addons.length > 0 ? 'ga_standard_mit' : 'ga_standard_ohne',
+                          'Flex': vertrag.addons.length > 0 ? 'ga_flex_mit' : 'ga_flex_ohne',
+                        };
+                        const priceId = tarifMap[vertrag.tarifName] || 'ga_standard_ohne';
 
-                  {/* Option B: Auf Rechnung */}
-                  <button
-                    type="button"
-                    onClick={() => setZahlungsOption('rechnung')}
-                    className={`w-full rounded-lg border-2 p-5 text-left transition-all cursor-pointer ${
-                      zahlungsOption === 'rechnung'
-                        ? 'border-[#6b7f3e] bg-[#f0f4e8]'
-                        : 'border-border bg-[#f5f5f0] hover:border-[#6b7f3e]/50'
-                    }`}
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 ${
-                        zahlungsOption === 'rechnung' ? 'border-[#6b7f3e] bg-[#6b7f3e]' : 'border-border'
-                      }`}>
-                        {zahlungsOption === 'rechnung' && <div className="w-2 h-2 rounded-full bg-white" />}
-                      </div>
-                      <div className="flex-1">
-                        <p className="font-semibold text-sm text-foreground">Zahlung auf Rechnung</p>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          Sie erhalten monatlich eine Rechnung per E-Mail mit Zahlungslink. Zahlungsziel: 14 Tage.
-                        </p>
-                      </div>
-                    </div>
-                  </button>
-
-                  {/* Bestätigungs-Button */}
-                  {zahlungsOption && (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        if (zahlungsOption === 'auto') {
-                          // TODO: Stripe Checkout Session / Setup Intent
-                          // Placeholder: direkt als hinterlegt markieren
-                          setZahlungHinterlegt(true);
+                        const res = await fetch('/api/checkout', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({
+                            priceId,
+                            customerEmail: vertrag.ansprechpartnerEmail,
+                            customerName: vertrag.vertreter,
+                            firma: vertrag.firma,
+                            successUrl: `${window.location.origin}/vertrag/${vertrag.slug}?zahlung=erfolgreich`,
+                            cancelUrl: `${window.location.origin}/vertrag/${vertrag.slug}?zahlung=abgebrochen`,
+                          }),
+                        });
+                        const data = await res.json();
+                        if (data.url) {
+                          window.location.href = data.url;
                         } else {
-                          setZahlungHinterlegt(true);
+                          alert('Fehler beim Erstellen der Zahlungssitzung. Bitte versuchen Sie es erneut.');
                         }
-                      }}
-                      className="w-full rounded-lg bg-[#6b7f3e] text-white py-3.5 text-sm font-bold hover:opacity-90 transition-opacity shadow-sm"
-                    >
-                      {zahlungsOption === 'auto'
-                        ? 'Zahlungsmethode hinterlegen'
-                        : 'Zahlung auf Rechnung bestätigen'}
-                    </button>
-                  )}
+                      } catch (err) {
+                        console.error('Stripe checkout error:', err);
+                        alert('Verbindungsfehler. Bitte versuchen Sie es erneut.');
+                      }
+                    }}
+                    className="w-full rounded-lg bg-[#6b7f3e] text-white py-3.5 text-sm font-bold hover:opacity-90 transition-opacity shadow-sm"
+                  >
+                    Weiter zur Zahlung
+                  </button>
 
                   <p className="text-[10px] text-muted-foreground text-center leading-relaxed">
-                    {zahlungsOption === 'auto'
-                      ? 'Sie werden zu Stripe weitergeleitet. Ihre Zahlungsmethode wird gespeichert, aber erst nach unserer Prüfung belastet.'
-                      : 'Die erste Rechnung erhalten Sie nach Freigabe Ihres Vertrags durch bizzcenter.'}
+                    Sie werden zu Stripe weitergeleitet. Ihre Zahlungsmethode wird gespeichert, die erste Abbuchung erfolgt nach Prüfung Ihrer Unterlagen zum Vertragsbeginn.
                   </p>
                 </div>
               ) : (
-                /* Erfolg */
+                /* Erfolg nach Stripe-Rückkehr */
                 <div className="mt-5 rounded-lg bg-[#f0f4e8] border border-[#6b7f3e]/30 p-5">
                   <div className="flex items-start gap-3">
-                    <svg className="w-7 h-7 text-[#6b7f3e] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" /></svg>
+                    <svg className="w-7 h-7 text-[#6b7f3e] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     <div>
                       <p className="font-bold text-foreground">Geschafft — alles abgeschlossen!</p>
-                      <p className="text-sm text-muted-foreground mt-2">
-                        {zahlungsOption === 'auto'
-                          ? 'Ihre Zahlungsmethode wurde hinterlegt (noch keine Belastung).'
-                          : 'Sie erhalten Ihre Rechnungen per E-Mail.'}
-                      </p>
+                      <p className="text-sm text-muted-foreground mt-2">Ihre Zahlungsmethode wurde erfolgreich hinterlegt.</p>
                       <div className="mt-4 p-4 bg-white rounded-lg">
                         <p className="font-semibold text-sm text-foreground mb-2">Was passiert jetzt?</p>
                         <ol className="list-decimal list-inside space-y-1.5 text-xs text-muted-foreground">
                           <li>Wir prüfen Ihre Unterlagen <span className="text-muted-foreground/60">(innerhalb von 24h)</span></li>
                           <li>Sie erhalten eine Bestätigung per E-Mail</li>
                           <li>Ihr Vertrag wird aktiviert zum {vertrag.starttermin}</li>
-                          <li>{zahlungsOption === 'auto' ? 'Erste Abbuchung zum Vertragsbeginn' : 'Erste Rechnung zum Vertragsbeginn'}</li>
+                          <li>Erste Abbuchung zum Vertragsbeginn</li>
                           <li>Willkommenspaket mit Zugangsdaten & Briefkastenschlüssel</li>
                         </ol>
                       </div>
@@ -850,7 +822,6 @@ export default function VertragView({ vertrag, readOnly = false }: { vertrag: Ve
             </div>
           );
         })()}
-        </div>
 
         {/* ── Actions ── */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 print:hidden">
