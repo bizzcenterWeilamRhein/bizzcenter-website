@@ -133,6 +133,8 @@ const rechtsformen = [
 /* ───────────────────────── HELPER ──────────────────────────── */
 
 function formatCurrency(n: number) {
+  // Ganzzahl → EUR 109,- / Dezimal → EUR 109,50
+  if (n % 1 === 0) return `EUR ${n.toFixed(0)},-`;
   return `EUR ${n.toFixed(2).replace('.', ',')}`;
 }
 
@@ -566,43 +568,41 @@ function AngebotFlowInner({
                 </label>
               </div>
 
-              <div className="border-t border-border pt-3 mt-3 space-y-1.5">
-                {jahresvorauskasse && (
-                  <>
-                    <div className="flex justify-between text-xs text-muted-foreground">
-                      <span>Regulär monatlich</span>
-                      <span className="line-through">{formatCurrency(monatlichNetto)}</span>
-                    </div>
-                    <div className="flex justify-between font-bold text-base">
-                      <span>Monatlich mit 10% Rabatt</span>
-                      <span className="text-[#6b7f3e]">{formatCurrency(monatlichNettoRabatt)}</span>
-                    </div>
-                    <div className="flex justify-between text-sm font-semibold mt-1">
-                      <span className="text-foreground">Jahresbetrag</span>
-                      <span className="text-[#6b7f3e]">{formatCurrency(jahresNetto)}</span>
-                    </div>
-                    <div className="flex justify-between text-xs text-[#6b7f3e] font-medium">
-                      <span>Ihre Ersparnis pro Jahr</span>
-                      <span>{formatCurrency(monatlichNetto * 12 - jahresNetto)}</span>
-                    </div>
-                  </>
-                )}
-                {!jahresvorauskasse && (
-                  <div className="flex justify-between font-bold text-base">
-                    <span>Monatlich</span>
-                    <span className="text-[#6b7f3e]">{formatCurrency(monatlichNetto)}</span>
-                  </div>
-                )}
-                {einmalig > 0 && (
-                  <>
-                    <div className="border-t border-dashed border-border pt-2 mt-2" />
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Einmalige Zusatzkosten</span>
-                      <span>{formatCurrency(einmalig)}</span>
-                    </div>
-                  </>
-                )}
-              </div>
+              <table className="w-full border-t border-border mt-3 pt-3" style={{ borderCollapse: 'collapse' }}>
+                <tbody>
+                  {jahresvorauskasse ? (
+                    <>
+                      <tr>
+                        <td className="py-1 text-xs text-muted-foreground">Regulär monatlich</td>
+                        <td className="py-1 text-xs text-muted-foreground text-right line-through">{formatCurrency(monatlichNetto)}</td>
+                      </tr>
+                      <tr>
+                        <td className="py-1 text-sm font-bold text-foreground">Monatlich mit 10% Rabatt</td>
+                        <td className="py-1 text-sm font-bold text-[#6b7f3e] text-right">{formatCurrency(monatlichNettoRabatt)}</td>
+                      </tr>
+                      <tr>
+                        <td className="py-1 text-sm font-semibold text-foreground">Jahresbetrag</td>
+                        <td className="py-1 text-sm font-semibold text-[#6b7f3e] text-right">{formatCurrency(jahresNetto)}</td>
+                      </tr>
+                      <tr>
+                        <td className="py-1 text-xs text-[#6b7f3e] font-medium">Ihre Ersparnis pro Jahr</td>
+                        <td className="py-1 text-xs text-[#6b7f3e] font-medium text-right">{formatCurrency(monatlichNetto * 12 - jahresNetto)}</td>
+                      </tr>
+                    </>
+                  ) : (
+                    <tr>
+                      <td className="py-1 text-sm font-bold text-foreground">Monatlich</td>
+                      <td className="py-1 text-sm font-bold text-[#6b7f3e] text-right">{formatCurrency(monatlichNetto)}</td>
+                    </tr>
+                  )}
+                  {einmalig > 0 && (
+                    <tr className="border-t border-dashed border-border">
+                      <td className="pt-2 text-sm text-muted-foreground">Einmalige Zusatzkosten</td>
+                      <td className="pt-2 text-sm text-right">{formatCurrency(einmalig)}</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
             </div>
             <p className="text-[10px] text-muted-foreground mt-3">
               Alle Preise zzgl. 19% MwSt.{jahresvorauskasse ? ' · 10% Rabatt bei Jahresvorauskasse bereits eingerechnet.' : ''}
