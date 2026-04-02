@@ -19,7 +19,10 @@
   "i18n": {
     "defaultLocale": "de",
     "locales": [
-      "de"
+      "de",
+      "en",
+      "fr",
+      "it"
     ],
     "localePrefix": "as-needed",
     "localeDetection": false
@@ -29,41 +32,53 @@
       {
         "label": {
           "de": "Geschäftsadresse",
-          "en": "Virtual Office"
+          "en": "Virtual Office",
+          "fr": "Adresse commerciale",
+          "it": "Indirizzo commerciale"
         },
         "href": "/geschaeftsadresse-mieten"
       },
       {
         "label": {
           "de": "Coworking",
-          "en": "Coworking"
+          "en": "Coworking",
+          "fr": "Coworking",
+          "it": "Coworking"
         },
         "href": "/coworking"
       },
       {
         "label": {
           "de": "Büro mieten",
-          "en": "Rent Office"
+          "en": "Rent Office",
+          "fr": "Louer bureau",
+          "it": "Affittare ufficio"
         },
         "href": "/buero-mieten"
       },
       {
         "label": {
           "de": "Räume",
-          "en": "Rooms"
+          "en": "Rooms",
+          "fr": "Salles",
+          "it": "Sale"
         },
         "children": [
           {
             "label": {
               "de": "Konferenzraum mieten",
-              "en": "Meeting Room Rental"
+              "en": "Meeting Room Rental",
+              "fr": "Louer salle de conférence",
+              "it": "Affittare sala conferenze"
             },
             "href": "/konferenzraum-mieten"
           },
           {
             "label": {
               "de": "Coachingbüro mieten",
-              "en": "Coaching Room Rental"
+              "en": "Coaching Room Rental",
+              "fr": "Louer bureau de coaching",
+              "it": "Affittare sala coaching"
             },
             "href": "/coachingbuero-mieten"
           }
@@ -72,45 +87,59 @@
       {
         "label": {
           "de": "Services",
-          "en": "Services"
+          "en": "Services",
+          "fr": "Services",
+          "it": "Servizi"
         },
         "children": [
           {
             "label": {
               "de": "Schweizer Telefonnummer",
-              "en": "Swiss Phone Number"
+              "en": "Swiss Phone Number",
+              "fr": "Numéro suisse",
+              "it": "Numero svizzero"
             },
             "href": "/schweizer-telefonnummer",
             "description": {
               "de": "Schweizer Festnetznummer",
-              "en": "Swiss landline number"
+              "en": "Swiss landline number",
+              "fr": "Numéro fixe suisse",
+              "it": "Numero fisso svizzero"
             }
           },
           {
             "label": {
               "de": "Beamer mieten",
-              "en": "Projector Rental"
+              "en": "Projector Rental",
+              "fr": "Louer projecteur",
+              "it": "Affittare proiettore"
             },
             "href": "/beamer-mieten"
           },
           {
             "label": {
               "de": "Lautsprecher mieten",
-              "en": "Speaker Rental"
+              "en": "Speaker Rental",
+              "fr": "Louer enceintes",
+              "it": "Affittare altoparlanti"
             },
             "href": "/lautsprecher-mieten"
           },
           {
             "label": {
               "de": "Parkplatz mieten",
-              "en": "Parking Rental"
+              "en": "Parking Rental",
+              "fr": "Louer parking",
+              "it": "Affittare parcheggio"
             },
             "href": "/parkplatz-mieten"
           },
           {
             "label": {
               "de": "Musikbox mieten",
-              "en": "Music Box Rental"
+              "en": "Music Box Rental",
+              "fr": "Louer enceinte musicale",
+              "it": "Affittare cassa musicale"
             },
             "href": "/musikbox-mieten"
           }
@@ -119,7 +148,9 @@
       {
         "label": {
           "de": "Über uns",
-          "en": "About"
+          "en": "About",
+          "fr": "À propos",
+          "it": "Chi siamo"
         },
         "href": "/ueber-uns"
       }
@@ -127,7 +158,9 @@
     "cta": {
       "label": {
         "de": "Kontakt",
-        "en": "Contact"
+        "en": "Contact",
+        "fr": "Contact",
+        "it": "Contatto"
       },
       "href": "/kontakt"
     }
@@ -137,55 +170,71 @@
       {
         "title": {
           "de": "Weil am Rhein",
-          "en": "Weil am Rhein"
+          "en": "Weil am Rhein",
+          "fr": "Weil am Rhein",
+          "it": "Weil am Rhein"
         },
         "links": [
           {
             "label": {
               "de": "Übersicht",
-              "en": "Overview"
+              "en": "Overview",
+              "fr": "Aperçu",
+              "it": "Panoramica"
             },
             "href": "/uebersicht"
           },
           {
             "label": {
               "de": "Geschäftsadresse",
-              "en": "Virtual Office"
+              "en": "Virtual Office",
+              "fr": "Adresse commerciale",
+              "it": "Indirizzo commerciale"
             },
             "href": "/geschaeftsadresse-mieten"
           },
           {
             "label": {
               "de": "Coworking",
-              "en": "Coworking"
+              "en": "Coworking",
+              "fr": "Coworking",
+              "it": "Coworking"
             },
             "href": "/coworking"
           },
           {
             "label": {
               "de": "Büro mieten",
-              "en": "Rent Office"
+              "en": "Rent Office",
+              "fr": "Louer bureau",
+              "it": "Affittare ufficio"
             },
             "href": "/buero-mieten"
           },
           {
             "label": {
               "de": "Konferenzraum",
-              "en": "Meeting Room"
+              "en": "Meeting Room",
+              "fr": "Salle de conférence",
+              "it": "Sala conferenze"
             },
             "href": "/konferenzraum-mieten"
           },
           {
             "label": {
               "de": "Anfahrt",
-              "en": "Directions"
+              "en": "Directions",
+              "fr": "Accès",
+              "it": "Come arrivare"
             },
             "href": "/anfahrt"
           },
           {
             "label": {
               "de": "Green Office",
-              "en": "Green Office"
+              "en": "Green Office",
+              "fr": "Green Office",
+              "it": "Green Office"
             },
             "href": "/green-office"
           }
@@ -194,27 +243,35 @@
       {
         "title": {
           "de": "Rechtliches",
-          "en": "Legal"
+          "en": "Legal",
+          "fr": "Légal",
+          "it": "Legale"
         },
         "links": [
           {
             "label": {
               "de": "Impressum",
-              "en": "Imprint"
+              "en": "Imprint",
+              "fr": "Mentions légales",
+              "it": "Informazioni legali"
             },
             "href": "/impressum"
           },
           {
             "label": {
               "de": "Datenschutz",
-              "en": "Privacy Policy"
+              "en": "Privacy Policy",
+              "fr": "Protection des données",
+              "it": "Protezione dei dati"
             },
             "href": "/datenschutz"
           },
           {
             "label": {
               "de": "Cookie-Einstellungen",
-              "en": "Cookie Settings"
+              "en": "Cookie Settings",
+              "fr": "Paramètres des cookies",
+              "it": "Impostazioni cookie"
             },
             "href": "#cookie-settings"
           }
@@ -230,7 +287,9 @@
       "content": "landing",
       "locales": [
         "de",
-        "en"
+        "en",
+        "fr",
+        "it"
       ]
     },
     {
@@ -239,7 +298,9 @@
       "content": "uebersicht",
       "locales": [
         "de",
-        "en"
+        "en",
+        "fr",
+        "it"
       ]
     },
     {
@@ -248,7 +309,9 @@
       "content": "geschaeftsadresse-mieten",
       "locales": [
         "de",
-        "en"
+        "en",
+        "fr",
+        "it"
       ]
     },
     {
@@ -257,7 +320,9 @@
       "content": "coworking",
       "locales": [
         "de",
-        "en"
+        "en",
+        "fr",
+        "it"
       ]
     },
     {
@@ -266,7 +331,9 @@
       "content": "buero-mieten",
       "locales": [
         "de",
-        "en"
+        "en",
+        "fr",
+        "it"
       ]
     },
     {
@@ -275,7 +342,9 @@
       "content": "konferenzraum-mieten",
       "locales": [
         "de",
-        "en"
+        "en",
+        "fr",
+        "it"
       ]
     },
     {
@@ -283,7 +352,9 @@
       "type": "page",
       "content": "konferenzraum-buchen",
       "locales": [
-        "de"
+        "de",
+        "fr",
+        "it"
       ]
     },
     {
@@ -291,7 +362,9 @@
       "type": "page",
       "content": "konferenzraum-6p-buchen",
       "locales": [
-        "de"
+        "de",
+        "fr",
+        "it"
       ]
     },
     {
@@ -299,7 +372,9 @@
       "type": "page",
       "content": "konferenzraum-15p-buchen",
       "locales": [
-        "de"
+        "de",
+        "fr",
+        "it"
       ]
     },
     {
@@ -307,7 +382,9 @@
       "type": "page",
       "content": "konferenzraum-25p-buchen",
       "locales": [
-        "de"
+        "de",
+        "fr",
+        "it"
       ]
     },
     {
@@ -316,7 +393,9 @@
       "content": "preise",
       "locales": [
         "de",
-        "en"
+        "en",
+        "fr",
+        "it"
       ]
     },
     {
@@ -325,7 +404,9 @@
       "content": "ueber-uns",
       "locales": [
         "de",
-        "en"
+        "en",
+        "fr",
+        "it"
       ]
     },
     {
@@ -334,7 +415,9 @@
       "content": "kontakt",
       "locales": [
         "de",
-        "en"
+        "en",
+        "fr",
+        "it"
       ]
     },
     {
@@ -343,7 +426,9 @@
       "content": "impressum",
       "locales": [
         "de",
-        "en"
+        "en",
+        "fr",
+        "it"
       ]
     },
     {
@@ -352,7 +437,9 @@
       "content": "datenschutz",
       "locales": [
         "de",
-        "en"
+        "en",
+        "fr",
+        "it"
       ]
     },
     {
@@ -360,7 +447,9 @@
       "type": "page",
       "content": "beamer-mieten",
       "locales": [
-        "de"
+        "de",
+        "fr",
+        "it"
       ]
     },
     {
@@ -368,7 +457,9 @@
       "type": "page",
       "content": "schweizer-telefonnummer",
       "locales": [
-        "de"
+        "de",
+        "fr",
+        "it"
       ]
     },
     {
@@ -376,7 +467,9 @@
       "type": "page",
       "content": "telefonservice",
       "locales": [
-        "de"
+        "de",
+        "fr",
+        "it"
       ]
     },
     {
@@ -384,7 +477,9 @@
       "type": "page",
       "content": "lagerservice",
       "locales": [
-        "de"
+        "de",
+        "fr",
+        "it"
       ]
     },
     {
@@ -392,7 +487,9 @@
       "type": "page",
       "content": "sekretariatsservice",
       "locales": [
-        "de"
+        "de",
+        "fr",
+        "it"
       ]
     },
     {
@@ -400,7 +497,9 @@
       "type": "page",
       "content": "fulfillment",
       "locales": [
-        "de"
+        "de",
+        "fr",
+        "it"
       ]
     },
     {
@@ -408,7 +507,9 @@
       "type": "page",
       "content": "post-bearbeitung",
       "locales": [
-        "de"
+        "de",
+        "fr",
+        "it"
       ]
     },
     {
@@ -416,7 +517,9 @@
       "type": "page",
       "content": "individueller-service",
       "locales": [
-        "de"
+        "de",
+        "fr",
+        "it"
       ]
     },
     {
@@ -425,7 +528,9 @@
       "content": "anfahrt",
       "locales": [
         "de",
-        "en"
+        "en",
+        "fr",
+        "it"
       ]
     },
     {
@@ -434,7 +539,9 @@
       "content": "green-office",
       "locales": [
         "de",
-        "en"
+        "en",
+        "fr",
+        "it"
       ]
     },
     {
@@ -442,7 +549,9 @@
       "type": "page",
       "content": "coachingbuero-mieten",
       "locales": [
-        "de"
+        "de",
+        "fr",
+        "it"
       ]
     },
     {
@@ -450,7 +559,9 @@
       "type": "page",
       "content": "tagesbuero-mieten",
       "locales": [
-        "de"
+        "de",
+        "fr",
+        "it"
       ]
     },
     {
@@ -458,7 +569,9 @@
       "type": "page",
       "content": "coworking-vitra-campus",
       "locales": [
-        "de"
+        "de",
+        "fr",
+        "it"
       ]
     },
     {
@@ -482,7 +595,9 @@
       "type": "page",
       "content": "lautsprecher-mieten",
       "locales": [
-        "de"
+        "de",
+        "fr",
+        "it"
       ]
     },
     {
@@ -490,7 +605,9 @@
       "type": "page",
       "content": "parkplatz-mieten",
       "locales": [
-        "de"
+        "de",
+        "fr",
+        "it"
       ]
     },
     {
@@ -498,7 +615,9 @@
       "type": "page",
       "content": "musikbox-mieten",
       "locales": [
-        "de"
+        "de",
+        "fr",
+        "it"
       ]
     }
   ],
