@@ -769,41 +769,70 @@ function AngebotFlowInner({
               </span>
             </label>
           </div>
-          <button
-            onClick={() => {
-              // Lead im Hintergrund speichern (fire-and-forget)
-              fetch('/api/lead', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  firma: firmenname,
-                  rechtsform,
-                  name: kontakt,
-                  email,
-                  telefon,
-                  tarif: selectedTarifObj?.name,
-                  quelle: 'angebot-vertrag',
-                  timestamp: new Date().toISOString(),
-                }),
-              }).catch(() => {});
-              // Direkt zum Vertrag
-              const gclidParam = paramGclid ? `?gclid=${paramGclid}` : '';
-              window.location.href = `/vertrag/${angebot.slug}${gclidParam}`;
-            }}
-            disabled={!firmenname || !rechtsform || !vertreterAnrede || !vertreterName || !starttermin || !kontakt || !email || !agbAccepted || (!ansprechpartnerIstZeichnungsberechtigt && !zeichnungsName)}
-            className={`mt-5 w-full rounded-lg py-3.5 text-base font-bold transition-all ${
-              firmenname && rechtsform && vertreterAnrede && vertreterName && starttermin && kontakt && email && agbAccepted && (ansprechpartnerIstZeichnungsberechtigt || zeichnungsName)
-                ? 'bg-[#6b7f3e] text-white hover:opacity-90 shadow-sm'
-                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-            }`}
-          >
-            {selectedTarifObj
-              ? 'Weiter zum Vertrag'
-              : 'Bitte zuerst Tarif wählen'}
-          </button>
-          <p className="text-[10px] text-muted-foreground text-center mt-2">
-            Im nächsten Schritt können Sie den Vertrag prüfen und direkt online unterschreiben.
-          </p>
+          {(() => {
+            const allFilled = !!(firmenname && rechtsform && vertreterAnrede && vertreterName && starttermin && kontakt && email && agbAccepted && (ansprechpartnerIstZeichnungsberechtigt || zeichnungsName));
+            return (
+              <div className="mt-5 flex flex-col sm:flex-row gap-3">
+                <button
+                  onClick={() => {
+                    // Lead im Hintergrund speichern (fire-and-forget)
+                    fetch('/api/lead', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                        firma: firmenname,
+                        rechtsform,
+                        name: kontakt,
+                        email,
+                        telefon,
+                        tarif: selectedTarifObj?.name,
+                        quelle: 'angebot-vertrag',
+                        timestamp: new Date().toISOString(),
+                      }),
+                    }).catch(() => {});
+                    const gclidParam = paramGclid ? `?gclid=${paramGclid}` : '';
+                    window.location.href = `/vertrag/${angebot.slug}${gclidParam}`;
+                  }}
+                  disabled={!allFilled}
+                  className={`flex-1 rounded-lg py-3.5 text-base font-bold transition-all ${
+                    allFilled
+                      ? 'bg-[#6b7f3e] text-white hover:opacity-90 shadow-sm'
+                      : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                  }`}
+                >
+                  Vertrag vervollständigen
+                </button>
+                <button
+                  onClick={async () => {
+                    const el = document.querySelector('.angebot-print-view') as HTMLElement;
+                    if (el) {
+                      el.style.display = 'block';
+                      const html2pdf = (await import('html2pdf.js')).default;
+                      await (html2pdf() as any).set({
+                        margin: [15, 20, 22, 20],
+                        filename: `Angebot_Geschaeftsadresse_${firmenname || angebot.firma}.pdf`,
+                        image: { type: 'jpeg', quality: 0.95 },
+                        html2canvas: { scale: 2, useCORS: true, logging: false },
+                        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                        pagebreak: { mode: ['css', 'legacy'], before: '.page-break' },
+                      }).from(el).save();
+                      el.style.display = 'none';
+                    } else {
+                      window.print();
+                    }
+                  }}
+                  className="flex-1 rounded-lg py-3.5 text-base font-bold border border-border bg-white text-foreground hover:bg-[#f5f5f0] transition-all shadow-sm"
+                >
+                  Angebot als PDF speichern
+                </button>
+              </div>
+            );
+          })()}
+          {!(firmenname && rechtsform && vertreterAnrede && vertreterName && starttermin && kontakt && email && agbAccepted && (ansprechpartnerIstZeichnungsberechtigt || zeichnungsName)) && (
+            <p className="text-[10px] text-muted-foreground text-center mt-2">
+              Bitte füllen Sie alle Pflichtfelder aus, um den Vertrag zu erstellen.
+            </p>
+          )}
         </div>
 
         {/* ── Bestätigung ── */}
