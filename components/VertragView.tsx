@@ -246,19 +246,25 @@ export default function VertragView({ vertrag }: { vertrag: VertragData }) {
   ];
 
   return (
-    <div className="min-h-screen bg-[#faf9f6]">
-      <div className="mx-auto max-w-3xl px-4 py-8 md:py-14 space-y-6">
+    <div className="min-h-screen bg-[#faf9f6] print:bg-white">
+      {/* Print-only header */}
+      <div className="hidden print:block text-center py-4 border-b border-gray-300 mb-6">
+        <p className="text-lg font-bold">{kundeSignatur ? 'Vertrag' : 'Vertragsentwurf'}</p>
+        <p className="text-sm text-gray-600">Dienstleistungsvertrag Geschäftsadresse</p>
+        <p className="text-xs text-gray-500">zwischen bizzcenter Weil am Rhein GmbH und {vertrag.firma}</p>
+      </div>
+      <div className="mx-auto max-w-3xl px-4 py-8 md:py-14 space-y-6 print:py-0 print:px-0">
 
         {/* ── Navigation ── */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between print:hidden">
           <a
             href={`/angebot/${vertrag.angebotSlug}`}
             className="inline-flex items-center gap-2 text-sm text-[#6b7f3e] font-medium hover:underline no-underline"
           >
             ← Zurück zum Angebot
           </a>
-          <span className="text-xs text-muted-foreground bg-white border border-border rounded-full px-3 py-1">
-            Vertragsentwurf
+          <span className="text-xs text-muted-foreground bg-white border border-border rounded-full px-3 py-1 print:hidden">
+            {kundeSignatur ? 'Vertrag' : 'Vertragsentwurf'}
           </span>
         </div>
 
@@ -329,7 +335,7 @@ export default function VertragView({ vertrag }: { vertrag: VertragData }) {
               <button
                 type="button"
                 onClick={() => toggle(s.id)}
-                className="w-full flex items-center justify-between px-6 md:px-8 py-4 text-left hover:bg-[#f5f5f0] transition-colors cursor-pointer"
+                className="w-full flex items-center justify-between px-6 md:px-8 py-4 text-left hover:bg-[#f5f5f0] transition-colors cursor-pointer print:hidden"
               >
                 <span className="font-semibold text-sm text-foreground">{s.title}</span>
                 <span className={`text-[#6b7f3e] transition-transform duration-200 ${expandedSection === s.id ? 'rotate-180' : ''}`}>
@@ -337,10 +343,17 @@ export default function VertragView({ vertrag }: { vertrag: VertragData }) {
                 </span>
               </button>
               {expandedSection === s.id && (
-                <div className="px-6 md:px-8 pb-5 text-sm text-muted-foreground leading-relaxed">
+                <div className="px-6 md:px-8 pb-5 text-sm text-muted-foreground leading-relaxed print:hidden">
                   {s.content}
                 </div>
               )}
+              {/* Print version: always show all content */}
+              <div className="hidden print:block px-6 md:px-8 pb-5">
+                <p className="font-semibold text-sm text-foreground mb-2">{s.title}</p>
+                <div className="text-sm text-muted-foreground leading-relaxed">
+                  {s.content}
+                </div>
+              </div>
             </div>
           ))}
         </div>
@@ -409,7 +422,7 @@ export default function VertragView({ vertrag }: { vertrag: VertragData }) {
 
         {/* ── Dokumente hochladen (nur nach Unterschrift) ── */}
         {kundeSignatur && (
-          <div className="rounded-2xl border-2 border-[#6b7f3e] bg-white shadow-sm p-6 md:p-8">
+          <div className="rounded-2xl border-2 border-[#6b7f3e] bg-white shadow-sm p-6 md:p-8 print:hidden">
             <div className="flex items-center gap-3 mb-2">
               <div className="w-10 h-10 rounded-full bg-[#f0f4e8] flex items-center justify-center">
                 <svg className="w-5 h-5 text-[#6b7f3e]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13" /></svg>
@@ -575,6 +588,7 @@ export default function VertragView({ vertrag }: { vertrag: VertragData }) {
         )}
 
         {/* ── Zahlungsmethode (nach Unterschrift + Dokumente vollständig) ── */}
+        <div className="print:hidden">
         {kundeSignatur && (() => {
           const requiredDocs = brauchtTransparenzregister
             ? ['ausweis', 'handelsregister', 'transparenzregister']
@@ -715,14 +729,15 @@ export default function VertragView({ vertrag }: { vertrag: VertragData }) {
             </div>
           );
         })()}
+        </div>
 
         {/* ── Actions ── */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 print:hidden">
           <button
             onClick={() => window.print()}
             className="inline-flex items-center gap-2 rounded-lg bg-[#6b7f3e] text-white px-6 py-3 text-sm font-semibold hover:opacity-90 transition-opacity shadow-sm"
           >
-            Vertrag als PDF speichern
+            {kundeSignatur ? 'Vertrag als PDF speichern' : 'Vertragsentwurf als PDF speichern'}
           </button>
           {!kundeSignatur && (
             <a
