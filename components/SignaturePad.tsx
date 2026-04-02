@@ -150,18 +150,11 @@ export default function SignaturePad({ label, onSignature, className = '' }: Sig
         <div className="rounded-lg border-2 border-[#6b7f3e] bg-white p-3">
           <img src={signaturePreview} alt="Unterschrift" className="max-h-24 mx-auto" />
         </div>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center">
           <span className="text-xs text-muted-foreground flex items-center gap-1">
             <span className="w-2 h-2 rounded-full bg-[#6b7f3e] inline-block" />
             Unterschrieben am {new Date().toLocaleDateString('de-DE')} um {new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}
           </span>
-          <button
-            type="button"
-            onClick={reset}
-            className="text-xs text-red-500 hover:underline cursor-pointer"
-          >
-            Zurücksetzen
-          </button>
         </div>
       </div>
     );
@@ -292,7 +285,7 @@ export default function SignaturePad({ label, onSignature, className = '' }: Sig
       )}
 
       <p className="text-[10px] text-muted-foreground leading-relaxed">
-        Mit Ihrer Vertrag rechtskräftig unterschreiben Sie, dass Sie die Vertragsbedingungen gelesen und akzeptiert haben.
+        Mit Ihrer Unterschrift bestätigen Sie, dass Sie die Vertragsbedingungen gelesen und akzeptiert haben.
         Die elektronische Unterschrift ist gemäß eIDAS-Verordnung (EU) Nr. 910/2014 als einfache elektronische Signatur rechtsgültig.
       </p>
     </div>
