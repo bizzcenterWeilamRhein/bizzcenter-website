@@ -8,14 +8,14 @@ description: "Profi-Beamer mit Leinwand mieten in Weil am Rhein. Full-HD, 3100 L
 <LanguageSwitcher />
 
 {/* ===== 1. HERO — Konferenzraum als Fullwidth-Bild ===== */}
-<section className="relative w-full h-[50vh] min-h-[400px] max-h-[600px] overflow-hidden">
+<section className="relative w-full h-[35vh] min-h-[280px] max-h-[400px] overflow-hidden">
   <img
     src="/images/standorte/weil-am-rhein/konferenzraum-gross.jpg"
     alt="Konferenzraum mit Beamer im bizzcenter Weil am Rhein"
     className="absolute inset-0 w-full h-full object-cover"
   />
-  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-  <div className="relative h-full flex items-end pb-10 px-6 md:px-12">
+  <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-transparent" />
+  <div className="relative h-full flex items-start pt-8 md:pt-12 px-6 md:px-12">
     <div className="max-w-3xl">
       <h1 className="text-3xl md:text-5xl font-bold text-white mb-3 drop-shadow-lg">
         Full-HD Beamer mieten in Weil am Rhein
@@ -28,15 +28,15 @@ description: "Profi-Beamer mit Leinwand mieten in Weil am Rhein. Full-HD, 3100 L
 </section>
 
 {/* ===== 2. PRODUKT-BOX — Beamer-Bild + Preise + Buchung ===== */}
-<section className="relative z-10 -mt-16 px-4 md:px-8 pb-12">
+<section className="relative z-10 -mt-32 px-4 md:px-8 pb-12">
   <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
     <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
-      {/* Bild */}
-      <div className="bg-[#f5f0eb] flex items-center justify-center p-8 md:p-12">
+      {/* Bild — edge-to-edge */}
+      <div className="bg-[#f5f0eb] overflow-hidden">
         <img
           src="/images/services/weil-am-rhein/beamer-mieten-original.png"
           alt="Epson EH-TW650 Full-HD Beamer mit Leinwand — bizzcenter Weil am Rhein"
-          className="max-w-full max-h-[300px] object-contain"
+          className="w-full h-full object-cover"
         />
       </div>
       {/* Info + Preise */}
