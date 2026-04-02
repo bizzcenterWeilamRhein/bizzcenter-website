@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import SignaturePad from './SignaturePad';
 
 /* ───────────────────────────── TYPES ───────────────────────────── */
@@ -383,8 +383,9 @@ export default function VertragView({ vertrag }: { vertrag: VertragData }) {
             <div>
               <SignaturePad
                 label="Kunde"
-                onSignature={(data) => {
+                onSignature={async (data) => {
                   setKundeSignatur(data);
+                  
                   // Google Ads Conversion: Vertrag unterschrieben
                   if (typeof window !== 'undefined') {
                     (window as any).dataLayer = (window as any).dataLayer || [];
@@ -393,6 +394,37 @@ export default function VertragView({ vertrag }: { vertrag: VertragData }) {
                       conversion_value: vertrag.preisNetto,
                       currency: 'EUR',
                     });
+                  }
+
+                  // GCLID aus URL oder Cookie
+                  const urlParams = new URLSearchParams(window.location.search);
+                  const gclid = urlParams.get('gclid') || document.cookie.match(/gclid=([^;]+)/)?.[1] || undefined;
+
+                  // Vertrag an Backend senden
+                  try {
+                    await fetch('/api/contract', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                        slug: vertrag.slug,
+                        firma: vertrag.firma,
+                        rechtsform: vertrag.rechtsform,
+                        vertreter: vertrag.vertreter,
+                        vertreterAnrede: vertrag.vertreterAnrede,
+                        email: vertrag.ansprechpartnerEmail,
+                        telefon: vertrag.ansprechpartnerTel,
+                        tarifName: vertrag.tarifName,
+                        tarifLaufzeit: vertrag.tarifLaufzeit,
+                        preisNetto: vertrag.preisNetto,
+                        preisBrutto: vertrag.preisBrutto,
+                        addons: vertrag.addons,
+                        starttermin: vertrag.starttermin,
+                        signatur: data,
+                        gclid,
+                      }),
+                    });
+                  } catch (err) {
+                    console.error('Contract submission failed:', err);
                   }
                 }}
               />

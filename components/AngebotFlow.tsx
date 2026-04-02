@@ -197,6 +197,7 @@ function AngebotFlowInner({
   const paramEmail = searchParams.get('email') || '';
   const paramTelefon = searchParams.get('telefon') || '';
   const paramNachricht = searchParams.get('nachricht') || '';
+  const paramGclid = searchParams.get('gclid') || '';
 
   const defaultTarifId = tarifList.find(t => t.popular)?.id || tarifList[0]?.id || null;
   const [step, setStep] = useState(defaultTarifId ? 2 : 0);
@@ -814,7 +815,7 @@ function AngebotFlowInner({
         {/* ── PDF Download + Vertrag Link ── */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <a
-            href={`/vertrag/${angebot.slug}`}
+            href={`/vertrag/${angebot.slug}${paramGclid ? `?gclid=${paramGclid}` : ''}`}
             className="inline-flex items-center gap-2 rounded-lg bg-[#6b7f3e] text-white px-5 py-2.5 text-sm font-semibold hover:opacity-90 transition-opacity shadow-sm no-underline"
           >
             Vollständigen Vertrag ansehen

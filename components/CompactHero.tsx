@@ -136,6 +136,9 @@ function HeroForm() {
       body: JSON.stringify({ ...data, name: `${data.vorname || ''} ${data.nachname || ''}`.trim(), quelle: 'hero-formular', timestamp: new Date().toISOString() }),
     }).catch(() => {});
 
+    // GCLID mitführen für Google Ads Conversion Tracking
+    const urlGclid = new URLSearchParams(window.location.search).get('gclid') || document.cookie.match(/gclid=([^;]+)/)?.[1] || '';
+
     // Weiterleitung zum Angebot
     const params = new URLSearchParams({
       ...(data.anrede && { anrede: data.anrede }),
@@ -144,6 +147,7 @@ function HeroForm() {
       ...(data.firma && { firma: data.firma }),
       ...(data.email && { email: data.email }),
       ...(data.telefon && { telefon: data.telefon }),
+      ...(urlGclid && { gclid: urlGclid }),
     });
     window.location.href = `/angebot/kunde-xyz?${params.toString()}`;
   }
