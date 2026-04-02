@@ -380,7 +380,7 @@ function AngebotFlowInner({
         {/* ── Intro + Ansprechpartner ── */}
         <div className="rounded-2xl border border-border bg-white shadow-sm p-5 md:p-8">
           <p className="text-sm text-muted-foreground leading-relaxed">
-            {angebot.intro || `${angebot.anrede} ${angebot.name}, vielen Dank für Ihr Interesse am bizzcenter ${angebot.standort}. Wir freuen uns, Ihnen folgendes persönliches Angebot für Ihre ${serviceLabel} zu unterbreiten.`}
+            {angebot.intro || `${vertreterAnrede || ''} ${kontaktVorname || ''} ${kontaktNachname || ''}, vielen Dank für Ihr Interesse am bizzcenter ${angebot.standort}. Wir freuen uns, Ihnen folgendes persönliches Angebot für Ihre ${serviceLabel} zu unterbreiten.`.replace(/^\s+/, '')}
           </p>
           <div className="mt-4 flex items-center gap-3 text-sm">
             {angebot.ansprechpartnerBild ? (
@@ -816,7 +816,8 @@ function AngebotFlowInner({
                 <button
                   onClick={async () => {
                     const el = document.querySelector('.angebot-print-view') as HTMLElement;
-                    if (el) {
+                    if (!el) { window.print(); return; }
+                    try {
                       el.style.display = 'block';
                       const html2pdf = (await import('html2pdf.js')).default;
                       await (html2pdf() as any).set({
@@ -827,12 +828,16 @@ function AngebotFlowInner({
                         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
                         pagebreak: { mode: ['css', 'legacy'], before: '.page-break' },
                       }).from(el).save();
+                    } finally {
                       el.style.display = 'none';
-                    } else {
-                      window.print();
                     }
                   }}
-                  className="flex-1 rounded-lg py-3.5 text-base font-bold border border-border bg-white text-foreground hover:bg-[#f5f5f0] transition-all shadow-sm"
+                  disabled={!allFilled}
+                  className={`flex-1 rounded-lg py-3.5 text-base font-bold border transition-all shadow-sm ${
+                    allFilled
+                      ? 'border-border bg-white text-foreground hover:bg-[#f5f5f0]'
+                      : 'bg-gray-200 text-gray-400 cursor-not-allowed border-gray-200'
+                  }`}
                 >
                   Angebot als PDF speichern
                 </button>
@@ -877,43 +882,7 @@ function AngebotFlowInner({
           </div>
         )}
 
-        {/* ── PDF Download + Vertrag Link ── */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-          {firmenname && rechtsform && starttermin && kontaktVorname && kontaktNachname && email ? (
-            <a
-              href={`/vertrag/${angebot.slug}${paramGclid ? `?gclid=${paramGclid}` : ''}`}
-              className="inline-flex items-center gap-2 rounded-lg bg-[#6b7f3e] text-white px-5 py-2.5 text-sm font-semibold hover:opacity-90 transition-opacity shadow-sm no-underline"
-            >
-              Vollständigen Vertrag ansehen
-            </a>
-          ) : (
-            <span className="inline-flex items-center gap-2 rounded-lg bg-gray-200 text-gray-400 px-5 py-2.5 text-sm font-semibold cursor-not-allowed">
-              Vollständigen Vertrag ansehen
-              <span className="text-[10px] font-normal">(Daten oben ausfüllen)</span>
-            </span>
-          )}
-          <button
-            onClick={async () => {
-              const el = document.querySelector('.angebot-print-view') as HTMLElement;
-              if (!el) return;
-              el.style.display = 'block';
-              const html2pdf = (await import('html2pdf.js')).default;
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              await html2pdf().set({
-                margin: [15, 20, 22, 20],
-                filename: `Angebot_Geschaeftsadresse_${firmenname || angebot.firma}.pdf`,
-                image: { type: 'jpeg', quality: 0.95 },
-                html2canvas: { scale: 2, useCORS: true, logging: false },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                pagebreak: { mode: ['css', 'legacy'], before: '.page-break' },
-              } as any).from(el).save();
-              el.style.display = 'none';
-            }}
-            className="inline-flex items-center gap-2 rounded-lg border border-border bg-white px-5 py-2.5 text-sm font-medium text-foreground hover:bg-[#f5f5f0] transition-colors shadow-sm"
-          >
-            Angebot als PDF speichern
-          </button>
-        </div>
+
 
         {/* ── Footer ── */}
         <div className="text-center text-xs text-muted-foreground py-4">
