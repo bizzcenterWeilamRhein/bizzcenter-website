@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://weil.bizzcenter.de/sitemap.xml
