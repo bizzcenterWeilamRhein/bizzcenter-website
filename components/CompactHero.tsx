@@ -136,6 +136,7 @@ function HeroForm() {
       ...(data.nachname && { nachname: data.nachname }),
       ...(data.email && { email: data.email }),
       ...(data.firma && { firma: data.firma }),
+      ...(data.rechtsform && { rechtsform: data.rechtsform }),
       ...(urlGclid && { gclid: urlGclid }),
       ...(selectedTarif && { tarif: selectedTarif }),
     });
@@ -155,7 +156,21 @@ function HeroForm() {
         <input name="nachname" type="text" placeholder="Nachname" required className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
       </div>
       <input name="email" type="email" placeholder="E-Mail-Adresse" required className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
-      <input name="firma" type="text" placeholder="Firmenname (optional)" className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
+      <div className="grid grid-cols-2 gap-2">
+        <input name="firma" type="text" placeholder="Firmenname (optional)" className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
+        <select name="rechtsform" className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#6b7f3e] appearance-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' viewBox=\'0 0 12 12\'%3E%3Cpath d=\'M6 8L1 3h10z\' fill=\'%236b7f3e\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center' }}>
+          <option value="">Rechtsform</option>
+          <option value="gmbh">GmbH</option>
+          <option value="ug">UG (haftungsbeschränkt)</option>
+          <option value="gmbh-co-kg">GmbH & Co. KG</option>
+          <option value="ag">AG</option>
+          <option value="ek">e.K.</option>
+          <option value="einzelunternehmen">Einzelunternehmen</option>
+          <option value="freiberufler">Freiberufler/in</option>
+          <option value="gbr">GbR</option>
+          <option value="sonstige">Sonstige</option>
+        </select>
+      </div>
       <button type="submit" disabled={status === 'sending'} className="w-full rounded-lg bg-[#6b7f3e] text-white px-4 py-3 text-sm font-bold hover:opacity-90 transition-opacity disabled:opacity-50 shadow-sm">
         {status === 'sending' ? 'Wird erstellt...' : 'Angebot erstellen →'}
       </button>
