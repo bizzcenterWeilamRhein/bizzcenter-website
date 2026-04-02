@@ -254,71 +254,103 @@ export default function VertragView({ vertrag, readOnly = false }: { vertrag: Ve
       <style dangerouslySetInnerHTML={{ __html: `
         @media print {
           header, footer, nav, [role="banner"], [role="contentinfo"], [role="navigation"] { display: none !important; }
-          body { margin: 0 !important; padding: 0 !important; }
-          @page { margin: 18mm 20mm 25mm 20mm; size: A4; }
+          body { margin: 0 !important; padding: 0 !important; font-family: Arial, Helvetica, sans-serif !important; }
+          @page { margin: 20mm 20mm 28mm 20mm; size: A4; }
           .web-view { display: none !important; }
           .print-view { display: block !important; }
+          .print-view * { color: #000 !important; }
+          .print-view a { text-decoration: none !important; }
+          .print-view .print-section { break-inside: avoid; page-break-inside: avoid; }
+          .print-view .print-signature-block { break-inside: avoid; page-break-inside: avoid; page-break-before: auto; }
+          .print-view table { border-collapse: collapse; }
+          .print-view td, .print-view th { color: #000 !important; }
         }
         @media screen {
           .print-view { display: none !important; }
         }
       `}} />
 
-      <div className="print-view" style={{ fontFamily: 'Arial, Helvetica, sans-serif', fontSize: '11pt', lineHeight: '1.5', color: '#000' }}>
-        {/* Titel */}
-        <div style={{ textAlign: 'center', marginBottom: '24pt' }}>
-          <h1 style={{ fontSize: '16pt', fontWeight: 'bold', margin: '0 0 6pt 0' }}>
-            Dienstleistungsvertrag Geschäftsadresse
-          </h1>
+      <div className="print-view" style={{ fontFamily: 'Arial, Helvetica, sans-serif', fontSize: '10pt', lineHeight: '1.45', color: '#000' }}>
+
+        {/* ── Logo + Kopf ── */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20pt', borderBottom: '2pt solid #2C4A7C', paddingBottom: '12pt' }}>
+          <div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/logo-bizzcenter-print.svg" alt="bizzcenter" style={{ height: '36pt' }} />
+          </div>
+          <div style={{ textAlign: 'right', fontSize: '8pt', color: '#555', lineHeight: '1.4' }}>
+            bizzcenter Weil am Rhein GmbH<br />
+            Im Schwarzenbach 4 | 79576 Weil am Rhein<br />
+            Geschäftsführer: Torben Götz<br />
+            AG Freiburg | HRB 720019
+          </div>
         </div>
 
-        {/* Parteien */}
-        <p style={{ marginBottom: '12pt' }}>zwischen</p>
-        <p style={{ marginBottom: '2pt' }}><strong>bizzcenter Weil am Rhein GmbH</strong> – bizzcenter –</p>
-        <p style={{ marginBottom: '2pt' }}>- vertreten durch den Geschäftsführer Herrn Torben Götz -</p>
-        <p style={{ marginBottom: '2pt' }}>Im Schwarzenbach 4</p>
-        <p style={{ marginBottom: '16pt' }}>79576 Weil am Rhein</p>
+        {/* ── Titel ── */}
+        <h1 style={{ fontSize: '15pt', fontWeight: 'bold', textAlign: 'center', margin: '0 0 20pt 0', letterSpacing: '0.5pt' }}>
+          Dienstleistungsvertrag Geschäftsadresse
+        </h1>
 
-        <p style={{ marginBottom: '12pt' }}>und</p>
-        <p style={{ marginBottom: '2pt' }}><strong>{vertrag.firma}</strong> – Kunde –</p>
-        <p style={{ marginBottom: '2pt' }}>- vertreten durch {vertrag.vertreterLabel === 'Inhaber' ? 'den Inhaber' : `den ${vertrag.vertreterLabel}`} {vertrag.vertreterAnrede} {vertrag.vertreter} -</p>
-        <p style={{ marginBottom: '2pt' }}>{vertrag.kundeAdresse ? vertrag.kundeAdresse.split(',')[0]?.trim() : ''}</p>
-        <p style={{ marginBottom: '24pt' }}>{vertrag.kundeAdresse ? vertrag.kundeAdresse.split(',').slice(1).join(',').trim() : ''}</p>
+        {/* ── Parteien ── */}
+        <div style={{ display: 'flex', gap: '24pt', marginBottom: '20pt' }}>
+          <div style={{ flex: 1, border: '1pt solid #ddd', padding: '10pt 12pt', fontSize: '9pt', lineHeight: '1.5' }}>
+            <p style={{ fontWeight: 'bold', fontSize: '8pt', textTransform: 'uppercase', letterSpacing: '1pt', color: '#555', marginBottom: '4pt' }}>Dienstleister</p>
+            <p style={{ fontWeight: 'bold' }}>bizzcenter Weil am Rhein GmbH</p>
+            <p>vertreten durch den Geschäftsführer<br />Herrn Torben Götz</p>
+            <p style={{ marginTop: '4pt' }}>Im Schwarzenbach 4<br />79576 Weil am Rhein</p>
+          </div>
+          <div style={{ flex: 1, border: '1pt solid #ddd', padding: '10pt 12pt', fontSize: '9pt', lineHeight: '1.5' }}>
+            <p style={{ fontWeight: 'bold', fontSize: '8pt', textTransform: 'uppercase', letterSpacing: '1pt', color: '#555', marginBottom: '4pt' }}>Kunde</p>
+            <p style={{ fontWeight: 'bold' }}>{vertrag.firma}</p>
+            <p>vertreten durch {vertrag.vertreterLabel === 'Inhaber' ? 'den Inhaber' : `den ${vertrag.vertreterLabel}`}<br />{vertrag.vertreterAnrede} {vertrag.vertreter}</p>
+            {vertrag.kundeAdresse && (
+              <p style={{ marginTop: '4pt' }}>{vertrag.kundeAdresse.split(',')[0]?.trim()}<br />{vertrag.kundeAdresse.split(',').slice(1).join(',').trim()}</p>
+            )}
+          </div>
+        </div>
 
-        {/* §§ */}
+        {/* ── Vertragssektionen ── */}
         {sections.map((s) => (
-          <div key={s.id} style={{ marginBottom: '12pt' }}>
-            <p style={{ fontWeight: 'bold', marginBottom: '4pt' }}>{s.title}</p>
-            <div style={{ fontSize: '10.5pt' }}>{s.content}</div>
+          <div key={s.id} className="print-section" style={{ marginBottom: '10pt' }}>
+            <p style={{ fontWeight: 'bold', fontSize: '10pt', marginBottom: '3pt', borderBottom: '0.5pt solid #eee', paddingBottom: '2pt' }}>{s.title}</p>
+            <div style={{ fontSize: '9pt', lineHeight: '1.5' }}>{s.content}</div>
           </div>
         ))}
 
-        {/* Unterschriften */}
-        <div style={{ marginTop: '36pt', pageBreakInside: 'avoid' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', gap: '40pt' }}>
+        {/* ── Unterschriften ── */}
+        <div className="print-signature-block" style={{ marginTop: '30pt', borderTop: '1pt solid #000', paddingTop: '16pt' }}>
+          <div style={{ display: 'flex', gap: '40pt' }}>
+            {/* bizzcenter */}
             <div style={{ flex: 1 }}>
-              <p style={{ marginBottom: '4pt', fontSize: '10pt' }}>Weil am Rhein, den ______________________</p>
-              <div style={{ borderBottom: '1px solid #000', height: '60pt', marginBottom: '4pt' }}>
-                {/* bizzcenter Unterschrift */}
+              <p style={{ fontSize: '9pt', marginBottom: '8pt' }}>Weil am Rhein, den ______________________</p>
+              <div style={{ height: '50pt', marginBottom: '2pt' }}>
+                {/* Platz für bizzcenter Unterschrift */}
               </div>
-              <p style={{ fontSize: '9pt' }}>bizzcenter Weil am Rhein GmbH / Unterschrift</p>
+              <div style={{ borderTop: '1pt solid #000', paddingTop: '4pt' }}>
+                <p style={{ fontSize: '8pt', fontWeight: 'bold' }}>bizzcenter Weil am Rhein GmbH</p>
+                <p style={{ fontSize: '8pt' }}>Torben Götz, Geschäftsführer</p>
+              </div>
             </div>
+            {/* Kunde */}
             <div style={{ flex: 1 }}>
-              <p style={{ marginBottom: '4pt', fontSize: '10pt' }}>_____________________, den ______________________</p>
-              <div style={{ borderBottom: '1px solid #000', height: '60pt', marginBottom: '4pt', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <p style={{ fontSize: '9pt', marginBottom: '8pt' }}>_____________________, den ______________________</p>
+              <div style={{ height: '50pt', marginBottom: '2pt', display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
                 {kundeSignatur && (
-                  <img src={kundeSignatur.dataUrl} alt="Unterschrift" style={{ maxHeight: '56pt', maxWidth: '200pt' }} />
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={kundeSignatur.dataUrl} alt="Unterschrift" style={{ maxHeight: '46pt', maxWidth: '180pt' }} />
                 )}
               </div>
-              <p style={{ fontSize: '9pt' }}>Kunde (Unterschrift + Name)</p>
+              <div style={{ borderTop: '1pt solid #000', paddingTop: '4pt' }}>
+                <p style={{ fontSize: '8pt', fontWeight: 'bold' }}>{vertrag.firma}</p>
+                <p style={{ fontSize: '8pt' }}>{vertrag.vertreterAnrede} {vertrag.vertreter}, {vertrag.vertreterLabel}</p>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Footer auf jeder Seite */}
-        <div style={{ position: 'fixed', bottom: '0', left: '0', right: '0', textAlign: 'center', fontSize: '7.5pt', color: '#666', borderTop: '0.5pt solid #ccc', paddingTop: '4pt', paddingBottom: '0' }}>
-          bizzcenter Weil am Rhein GmbH | Business Center Weil &nbsp;&middot;&nbsp; Im Schwarzenbach 4 | 79576 Weil am Rhein &nbsp;&middot;&nbsp; Geschäftsführer: Torben Götz<br />
-          Registergericht: AG Freiburg | Registernummer: HRB 720019
+        {/* ── Footer (fixiert auf jeder Seite) ── */}
+        <div style={{ position: 'fixed', bottom: '0', left: '0', right: '0', textAlign: 'center', fontSize: '7pt', color: '#888', borderTop: '0.5pt solid #ccc', paddingTop: '3pt' }}>
+          bizzcenter Weil am Rhein GmbH &nbsp;|&nbsp; Im Schwarzenbach 4 &nbsp;|&nbsp; 79576 Weil am Rhein &nbsp;|&nbsp; Geschäftsführer: Torben Götz &nbsp;|&nbsp; AG Freiburg &nbsp;|&nbsp; HRB 720019
         </div>
       </div>
 
