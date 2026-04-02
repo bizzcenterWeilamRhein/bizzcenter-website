@@ -27,6 +27,38 @@ const TARIFE: Tarif[] = [
   },
 ];
 
+// Staffelpreise (Beamer + Leinwand)
+interface StaffelPreis {
+  minTage: number;
+  maxTage: number;
+  label: string;
+  gesamtpreis: number;
+}
+
+const STAFFEL_LEINWAND: StaffelPreis[] = [
+  { minTage: 1, maxTage: 1, label: '1 Tag', gesamtpreis: 59 },
+  { minTage: 2, maxTage: 2, label: '2 Tage', gesamtpreis: 109 },
+  { minTage: 3, maxTage: 3, label: 'Wochenende (Fr–So)', gesamtpreis: 137 },
+  { minTage: 4, maxTage: 7, label: 'Woche', gesamtpreis: 199 },
+];
+
+const STAFFEL_ONLY: StaffelPreis[] = [
+  { minTage: 1, maxTage: 1, label: '1 Tag', gesamtpreis: 39 },
+  { minTage: 2, maxTage: 2, label: '2 Tage', gesamtpreis: 69 },
+  { minTage: 3, maxTage: 3, label: 'Wochenende (Fr–So)', gesamtpreis: 89 },
+  { minTage: 4, maxTage: 7, label: 'Woche', gesamtpreis: 139 },
+];
+
+function getStaffelPreis(tarif: string, tage: number): number {
+  const staffel = tarif === 'beamer-leinwand' ? STAFFEL_LEINWAND : STAFFEL_ONLY;
+  // Find matching tier
+  for (const s of [...staffel].reverse()) {
+    if (tage >= s.minTage) return s.gesamtpreis;
+  }
+  return staffel[0].gesamtpreis;
+}
+
+
 const WEEKDAYS = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
 const MONTHS = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
 
@@ -41,6 +73,18 @@ function parseDate(s: string): Date {
 
 export function BeamerBuchung() {
   const [selectedTarif, setSelectedTarif] = useState<string>('beamer-leinwand');
+
+  // Pick up tarif from URL hash (e.g. #buchen?tarif=beamer-only)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const hash = window.location.hash;
+      if (hash.includes('tarif=beamer-only')) {
+        setSelectedTarif('beamer-only');
+      } else if (hash.includes('tarif=beamer-leinwand')) {
+        setSelectedTarif('beamer-leinwand');
+      }
+    }
+  }, []);
   const [viewMonth, setViewMonth] = useState(() => new Date().getMonth());
   const [viewYear, setViewYear] = useState(() => new Date().getFullYear());
   const [bookedDates, setBookedDates] = useState<Set<string>>(new Set());
@@ -102,7 +146,7 @@ export function BeamerBuchung() {
   } else if (startDate) {
     tage = 1;
   }
-  const gesamtpreis = tarif ? tarif.preis * tage : 0;
+  const gesamtpreis = tarif ? getStaffelPreis(selectedTarif, tage) : 0;
 
   // Check if within 24h
   const isShortNotice = startDate ? (parseDate(startDate).getTime() - Date.now()) < 24 * 60 * 60 * 1000 : false;
@@ -347,6 +391,21 @@ export function BeamerBuchung() {
                 <span className="flex items-center gap-1.5"><span className="w-3 h-3 bg-[#6b7f3e] rounded" /> Ausgewählt</span>
                 <span className="flex items-center gap-1.5"><span className="w-3 h-3 bg-red-100 border border-red-300 rounded" /> Gebucht</span>
                 <span className="flex items-center gap-1.5"><span className="w-3 h-3 bg-gray-100 border border-gray-200 rounded" /> Verfügbar</span>
+              </div>
+            </div>
+
+            {/* Staffelpreise */}
+            <div className="mt-3 border border-gray-200 rounded-lg overflow-hidden">
+              <div className="bg-gray-50 px-4 py-2 border-b border-gray-200">
+                <span className="text-xs font-semibold text-gray-700 uppercase tracking-wide">Mehrtages-Rabatt ({selectedTarif === 'beamer-leinwand' ? 'Beamer + Leinwand' : 'Nur Beamer'})</span>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-gray-200">
+                {(selectedTarif === 'beamer-leinwand' ? STAFFEL_LEINWAND : STAFFEL_ONLY).map((s, i) => (
+                  <div key={i} className={`px-3 py-2.5 text-center ${tage >= s.minTage && tage <= s.maxTage ? 'bg-[#f0f4e8]' : ''}`}>
+                    <div className="text-xs text-gray-500">{s.label}</div>
+                    <div className="font-bold text-gray-900">EUR {s.gesamtpreis},-</div>
+                  </div>
+                ))}
               </div>
             </div>
 

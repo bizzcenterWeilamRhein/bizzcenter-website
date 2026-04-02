@@ -9,10 +9,34 @@ const pool = new Pool({
 });
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://weil.bizzcenter.de';
 
-const TARIFE: Record<string, { label: string; preisNetto: number }> = {
-  'beamer-only': { label: 'Beamer mieten (nur Projektor)', preisNetto: 3900 }, // cents
-  'beamer-leinwand': { label: 'Beamer + Leinwand mieten', preisNetto: 5900 },
+const TARIFE: Record<string, { label: string; preisTag: number }> = {
+  'beamer-only': { label: 'Beamer mieten (nur Projektor)', preisTag: 3900 }, // cents
+  'beamer-leinwand': { label: 'Beamer + Leinwand mieten', preisTag: 5900 },
 };
+
+// Staffelpreise in Cent (netto)
+const STAFFEL: Record<string, { min: number; max: number; preis: number }[]> = {
+  'beamer-leinwand': [
+    { min: 1, max: 1, preis: 5900 },
+    { min: 2, max: 2, preis: 10900 },
+    { min: 3, max: 3, preis: 13700 },
+    { min: 4, max: 7, preis: 19900 },
+  ],
+  'beamer-only': [
+    { min: 1, max: 1, preis: 3900 },
+    { min: 2, max: 2, preis: 6900 },
+    { min: 3, max: 3, preis: 8900 },
+    { min: 4, max: 7, preis: 13900 },
+  ],
+};
+
+function getStaffelPreis(tarif: string, tage: number): number {
+  const staffel = STAFFEL[tarif] || STAFFEL['beamer-leinwand'];
+  for (const s of [...staffel].reverse()) {
+    if (tage >= s.min) return s.preis;
+  }
+  return staffel[0].preis;
+}
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -45,7 +69,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     // Calculate days
     const tage = Math.max(1, Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1);
-    const gesamtpreisNetto = tarifInfo.preisNetto * tage;
+    const gesamtpreisNetto = getStaffelPreis(tarif, tage);
 
     // Check availability
     const overlap = await pool.query(
@@ -72,13 +96,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       line_items: [{
         price_data: {
           currency: 'eur',
-          unit_amount: tarifInfo.preisNetto,
+          unit_amount: gesamtpreisNetto,
           product_data: {
-            name: tarifInfo.label,
+            name: `${tarifInfo.label} (${tage} ${tage === 1 ? 'Tag' : 'Tage'})`,
             description: `Zeitraum: ${zeitraum}`,
           },
         },
-        quantity: tage,
+        quantity: 1,
       }],
       metadata: {
         type: 'beamer',
