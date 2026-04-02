@@ -370,7 +370,19 @@ export default function VertragView({ vertrag }: { vertrag: VertragData }) {
             <div>
               <SignaturePad
                 label="Kunde"
-                onSignature={(data) => setKundeSignatur(data)}
+                onSignature={(data) => {
+                  setKundeSignatur(data);
+                  // Google Ads Conversion: Vertrag unterschrieben
+                  if (typeof window !== 'undefined') {
+                    (window as any).dataLayer = (window as any).dataLayer || [];
+                    (window as any).dataLayer.push({
+                      event: 'contract_signed',
+                      conversion_value: vertrag.preisNetto,
+                      currency: 'EUR',
+                      firma: vertrag.firma,
+                    });
+                  }
+                }}
               />
               <div className="mt-2">
                 <p className="text-sm font-medium">{vertrag.firma}</p>
