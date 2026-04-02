@@ -210,6 +210,13 @@
               "en": "Privacy Policy"
             },
             "href": "/datenschutz"
+          },
+          {
+            "label": {
+              "de": "Cookie-Einstellungen",
+              "en": "Cookie Settings"
+            },
+            "href": "#cookie-settings"
           }
         ]
       }
@@ -536,7 +543,7 @@
     }
   ],
   "analytics": {
-    "googleTagManager": "GTM-58ZDC5BN"
+    "googleTagManager": "GTM-W5TDB4QH"
   },
   "_disabledPages": [
     {

@@ -1,117 +1,56 @@
 'use client';
 
-import { useEffect } from 'react';
-import Script from 'next/script';
-
-/**
- * Global client-side initializations:
- * 1. Prevents horizontal scroll (overflow-x: hidden)
- * 2. Injects Google Consent Mode v2 defaults before GTM fires
- * 3. Renders Cookie Consent Banner
- *
- * This component is included on every page via MDX, so it serves
- * as the global initialization point for client-side scripts.
- */
-
-// Consent Mode inline script — reads localStorage and sets defaults
-const CONSENT_SCRIPT = `
-(function() {
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  var saved = null;
-  try { saved = localStorage.getItem('bizzcenter_cookie_consent'); } catch(e) {}
-  if (saved === 'granted') {
-    gtag('consent', 'default', {
-      'analytics_storage': 'granted',
-      'ad_storage': 'granted',
-      'ad_user_data': 'granted',
-      'ad_personalization': 'granted'
-    });
-  } else {
-    gtag('consent', 'default', {
-      'analytics_storage': 'denied',
-      'ad_storage': 'denied',
-      'ad_user_data': 'denied',
-      'ad_personalization': 'denied',
-      'wait_for_update': 500
-    });
-  }
-})();
-`.trim();
-
-export function GlobalOverflowFix() {
-  useEffect(() => {
-    document.documentElement.style.overflowX = 'hidden';
-    document.body.style.overflowX = 'hidden';
-
-    // Intercept #cookie-settings clicks to open cookie banner
-    const handleClick = (e: MouseEvent) => {
-      const target = e.target as HTMLAnchorElement;
-      if (target.tagName === 'A' && target.getAttribute('href') === '#cookie-settings') {
-        e.preventDefault();
-        window.dispatchEvent(new Event('opencookieconsent'));
-      }
-    };
-    document.addEventListener('click', handleClick);
-
-    return () => {
-      document.documentElement.style.overflowX = '';
-      document.body.style.overflowX = '';
-      document.removeEventListener('click', handleClick);
-    };
-  }, []);
-
-  return (
-    <>
-      <Script
-        id="consent-mode-defaults"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: CONSENT_SCRIPT }}
-      />
-      <CookieBanner />
-    </>
-  );
-}
-
-// ─── Cookie Banner (inline) ─────────────────────────────────────────
-
-import { useState, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 const CONSENT_KEY = 'bizzcenter_cookie_consent';
+type ConsentChoice = 'granted' | 'denied';
 
 function gtag(...args: unknown[]) {
-  (window as WindowWithDataLayer).dataLayer = (window as WindowWithDataLayer).dataLayer || [];
-  (window as WindowWithDataLayer).dataLayer!.push(args);
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push(args);
 }
 
-interface WindowWithDataLayer extends Window {
-  dataLayer?: unknown[];
-}
-
-function CookieBanner() {
+/**
+ * Cookie Consent Banner with Google Consent Mode v2.
+ *
+ * On mount:
+ * 1. Reads saved consent from localStorage
+ * 2. Pushes consent defaults (denied if no choice, saved state otherwise)
+ * 3. Shows banner if no choice was made yet
+ *
+ * Listens for 'opencookieconsent' event to reopen from footer link.
+ */
+export function CookieConsent() {
   const [visible, setVisible] = useState(false);
   const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem(CONSENT_KEY);
+    const saved = localStorage.getItem(CONSENT_KEY) as ConsentChoice | null;
+
     if (!saved) {
       setVisible(true);
     }
-    setInitialized(true);
 
+    setInitialized(true);
+  }, []);
+
+  // Listen for reopen event from footer link
+  useEffect(() => {
     const handler = () => setVisible(true);
     window.addEventListener('opencookieconsent', handler);
     return () => window.removeEventListener('opencookieconsent', handler);
   }, []);
 
-  const handleChoice = useCallback((choice: 'granted' | 'denied') => {
+  const handleChoice = useCallback((choice: ConsentChoice) => {
     const granted = choice === 'granted';
+
     gtag('consent', 'update', {
       analytics_storage: granted ? 'granted' : 'denied',
       ad_storage: granted ? 'granted' : 'denied',
       ad_user_data: granted ? 'granted' : 'denied',
       ad_personalization: granted ? 'granted' : 'denied',
     });
+
     localStorage.setItem(CONSENT_KEY, choice);
     setVisible(false);
   }, []);
@@ -161,7 +100,10 @@ function CookieBanner() {
               fontSize: 14,
               fontWeight: 600,
               cursor: 'pointer',
+              transition: 'background 0.15s',
             }}
+            onMouseOver={(e) => (e.currentTarget.style.background = '#5a6d34')}
+            onMouseOut={(e) => (e.currentTarget.style.background = '#6b7f3e')}
           >
             Alle akzeptieren
           </button>
@@ -176,7 +118,10 @@ function CookieBanner() {
               fontSize: 14,
               fontWeight: 600,
               cursor: 'pointer',
+              transition: 'background 0.15s',
             }}
+            onMouseOver={(e) => (e.currentTarget.style.background = '#e5e7eb')}
+            onMouseOut={(e) => (e.currentTarget.style.background = '#f3f4f6')}
           >
             Nur notwendige
           </button>
@@ -184,4 +129,35 @@ function CookieBanner() {
       </div>
     </div>
   );
+}
+
+/**
+ * Footer link to reopen the cookie consent banner.
+ * Dispatches a custom event that CookieConsent listens to.
+ */
+export function CookieSettingsLink() {
+  return (
+    <button
+      onClick={() => window.dispatchEvent(new Event('opencookieconsent'))}
+      style={{
+        background: 'none',
+        border: 'none',
+        color: 'inherit',
+        cursor: 'pointer',
+        padding: 0,
+        fontSize: 'inherit',
+        textDecoration: 'underline',
+        opacity: 0.7,
+      }}
+    >
+      Cookie-Einstellungen
+    </button>
+  );
+}
+
+// TypeScript global augmentation
+declare global {
+  interface Window {
+    dataLayer?: unknown[];
+  }
 }

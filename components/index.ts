@@ -43,3 +43,5 @@ export { BannerCTAWithForm } from './BannerCTAWithForm';
 export { BeamerBuchung } from './BeamerBuchung';
 
 export { GlobalOverflowFix } from './GlobalOverflowFix';
+export { CookieConsent, CookieSettingsLink } from './CookieConsent';
+export { ConsentModeInit } from './ConsentModeInit';
