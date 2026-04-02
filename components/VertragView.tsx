@@ -379,7 +379,6 @@ export default function VertragView({ vertrag }: { vertrag: VertragData }) {
                       event: 'contract_signed',
                       conversion_value: vertrag.preisNetto,
                       currency: 'EUR',
-                      firma: vertrag.firma,
                     });
                   }
                 }}
