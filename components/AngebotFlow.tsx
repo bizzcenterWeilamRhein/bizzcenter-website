@@ -770,7 +770,26 @@ function AngebotFlowInner({
             </label>
           </div>
           <button
-            onClick={() => setStep(3)}
+            onClick={() => {
+              // Lead im Hintergrund speichern (fire-and-forget)
+              fetch('/api/lead', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  firma: firmenname,
+                  rechtsform,
+                  name: kontakt,
+                  email,
+                  telefon,
+                  tarif: selectedTarifObj?.name,
+                  quelle: 'angebot-vertrag',
+                  timestamp: new Date().toISOString(),
+                }),
+              }).catch(() => {});
+              // Direkt zum Vertrag
+              const gclidParam = paramGclid ? `?gclid=${paramGclid}` : '';
+              window.location.href = `/vertrag/${angebot.slug}${gclidParam}`;
+            }}
             disabled={!firmenname || !rechtsform || !vertreterAnrede || !vertreterName || !starttermin || !kontakt || !email || !agbAccepted || (!ansprechpartnerIstZeichnungsberechtigt && !zeichnungsName)}
             className={`mt-5 w-full rounded-lg py-3.5 text-base font-bold transition-all ${
               firmenname && rechtsform && vertreterAnrede && vertreterName && starttermin && kontakt && email && agbAccepted && (ansprechpartnerIstZeichnungsberechtigt || zeichnungsName)
@@ -779,11 +798,11 @@ function AngebotFlowInner({
             }`}
           >
             {selectedTarifObj
-              ? 'Geschäftsadresse sichern'
+              ? 'Weiter zum Vertrag'
               : 'Bitte zuerst Tarif wählen'}
           </button>
           <p className="text-[10px] text-muted-foreground text-center mt-2">
-            Sie erhalten eine Bestätigung per E-Mail. Der Vertrag kommt nach Identitätsprüfung zustande. Kaution und Einrichtungsgebühr werden separat berechnet.
+            Im nächsten Schritt können Sie den Vertrag prüfen und direkt online unterschreiben.
           </p>
         </div>
 
