@@ -99,7 +99,7 @@ const tarifLabels: Record<string, string> = {
 };
 
 function HeroForm() {
-  const [status, setStatus] = React.useState<'idle' | 'sending' | 'sent'>('idle');
+  const [status, setStatus] = React.useState<'idle' | 'sending'>('idle');
   const [selectedTarif, setSelectedTarif] = React.useState<string | null>(null);
 
   React.useEffect(() => {
@@ -111,16 +111,7 @@ function HeroForm() {
     return () => window.removeEventListener('tarif-selected', onTarifSelected);
   }, []);
 
-  if (status === 'sent') {
-    return (
-      <div className="text-center py-8">
-        <p className="text-lg font-semibold text-foreground mb-2">Anfrage gesendet!</p>
-        <p className="text-sm text-muted-foreground">Wir melden uns umgehend bei Ihnen.</p>
-      </div>
-    );
-  }
-
-  function handleSubmitWithRedirect(e: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus('sending');
 
@@ -133,52 +124,41 @@ function HeroForm() {
     fetch('/api/lead', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...data, name: `${data.vorname || ''} ${data.nachname || ''}`.trim(), quelle: 'hero-formular', timestamp: new Date().toISOString() }),
+      body: JSON.stringify({ ...data, quelle: 'hero-formular', timestamp: new Date().toISOString() }),
     }).catch(() => {});
 
-    // GCLID mitführen für Google Ads Conversion Tracking
+    // GCLID mitführen
     const urlGclid = new URLSearchParams(window.location.search).get('gclid') || document.cookie.match(/gclid=([^;]+)/)?.[1] || '';
 
-    // Weiterleitung zum Angebot
+    // Weiterleitung zum Angebot mit Segmentierung
     const params = new URLSearchParams({
-      ...(data.anrede && { anrede: data.anrede }),
-      ...(data.vorname && { vorname: data.vorname }),
-      ...(data.nachname && { nachname: data.nachname }),
-      ...(data.firma && { firma: data.firma }),
       ...(data.email && { email: data.email }),
-      ...(data.telefon && { telefon: data.telefon }),
+      ...(data.status && { status: data.status }),
       ...(urlGclid && { gclid: urlGclid }),
+      ...(selectedTarif && { tarif: selectedTarif }),
     });
     window.location.href = `/angebot/kunde-xyz?${params.toString()}`;
   }
 
   return (
-    <form onSubmit={handleSubmitWithRedirect} className="space-y-2">
+    <form onSubmit={handleSubmit} className="space-y-3">
+      <p className="text-sm font-semibold text-foreground">Angebot in 2 Minuten erstellen</p>
       {selectedTarif && (
         <div className="rounded-lg bg-primary/10 border border-primary/30 px-3 py-2 text-sm text-primary font-semibold text-center">
           {tarifLabels[selectedTarif] || selectedTarif}
         </div>
       )}
-      <div className="grid grid-cols-[100px_1fr_1fr] gap-2">
-        <select name="anrede" required className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-muted-foreground">
-          <option value="">Anrede</option>
-          <option>Herr</option>
-          <option>Frau</option>
-          <option>Herr Dr.</option>
-          <option>Frau Dr.</option>
-        </select>
-        <input name="vorname" type="text" placeholder="Vorname" required className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
-        <input name="nachname" type="text" placeholder="Nachname" required className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
-      </div>
-      <input name="firma" type="text" placeholder="Firma" required className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
-      <div className="grid grid-cols-2 gap-2">
-        <input name="email" type="email" placeholder="E-Mail" required className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
-        <input name="telefon" type="tel" placeholder="Telefon (optional)" className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" />
-      </div>
-      <input type="hidden" name="tarif" value={selectedTarif || ''} />
-      <button type="submit" disabled={status === 'sending'} className="w-full rounded-lg bg-[#6b7f3e] text-white px-4 py-2.5 text-sm font-semibold hover:opacity-90 transition-opacity disabled:opacity-50">
-        {status === 'sending' ? 'Angebot wird erstellt...' : 'Angebot erstellen'}
+      <input name="email" type="email" placeholder="Ihre E-Mail-Adresse" required className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
+      <select name="status" required className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#6b7f3e] appearance-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' viewBox=\'0 0 12 12\'%3E%3Cpath d=\'M6 8L1 3h10z\' fill=\'%236b7f3e\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center' }}>
+        <option value="">Was trifft auf Sie zu?</option>
+        <option value="firma">Ich habe bereits eine Firma</option>
+        <option value="gruendung">Firma in Gründung</option>
+        <option value="freiberufler">Freiberufler / Einzelunternehmen</option>
+      </select>
+      <button type="submit" disabled={status === 'sending'} className="w-full rounded-lg bg-[#6b7f3e] text-white px-4 py-3 text-sm font-bold hover:opacity-90 transition-opacity disabled:opacity-50 shadow-sm">
+        {status === 'sending' ? 'Wird erstellt...' : 'Angebot erstellen →'}
       </button>
+      <p className="text-[10px] text-muted-foreground text-center">Kostenlos & unverbindlich · Keine Kreditkarte nötig</p>
     </form>
   );
 }

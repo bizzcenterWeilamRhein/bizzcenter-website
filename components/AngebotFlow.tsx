@@ -200,13 +200,19 @@ function AngebotFlowInner({
   const paramTelefon = searchParams.get('telefon') || '';
   const paramNachricht = searchParams.get('nachricht') || '';
   const paramGclid = searchParams.get('gclid') || '';
+  const paramStatus = searchParams.get('status') || ''; // firma | gruendung | freiberufler
 
   const defaultTarifId = tarifList.find(t => t.popular)?.id || tarifList[0]?.id || null;
   const [step, setStep] = useState(defaultTarifId ? 2 : 0);
   const [selectedTarif, setSelectedTarif] = useState<string | null>(defaultTarifId);
   const [selectedAddons, setSelectedAddons] = useState<Set<string>>(new Set());
-  const [firmenname, setFirmenname] = useState(paramFirma || angebot.firma);
-  const [rechtsform, setRechtsform] = useState('');
+  const firmaInGruendung = paramStatus === 'gruendung';
+  const [firmenname, setFirmenname] = useState(
+    paramFirma || (firmaInGruendung ? '' : angebot.firma)
+  );
+  const [rechtsform, setRechtsform] = useState(
+    paramStatus === 'freiberufler' ? 'einzelunternehmen' : ''
+  );
   const [vertreterAnrede, setVertreterAnrede] = useState(paramAnrede);
   const [vertreterName, setVertreterName] = useState(angebot.name);
   const [kontakt, setKontakt] = useState(paramVorname && paramNachname ? `${paramVorname} ${paramNachname}` : `${angebot.anrede} ${angebot.name}`);
@@ -655,9 +661,11 @@ function AngebotFlowInner({
             {/* Firmendaten */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-xs font-medium text-foreground block mb-1">Firmenname *</label>
+                <label className="text-xs font-medium text-foreground block mb-1">Firmenname {firmaInGruendung ? '' : '*'}</label>
                 <input type="text" value={firmenname} onChange={e => setFirmenname(e.target.value)}
+                  placeholder={firmaInGruendung ? 'Wird nach Eintragung ergänzt' : ''}
                   className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
+                {firmaInGruendung && <p className="text-[10px] text-muted-foreground mt-1">Firma in Gründung — Name kann später ergänzt werden</p>}
               </div>
               <div>
                 <label className="text-xs font-medium text-foreground block mb-1">Rechtsform *</label>
@@ -770,7 +778,7 @@ function AngebotFlowInner({
             </label>
           </div>
           {(() => {
-            const allFilled = !!(firmenname && rechtsform && vertreterAnrede && vertreterName && starttermin && kontakt && email && agbAccepted && (ansprechpartnerIstZeichnungsberechtigt || zeichnungsName));
+            const allFilled = !!((firmenname || firmaInGruendung) && rechtsform && vertreterAnrede && vertreterName && starttermin && kontakt && email && agbAccepted && (ansprechpartnerIstZeichnungsberechtigt || zeichnungsName));
             return (
               <div className="mt-5 flex flex-col sm:flex-row gap-3">
                 <button
@@ -828,7 +836,7 @@ function AngebotFlowInner({
               </div>
             );
           })()}
-          {!(firmenname && rechtsform && vertreterAnrede && vertreterName && starttermin && kontakt && email && agbAccepted && (ansprechpartnerIstZeichnungsberechtigt || zeichnungsName)) && (
+          {!((firmenname || firmaInGruendung) && rechtsform && vertreterAnrede && vertreterName && starttermin && kontakt && email && agbAccepted && (ansprechpartnerIstZeichnungsberechtigt || zeichnungsName)) && (
             <p className="text-[10px] text-muted-foreground text-center mt-2">
               Bitte füllen Sie alle Pflichtfelder aus, um den Vertrag zu erstellen.
             </p>
@@ -868,7 +876,7 @@ function AngebotFlowInner({
 
         {/* ── PDF Download + Vertrag Link ── */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-          {firmenname && rechtsform && starttermin && kontakt && email ? (
+          {(firmenname || firmaInGruendung) && rechtsform && starttermin && kontakt && email ? (
             <a
               href={`/vertrag/${angebot.slug}${paramGclid ? `?gclid=${paramGclid}` : ''}`}
               className="inline-flex items-center gap-2 rounded-lg bg-[#6b7f3e] text-white px-5 py-2.5 text-sm font-semibold hover:opacity-90 transition-opacity shadow-sm no-underline"
