@@ -19,7 +19,7 @@ const STAFFEL: Record<string, { min: number; max: number; preis: number }[]> = {
   'beamer-leinwand': [
     { min: 1, max: 1, preis: 5900 },
     { min: 2, max: 2, preis: 10900 },
-    { min: 3, max: 3, preis: 13700 },
+    { min: 3, max: 3, preis: 13900 },
     { min: 4, max: 7, preis: 19900 },
   ],
   'beamer-only': [

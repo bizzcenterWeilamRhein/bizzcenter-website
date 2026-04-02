@@ -38,7 +38,7 @@ interface StaffelPreis {
 const STAFFEL_LEINWAND: StaffelPreis[] = [
   { minTage: 1, maxTage: 1, label: '1 Tag', gesamtpreis: 59 },
   { minTage: 2, maxTage: 2, label: '2 Tage', gesamtpreis: 109 },
-  { minTage: 3, maxTage: 3, label: 'Wochenende (Fr–So)', gesamtpreis: 137 },
+  { minTage: 3, maxTage: 3, label: 'Wochenende (Fr–So)', gesamtpreis: 139 },
   { minTage: 4, maxTage: 7, label: 'Woche', gesamtpreis: 199 },
 ];
 
