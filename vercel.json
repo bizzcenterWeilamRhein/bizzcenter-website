@@ -1,7 +1,1 @@
-{
-  "redirects": [
-    { "source": "/geschaeftsadresse", "destination": "/geschaeftsadresse-mieten", "permanent": true },
-    { "source": "/geschaeftsadresse/", "destination": "/geschaeftsadresse-mieten", "permanent": true },
-    { "source": "/weil-am-rhein/:path*", "destination": "/:path*", "permanent": true }
-  ]
-}
+{}
