@@ -31,21 +31,21 @@
           "de": "Geschäftsadresse",
           "en": "Virtual Office"
         },
-        "href": "/weil-am-rhein/geschaeftsadresse-mieten"
+        "href": "/geschaeftsadresse-mieten"
       },
       {
         "label": {
           "de": "Coworking",
           "en": "Coworking"
         },
-        "href": "/weil-am-rhein/coworking"
+        "href": "/coworking"
       },
       {
         "label": {
           "de": "Büro mieten",
           "en": "Rent Office"
         },
-        "href": "/weil-am-rhein/buero-mieten"
+        "href": "/buero-mieten"
       },
       {
         "label": {
@@ -58,14 +58,14 @@
               "de": "Konferenzraum mieten",
               "en": "Meeting Room Rental"
             },
-            "href": "/weil-am-rhein/konferenzraum-mieten"
+            "href": "/konferenzraum-mieten"
           },
           {
             "label": {
               "de": "Coachingbüro mieten",
               "en": "Coaching Room Rental"
             },
-            "href": "/weil-am-rhein/coachingbuero-mieten"
+            "href": "/coachingbuero-mieten"
           }
         ]
       },
@@ -80,7 +80,7 @@
               "de": "Schweizer Telefonnummer",
               "en": "Swiss Phone Number"
             },
-            "href": "/weil-am-rhein/schweizer-telefonnummer",
+            "href": "/schweizer-telefonnummer",
             "description": {
               "de": "Schweizer Festnetznummer",
               "en": "Swiss landline number"
@@ -91,28 +91,28 @@
               "de": "Beamer mieten",
               "en": "Projector Rental"
             },
-            "href": "/weil-am-rhein/beamer-mieten"
+            "href": "/beamer-mieten"
           },
           {
             "label": {
               "de": "Lautsprecher mieten",
               "en": "Speaker Rental"
             },
-            "href": "/weil-am-rhein/lautsprecher-mieten"
+            "href": "/lautsprecher-mieten"
           },
           {
             "label": {
               "de": "Parkplatz mieten",
               "en": "Parking Rental"
             },
-            "href": "/weil-am-rhein/parkplatz-mieten"
+            "href": "/parkplatz-mieten"
           },
           {
             "label": {
               "de": "Musikbox mieten",
               "en": "Music Box Rental"
             },
-            "href": "/weil-am-rhein/musikbox-mieten"
+            "href": "/musikbox-mieten"
           }
         ]
       },
@@ -152,42 +152,42 @@
               "de": "Geschäftsadresse",
               "en": "Virtual Office"
             },
-            "href": "/weil-am-rhein/geschaeftsadresse-mieten"
+            "href": "/geschaeftsadresse-mieten"
           },
           {
             "label": {
               "de": "Coworking",
               "en": "Coworking"
             },
-            "href": "/weil-am-rhein/coworking"
+            "href": "/coworking"
           },
           {
             "label": {
               "de": "Büro mieten",
               "en": "Rent Office"
             },
-            "href": "/weil-am-rhein/buero-mieten"
+            "href": "/buero-mieten"
           },
           {
             "label": {
               "de": "Konferenzraum",
               "en": "Meeting Room"
             },
-            "href": "/weil-am-rhein/konferenzraum-mieten"
+            "href": "/konferenzraum-mieten"
           },
           {
             "label": {
               "de": "Anfahrt",
               "en": "Directions"
             },
-            "href": "/weil-am-rhein/anfahrt"
+            "href": "/anfahrt"
           },
           {
             "label": {
               "de": "Green Office",
               "en": "Green Office"
             },
-            "href": "/weil-am-rhein/green-office"
+            "href": "/green-office"
           }
         ]
       },
@@ -243,7 +243,7 @@
       ]
     },
     {
-      "slug": "weil-am-rhein/geschaeftsadresse-mieten",
+      "slug": "geschaeftsadresse-mieten",
       "type": "page",
       "content": "weil-am-rhein/geschaeftsadresse-mieten",
       "locales": [
@@ -252,7 +252,7 @@
       ]
     },
     {
-      "slug": "weil-am-rhein/coworking",
+      "slug": "coworking",
       "type": "page",
       "content": "weil-am-rhein/coworking",
       "locales": [
@@ -261,7 +261,7 @@
       ]
     },
     {
-      "slug": "weil-am-rhein/buero-mieten",
+      "slug": "buero-mieten",
       "type": "page",
       "content": "weil-am-rhein/buero-mieten",
       "locales": [
@@ -270,7 +270,7 @@
       ]
     },
     {
-      "slug": "weil-am-rhein/konferenzraum-mieten",
+      "slug": "konferenzraum-mieten",
       "type": "page",
       "content": "weil-am-rhein/konferenzraum-mieten",
       "locales": [
@@ -279,7 +279,7 @@
       ]
     },
     {
-      "slug": "weil-am-rhein/konferenzraum-buchen",
+      "slug": "konferenzraum-buchen",
       "type": "page",
       "content": "weil-am-rhein/konferenzraum-buchen",
       "locales": [
@@ -287,7 +287,7 @@
       ]
     },
     {
-      "slug": "weil-am-rhein/konferenzraum-6p-buchen",
+      "slug": "konferenzraum-6p-buchen",
       "type": "page",
       "content": "weil-am-rhein/konferenzraum-6p-buchen",
       "locales": [
@@ -295,7 +295,7 @@
       ]
     },
     {
-      "slug": "weil-am-rhein/konferenzraum-15p-buchen",
+      "slug": "konferenzraum-15p-buchen",
       "type": "page",
       "content": "weil-am-rhein/konferenzraum-15p-buchen",
       "locales": [
@@ -303,7 +303,7 @@
       ]
     },
     {
-      "slug": "weil-am-rhein/konferenzraum-25p-buchen",
+      "slug": "konferenzraum-25p-buchen",
       "type": "page",
       "content": "weil-am-rhein/konferenzraum-25p-buchen",
       "locales": [
@@ -356,7 +356,7 @@
       ]
     },
     {
-      "slug": "weil-am-rhein/beamer-mieten",
+      "slug": "beamer-mieten",
       "type": "page",
       "content": "weil-am-rhein/beamer-mieten",
       "locales": [
@@ -364,7 +364,7 @@
       ]
     },
     {
-      "slug": "weil-am-rhein/schweizer-telefonnummer",
+      "slug": "schweizer-telefonnummer",
       "type": "page",
       "content": "weil-am-rhein/schweizer-telefonnummer",
       "locales": [
@@ -372,7 +372,7 @@
       ]
     },
     {
-      "slug": "weil-am-rhein/telefonservice",
+      "slug": "telefonservice",
       "type": "page",
       "content": "weil-am-rhein/telefonservice",
       "locales": [
@@ -380,7 +380,7 @@
       ]
     },
     {
-      "slug": "weil-am-rhein/lagerservice",
+      "slug": "lagerservice",
       "type": "page",
       "content": "weil-am-rhein/lagerservice",
       "locales": [
@@ -388,7 +388,7 @@
       ]
     },
     {
-      "slug": "weil-am-rhein/sekretariatsservice",
+      "slug": "sekretariatsservice",
       "type": "page",
       "content": "weil-am-rhein/sekretariatsservice",
       "locales": [
@@ -396,7 +396,7 @@
       ]
     },
     {
-      "slug": "weil-am-rhein/fulfillment",
+      "slug": "fulfillment",
       "type": "page",
       "content": "weil-am-rhein/fulfillment",
       "locales": [
@@ -404,7 +404,7 @@
       ]
     },
     {
-      "slug": "weil-am-rhein/post-bearbeitung",
+      "slug": "post-bearbeitung",
       "type": "page",
       "content": "weil-am-rhein/post-bearbeitung",
       "locales": [
@@ -412,7 +412,7 @@
       ]
     },
     {
-      "slug": "weil-am-rhein/individueller-service",
+      "slug": "individueller-service",
       "type": "page",
       "content": "weil-am-rhein/individueller-service",
       "locales": [
@@ -420,7 +420,7 @@
       ]
     },
     {
-      "slug": "weil-am-rhein/anfahrt",
+      "slug": "anfahrt",
       "type": "page",
       "content": "weil-am-rhein/anfahrt",
       "locales": [
@@ -429,7 +429,7 @@
       ]
     },
     {
-      "slug": "weil-am-rhein/green-office",
+      "slug": "green-office",
       "type": "page",
       "content": "weil-am-rhein/green-office",
       "locales": [
@@ -438,7 +438,7 @@
       ]
     },
     {
-      "slug": "weil-am-rhein/coachingbuero-mieten",
+      "slug": "coachingbuero-mieten",
       "type": "page",
       "content": "weil-am-rhein/coachingbuero-mieten",
       "locales": [
@@ -446,7 +446,7 @@
       ]
     },
     {
-      "slug": "weil-am-rhein/tagesbuero-mieten",
+      "slug": "tagesbuero-mieten",
       "type": "page",
       "content": "weil-am-rhein/tagesbuero-mieten",
       "locales": [
@@ -486,7 +486,7 @@
       ]
     },
     {
-      "slug": "weil-am-rhein/coworking-vitra-campus",
+      "slug": "coworking-vitra-campus",
       "type": "page",
       "content": "weil-am-rhein/coworking-vitra-campus",
       "locales": [
@@ -518,7 +518,7 @@
       ]
     },
     {
-      "slug": "weil-am-rhein/lautsprecher-mieten",
+      "slug": "lautsprecher-mieten",
       "type": "page",
       "content": "weil-am-rhein/lautsprecher-mieten",
       "locales": [
@@ -526,7 +526,7 @@
       ]
     },
     {
-      "slug": "weil-am-rhein/parkplatz-mieten",
+      "slug": "parkplatz-mieten",
       "type": "page",
       "content": "weil-am-rhein/parkplatz-mieten",
       "locales": [
@@ -534,7 +534,7 @@
       ]
     },
     {
-      "slug": "weil-am-rhein/musikbox-mieten",
+      "slug": "musikbox-mieten",
       "type": "page",
       "content": "weil-am-rhein/musikbox-mieten",
       "locales": [
