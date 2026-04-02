@@ -720,7 +720,7 @@ function AngebotFlowInner({
               <div>
                 <label className="text-xs font-medium text-foreground block mb-1">Vorname, Name *</label>
                 <input type="text" value={kontakt} onChange={e => setKontakt(e.target.value)}
-                  placeholder="Max Mustermann"
+                  placeholder="Name des Geschäftsführers"
                   className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
               </div>
             </div>
