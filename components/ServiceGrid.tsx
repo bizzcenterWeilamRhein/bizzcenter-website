@@ -66,7 +66,7 @@ function ServiceIcon({ icon }: { icon: string }) {
 function ServiceCard({ service }: { service: Service }) {
   return (
     <Link
-      href={`/weil-am-rhein/${service.slug}`}
+      href={`/${service.slug}`}
       className="bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md hover:border-gray-200 transition-all duration-200 cursor-pointer h-full flex flex-col overflow-hidden active:scale-[0.98]"
     >
       {/* Header */}

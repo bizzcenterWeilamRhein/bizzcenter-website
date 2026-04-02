@@ -364,7 +364,7 @@ function AngebotFlowInner({
                 Angebot verlängern
               </button>
               <a
-                href={`/weil-am-rhein/${angebot.service === 'geschaeftsadresse' ? 'geschaeftsadresse' : angebot.service}`}
+                href={`/${angebot.service === 'geschaeftsadresse' ? 'geschaeftsadresse' : angebot.service}`}
                 className="inline-flex items-center justify-center rounded-lg border border-[#6b7f3e] text-[#6b7f3e] bg-white px-5 py-2 text-sm font-semibold hover:bg-[#f0f4e8] transition-colors no-underline"
               >
                 Direkt buchen

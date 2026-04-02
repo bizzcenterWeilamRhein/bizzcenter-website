@@ -143,7 +143,7 @@ export function StartFlow({ title = 'So starten Sie' }: { title?: string }) {
   };
 
   const loesungObj = loesungen.find(l => l.id === loesung);
-  const buchungsUrl = loesungObj ? `/weil-am-rhein/${loesungObj.slug}` : '#';
+  const buchungsUrl = loesungObj ? `/${loesungObj.slug}` : '#';
 
   return (
     <section className="py-10 md:py-16">
