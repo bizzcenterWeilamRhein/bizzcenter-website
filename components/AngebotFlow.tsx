@@ -210,8 +210,9 @@ function AngebotFlowInner({
   const [firmenname, setFirmenname] = useState(paramFirma || angebot.firma);
   const [rechtsform, setRechtsform] = useState(paramRechtsform);
   const [vertreterAnrede, setVertreterAnrede] = useState(paramAnrede);
-  const [vertreterName, setVertreterName] = useState(angebot.name);
-  const [kontakt, setKontakt] = useState(paramVorname && paramNachname ? `${paramVorname} ${paramNachname}` : `${angebot.anrede} ${angebot.name}`);
+  const [vertreterName, setVertreterName] = useState('');
+  const [kontaktVorname, setKontaktVorname] = useState(paramVorname);
+  const [kontaktNachname, setKontaktNachname] = useState(paramNachname);
   const [email, setEmail] = useState(paramEmail);
   const [telefon, setTelefon] = useState(paramTelefon);
   const [starttermin, setStarttermin] = useState('');
@@ -314,7 +315,7 @@ function AngebotFlowInner({
         firmenname={firmenname}
         rechtsformLabel={selectedRechtsform?.label || ''}
         vertreterName={vertreterName}
-        kontakt={kontakt}
+        kontakt={`${kontaktVorname} ${kontaktNachname}`.trim()}
         email={email}
       />
 
@@ -720,9 +721,17 @@ function AngebotFlowInner({
                 </select>
               </div>
               <div>
-                <label className="text-xs font-medium text-foreground block mb-1">Vorname, Name *</label>
-                <input type="text" value={kontakt} onChange={e => setKontakt(e.target.value)}
-                  placeholder="Name des Geschäftsführers"
+                <label className="text-xs font-medium text-foreground block mb-1">Vorname *</label>
+                <input type="text" value={kontaktVorname} onChange={e => setKontaktVorname(e.target.value)}
+                  placeholder="Vorname"
+                  className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="text-xs font-medium text-foreground block mb-1">Nachname *</label>
+                <input type="text" value={kontaktNachname} onChange={e => setKontaktNachname(e.target.value)}
+                  placeholder="Nachname"
                   className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
               </div>
             </div>
@@ -734,7 +743,7 @@ function AngebotFlowInner({
               </div>
               <div>
                 <label className="text-xs font-medium text-foreground block mb-1">Telefon</label>
-                <input type="tel" value={telefon} onChange={e => setTelefon(e.target.value)} placeholder="+49..."
+                <input type="tel" value={telefon} onChange={e => setTelefon(e.target.value)} placeholder="+"
                   className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
               </div>
             </div>
@@ -784,7 +793,7 @@ function AngebotFlowInner({
                       body: JSON.stringify({
                         firma: firmenname,
                         rechtsform,
-                        name: kontakt,
+                        name: `${kontaktVorname} ${kontaktNachname}`.trim(),
                         email,
                         telefon,
                         tarif: selectedTarifObj?.name,
@@ -841,7 +850,7 @@ function AngebotFlowInner({
         {step >= 3 && (
           <div className="rounded-2xl border-2 border-[#6b7f3e] bg-[#f0f4e8] shadow-sm p-5 md:p-8 text-center">
             <div className="w-14 h-14 mx-auto rounded-full bg-[#6b7f3e] flex items-center justify-center text-white text-2xl font-bold mb-3">✓</div>
-            <h2 className="text-xl font-bold text-foreground">Fast geschafft, {kontakt}!</h2>
+            <h2 className="text-xl font-bold text-foreground">Fast geschafft, {kontaktVorname || 'fast geschafft'}!</h2>
             <p className="text-sm text-muted-foreground mt-2 max-w-md mx-auto">
               Ihr Angebot für die {serviceLabel} bei bizzcenter {angebot.standort} ist erstellt.
               Im nächsten Schritt können Sie den Vertrag direkt online unterschreiben.
@@ -870,7 +879,7 @@ function AngebotFlowInner({
 
         {/* ── PDF Download + Vertrag Link ── */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-          {firmenname && rechtsform && starttermin && kontakt && email ? (
+          {firmenname && rechtsform && starttermin && kontaktVorname && kontaktNachname && email ? (
             <a
               href={`/vertrag/${angebot.slug}${paramGclid ? `?gclid=${paramGclid}` : ''}`}
               className="inline-flex items-center gap-2 rounded-lg bg-[#6b7f3e] text-white px-5 py-2.5 text-sm font-semibold hover:opacity-90 transition-opacity shadow-sm no-underline"
