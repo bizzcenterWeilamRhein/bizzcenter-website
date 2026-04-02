@@ -8,12 +8,10 @@ description: "Profi-Beamer mit Leinwand mieten in Weil am Rhein. Full-HD, 3100 L
 <LanguageSwitcher />
 
 {/* ===== 1. HERO ===== */}
-<PageHero
+<CompactHero
   title="Full-HD Beamer mieten in Weil am Rhein"
-  subtitle="Profi-Projektor inkl. Leinwand, Kabel und Transporttasche. Abholen, aufbauen, loslegen — ab EUR 39,- pro Tag."
-  primaryCta={{ label: "Jetzt buchen", href: "#buchen" }}
-  secondaryCta={{ label: "Preise ansehen", href: "#preise" }}
-  image="/images/services/beamer-mieten.png"
+  description="Profi-Projektor inkl. Leinwand, Kabel und Transporttasche. Abholen, aufbauen, loslegen — ab EUR 39,- pro Tag."
+  image="/images/services/weil-am-rhein/beamer-mieten-original.png"
   imageAlt="Full-HD Beamer mit Leinwand mieten — bizzcenter Weil am Rhein"
 />
 
@@ -22,8 +20,8 @@ description: "Profi-Beamer mit Leinwand mieten in Weil am Rhein. Full-HD, 3100 L
   <AlternatingFeatureRow
     title="Professionelle Technik — ohne Investment"
     description="Einen guten Beamer kaufen kostet schnell EUR 500,- oder mehr. Für eine Präsentation, einen Workshop oder einen Filmabend lohnt sich das selten. Bei uns mieten Sie Profi-Technik ab EUR 39,- pro Tag — Full-HD, 3100 ANSI-Lumen, sofort einsatzbereit."
-    image="/images/services/beamer-mieten.png"
-    imageAlt="Epson Full-HD Beamer mieten"
+    image="/images/services/weil-am-rhein/beamer-mieten-original.png"
+    imageAlt="Epson Full-HD Beamer mieten in Weil am Rhein"
   />
 </AlternatingFeatures>
 
@@ -54,8 +52,16 @@ description: "Profi-Beamer mit Leinwand mieten in Weil am Rhein. Full-HD, 3100 L
   />
 </Features>
 
+{/* ===== 4b. PRODUKTBILD ===== */}
+<section className="py-12 bg-[#f5f0eb]">
+  <div className="max-w-2xl mx-auto px-4 text-center">
+    <img src="/images/services/weil-am-rhein/beamer-mieten-original.png" alt="Epson Full-HD Beamer mit Leinwand mieten — bizzcenter Weil am Rhein" className="mx-auto rounded-xl shadow-lg" />
+    <p className="mt-4 text-sm text-gray-500">Epson EH-TW650 Full-HD Beamer mit portabler Stativ-Leinwand (1,50 × 1,50 m)</p>
+  </div>
+</section>
+
 {/* ===== 5. TECHNISCHE DATEN ===== */}
-<FeaturesWithBg title="Technische Daten — Epson EH-TW650" columns={3} backgroundImage="/images/standorte/weil-am-rhein/konferenzraum-gross.jpg">
+<FeaturesWithBg title="Technische Daten — Epson EH-TW650" columns={3} backgroundImage="/images/standorte/weil-am-rhein/meetingraum.jpg">
   <FeatureCard title="Full-HD Auflösung" description="1920 × 1080 Pixel — gestochen scharfe Bilder und Texte, auch bei großer Projektion." icon="monitor" />
   <FeatureCard title="3100 ANSI-Lumen" description="Hohe Lichtstärke — auch in hellen Räumen gut sichtbar. Ideal für Tageslicht-Konferenzräume." icon="sun" />
   <FeatureCard title="3LCD-Technik" description="Natürliche Farben ohne Regenbogeneffekt. Kontrastverhältnis 15.000:1 für tiefe Schwarztöne." icon="eye" />
@@ -70,25 +76,11 @@ description: "Profi-Beamer mit Leinwand mieten in Weil am Rhein. Full-HD, 3100 L
 
 {/* ===== 7. PREISE ===== */}
 <div id="preise">
-<BentoGrid title="Preise" subtitle="Alle Preise pro Tag zzgl. MwSt. Kaution EUR 150,- bei Abholung (wird bei Rückgabe erstattet).">
-  <BentoCard
-    title="Nur Beamer"
-    description="Full-HD-Projektor mit allem Zubehör — ohne Leinwand."
-    price="EUR 39,-"
-    priceDetail="pro Tag zzgl. MwSt."
-    features={["Full-HD Epson Beamer", "HDMI-Kabel + VGA-Adapter", "Fernbedienung", "Transporttasche", "Verlängerungskabel"]}
-    cta={{ label: "Jetzt buchen", href: "#buchen" }}
-  />
-  <BentoCard
-    title="Beamer + Leinwand"
-    description="Komplett-Set mit portabler Stativ-Leinwand (1,50 × 1,50 m)."
-    price="EUR 59,-"
-    priceDetail="pro Tag zzgl. MwSt."
-    features={["Alles aus 'Nur Beamer'", "Portable Stativ-Leinwand", "1,50 × 1,50 m Projektionsfläche", "Schneller Auf- und Abbau", "Ideal für externe Locations"]}
-    cta={{ label: "Jetzt buchen", href: "#buchen" }}
-    highlighted={true}
-  />
-</BentoGrid>
+<FeaturesWithBg title="Preise" columns={2} backgroundImage="/images/standorte/weil-am-rhein/kesselhaus-aussen.jpg">
+  <FeatureCard title="Nur Beamer — EUR 39,- /Tag" description="Full-HD-Projektor mit HDMI-Kabel, VGA-Adapter, Fernbedienung, Verlängerungskabel und Transporttasche. Ohne Leinwand. Zzgl. MwSt." icon="monitor" />
+  <FeatureCard title="Beamer + Leinwand — EUR 59,- /Tag" description="Komplett-Set: Full-HD-Projektor mit allem Zubehör plus portable Stativ-Leinwand (1,50 × 1,50 m). Zzgl. MwSt." icon="package" />
+</FeaturesWithBg>
+<p className="text-center text-sm text-gray-500 mt-4">Kaution EUR 150,- bei Abholung (bar oder Karte). Wird bei Rückgabe erstattet.</p>
 </div>
 
 {/* ===== 8. CTA ===== */}
@@ -105,14 +97,14 @@ description: "Profi-Beamer mit Leinwand mieten in Weil am Rhein. Full-HD, 3100 L
     title="Für Unternehmen"
     description="Kundenpräsentation, Strategieworkshop, Schulung oder Pitch — mit einem Profi-Beamer machen Ihre Inhalte Eindruck. Kombinieren Sie den Beamer mit einem unserer Konferenzräume für 2–25 Personen."
     image="/images/standorte/weil-am-rhein/konferenzraum-gross.jpg"
-    imageAlt="Konferenzraum mit Beamer im bizzcenter"
+    imageAlt="Konferenzraum mit Beamer im bizzcenter Weil am Rhein"
     link="/konferenzraum-mieten"
   />
   <AlternatingFeatureRow
     title="Für Privatpersonen und Vereine"
     description="Filmabend im Garten, Vereinsversammlung, Geburtstagspräsentation oder Fotoshow — professionelle Technik für jeden Anlass. Einfach abholen und loslegen, keine Vorkenntnisse nötig."
-    image="/images/standorte/weil-am-rhein/green-office-eingangsbereich.jpeg"
-    imageAlt="bizzcenter Kesselhaus Weil am Rhein"
+    image="/images/standorte/weil-am-rhein/kesselhaus-aussen.jpg"
+    imageAlt="Kesselhaus Weil am Rhein — Beamer Abholung"
   />
 </AlternatingFeatures>
 
