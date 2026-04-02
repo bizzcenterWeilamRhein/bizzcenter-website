@@ -7,33 +7,93 @@ description: "Profi-Beamer mit Leinwand mieten in Weil am Rhein. Full-HD, 3100 L
 <ActiveNavHighlight />
 <LanguageSwitcher />
 
-{/* ===== 1. HERO ===== */}
-<CompactHero
-  title="Full-HD Beamer mieten in Weil am Rhein"
-  description="Profi-Projektor inkl. Leinwand, Kabel und Transporttasche. Abholen, aufbauen, loslegen — ab EUR 39,- pro Tag."
-  image="/images/services/weil-am-rhein/beamer-mieten-original.png"
-  imageAlt="Full-HD Beamer mit Leinwand mieten — bizzcenter Weil am Rhein"
-/>
-
-{/* ===== 2. PROBLEM / LÖSUNG ===== */}
-<AlternatingFeatures>
-  <AlternatingFeatureRow
-    title="Professionelle Technik — ohne Investment"
-    description="Einen guten Beamer kaufen kostet schnell EUR 500,- oder mehr. Für eine Präsentation, einen Workshop oder einen Filmabend lohnt sich das selten. Bei uns mieten Sie Profi-Technik ab EUR 39,- pro Tag — Full-HD, 3100 ANSI-Lumen, sofort einsatzbereit."
-    image="/images/services/weil-am-rhein/beamer-mieten-original.png"
-    imageAlt="Epson Full-HD Beamer mieten in Weil am Rhein"
+{/* ===== 1. HERO — Konferenzraum als Fullwidth-Bild ===== */}
+<section className="relative w-full h-[50vh] min-h-[400px] max-h-[600px] overflow-hidden">
+  <img
+    src="/images/standorte/weil-am-rhein/konferenzraum-gross.jpg"
+    alt="Konferenzraum mit Beamer im bizzcenter Weil am Rhein"
+    className="absolute inset-0 w-full h-full object-cover"
   />
-</AlternatingFeatures>
+  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+  <div className="relative h-full flex items-end pb-10 px-6 md:px-12">
+    <div className="max-w-3xl">
+      <h1 className="text-3xl md:text-5xl font-bold text-white mb-3 drop-shadow-lg">
+        Full-HD Beamer mieten in Weil am Rhein
+      </h1>
+      <p className="text-lg text-white/90 drop-shadow">
+        Profi-Projektor inkl. Leinwand und Zubehör. Abholen, aufbauen, loslegen.
+      </p>
+    </div>
+  </div>
+</section>
 
-{/* ===== 3. SOCIAL PROOF ===== */}
-<Stats>
-  <Stat value="200+" label="Vermietungen pro Jahr" />
-  <Stat value="Full-HD" label="1920 × 1080 Pixel" />
-  <Stat value="3100" label="ANSI-Lumen Helligkeit" />
-  <Stat value="300 Zoll" label="max. Bilddiagonale" />
-</Stats>
+{/* ===== 2. PRODUKT-BOX — Beamer-Bild + Preise + Buchung ===== */}
+<section className="relative z-10 -mt-16 px-4 md:px-8 pb-12">
+  <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
+      {/* Bild */}
+      <div className="bg-[#f5f0eb] flex items-center justify-center p-8 md:p-12">
+        <img
+          src="/images/services/weil-am-rhein/beamer-mieten-original.png"
+          alt="Epson EH-TW650 Full-HD Beamer mit Leinwand — bizzcenter Weil am Rhein"
+          className="max-w-full max-h-[300px] object-contain"
+        />
+      </div>
+      {/* Info + Preise */}
+      <div className="p-8 md:p-10 flex flex-col justify-center">
+        <p className="text-sm text-[#6b7f3e] font-semibold uppercase tracking-wide mb-2">Epson EH-TW650</p>
+        <h2 className="text-2xl font-bold text-gray-900 mb-3">Full-HD Beamer mit Leinwand</h2>
+        <p className="text-gray-600 mb-6">3100 ANSI-Lumen, 1920×1080, inkl. HDMI, VGA, Fernbedienung und Transporttasche. Abholung im Kesselhaus.</p>
 
-{/* ===== 4. BENEFITS ===== */}
+        <div className="space-y-3 mb-6">
+          <div className="flex items-center justify-between bg-[#f0f4e8] rounded-lg px-4 py-3">
+            <div>
+              <span className="font-semibold text-gray-900">Nur Beamer</span>
+              <span className="text-xs text-gray-500 ml-2">ohne Leinwand</span>
+            </div>
+            <span className="text-[#6b7f3e] font-bold text-lg">EUR 39,- <span className="text-xs font-normal text-gray-500">/Tag</span></span>
+          </div>
+          <div className="flex items-center justify-between bg-[#6b7f3e] rounded-lg px-4 py-3">
+            <div>
+              <span className="font-semibold text-white">Beamer + Leinwand</span>
+              <span className="text-xs text-white/70 ml-2">Komplett-Set</span>
+            </div>
+            <span className="text-white font-bold text-lg">EUR 59,- <span className="text-xs font-normal text-white/70">/Tag</span></span>
+          </div>
+          <p className="text-xs text-gray-400 text-right">zzgl. MwSt.</p>
+        </div>
+
+        <a
+          href="#buchen"
+          className="block w-full bg-[#6b7f3e] text-white text-center py-3.5 rounded-lg font-semibold text-lg hover:bg-[#5a6c34] transition-colors"
+        >
+          Verfügbarkeit prüfen & buchen
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{/* ===== 3. SO FUNKTIONIERT'S ===== */}
+<Steps title="So einfach geht's">
+  <Step title="Online buchen" description="Verfügbarkeit prüfen, Paket und Datum wählen, direkt online bezahlen." />
+  <Step title="Im Kesselhaus abholen" description="Am Kesselhaus 3, Weil am Rhein. Kaution EUR 150,- (bar oder Karte) + Ausweiskopie." />
+  <Step title="Nutzen und zurückbringen" description="Plug & Play — Laptop anschließen, fertig. Nach Gebrauch einfach zurückbringen, Kaution zurück." />
+</Steps>
+
+{/* ===== 4. BUCHUNGSFORMULAR ===== */}
+<div id="buchen">
+<BeamerBuchung />
+</div>
+
+{/* ===== 5. TECHNISCHE DATEN ===== */}
+<FeaturesWithBg title="Technische Daten — Epson EH-TW650" columns={3} backgroundImage="/images/standorte/weil-am-rhein/meetingraum.jpg">
+  <FeatureCard title="Full-HD Auflösung" description="1920 × 1080 Pixel — gestochen scharfe Bilder und Texte, auch bei großer Projektion." icon="monitor" />
+  <FeatureCard title="3100 ANSI-Lumen" description="Hohe Lichtstärke — auch in hellen Räumen gut sichtbar. Ideal für Tageslicht-Konferenzräume." icon="sun" />
+  <FeatureCard title="3LCD-Technik" description="Natürliche Farben ohne Regenbogeneffekt. Kontrastverhältnis 15.000:1 für tiefe Schwarztöne." icon="eye" />
+</FeaturesWithBg>
+
+{/* ===== 6. BENEFITS ===== */}
 <Features title="Warum bei uns mieten?" columns={3}>
   <FeatureCard
     title="Sofort verfügbar"
@@ -47,51 +107,12 @@ description: "Profi-Beamer mit Leinwand mieten in Weil am Rhein. Full-HD, 3100 L
   />
   <FeatureCard
     title="Faire Tagespreise"
-    description="Ab EUR 39,- pro Tag zzgl. MwSt. Keine versteckten Kosten, keine Mindestlaufzeit. Mehrtägig günstiger."
+    description="Ab EUR 39,- pro Tag zzgl. MwSt. Keine versteckten Kosten, keine Mindestlaufzeit."
     icon="tag"
   />
 </Features>
 
-{/* ===== 4b. PRODUKTBILD ===== */}
-<section className="py-12 bg-[#f5f0eb]">
-  <div className="max-w-2xl mx-auto px-4 text-center">
-    <img src="/images/services/weil-am-rhein/beamer-mieten-original.png" alt="Epson Full-HD Beamer mit Leinwand mieten — bizzcenter Weil am Rhein" className="mx-auto rounded-xl shadow-lg" />
-    <p className="mt-4 text-sm text-gray-500">Epson EH-TW650 Full-HD Beamer mit portabler Stativ-Leinwand (1,50 × 1,50 m)</p>
-  </div>
-</section>
-
-{/* ===== 5. TECHNISCHE DATEN ===== */}
-<FeaturesWithBg title="Technische Daten — Epson EH-TW650" columns={3} backgroundImage="/images/standorte/weil-am-rhein/meetingraum.jpg">
-  <FeatureCard title="Full-HD Auflösung" description="1920 × 1080 Pixel — gestochen scharfe Bilder und Texte, auch bei großer Projektion." icon="monitor" />
-  <FeatureCard title="3100 ANSI-Lumen" description="Hohe Lichtstärke — auch in hellen Räumen gut sichtbar. Ideal für Tageslicht-Konferenzräume." icon="sun" />
-  <FeatureCard title="3LCD-Technik" description="Natürliche Farben ohne Regenbogeneffekt. Kontrastverhältnis 15.000:1 für tiefe Schwarztöne." icon="eye" />
-</FeaturesWithBg>
-
-{/* ===== 6. SO FUNKTIONIERT'S ===== */}
-<Steps title="So einfach geht's">
-  <Step title="Online buchen" description="Paket und Datum wählen, Formular ausfüllen. Sie erhalten sofort eine Bestätigung." />
-  <Step title="Im Kesselhaus abholen" description="Am Kesselhaus 3, Weil am Rhein. Kaution EUR 150,- (bar oder Karte) + Ausweiskopie." />
-  <Step title="Nutzen und zurückbringen" description="Plug & Play — Laptop anschließen, fertig. Nach Gebrauch einfach zurückbringen, Kaution zurück." />
-</Steps>
-
-{/* ===== 7. PREISE ===== */}
-<div id="preise">
-<FeaturesWithBg title="Preise" columns={2} backgroundImage="/images/standorte/weil-am-rhein/kesselhaus-aussen.jpg">
-  <FeatureCard title="Nur Beamer — EUR 39,- /Tag" description="Full-HD-Projektor mit HDMI-Kabel, VGA-Adapter, Fernbedienung, Verlängerungskabel und Transporttasche. Ohne Leinwand. Zzgl. MwSt." icon="monitor" />
-  <FeatureCard title="Beamer + Leinwand — EUR 59,- /Tag" description="Komplett-Set: Full-HD-Projektor mit allem Zubehör plus portable Stativ-Leinwand (1,50 × 1,50 m). Zzgl. MwSt." icon="package" />
-</FeaturesWithBg>
-<p className="text-center text-sm text-gray-500 mt-4">Kaution EUR 150,- bei Abholung (bar oder Karte). Wird bei Rückgabe erstattet.</p>
-</div>
-
-{/* ===== 8. CTA ===== */}
-<BannerCTA
-  title="Beamer direkt buchen"
-  buttonText="Zum Buchungsformular"
-  buttonHref="#buchen"
-  subtext="Sofort verfügbar. Abholung im Kesselhaus Weil am Rhein."
-/>
-
-{/* ===== 9. FÜR WEN ===== */}
+{/* ===== 7. FÜR WEN ===== */}
 <AlternatingFeatures>
   <AlternatingFeatureRow
     title="Für Unternehmen"
@@ -108,7 +129,15 @@ description: "Profi-Beamer mit Leinwand mieten in Weil am Rhein. Full-HD, 3100 L
   />
 </AlternatingFeatures>
 
-{/* ===== 10. FAQ ===== */}
+{/* ===== 8. CTA ===== */}
+<BannerCTA
+  title="Beamer direkt buchen"
+  buttonText="Zum Buchungsformular"
+  buttonHref="#buchen"
+  subtext="Sofort verfügbar. Abholung im Kesselhaus Weil am Rhein."
+/>
+
+{/* ===== 9. FAQ ===== */}
 <FAQ title="Häufige Fragen zur Beamer-Miete">
   <FAQItem question="Was ist im Mietset enthalten?">
     Full-HD-Beamer (Epson EH-TW650), portable Leinwand mit Stativ (1,50 × 1,50 m), HDMI-Kabel, VGA-Adapter, Fernbedienung, Verlängerungskabel und eine Transporttasche.
@@ -123,7 +152,7 @@ description: "Profi-Beamer mit Leinwand mieten in Weil am Rhein. Full-HD, 3100 L
     Ja. HDMI und VGA sind inklusive. Für MacBooks mit USB-C benötigen Sie einen eigenen USB-C-auf-HDMI-Adapter.
   </FAQItem>
   <FAQItem question="Kann ich auch kurzfristig buchen?">
-    Ja, auch Same-Day-Buchungen sind möglich, sofern der Beamer verfügbar ist. Rufen Sie an oder buchen Sie direkt unten.
+    Ja, auch Same-Day-Buchungen sind möglich, sofern der Beamer verfügbar ist. Rufen Sie an oder buchen Sie direkt oben.
   </FAQItem>
   <FAQItem question="Wird der Beamer geliefert?">
     Nein. Abholung und Rückgabe im Kesselhaus, Am Kesselhaus 3, 79576 Weil am Rhein.
@@ -142,12 +171,7 @@ description: "Profi-Beamer mit Leinwand mieten in Weil am Rhein. Full-HD, 3100 L
   </FAQItem>
 </FAQ>
 
-{/* ===== 11. BUCHUNGSFORMULAR ===== */}
-<div id="buchen">
-<BeamerBuchung />
-</div>
-
-{/* ===== 12. FINALER CTA ===== */}
+{/* ===== 10. FINALER CTA ===== */}
 <BannerCTA
   title="Fragen? Wir helfen gerne."
   buttonText="Jetzt anrufen"
