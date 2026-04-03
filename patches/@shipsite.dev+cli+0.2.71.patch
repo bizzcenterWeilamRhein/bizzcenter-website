@@ -1,0 +1,27 @@
+diff --git a/node_modules/@shipsite.dev/cli/dist/workspace/generators/page.js b/node_modules/@shipsite.dev/cli/dist/workspace/generators/page.js
+index b2a9509..f019b4e 100644
+--- a/node_modules/@shipsite.dev/cli/dist/workspace/generators/page.js
++++ b/node_modules/@shipsite.dev/cli/dist/workspace/generators/page.js
+@@ -74,9 +74,21 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
+         title: frontmatter.title,
+         description: frontmatter.description,
+         url: canonicalUrl,
+-        siteName: config.name,
++        siteName: config.name && config.name.trim() ? config.name : 'bizzcenter Weil am Rhein',
+         locale,
+         type: pageConfig.type === 'blog-article' ? 'article' : 'website',
++        images: [{
++          url: (config.url || '') + (frontmatter.ogImage || config.ogImage || '/images/og/og-image.jpg'),
++          width: 1200,
++          height: 630,
++          alt: frontmatter.title,
++        }],
++      },
++      twitter: {
++        card: 'summary_large_image',
++        title: frontmatter.title,
++        description: frontmatter.description,
++        images: [(config.url || '') + (frontmatter.ogImage || config.ogImage || '/images/og/og-image.jpg')],
+       },
+     };
+   } catch {

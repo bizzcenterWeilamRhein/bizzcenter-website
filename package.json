@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "shipsite dev",
     "build": "shipsite build",
-    "validate": "shipsite validate"
+    "validate": "shipsite validate",
+    "postinstall": "npx patch-package"
   },
   "dependencies": {
     "@next/third-parties": "^16.1.6",
