@@ -213,6 +213,7 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
   const [firma, setFirma] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [isPrivat, setIsPrivat] = useState(false);
 
   const toggleAddon = (id: string) => {
     setSelectedAddons(prev => {
@@ -250,7 +251,7 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
       setError('Bitte wählen Sie alle Optionen aus.');
       return;
     }
-    if (!name || !email || !firma) {
+    if (!name || !email || (!firma && !isPrivat)) {
       setError('Bitte füllen Sie alle Pflichtfelder aus.');
       return;
     }
@@ -490,7 +491,7 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
         <div>
           {step > 0 && <BackButton onClick={() => setStep(step - 1)} />}
           <h3 className="text-lg font-bold text-gray-900 mb-1">Optionale Add-ons</h3>
-          <p className="text-xs text-gray-500 mb-4">Nicht verpflichtend — einfach überspringen.</p>
+          <p className="text-xs text-gray-500 mb-4">Optional — können auch später hinzugebucht werden.</p>
           {productAddons.length > 0 ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {productAddons.map(addon => (
@@ -547,16 +548,31 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
                 className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e]"
               />
             </div>
-            <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">Firmenname *</label>
+
+            {/* Privatperson Toggle */}
+            <div className="flex items-center gap-3">
               <input
-                type="text"
-                value={firma}
-                onChange={e => setFirma(e.target.value)}
-                placeholder="Musterfirma GmbH"
-                className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e]"
+                type="checkbox"
+                id="privat-check"
+                checked={isPrivat}
+                onChange={e => { setIsPrivat(e.target.checked); if (e.target.checked) setFirma(''); }}
+                className="w-4 h-4 text-[#6b7f3e] border-gray-300 rounded focus:ring-[#6b7f3e]"
               />
+              <label htmlFor="privat-check" className="text-sm text-gray-700">Ich buche als Privatperson (keine Firma)</label>
             </div>
+
+            {!isPrivat && (
+              <div>
+                <label className="block text-xs font-medium text-gray-700 mb-1">Firmenname *</label>
+                <input
+                  type="text"
+                  value={firma}
+                  onChange={e => setFirma(e.target.value)}
+                  placeholder="Musterfirma GmbH"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e]"
+                />
+              </div>
+            )}
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-1">E-Mail *</label>
               <input
