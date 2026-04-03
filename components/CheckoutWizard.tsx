@@ -317,29 +317,27 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
     switch (product) {
       case 'geschaeftsadresse': {
         const t = GA_TARIFE.find(t => t.id === gaTarif);
-        items.push({ label: 'Tarif', value: `${t?.label} (${t?.laufzeit}) — EUR ${t?.price},-/Mon.` });
-        items.push({ label: 'Postversand', value: postversand === 'mit' ? 'Mit Postversand' : 'Ohne Postversand' });
+        items.push({ label: `${t?.label} (${t?.laufzeit})`, value: `EUR ${t?.price},-/Mon.` });
+        items.push({ label: 'Postversand', value: postversand === 'mit' ? 'Mit Weiterleitung' : 'Ohne (Abholung)' });
         break;
       }
       case 'coworking': {
         const t = CW_TARIFE.find(t => t.id === cwTarif);
-        items.push({ label: 'Tarif', value: `${t?.label} — EUR ${t?.price},-` });
+        items.push({ label: t?.label || 'Tarif', value: `EUR ${t?.price},-` });
         break;
       }
       case 'konferenzraum': {
         const room = KONF_ROOMS.find(r => r.id === konfRoom);
         const dauer = KONF_DAUER.find(d => d.id === konfDauer);
         const preis = konfRoom && konfDauer ? KONF_PREISE[konfRoom]?.[konfDauer] : 0;
-        items.push({ label: 'Raum', value: room?.label || '' });
-        items.push({ label: 'Dauer', value: `${dauer?.label} — EUR ${preis},-` });
+        items.push({ label: `${room?.label || 'Raum'} · ${dauer?.label || ''}`, value: `EUR ${preis},-` });
         break;
       }
       case 'tagesbuero':
-        items.push({ label: 'Produkt', value: 'Tagesbüro — EUR 59,-' });
+        items.push({ label: 'Tagesbüro', value: 'EUR 59,-' });
         break;
     }
     if (selectedAddons.size > 0) {
-      // Bei Coworking Tagespass/10er die passenden Add-ons verwenden
       const addonSource = product === 'coworking' && cwTarif === '10er'
         ? CW_10ER_ADDONS
         : product === 'coworking' && cwTarif === 'tagespass'
@@ -348,7 +346,7 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
       addonSource
         .filter(a => selectedAddons.has(a.id))
         .forEach(a => {
-          items.push({ label: a.label, value: a.price + ' zzgl. MwSt.' });
+          items.push({ label: a.label, value: a.price });
         });
     }
     return items;
@@ -533,7 +531,7 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
                 <span className="font-medium text-gray-900 text-right">{item.value}</span>
               </div>
             ))}
-            <p className="text-[10px] text-gray-400 mt-2 text-right">Alle Preise zzgl. MwSt. · MwSt. wird im Checkout berechnet</p>
+            <p className="text-[10px] text-gray-400 mt-2 text-right">Alle Preise zzgl. MwSt. (wird im Checkout berechnet)</p>
           </div>
 
           {/* Form */}
