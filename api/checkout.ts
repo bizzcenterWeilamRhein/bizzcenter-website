@@ -152,19 +152,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(500).json({ error: session.error?.message || 'Stripe Fehler' });
     }
 
-    // ─── Zendesk Sell Lead (fire-and-forget) ───
+    // ─── Lead sync: Zendesk Sell + CRM (fire-and-forget) ───
+    const nameParts = (customerName || '').trim().split(/\s+/);
+    const firstName = nameParts[0] || '';
+    const lastName = nameParts.slice(1).join(' ') || '';
+
+    const descParts: string[] = [];
+    descParts.push(`Quelle: stripe-checkout`);
+    descParts.push(`Produkt: ${priceId}`);
+    if (addons?.length) descParts.push(`Add-ons: ${addons.join(', ')}`);
+    descParts.push(`Stripe Session: ${session.id}`);
+    descParts.push(`Modus: ${mode}`);
+    const description = descParts.join('\n');
+
+    // Zendesk Sell
     if (ZENDESK_TOKEN && (customerEmail || firma)) {
-      const nameParts = (customerName || '').trim().split(/\s+/);
-      const firstName = nameParts[0] || '';
-      const lastName = nameParts.slice(1).join(' ') || '';
-
-      const descParts: string[] = [];
-      descParts.push(`Quelle: stripe-checkout`);
-      descParts.push(`Produkt: ${priceId}`);
-      if (addons?.length) descParts.push(`Add-ons: ${addons.join(', ')}`);
-      descParts.push(`Stripe Session: ${session.id}`);
-      descParts.push(`Modus: ${mode}`);
-
       fetch(`${ZENDESK_API}/leads`, {
         method: 'POST',
         headers: {
@@ -178,12 +180,77 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             organization_name: firma || undefined,
             email: customerEmail || undefined,
             phone: customerPhone || undefined,
-            description: descParts.join('\n'),
+            description,
             tags: ['website', 'stripe-checkout', priceId.split('_')[0]],
           },
         }),
       }).catch(err => console.error('Zendesk Sell lead error:', err));
     }
+
+    // CRM (Supabase DB)
+    (async () => {
+      try {
+        const { Client } = await import('pg');
+        const dbUrl = process.env.CRM_DATABASE_URL;
+        if (!dbUrl) { console.warn('CRM_DATABASE_URL not configured — skipping CRM'); return; }
+        const client = new Client({ connectionString: dbUrl });
+        await client.connect();
+
+        // Find or create Kontakt
+        let kontaktResult = customerEmail
+          ? await client.query(
+              'SELECT id FROM kontakte WHERE email = $1 AND "deletedAt" IS NULL LIMIT 1',
+              [customerEmail]
+            )
+          : { rows: [] };
+
+        let kontaktId;
+        if (kontaktResult.rows.length > 0) {
+          kontaktId = kontaktResult.rows[0].id;
+        } else {
+          const insertKontakt = await client.query(
+            `INSERT INTO kontakte (id, vorname, nachname, email, telefon, "createdAt", "updatedAt")
+             VALUES (gen_random_uuid(), $1, $2, $3, $4, NOW(), NOW())
+             RETURNING id`,
+            [firstName, lastName || '(kein Nachname)', customerEmail || null, customerPhone || null]
+          );
+          kontaktId = insertKontakt.rows[0].id;
+        }
+
+        // Find or create Unternehmen
+        let unternehmenId = null;
+        if (firma) {
+          const untResult = await client.query(
+            'SELECT id FROM unternehmen WHERE firmenname = $1 AND "deletedAt" IS NULL LIMIT 1',
+            [firma]
+          );
+          if (untResult.rows.length > 0) {
+            unternehmenId = untResult.rows[0].id;
+          } else {
+            const insertUnt = await client.query(
+              `INSERT INTO unternehmen (id, firmenname, "createdAt", "updatedAt")
+               VALUES (gen_random_uuid(), $1, NOW(), NOW())
+               RETURNING id`,
+              [firma]
+            );
+            unternehmenId = insertUnt.rows[0].id;
+          }
+        }
+
+        // Create Lead
+        const productTag = priceId.split('_')[0];
+        const produktMap: Record<string, string> = { ga: 'geschaeftsadresse', cw: 'coworking', konf: 'konferenzraum', tb: 'tagesbuero' };
+        await client.query(
+          `INSERT INTO leads (id, "kontaktId", "unternehmenId", quelle, "bedarfKategorie", notizen, "createdAt", "updatedAt")
+           VALUES (gen_random_uuid(), $1, $2, 'WEBSITE_FORM', $3, $4, NOW(), NOW())`,
+          [kontaktId, unternehmenId, produktMap[productTag] || priceId, description]
+        );
+
+        await client.end();
+      } catch (err) {
+        console.error('CRM lead from checkout failed:', err);
+      }
+    })();
 
     return res.status(200).json({ url: session.url, sessionId: session.id });
   } catch (err) {

@@ -4,6 +4,10 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 const MS_TENANT_ID = process.env.MS_TENANT_ID || '';
 const MS_CLIENT_ID = process.env.MS_CLIENT_ID || '';
 const MS_CLIENT_SECRET = process.env.MS_CLIENT_SECRET || '';
+
+// Zendesk Sell
+const ZENDESK_TOKEN = process.env.ZENDESK_SELL_API_TOKEN || '';
+const ZENDESK_API = 'https://api.getbase.com/v2';
 const NOTIFICATION_EMAIL = 'weil@bizzcenter.onmicrosoft.com';
 
 interface LeadData {
@@ -61,6 +65,7 @@ function getQuelleInfo(quelle: string): { name: string; seite: string } {
     'coworking-buchung': { name: 'Coworking-Buchung', seite: '/weil-am-rhein/coworking' },
     'geschaeftsadresse-buchung': { name: 'Geschäftsadresse-Buchung', seite: '/weil-am-rhein/geschaeftsadresse' },
     'anfrage-formular': { name: 'Allgemeines Anfrage-Formular', seite: '(Service-Seiten: Parkplatz, Lautsprecher, etc.)' },
+    'geschaeftsadresse-anfrage': { name: 'Geschäftsadresse Anfrage', seite: '/geschaeftsadresse-mieten (Anfrage-Formular)' },
   };
   return map[quelle] || { name: quelle, seite: 'unbekannt' };
 }
@@ -170,12 +175,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       'coworking-buchung': 'WEBSITE_FORM',
       'geschaeftsadresse-buchung': 'WEBSITE_FORM',
       'anfrage-formular': 'WEBSITE_FORM',
+      'geschaeftsadresse-anfrage': 'WEBSITE_FORM',
     };
     const dbQuelle = quelleToEnum[data.quelle] || 'WEBSITE_FORM';
 
-    // Parallel: CRM + E-Mail
+    // Parallel: CRM + E-Mail + Zendesk Sell
     const results = await Promise.allSettled([
-      // 1. CRM Lead - TEMP WORKAROUND: Direct DB insert statt API
+      // 1. CRM Lead - Direct DB insert
       (async () => {
         try {
           const { Client } = await import('pg');
@@ -251,26 +257,56 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         quelle: data.quelle,
         product: data.product,
       }).then(() => 'email-ok'),
+
+      // 3. Zendesk Sell Lead
+      (async () => {
+        if (!ZENDESK_TOKEN) throw new Error('ZENDESK_SELL_API_TOKEN not configured');
+        if (!data.email && !data.firma) throw new Error('No email or firma for Zendesk');
+
+        const tags = ['website', data.quelle || 'anfrage'];
+        if (data.product) tags.push(data.product);
+
+        const zdRes = await fetch(`${ZENDESK_API}/leads`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${ZENDESK_TOKEN}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            data: {
+              first_name: firstName,
+              last_name: lastName || undefined,
+              organization_name: data.firma || undefined,
+              email: data.email || undefined,
+              phone: data.telefon || undefined,
+              description: description,
+              tags,
+            },
+          }),
+        });
+
+        if (!zdRes.ok) {
+          const errBody = await zdRes.text().catch(() => '');
+          throw new Error(`Zendesk ${zdRes.status}: ${errBody}`);
+        }
+        return 'zendesk-ok';
+      })(),
     ]);
 
     const crmSuccess = results[0].status === 'fulfilled';
     const emailSuccess = results[1].status === 'fulfilled';
+    const zendeskSuccess = results[2].status === 'fulfilled';
 
-    const crmError = !crmSuccess && results[0].status === 'rejected' 
-      ? (results[0].reason?.message || String(results[0].reason)) 
-      : undefined;
-    const emailError = !emailSuccess && results[1].status === 'rejected'
-      ? (results[1].reason?.message || String(results[1].reason))
-      : undefined;
-
-    if (!crmSuccess) console.error('CRM lead creation failed:', crmError);
-    if (!emailSuccess) console.error('Email notification failed:', emailError);
+    if (!crmSuccess) console.error('CRM lead creation failed:', results[0].status === 'rejected' ? results[0].reason : 'unknown');
+    if (!emailSuccess) console.error('Email notification failed:', results[1].status === 'rejected' ? results[1].reason : 'unknown');
+    if (!zendeskSuccess) console.error('Zendesk Sell lead failed:', results[2].status === 'rejected' ? results[2].reason : 'unknown');
 
     // Success wenn mindestens einer erfolgreich
-    if (crmSuccess || emailSuccess) {
+    if (crmSuccess || emailSuccess || zendeskSuccess) {
       const warnings = [];
       if (!crmSuccess) warnings.push('CRM');
       if (!emailSuccess) warnings.push('E-Mail');
+      if (!zendeskSuccess) warnings.push('Zendesk');
       
       return res.status(200).json({
         success: true,
@@ -280,7 +316,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       });
     }
 
-    // Beide fehlgeschlagen
+    // Alle fehlgeschlagen
     return res.status(500).json({ error: 'Lead konnte nicht erstellt werden' });
   } catch (err) {
     console.error('Lead API error:', err);
