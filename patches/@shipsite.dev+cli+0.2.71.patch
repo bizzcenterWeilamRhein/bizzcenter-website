@@ -1,5 +1,5 @@
 diff --git a/node_modules/@shipsite.dev/cli/dist/workspace/generators/page.js b/node_modules/@shipsite.dev/cli/dist/workspace/generators/page.js
-index b2a9509..f019b4e 100644
+index b2a9509..8bf3493 100644
 --- a/node_modules/@shipsite.dev/cli/dist/workspace/generators/page.js
 +++ b/node_modules/@shipsite.dev/cli/dist/workspace/generators/page.js
 @@ -74,9 +74,21 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
@@ -11,7 +11,7 @@ index b2a9509..f019b4e 100644
          locale,
          type: pageConfig.type === 'blog-article' ? 'article' : 'website',
 +        images: [{
-+          url: (config.url || '') + (frontmatter.ogImage || config.ogImage || '/images/og/og-image.jpg'),
++          url: (config.url || '') + (frontmatter.image || config.ogImage || '/images/og/og-image.jpg'),
 +          width: 1200,
 +          height: 630,
 +          alt: frontmatter.title,
@@ -21,7 +21,7 @@ index b2a9509..f019b4e 100644
 +        card: 'summary_large_image',
 +        title: frontmatter.title,
 +        description: frontmatter.description,
-+        images: [(config.url || '') + (frontmatter.ogImage || config.ogImage || '/images/og/og-image.jpg')],
++        images: [(config.url || '') + (frontmatter.image || config.ogImage || '/images/og/og-image.jpg')],
        },
      };
    } catch {
