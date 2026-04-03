@@ -109,6 +109,53 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const hasRecurring = allKeys.some((k: string) => RECURRING_KEYS.has(k));
     const mode = hasRecurring ? 'subscription' : 'payment';
 
+    // ─── Create or find Stripe Customer (prefill billing data) ───
+    let stripeCustomerId: string | null = null;
+    if (customerEmail) {
+      try {
+        // Search existing customer by email
+        const searchRes = await fetch(
+          `https://api.stripe.com/v1/customers/search?query=${encodeURIComponent(`email:"${customerEmail}"`)}`,
+          { headers: { 'Authorization': `Bearer ${STRIPE_KEY}` } }
+        );
+        const searchData = await searchRes.json();
+
+        if (searchData.data?.length > 0) {
+          stripeCustomerId = searchData.data[0].id;
+          // Update existing customer with latest info
+          const updateParams = new URLSearchParams();
+          if (customerName) updateParams.append('name', customerName);
+          if (customerPhone) updateParams.append('phone', customerPhone);
+          if (firma) updateParams.append('metadata[firma]', firma);
+          if (updateParams.toString()) {
+            await fetch(`https://api.stripe.com/v1/customers/${stripeCustomerId}`, {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${STRIPE_KEY}`, 'Content-Type': 'application/x-www-form-urlencoded' },
+              body: updateParams.toString(),
+            });
+          }
+        } else {
+          // Create new customer
+          const custParams = new URLSearchParams();
+          custParams.append('email', customerEmail);
+          if (customerName) custParams.append('name', customerName);
+          if (customerPhone) custParams.append('phone', customerPhone);
+          if (firma) custParams.append('metadata[firma]', firma);
+
+          const custRes = await fetch('https://api.stripe.com/v1/customers', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${STRIPE_KEY}`, 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: custParams.toString(),
+          });
+          const custData = await custRes.json();
+          if (custData.id) stripeCustomerId = custData.id;
+        }
+      } catch (err) {
+        console.error('Stripe customer creation failed:', err);
+        // Continue without customer — fallback to customer_email
+      }
+    }
+
     // Build Stripe params
     const params = new URLSearchParams();
     params.append('mode', mode);
@@ -116,20 +163,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     params.append('success_url', successUrl || `${SITE_URL}/buchung-bestaetigt`);
     params.append('cancel_url', cancelUrl || SITE_URL);
     params.append('billing_address_collection', 'required');
-    if (mode === 'payment') {
+    if (mode === 'payment' && !stripeCustomerId) {
       params.append('customer_creation', 'always');
     }
     params.append('locale', 'de');
     params.append('payment_method_types[0]', 'card');
     params.append('tax_id_collection[enabled]', 'true');
     params.append('automatic_tax[enabled]', 'true');
+    params.append('phone_number_collection[enabled]', 'true');
 
-    if (customerEmail) params.append('customer_email', customerEmail);
+    // Use customer object (prefills name, email, phone) or fallback to email
+    if (stripeCustomerId) {
+      params.append('customer', stripeCustomerId);
+      params.append('customer_update[name]', 'auto');
+      params.append('customer_update[address]', 'auto');
+    } else if (customerEmail) {
+      params.append('customer_email', customerEmail);
+    }
+
     if (firma) params.append('metadata[firma]', firma);
     if (customerName) params.append('metadata[customer_name]', customerName);
-    if (customerPhone) {
-      params.append('metadata[phone]', customerPhone);
-    }
+    if (customerPhone) params.append('metadata[phone]', customerPhone);
 
     lineItems.forEach((item, i) => {
       params.append(`line_items[${i}][price]`, item.price);
