@@ -51,6 +51,7 @@ const PRICE_MAP: Record<string, string> = {
   // Tagespass Add-ons (Einzelpreise pro Tag)
   'addon_kaffee_tag': 'price_1T9pwHJHXQhpcKhge5UguPpX',
   'addon_parkplatz_tag': 'price_1T9pwMJHXQhpcKhgvhgn43QW',
+  'addon_monitor_tag': '', // TODO: Stripe Price für Monitor Tagesmiete (EUR 5,-) anlegen
 };
 
 // ─── Product Configs ─────────────────────────────────────────────────
@@ -115,6 +116,7 @@ const ADDONS_BY_PRODUCT: Record<ProductType, { id: string; label: string; price:
 const CW_TAGESPASS_ADDONS = [
   { id: 'kaffee_tag', label: 'Kaffee-Flat', price: 'EUR 9,-', monthly: false },
   { id: 'parkplatz_tag', label: 'Parkplatz', price: 'EUR 6,-', monthly: false },
+  { id: 'monitor_tag', label: '27" Monitor', price: 'EUR 5,-', monthly: false },
 ];
 
 // 10er-Karte Add-ons (10x Tagespreis, einmalig)

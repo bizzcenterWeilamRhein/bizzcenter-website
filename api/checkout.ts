@@ -45,6 +45,7 @@ const PRICES: Record<string, string> = {
   'addon_parkplatz_tag': 'price_1T9pwMJHXQhpcKhgvhgn43QW',
   'addon_kaffee_10er': 'price_1T9r4bJHXQhpcKhgPtF12IgU',
   'addon_parkplatz_10er': 'price_1T9r4gJHXQhpcKhgMHWRIYix',
+  'addon_monitor_tag': '', // TODO: Stripe Price für Monitor Tagesmiete (EUR 5,-) anlegen
 };
 
 const RECURRING_KEYS = new Set(
