@@ -184,6 +184,53 @@ function GeschaeftsadresseHeroForm() {
   const [status, setStatus] = React.useState<'idle' | 'sending' | 'sent'>('idle');
   const [postversand, setPostversand] = React.useState<'ohne' | 'mit'>('ohne');
 
+  // Silent auto-save refs
+  const autoSaveTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastSavedHash = React.useRef<string>('');
+  const formRef = React.useRef<HTMLFormElement>(null);
+
+  // Debounced auto-save on any input change
+  const triggerAutoSave = React.useCallback(() => {
+    if (!formRef.current) return;
+    const fd = new FormData(formRef.current);
+    const vorname = (fd.get('vorname') as string || '').trim();
+    const email = (fd.get('email') as string || '').trim();
+    const firma = (fd.get('firma') as string || '').trim();
+
+    // Need at least (name + email) or firma
+    const hasMin = (vorname.length >= 2 && email.includes('@')) || firma.length >= 2;
+    if (!hasMin) return;
+
+    const hash = JSON.stringify({ vorname, nachname: fd.get('nachname'), email, firma, rechtsform: fd.get('rechtsform'), postversand });
+    if (hash === lastSavedHash.current) return;
+
+    if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current);
+    autoSaveTimer.current = setTimeout(() => {
+      fetch('/api/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          vorname,
+          nachname: (fd.get('nachname') as string || '').trim(),
+          firma,
+          email,
+          telefon: '',
+          nachricht: [
+            '--- Geschäftsadresse (Hero-Formular, Auto-Save) ---',
+            `Postversand: ${postversand === 'mit' ? 'Mit Postversand' : 'Ohne Postversand'}`,
+            fd.get('rechtsform') ? `Rechtsform: ${fd.get('rechtsform')}` : '',
+          ].filter(Boolean).join('\n'),
+          quelle: 'geschaeftsadresse-partial',
+          product: 'geschaeftsadresse',
+          timestamp: new Date().toISOString(),
+        }),
+      }).then(() => { lastSavedHash.current = hash; }).catch(() => {});
+    }, 5000);
+  }, [postversand]);
+
+  // Also trigger on postversand change
+  React.useEffect(() => { triggerAutoSave(); }, [postversand, triggerAutoSave]);
+
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus('sending');
@@ -229,7 +276,7 @@ function GeschaeftsadresseHeroForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3">
+    <form ref={formRef} onSubmit={handleSubmit} onChange={() => triggerAutoSave()} className="space-y-3">
       <p className="text-sm font-semibold text-foreground">Geschäftsadresse anfragen</p>
 
       {/* Postversand Toggle */}
