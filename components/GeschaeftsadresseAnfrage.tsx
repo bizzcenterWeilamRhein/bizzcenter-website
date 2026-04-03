@@ -217,6 +217,9 @@ export function GeschaeftsadresseAnfrage({ title = 'Geschäftsadresse anfragen' 
 
         {/* ── STEP 2: Tarif ── */}
         <div className="mb-8">
+          <div className="mb-4 rounded-lg bg-[#6b7f3e] text-white text-center py-2 px-3">
+            <p className="text-sm font-bold">Sommeraktion — 35% Nachlass bis 30.09.2026</p>
+          </div>
           <h3 className="text-lg font-bold text-gray-900 mb-1">2. Tarif wählen</h3>
           <p className="text-xs text-gray-500 mb-3">
             {postversand === 'mit' ? 'Inkl. wöchentlicher Postweiterleitung' : 'Ohne Postversand'} · Alle
