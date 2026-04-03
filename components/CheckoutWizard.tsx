@@ -419,7 +419,8 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
                   <div className="w-full text-center">
                     <div className="text-xs sm:text-sm font-semibold">{t.label}</div>
                     <div className="text-base sm:text-lg font-bold text-[#1e293b] my-0.5 whitespace-nowrap">EUR {t.price},-</div>
-                    <p className="text-[10px] sm:text-xs text-gray-500">{t.sub}</p>
+                    <p className="text-[10px] text-gray-400">zzgl. MwSt.</p>
+                    <p className="text-[10px] sm:text-xs text-gray-500 mt-0.5">{t.sub}</p>
                     {t.badge && <span className="inline-block mt-1 text-[9px] font-bold bg-[#6b7f3e] text-white rounded-full px-1.5 py-0.5">{t.badge}</span>}
                   </div>
                 </OptionCard>
