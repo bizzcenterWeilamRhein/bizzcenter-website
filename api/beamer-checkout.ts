@@ -59,8 +59,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const tarifInfo = TARIFE[tarif];
     if (!tarifInfo) return res.status(400).json({ error: 'Ungültiger Tarif' });
 
+    // Datums-Validierung
     const start = new Date(startDate);
     const end = endDate ? new Date(endDate) : new Date(startDate);
+    if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+      return res.status(400).json({ error: 'Ungültiges Datum' });
+    }
+    if (end < start) {
+      return res.status(400).json({ error: 'Enddatum liegt vor dem Startdatum' });
+    }
     const now = new Date();
     const diffHours = (start.getTime() - now.getTime()) / (1000 * 60 * 60);
 
