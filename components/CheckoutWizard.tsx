@@ -51,7 +51,7 @@ const PRICE_MAP: Record<string, string> = {
   // Tagespass Add-ons (Einzelpreise pro Tag)
   'addon_kaffee_tag': 'price_1T9pwHJHXQhpcKhge5UguPpX',
   'addon_parkplatz_tag': 'price_1T9pwMJHXQhpcKhgvhgn43QW',
-  'addon_monitor_tag': '', // TODO: Stripe Price für Monitor Tagesmiete (EUR 5,-) anlegen
+  'addon_monitor_tag': 'price_1TI23fJHXQhpcKhg2FiMCBEg',
 };
 
 // ─── Product Configs ─────────────────────────────────────────────────

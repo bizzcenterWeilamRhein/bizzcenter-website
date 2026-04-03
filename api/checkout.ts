@@ -45,13 +45,13 @@ const PRICES: Record<string, string> = {
   'addon_parkplatz_tag': 'price_1T9pwMJHXQhpcKhgvhgn43QW',
   'addon_kaffee_10er': 'price_1T9r4bJHXQhpcKhgPtF12IgU',
   'addon_parkplatz_10er': 'price_1T9r4gJHXQhpcKhgMHWRIYix',
-  'addon_monitor_tag': '', // TODO: Stripe Price für Monitor Tagesmiete (EUR 5,-) anlegen
+  'addon_monitor_tag': 'price_1TI23fJHXQhpcKhg2FiMCBEg',
 };
 
 const RECURRING_KEYS = new Set(
   Object.keys(PRICES).filter(k =>
     k.startsWith('ga_') || k.startsWith('cw_monats') ||
-    (k.startsWith('addon_') && k !== 'addon_firmenschild' && !k.endsWith('_tag'))
+    (k.startsWith('addon_') && k !== 'addon_firmenschild' && !k.endsWith('_tag') && !k.endsWith('_10er'))
   )
 );
 
@@ -93,16 +93,41 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ error: 'Firmenname zu lang' });
     }
 
+    // ─── Upsell mapping: which add-on keys are available per product category ───
+    const UPSELL_MAP: Record<string, string[]> = {
+      'cw_tagespass': ['addon_kaffee_tag', 'addon_parkplatz_tag', 'addon_monitor_tag'],
+      'cw_10er': ['addon_kaffee_10er', 'addon_parkplatz_10er'],
+      'cw_monatspass': ['addon_kaffee', 'addon_parkplatz', 'addon_monitor', 'addon_schrank'],
+      'cw_monatsabo': ['addon_kaffee', 'addon_parkplatz', 'addon_monitor', 'addon_schrank'],
+      'tb': ['addon_kaffee_tag', 'addon_parkplatz_tag', 'addon_monitor_tag'],
+    };
+    // Konferenzraum upsells
+    for (const prefix of ['konf_2pers', 'konf_6pers', 'konf_15pers', 'konf_25pers']) {
+      for (const dur of ['_stunde', '_halbtags', '_ganztags']) {
+        UPSELL_MAP[prefix + dur] = ['addon_kaffee_tag', 'addon_parkplatz_tag'];
+      }
+    }
+
     // Build line items
-    const lineItems: Array<{ price: string; quantity: number }> = [
+    const lineItems: Array<{ price: string; quantity: number; adjustable?: boolean }> = [
       { price: PRICES[priceId], quantity: 1 },
     ];
+
+    const selectedAddonKeys = new Set<string>(addons || []);
 
     if (addons && Array.isArray(addons)) {
       for (const addon of addons) {
         if (PRICES[addon]) {
           lineItems.push({ price: PRICES[addon], quantity: 1 });
         }
+      }
+    }
+
+    // Add upsell items (not already selected) with quantity 0, adjustable 0–1
+    const availableUpsells = UPSELL_MAP[priceId] || [];
+    for (const upsellKey of availableUpsells) {
+      if (!selectedAddonKeys.has(upsellKey) && PRICES[upsellKey]) {
+        lineItems.push({ price: PRICES[upsellKey], quantity: 0, adjustable: true });
       }
     }
 
@@ -189,6 +214,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     lineItems.forEach((item, i) => {
       params.append(`line_items[${i}][price]`, item.price);
       params.append(`line_items[${i}][quantity]`, String(item.quantity));
+      if (item.adjustable) {
+        params.append(`line_items[${i}][adjustable_quantity][enabled]`, 'true');
+        params.append(`line_items[${i}][adjustable_quantity][minimum]`, '0');
+        params.append(`line_items[${i}][adjustable_quantity][maximum]`, '1');
+      }
     });
 
     const response = await fetch('https://api.stripe.com/v1/checkout/sessions', {
