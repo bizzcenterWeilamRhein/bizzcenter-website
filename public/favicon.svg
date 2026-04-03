@@ -1,4 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
-  <rect x="4" y="4" width="36" height="36" rx="7" fill="#6b7f3e" transform="rotate(-12 22 22)"/>
-  <rect x="22" y="22" width="36" height="36" rx="7" fill="#2C4A7C" transform="rotate(6 40 40)"/>
+  <!-- Hinteres Quadrat: rechts oben -->
+  <rect x="20" y="2" width="34" height="34" rx="6" fill="#2C4A7C" transform="rotate(45 37 19)"/>
+  <!-- Vorderes Quadrat: links unten -->
+  <rect x="4" y="22" width="34" height="34" rx="6" fill="#6b7f3e" transform="rotate(-45 21 39)"/>
 </svg>
