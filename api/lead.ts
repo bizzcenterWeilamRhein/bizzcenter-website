@@ -66,6 +66,8 @@ function getQuelleInfo(quelle: string): { name: string; seite: string } {
     'geschaeftsadresse-buchung': { name: 'Geschäftsadresse-Buchung', seite: '/weil-am-rhein/geschaeftsadresse' },
     'anfrage-formular': { name: 'Allgemeines Anfrage-Formular', seite: '(Service-Seiten: Parkplatz, Lautsprecher, etc.)' },
     'geschaeftsadresse-anfrage': { name: 'Geschäftsadresse Anfrage', seite: '/geschaeftsadresse-mieten (Anfrage-Formular)' },
+    'geschaeftsadresse-partial': { name: 'Geschäftsadresse (Auto-Save)', seite: '/geschaeftsadresse-mieten (Formular nicht abgeschickt)' },
+    'geschaeftsadresse-partial-update': { name: 'Geschäftsadresse (Auto-Save Update)', seite: '/geschaeftsadresse-mieten (Formular nicht abgeschickt)' },
   };
   return map[quelle] || { name: quelle, seite: 'unbekannt' };
 }
@@ -176,6 +178,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       'geschaeftsadresse-buchung': 'WEBSITE_FORM',
       'anfrage-formular': 'WEBSITE_FORM',
       'geschaeftsadresse-anfrage': 'WEBSITE_FORM',
+      'geschaeftsadresse-partial': 'WEBSITE_FORM',
+      'geschaeftsadresse-partial-update': 'WEBSITE_FORM',
     };
     const dbQuelle = quelleToEnum[data.quelle] || 'WEBSITE_FORM';
 
