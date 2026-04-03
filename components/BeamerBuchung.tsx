@@ -78,6 +78,29 @@ export function BeamerBuchung() {
   const [firma, setFirma] = useState('');
   const [email, setEmail] = useState('');
   const [telefon, setTelefon] = useState('');
+  const [isPrivat, setIsPrivat] = useState(false);
+
+  // Ausweis-Upload
+  const [ausweisFile, setAusweisFile] = useState<File | null>(null);
+  const [ausweisPreview, setAusweisPreview] = useState<string | null>(null);
+
+  const handleAusweisChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 10 * 1024 * 1024) {
+      setError('Datei zu groß (max. 10 MB)');
+      return;
+    }
+    setAusweisFile(file);
+    const reader = new FileReader();
+    reader.onload = () => setAusweisPreview(reader.result as string);
+    reader.readAsDataURL(file);
+  };
+
+  const removeAusweis = () => {
+    setAusweisFile(null);
+    setAusweisPreview(null);
+  };
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -215,6 +238,16 @@ export function BeamerBuchung() {
     setError('');
 
     try {
+      // Prepare ausweis as base64 if uploaded
+      let ausweisBase64: string | undefined;
+      if (ausweisFile) {
+        ausweisBase64 = await new Promise<string>((resolve) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result as string);
+          reader.readAsDataURL(ausweisFile);
+        });
+      }
+
       const res = await fetch('/api/beamer-checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -224,9 +257,10 @@ export function BeamerBuchung() {
           endDate: endDate || startDate,
           vorname,
           nachname,
-          firma,
+          firma: isPrivat ? '' : firma,
           email,
           telefon,
+          ausweisBase64,
         }),
       });
       const data = await res.json();
@@ -254,7 +288,7 @@ export function BeamerBuchung() {
           <h3 className="text-xl font-bold text-gray-900 mb-2">Buchung erfolgreich!</h3>
           <p className="text-gray-600 mb-4">Vielen Dank! Ihre Beamer-Buchung ist bestätigt und bezahlt.</p>
           <p className="text-gray-600">Sie erhalten eine Bestätigung per E-Mail. Abholung im Kesselhaus, Am Kesselhaus 3, 79576 Weil am Rhein.</p>
-          <p className="text-sm text-gray-500 mt-4">Bitte bringen Sie zur Abholung EUR 150,- Kaution (bar oder Karte) und einen Ausweis mit.</p>
+          <p className="text-sm text-gray-500 mt-4">Bitte bringen Sie zur Abholung EUR 150,- Kaution (bar oder Karte) mit.</p>
         </div>
       </section>
     );
@@ -413,16 +447,57 @@ export function BeamerBuchung() {
                 <input type="tel" value={telefon} onChange={e => setTelefon(e.target.value)} placeholder="Telefon *" required minLength={6} maxLength={30}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none" />
               </div>
-              <input type="text" value={firma} onChange={e => setFirma(e.target.value)} placeholder="Firma (optional)" maxLength={200}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none" />
+
+              {/* Privatperson Toggle */}
+              <div className="flex items-center gap-3">
+                <input type="checkbox" id="beamer-privat" checked={isPrivat} onChange={e => { setIsPrivat(e.target.checked); if (e.target.checked) setFirma(''); }}
+                  className="w-4 h-4 text-[#6b7f3e] border-gray-300 rounded focus:ring-[#6b7f3e]" />
+                <label htmlFor="beamer-privat" className="text-sm text-gray-700">Ich buche als Privatperson (keine Firma)</label>
+              </div>
+
+              {!isPrivat && (
+                <input type="text" value={firma} onChange={e => setFirma(e.target.value)} placeholder="Firma (optional)" maxLength={200}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none" />
+              )}
             </div>
+          </div>
+
+          {/* 4. Ausweiskopie */}
+          <div>
+            <h3 className="text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wide">4. Ausweiskopie (optional)</h3>
+            <p className="text-sm text-gray-500 mb-3">Laden Sie ein Foto Ihres Personalausweises hoch — dann müssen Sie ihn nicht zur Abholung mitbringen.</p>
+            {ausweisPreview ? (
+              <div className="relative inline-block">
+                <img src={ausweisPreview} alt="Ausweiskopie" className="max-h-40 rounded-lg border border-gray-200 shadow-sm" />
+                <button type="button" onClick={removeAusweis} className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full text-xs flex items-center justify-center hover:bg-red-600 transition-colors">
+                  ×
+                </button>
+                <p className="text-xs text-[#6b7f3e] mt-1 font-medium">Ausweis hochgeladen</p>
+              </div>
+            ) : (
+              <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-[#6b7f3e] hover:bg-[#f0f4e8]/50 transition-colors">
+                <svg className="w-8 h-8 text-gray-400 mb-2" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" />
+                </svg>
+                <span className="text-sm text-gray-500">Foto aufnehmen oder Datei wählen</span>
+                <span className="text-xs text-gray-400 mt-0.5">JPG, PNG oder PDF — max. 10 MB</span>
+                <input type="file" accept="image/*,.pdf" capture="environment" onChange={handleAusweisChange} className="hidden" />
+              </label>
+            )}
           </div>
 
           {/* Hinweise */}
           <div className="bg-[#f5f0eb] rounded-lg px-4 py-3 text-sm text-gray-600 space-y-1">
             <p className="font-semibold text-gray-700">Hinweise zur Abholung:</p>
             <p>Abholung im Kesselhaus, Am Kesselhaus 3, 79576 Weil am Rhein. Keine Lieferung.</p>
-            <p>Bei Abholung: <strong>EUR 150,- Kaution</strong> (bar oder Karte) + <strong>Ausweiskopie</strong>. Kaution wird bei Rückgabe erstattet.</p>
+            <p>Bei Abholung: <strong>EUR 150,- Kaution</strong> (bar oder Karte). Kaution wird bei Rückgabe erstattet.</p>
+            {!ausweisFile && (
+              <p className="text-amber-700 font-medium">Falls Sie keinen Ausweis hochgeladen haben, bringen Sie bitte Ihren Personalausweis zur Abholung mit.</p>
+            )}
+            {ausweisFile && (
+              <p className="text-[#6b7f3e] font-medium">Ausweis wurde hochgeladen — Sie müssen keinen Ausweis mitbringen.</p>
+            )}
           </div>
 
           {error && <p className="text-red-600 text-sm bg-red-50 rounded-lg px-4 py-3">{error}</p>}

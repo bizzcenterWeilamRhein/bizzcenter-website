@@ -39,14 +39,18 @@ function getStaffelPreis(tarif: string, tage: number): number {
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  const ALLOWED = ['https://weil.bizzcenter.de', 'https://www.bizzcenter.de', 'https://bizzcenter.de', 'https://bizzcenter-website.vercel.app'];
+  const origin = req.headers.origin || '';
+  if (ALLOWED.includes(origin) || origin.includes('localhost')) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   try {
-    const { tarif, startDate, endDate, vorname, nachname, firma, email, telefon } = req.body;
+    const { tarif, startDate, endDate, vorname, nachname, firma, email, telefon, ausweisBase64 } = req.body;
 
     // Validate
     if (!tarif || !startDate || !vorname || !nachname || !telefon || !email) {
@@ -114,6 +118,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         nachname,
         firma: firma || '',
         telefon,
+        ausweis_uploaded: ausweisBase64 ? 'yes' : 'no',
       },
       success_url: `${SITE_URL}/beamer-mieten?buchung=erfolgreich&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${SITE_URL}/beamer-mieten?buchung=abgebrochen`,
@@ -122,10 +127,78 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     // Save booking as confirmed (payment pending)
     await pool.query(
-      `INSERT INTO beamer_bookings (start_date, end_date, tarif, tage, gesamtpreis_netto, vorname, nachname, firma, email, telefon, stripe_session_id, stripe_payment_status, status)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, 'pending', 'confirmed')`,
-      [startDate, endDate || startDate, tarif, tage, gesamtpreisNetto / 100, vorname, nachname, firma || null, email, telefon, session.id]
+      `INSERT INTO beamer_bookings (start_date, end_date, tarif, tage, gesamtpreis_netto, vorname, nachname, firma, email, telefon, stripe_session_id, stripe_payment_status, status, ausweis_uploaded)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, 'pending', 'confirmed', $12)`,
+      [startDate, endDate || startDate, tarif, tage, gesamtpreisNetto / 100, vorname, nachname, firma || null, email, telefon, session.id, !!ausweisBase64]
     );
+
+    // Send ausweis to internal email if uploaded
+    if (ausweisBase64) {
+      try {
+        const M365_TENANT = process.env.M365_TENANT_ID;
+        const M365_CLIENT = process.env.M365_CLIENT_ID;
+        const M365_SECRET = process.env.M365_CLIENT_SECRET;
+        const M365_USER = process.env.M365_USER_ID || 'weil@bizzcenter.onmicrosoft.com';
+
+        if (M365_TENANT && M365_CLIENT && M365_SECRET) {
+          // Get access token
+          const tokenRes = await fetch(`https://login.microsoftonline.com/${M365_TENANT}/oauth2/v2.0/token`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({
+              grant_type: 'client_credentials',
+              client_id: M365_CLIENT,
+              client_secret: M365_SECRET,
+              scope: 'https://graph.microsoft.com/.default',
+            }),
+          });
+          const tokenData = await tokenRes.json();
+
+          if (tokenData.access_token) {
+            // Extract base64 content and content type
+            const matches = ausweisBase64.match(/^data:(.+);base64,(.+)$/);
+            const contentType = matches?.[1] || 'image/jpeg';
+            const base64Content = matches?.[2] || ausweisBase64;
+            const ext = contentType.includes('pdf') ? 'pdf' : contentType.includes('png') ? 'png' : 'jpg';
+
+            await fetch(`https://graph.microsoft.com/v1.0/users/${M365_USER}/sendMail`, {
+              method: 'POST',
+              headers: {
+                Authorization: `Bearer ${tokenData.access_token}`,
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                message: {
+                  subject: `Ausweiskopie — Beamer-Buchung ${vorname} ${nachname} (${formatDate(startDate)})`,
+                  body: {
+                    contentType: 'HTML',
+                    content: `<p>Ausweiskopie für Beamer-Buchung:</p>
+                      <ul>
+                        <li><strong>Name:</strong> ${vorname} ${nachname}</li>
+                        <li><strong>Firma:</strong> ${firma || 'Privatperson'}</li>
+                        <li><strong>Zeitraum:</strong> ${zeitraum}</li>
+                        <li><strong>E-Mail:</strong> ${email}</li>
+                        <li><strong>Telefon:</strong> ${telefon}</li>
+                      </ul>`,
+                  },
+                  toRecipients: [{ emailAddress: { address: M365_USER } }],
+                  attachments: [{
+                    '@odata.type': '#microsoft.graph.fileAttachment',
+                    name: `Ausweis_${nachname}_${vorname}.${ext}`,
+                    contentType,
+                    contentBytes: base64Content,
+                  }],
+                },
+                saveToSentItems: false,
+              }),
+            });
+          }
+        }
+      } catch (emailErr) {
+        console.error('Ausweis email error (non-blocking):', emailErr);
+        // Non-blocking — booking still proceeds
+      }
+    }
 
     return res.status(200).json({ url: session.url });
   } catch (err: any) {
