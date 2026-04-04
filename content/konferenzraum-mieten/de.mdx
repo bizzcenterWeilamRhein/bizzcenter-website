@@ -4,7 +4,11 @@ description: "Konferenzraum in Weil am Rhein mieten: 2-25 Personen, tageslichtdu
 ---
 
 <GlobalOverflowFix />
-
+<BreadcrumbListSchema items={[
+  { name: "Home", href: "/" },
+  { name: "Bürolösungen", href: "/uebersicht" },
+  { name: "Konferenzraum mieten", href: "/konferenzraum-mieten" },
+]} />
 
 <ActiveNavHighlight />
 <LanguageSwitcher />
@@ -190,6 +194,17 @@ description: "Konferenzraum in Weil am Rhein mieten: 2-25 Personen, tageslichtdu
     Ja — alle unsere Räume sind tageslichtdurchflutet. Das Kesselhaus hat 7,50 Meter Deckenhöhe und große Fensterfronten.
   </FAQItem>
 </FAQ>
+
+<FAQPageSchema items={[
+  { question: "Wie kann ich einen Konferenzraum buchen?", answer: "Einfach per Telefon, E-Mail oder über unser Kontaktformular anfragen. Wir bestätigen Ihnen die Verfügbarkeit kurzfristig." },
+  { question: "Kann ich den Raum stundenweise buchen?", answer: "Ja. Alle Räume sind stundenweise, halbtags oder ganztags buchbar — ganz nach Ihrem Bedarf." },
+  { question: "Welche Technik ist vorhanden?", answer: "Beamer, Leinwand, Whiteboard und Highspeed-Internet (WIFI 5/6 + LAN) sind in allen Räumen verfügbar." },
+  { question: "Gibt es Parkplätze?", answer: "Ja. Parkplätze befinden sich direkt vor dem Gebäude und können optional zum Tagestarif von EUR 6,- zzgl. MwSt. gebucht werden. 90 Minuten kostenfrei." },
+  { question: "Wo genau befindet sich der Konferenzraum in Weil am Rhein?", answer: "Im historischen Kesselhaus, Am Kesselhaus 3, 79576 Weil am Rhein — nur 300 Meter von der Schweizer Grenze. Direkt erreichbar mit der Tramlinie 8 von Basel (Haltestelle Riedlistrasse/Kesselhaus) und nahe der A5." },
+  { question: "Kann ich einen Konferenzraum auch als Schweizer Unternehmen buchen?", answer: "Ja. Viele unserer Kunden kommen aus Basel und der Nordwestschweiz. Die Grenze ist fußläufig erreichbar, und die Preise sind in Euro — deutlich günstiger als vergleichbare Räume in Basel." },
+  { question: "Was kostet ein Konferenzraum in Weil am Rhein?", answer: "Ab EUR 19,- pro Stunde für den Meetingraum S (2 Personen). Halbtags- und Tagestarife sind verfügbar. Mit der 10er-Karte sparen Sie 15% auf alle Buchungen." },
+  { question: "Gibt es einen Konferenzraum mit Tageslicht?", answer: "Ja — alle unsere Räume sind tageslichtdurchflutet. Das Kesselhaus hat 7,50 Meter Deckenhöhe und große Fensterfronten." },
+]} />
 
 {/* ===== JETZT BUCHEN ===== */}
 <CheckoutWizard product="konferenzraum" title="Konferenzraum buchen" />

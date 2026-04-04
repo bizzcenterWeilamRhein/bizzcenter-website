@@ -45,5 +45,7 @@ export { BeamerBuchung } from './BeamerBuchung';
 
 export { GlobalOverflowFix } from './GlobalOverflowFix';
 export { LocalBusinessSchema } from './StructuredData';
+export { FAQPageSchema } from './FAQPageSchema';
+export { BreadcrumbListSchema } from './BreadcrumbListSchema';
 export { CookieConsent, CookieSettingsLink } from './CookieConsent';
 export { ConsentModeInit } from './ConsentModeInit';

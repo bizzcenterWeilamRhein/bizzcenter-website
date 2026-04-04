@@ -4,7 +4,11 @@ description: "Coworking Space in Weil am Rhein: Tagespass, 10er-Karte, Monatspas
 ---
 
 <GlobalOverflowFix />
-
+<BreadcrumbListSchema items={[
+  { name: "Home", href: "/" },
+  { name: "Bürolösungen", href: "/uebersicht" },
+  { name: "Coworking", href: "/coworking" },
+]} />
 
 <ActiveNavHighlight />
 <LanguageSwitcher />
@@ -164,6 +168,17 @@ description: "Coworking Space in Weil am Rhein: Tagespass, 10er-Karte, Monatspas
     Ja. Im Green Office gibt es eine gemütliche Spielbox, in der du gemeinsam mit deinem Kind spielen oder ältere Kinder sich auch mal eigenständig beschäftigen können. Bitte beachte, dass es sich nicht um eine Kinderbetreuung handelt — die Aufsichtspflicht liegt bei den Eltern. Damit alle Coworker konzentriert arbeiten können, bitten wir darum, die Spielbox nicht als dauerhafte Lösung ohne Begleitung zu nutzen.
   </FAQItem>
 </FAQ>
+
+<FAQPageSchema items={[
+  { question: "In welchen Räumen findet das Coworking statt?", answer: "Die beiden Haupträume befinden sich im EG des Turmgebäudes direkt beim Haupteingang — dort stehen auch die zwei Quietboxen für Telefonate und fokussiertes Arbeiten. Im Green Office steht zusätzlich ein Büro für Coworking zur Verfügung." },
+  { question: "Für wen ist das Coworking geeignet?", answer: "Für Selbstständige, Startups, Freelancer, kleine Teams und Angestellte, die flexibel arbeiten möchten — ohne langfristige Büromietverträge." },
+  { question: "Kann ich Coworking erst testen?", answer: "Ja. Buchen Sie zunächst einen Tagespass — bei einer längerfristigen Buchung wird dieser angerechnet." },
+  { question: "Welche Leistungen sind im Coworking-Preis enthalten?", answer: "Ein voll ausgestatteter Arbeitsplatz in ruhiger Atmosphäre, schnelles WLAN, Nebenkosten, Nutzung der Gemeinschaftsflächen sowie Küche, WC und Chillout-Area." },
+  { question: "Gibt es feste Arbeitsplätze oder nur flexible Plätze?", answer: "Beides. Feste Arbeitsplätze (Fix Desks) können gebucht werden — so bleibt z.B. Ihr Bildschirm stehen. Tagespässe und 10er-Karten nutzen die Flex Desks." },
+  { question: "Wie schnell ist das Internet?", answer: "Highspeed-Internet mit WIFI 5/6 und LAN. Stabil genug für Videokonferenzen, Cloud-Anwendungen und IP-Telefonie." },
+  { question: "Gibt es einen 24/7-Zugang?", answer: "Ja. Alle Coworking-Nutzer erhalten einen individuellen Zugangscode — 24/7, sieben Tage die Woche, unabhängig von Öffnungszeiten." },
+  { question: "Kann ich die Adresse als Geschäftsadresse nutzen?", answer: "Ja. Bei entsprechenden Tarifen kann die Adresse als Geschäftsadresse genutzt werden und ist impressumsfähig." },
+]} />
 
 {/* ===== FINALER CTA ===== */}
 <CheckoutWizard product="coworking" title="Coworking buchen" />
