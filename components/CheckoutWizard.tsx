@@ -584,6 +584,7 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
                 className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e]"
               />
             </div>
+            {/* Telefon-Feld vorerst deaktiviert
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-1">Telefon / Handy</label>
               <input
@@ -594,6 +595,7 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
                 className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e]"
               />
             </div>
+            */}
           </div>
 
           {error && (
