@@ -48,6 +48,53 @@ const PRICES: Record<string, string> = {
   'addon_monitor_tag': 'price_1TI23fJHXQhpcKhg2FiMCBEg',
 };
 
+// Cached tax rate ID — fetched/created once per cold start
+let cachedTaxRateId: string | null = null;
+
+async function getOrCreateTaxRate(): Promise<string> {
+  if (cachedTaxRateId) return cachedTaxRateId;
+
+  // Search for existing DE MwSt 19% tax rate
+  const listRes = await fetch('https://api.stripe.com/v1/tax_rates?active=true&limit=100', {
+    headers: { 'Authorization': `Bearer ${STRIPE_KEY}` },
+  });
+  const listData = await listRes.json();
+
+  if (listData.data?.length > 0) {
+    const existing = listData.data.find(
+      (tr: { percentage: number; display_name: string }) =>
+        tr.percentage === 19 &&
+        (tr.display_name.includes('MwSt') || tr.display_name.includes('VAT'))
+    );
+    if (existing) {
+      cachedTaxRateId = existing.id;
+      return cachedTaxRateId!;
+    }
+  }
+
+  // Create new tax rate
+  const createParams = new URLSearchParams();
+  createParams.append('display_name', 'MwSt.');
+  createParams.append('percentage', '19');
+  createParams.append('inclusive', 'false');
+  createParams.append('country', 'DE');
+  createParams.append('jurisdiction', 'DE');
+
+  const createRes = await fetch('https://api.stripe.com/v1/tax_rates', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${STRIPE_KEY}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: createParams.toString(),
+  });
+  const createData = await createRes.json();
+
+  if (!createData.id) throw new Error('Failed to create tax rate: ' + JSON.stringify(createData));
+  cachedTaxRateId = createData.id;
+  return cachedTaxRateId!;
+}
+
 const RECURRING_KEYS = new Set(
   Object.keys(PRICES).filter(k =>
     k.startsWith('ga_') || k.startsWith('cw_monats') ||
@@ -81,6 +128,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!priceId || !PRICES[priceId]) {
       return res.status(400).json({ error: 'Ungültiges Produkt' });
     }
+
+    // Resolve MwSt. tax rate (cached after first call)
+    const taxRateId = await getOrCreateTaxRate();
 
     // Input validation
     if (customerEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customerEmail)) {
@@ -195,7 +245,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     params.append('locale', 'de');
     params.append('payment_method_types[0]', 'card');
     params.append('tax_id_collection[enabled]', 'true');
-    params.append('automatic_tax[enabled]', 'true');
     params.append('phone_number_collection[enabled]', 'true');
 
     // Use customer object (prefills name, email, phone) or fallback to email
@@ -214,12 +263,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     lineItems.forEach((item, i) => {
       params.append(`line_items[${i}][price]`, item.price);
       params.append(`line_items[${i}][quantity]`, String(item.quantity));
+      if (mode === 'payment') {
+        params.append(`line_items[${i}][tax_rates][0]`, taxRateId);
+      }
       if (item.adjustable) {
         params.append(`line_items[${i}][adjustable_quantity][enabled]`, 'true');
         params.append(`line_items[${i}][adjustable_quantity][minimum]`, '0');
         params.append(`line_items[${i}][adjustable_quantity][maximum]`, '1');
       }
     });
+
+    if (mode === 'subscription') {
+      params.append('subscription_data[default_tax_rates][0]', taxRateId);
+    }
 
     const response = await fetch('https://api.stripe.com/v1/checkout/sessions', {
       method: 'POST',
