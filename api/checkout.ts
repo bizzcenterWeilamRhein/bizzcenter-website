@@ -123,8 +123,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     }
 
-    // Upsell items disabled — Stripe does not support quantity 0 line items
-    // TODO: Re-enable with Stripe's native cross-sell/upsell feature when available
+    // Upsell items: pre-selected at qty 1, adjustable down to 0 so customers can opt out
+    const upsellKeys = UPSELL_MAP[priceId] || [];
+    for (const upsellKey of upsellKeys) {
+      if (!selectedAddonKeys.has(upsellKey) && PRICES[upsellKey]) {
+        lineItems.push({ price: PRICES[upsellKey], quantity: 1, adjustable: true });
+      }
+    }
 
     const allKeys = [priceId, ...(addons || [])];
     const hasRecurring = allKeys.some((k: string) => RECURRING_KEYS.has(k));
