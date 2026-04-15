@@ -6,11 +6,11 @@ import { usePathname } from 'next/navigation';
 const FLAGS: Record<string, { code: string; label: string }> = {
   de: { code: 'de', label: 'Deutsch' },
   en: { code: 'gb', label: 'English' },
-  es: { code: 'es', label: 'Español' },
   fr: { code: 'fr', label: 'Français' },
+  it: { code: 'it', label: 'Italiano' },
 };
 
-const LOCALES = ['de', 'en', 'es', 'fr'];
+const LOCALES = ['de', 'en', 'fr', 'it'];
 const DEFAULT_LOCALE = 'de';
 
 export function LanguageSwitcher() {

@@ -1,8 +1,54 @@
 'use client';
 
 import React, { useState } from 'react';
+import { usePathname } from 'next/navigation';
+
+const STRINGS = {
+  de: {
+    title: 'Kontaktformular',
+    subtitle: 'Schreiben Sie uns — wir melden uns zeitnah bei Ihnen.',
+    labelFirstName: 'Vorname',
+    placeholderFirstName: 'Ihr Vorname',
+    labelLastName: 'Nachname',
+    placeholderLastName: 'Ihr Nachname',
+    labelCompany: 'Firma',
+    placeholderCompany: 'Firmenname (optional)',
+    labelPhone: 'Telefon',
+    placeholderPhone: '+49 ...',
+    labelMessage: 'Ihre Anfrage',
+    placeholderMessage: 'Wie können wir Ihnen helfen?',
+    submitting: 'Wird gesendet...',
+    submit: 'Nachricht senden',
+    errorGeneric: 'Beim Senden ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut oder rufen Sie uns an.',
+    successTitle: 'Nachricht gesendet',
+    successBody: 'Vielen Dank für Ihre Anfrage. Wir melden uns zeitnah bei Ihnen.',
+  },
+  en: {
+    title: 'Contact form',
+    subtitle: 'Write to us — we will get back to you shortly.',
+    labelFirstName: 'First name',
+    placeholderFirstName: 'Your first name',
+    labelLastName: 'Last name',
+    placeholderLastName: 'Your last name',
+    labelCompany: 'Company',
+    placeholderCompany: 'Company name (optional)',
+    labelPhone: 'Phone',
+    placeholderPhone: '+49 ...',
+    labelMessage: 'Your inquiry',
+    placeholderMessage: 'How can we help you?',
+    submitting: 'Sending...',
+    submit: 'Send message',
+    errorGeneric: 'An error occurred while sending. Please try again or give us a call.',
+    successTitle: 'Message sent',
+    successBody: 'Thank you for your inquiry. We will get back to you shortly.',
+  },
+};
 
 export function KontaktFormular() {
+  const pathname = usePathname();
+  const locale: 'de' | 'en' = pathname?.startsWith('/en') ? 'en' : 'de';
+  const t = STRINGS[locale];
+
   const [vorname, setVorname] = useState('');
   const [nachname, setNachname] = useState('');
   const [firma, setFirma] = useState('');
@@ -33,13 +79,14 @@ export function KontaktFormular() {
           nachricht,
           quelle: 'kontaktformular',
           product: 'kontakt',
+          bemerkungen: `Sprache: ${locale}`,
         }),
       });
 
       if (!res.ok) throw new Error('Fehler beim Senden');
       setSent(true);
     } catch {
-      setError('Beim Senden ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut oder rufen Sie uns an.');
+      setError(t.errorGeneric);
     } finally {
       setSending(false);
     }
@@ -50,8 +97,8 @@ export function KontaktFormular() {
       <section className="max-w-2xl mx-auto px-4 py-12">
         <div className="bg-[#f0f4e8] border border-[#6b7f3e]/20 rounded-2xl p-8 text-center">
           <div className="text-4xl mb-4">✓</div>
-          <h3 className="text-xl font-bold text-gray-900 mb-2">Nachricht gesendet</h3>
-          <p className="text-gray-600">Vielen Dank für Ihre Anfrage. Wir melden uns zeitnah bei Ihnen.</p>
+          <h3 className="text-xl font-bold text-gray-900 mb-2">{t.successTitle}</h3>
+          <p className="text-gray-600">{t.successBody}</p>
         </div>
       </section>
     );
@@ -60,14 +107,14 @@ export function KontaktFormular() {
   return (
     <section className="max-w-2xl mx-auto px-4 py-12">
       <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Kontaktformular</h2>
-        <p className="text-gray-500 mb-8">Schreiben Sie uns — wir melden uns zeitnah bei Ihnen.</p>
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">{t.title}</h2>
+        <p className="text-gray-500 mb-8">{t.subtitle}</p>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label htmlFor="vorname" className="block text-sm font-medium text-gray-700 mb-1">
-                Vorname <span className="text-red-500">*</span>
+                {t.labelFirstName} <span className="text-red-500">*</span>
               </label>
               <input
                 id="vorname"
@@ -78,12 +125,12 @@ export function KontaktFormular() {
                 minLength={2}
                 maxLength={100}
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none transition-colors"
-                placeholder="Ihr Vorname"
+                placeholder={t.placeholderFirstName}
               />
             </div>
             <div>
               <label htmlFor="nachname" className="block text-sm font-medium text-gray-700 mb-1">
-                Nachname <span className="text-red-500">*</span>
+                {t.labelLastName} <span className="text-red-500">*</span>
               </label>
               <input
                 id="nachname"
@@ -94,7 +141,7 @@ export function KontaktFormular() {
                 minLength={2}
                 maxLength={100}
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none transition-colors"
-                placeholder="Ihr Nachname"
+                placeholder={t.placeholderLastName}
               />
             </div>
           </div>
@@ -102,7 +149,7 @@ export function KontaktFormular() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label htmlFor="firma" className="block text-sm font-medium text-gray-700 mb-1">
-                Firma
+                {t.labelCompany}
               </label>
               <input
                 id="firma"
@@ -111,12 +158,12 @@ export function KontaktFormular() {
                 onChange={(e) => setFirma(e.target.value)}
                 maxLength={200}
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none transition-colors"
-                placeholder="Firmenname (optional)"
+                placeholder={t.placeholderCompany}
               />
             </div>
             <div>
               <label htmlFor="telefon" className="block text-sm font-medium text-gray-700 mb-1">
-                Telefon <span className="text-red-500">*</span>
+                {t.labelPhone} <span className="text-red-500">*</span>
               </label>
               <input
                 id="telefon"
@@ -127,14 +174,14 @@ export function KontaktFormular() {
                 minLength={6}
                 maxLength={30}
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none transition-colors"
-                placeholder="+49 ..."
+                placeholder={t.placeholderPhone}
               />
             </div>
           </div>
 
           <div>
             <label htmlFor="nachricht" className="block text-sm font-medium text-gray-700 mb-1">
-              Ihre Anfrage <span className="text-red-500">*</span>
+              {t.labelMessage} <span className="text-red-500">*</span>
             </label>
             <textarea
               id="nachricht"
@@ -145,7 +192,7 @@ export function KontaktFormular() {
               maxLength={2000}
               rows={5}
               className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none transition-colors resize-y"
-              placeholder="Wie können wir Ihnen helfen?"
+              placeholder={t.placeholderMessage}
             />
           </div>
 
@@ -160,7 +207,7 @@ export function KontaktFormular() {
             disabled={!canSubmit || sending}
             className="w-full bg-[#6b7f3e] text-white py-3 px-6 rounded-lg font-semibold hover:bg-[#5a6c34] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
-            {sending ? 'Wird gesendet...' : 'Nachricht senden'}
+            {sending ? t.submitting : t.submit}
           </button>
         </form>
       </div>

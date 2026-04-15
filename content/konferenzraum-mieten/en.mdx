@@ -1,25 +1,210 @@
 ---
-title: "Conference Room Rental in Weil am Rhein – Meeting & Event Rooms"
-description: "Rent a conference room in Weil am Rhein: 2-25 people, daylight-flooded, catering, high-speed internet. bizzcenter in the border triangle Basel."
+title: "Rent a conference room in Weil am Rhein – meeting & event rooms"
+description: "Rent a conference room in Weil am Rhein: 2-25 people, daylight-flooded, catering, high-speed internet. bizzcenter in the border triangle near Basel."
 ---
 
 <GlobalOverflowFix />
+<BreadcrumbListSchema items={[
+  { name: "Home", href: "/" },
+  { name: "Office Solutions", href: "/uebersicht" },
+  { name: "Rent a Conference Room", href: "/konferenzraum-mieten" },
+]} />
 
-<PageHero
-  title="Conference and Meeting Rooms at bizzcenter Weil"
-  description="Daylight-flooded rooms for meetings, conferences and events"
-  image="/images/standorte/weil-am-rhein/konstanz/konferenzraum.jpg"
+<ActiveNavHighlight />
+<LanguageSwitcher />
+{/* ===== HEADLINE + IMAGE ===== */}
+<CompactHero
+  title="Conference & meeting rooms from EUR 19,- /hour"
+  description="Daylight-flooded rooms for 2 to 25 people — by the hour or full day, no contract commitment."
+  image="/images/standorte/weil-am-rhein/konferenzraum-gross.jpg"
+  imageAlt="Conference room at bizzcenter Weil am Rhein"
+  imagePosition="center top"
+  buttonText=""
+  buttonHref=""
+  formId=""
 />
 
-<Features title="Our Room Sizes" subtitle="The right room for every group size">
-  <FeatureCard title="Up to 2 people" description="Daylight-flooded meeting room. Parking directly in front of the building optional at EUR 6/day. Prices excl. VAT." icon="users" />
-  <FeatureCard title="Up to 6 people" description="Daylight-flooded meeting room. Parking optional. Prices excl. VAT." icon="users" />
-  <FeatureCard title="Up to 15 people" description="Daylight-flooded meeting room. Parking optional. Prices excl. VAT." icon="users" />
-  <FeatureCard title="Up to 25 people" description="Daylight-flooded meeting room. Parking optional. Prices excl. VAT." icon="users" />
+{/* ===== ROOM SIZES WITH PRICES ===== */}
+<PricingCards
+  title="The right room for every group size"
+  description="All rooms are daylight-flooded and equipped with modern presentation technology. Prices excl. VAT."
+  cards={[
+    {
+      title: "Meeting Room S",
+      subtitle: "Up to 2 people",
+      image: "/images/standorte/weil-am-rhein/green-office-buero-2-personen.jpg",
+      description: "Ideal for confidential conversations, job interviews or one-on-one coaching.",
+      ctaHref: "/konferenzraum-buchen",
+      prices: [
+        { label: "Hourly rate", amount: "EUR 19,-", note: "only available with 10-day pass", tenner: {} },
+        { label: "Half day", amount: "EUR 59,-", tenner: {} },
+        { label: "Full day", amount: "EUR 89,-", tenner: {} }
+      ]
+    },
+    {
+      title: "Meeting Room M",
+      subtitle: "Up to 6 people",
+      image: "/images/standorte/weil-am-rhein/meetingraum-6-personen.jpg",
+      description: "Perfect for team meetings, workshops and project discussions.",
+      ctaHref: "/konferenzraum-6p-buchen",
+      prices: [
+        { label: "Hourly rate", amount: "EUR 29,-", note: "only available with 10-day pass", tenner: {} },
+        { label: "Half day", amount: "EUR 89,-", tenner: {} },
+        { label: "Full day", amount: "EUR 129,-", tenner: {} }
+      ]
+    },
+    {
+      title: "Conference Room L",
+      subtitle: "Up to 15 people",
+      image: "/images/standorte/weil-am-rhein/konferenzraum-gross.jpg",
+      description: "For larger meetings, training sessions and presentations.",
+      ctaHref: "/konferenzraum-15p-buchen",
+      prices: [
+        { label: "Hourly rate", amount: "EUR 39,-", note: "only available with 10-day pass", tenner: {} },
+        { label: "Half day", amount: "EUR 99,-", tenner: {} },
+        { label: "Full day", amount: "EUR 159,-", tenner: {} }
+      ]
+    },
+    {
+      title: "Conference Room XL",
+      subtitle: "Up to 25 people",
+      image: "/images/standorte/weil-am-rhein/konferenzraum-gross.jpg",
+      description: "For conferences, conventions and larger events.",
+      ctaHref: "/konferenzraum-25p-buchen",
+      prices: [
+        { label: "Hourly rate", amount: "EUR 49,-", note: "only available with 10-day pass", tenner: {} },
+        { label: "Half day", amount: "EUR 129,-", tenner: {} },
+        { label: "Full day", amount: "EUR 199,-", tenner: {} }
+      ]
+    }
+  ]}
+  ctaText="Book"
+  ctaHref="/konferenzraum-buchen"
+/>
+
+{/* ===== SOCIAL PROOF ===== */}
+<GoogleReviews
+  title="What our customers say"
+  reviews={[
+    {
+      author: "Francesco Petrini",
+      rating: 5,
+      text: "Very well organized space and in development. Good WiFi network and easy parking. Perfect solution to work in Germany close to CH/France.",
+      source: "Google Review"
+    },
+    {
+      author: "Katja Falkenburger",
+      rating: 5,
+      text: "The shared and virtual offices offer comfortable premises and flexibility combined with an attractive location close to the Swiss and French borders.",
+      source: "Google Review"
+    },
+    {
+      author: "veprosa",
+      rating: 5,
+      text: "Great, bright office in an attractive location – it couldn't be better. We can warmly recommend bizzcenter Weil am Rhein to everyone!",
+      source: "Google Review"
+    }
+  ]}
+/>
+
+{/* ===== IMAGE GALLERY ===== */}
+<ImageSlider
+  title="Our conference & meeting rooms"
+  slides={[
+    { src: "/images/standorte/weil-am-rhein/konferenzraum-gross.jpg", caption: "Large conference room — up to 25 people" },
+    { src: "/images/standorte/weil-am-rhein/konferenzraum-reihenbestuhlung.png", caption: "Conference room with theatre seating — up to 15 people" },
+    { src: "/images/standorte/weil-am-rhein/meetingraum-6-personen.jpg", caption: "Meeting room for 6 people" },
+    { src: "/images/standorte/weil-am-rhein/meetingraum-empore-5-personen.jpg", caption: "Meeting room on the gallery — up to 5 people" },
+    { src: "/images/standorte/weil-am-rhein/coworking-loungeecke.jpg", caption: "Lounge corner for informal meetings" },
+    { src: "/images/standorte/weil-am-rhein/kueche-aufenthaltsraum.jpg", caption: "Kitchen and lounge area for your breaks" }
+  ]}
+/>
+
+{/* ===== WHAT IS INCLUDED ===== */}
+<Features title="Everything for your perfect meeting" columns={3}>
+  <Feature title="High-Speed Internet" description="WIFI 5/6 and LAN. Stable enough for video conferencing, cloud applications and IP telephony." />
+  <Feature title="Presentation Technology" description="Projector, screen and whiteboard in all conference rooms. Facilitation kit available on request." />
+  <Feature title="Catering" description="Complete meeting catering: coffee breaks, drinks, pastries or lunch on request." />
+  <Feature title="Parking" description="Directly in front of the building. Optional at a daily rate of EUR 6,- excl. VAT." />
+  <Feature title="Kitchen & Lounge" description="Modern kitchen with reheating and cooling facilities. Lounge area for break conversations." />
+  <Feature title="Flexible Booking" description="Bookable by the hour or full day. No minimum contract term, no hidden costs." />
 </Features>
 
-<BannerCTA
-  title="Book a conference room in Weil am Rhein"
-  subtext="Flexible booking – by the hour or full day. In the border triangle near Basel."
-  buttonText="Get in Touch" buttonHref="/kontakt"
-/>
+{/* ===== STATS ===== */}
+<StatsTheme>
+<Stats title="Conference rooms in numbers">
+  <Stat value="4" label="Room Sizes" description="From 2 to 25 people" />
+  <Stat value="100%" label="Daylight" description="All rooms daylight-flooded" />
+  <Stat value="High-Speed" label="Internet" description="WiFi and LAN in all rooms" />
+  <Stat value="300m" label="To Switzerland" description="Right at the border" />
+</Stats>
+</StatsTheme>
+
+{/* ===== ABOUT THE LOCATION ===== */}
+<AlternatingFeatures>
+  <AlternatingFeatureRow title="Events in the Kesselhaus" description="Historic industrial building with character: 7.50m ceiling height, open architecture and plenty of natural light. Ideal for meetings that should be more than just a conference room — inspiring and representative." image="/images/hero/kesselhaus.jpg" imageAlt="Kesselhaus Weil am Rhein" />
+  <AlternatingFeatureRow title="In the border triangle near Basel" description="300m from the Swiss border, right on tram line 8 (stop Riedlistrasse/Kesselhaus), close to the A5 motorway and with parking on site. Perfectly accessible for teams from Germany, Switzerland and France." image="/images/standorte/weil-am-rhein/standortkarte.png" imageAlt="Location map bizzcenter Weil am Rhein — border triangle Basel" />
+</AlternatingFeatures>
+
+{/* ===== FAQ ===== */}
+<FAQ title="Frequently asked questions about conference rooms">
+  <FAQItem question="How can I book a conference room?">
+    Simply send an inquiry by phone, email or via our contact form. We will confirm availability at short notice.
+  </FAQItem>
+  <FAQItem question="Can I book the room by the hour?">
+    Yes. All rooms can be booked by the hour, half day or full day — whatever suits your needs.
+  </FAQItem>
+  <FAQItem question="Is catering available?">
+    Yes. From a simple coffee break to a full lunch, we're happy to arrange your meeting catering.
+  </FAQItem>
+  <FAQItem question="What technology is available?">
+    Projector, screen, whiteboard and high-speed internet (WIFI 5/6 + LAN) are available in all rooms.
+  </FAQItem>
+  <FAQItem question="Is there parking?">
+    Yes. Parking spaces are located directly in front of the building and can be optionally booked at a daily rate of EUR 6,- excl. VAT. First 90 minutes free.
+  </FAQItem>
+  <FAQItem question="How do I get to bizzcenter by public transport?">
+    Tram line 8 from Basel, stop Riedlistrasse/Kesselhaus — right at our doorstep.
+  </FAQItem>
+  <FAQItem question="Can I view the room beforehand?">
+    Yes. Arrange a no-obligation viewing — we'll gladly show you our premises.
+  </FAQItem>
+  <FAQItem question="Is food available on site?">
+    Yes — there's a restaurant with daily lunch menu right in the Kesselhaus. Perfect for longer meetings or full-day bookings.
+  </FAQItem>
+  <FAQItem question="Where exactly is the conference room located in Weil am Rhein?">
+    In the historic Kesselhaus, Am Kesselhaus 3, 79576 Weil am Rhein — just 300 meters from the Swiss border. Directly accessible via tram line 8 from Basel (stop Riedlistrasse/Kesselhaus) and close to the A5 motorway.
+  </FAQItem>
+  <FAQItem question="Can I book a conference room as a Swiss company?">
+    Yes. Many of our customers come from Basel and northwestern Switzerland. The border is within walking distance, and prices are in euros — significantly cheaper than comparable rooms in Basel.
+  </FAQItem>
+  <FAQItem question="How far is the conference room from EuroAirport Basel?">
+    EuroAirport Basel-Mulhouse-Freiburg is only about 15 minutes away by car. Ideal for meetings with international participants.
+  </FAQItem>
+  <FAQItem question="Are the rooms suitable for workshops and training?">
+    Yes. Rooms L (15 people) and XL (25 people) are especially well-suited for full-day workshops, training sessions and seminars. A setup fee for alternative seating arrangements can be booked optionally.
+  </FAQItem>
+  <FAQItem question="Can I also book the conference room on weekends?">
+    Yes. Our rooms are available 7 days a week — including Saturdays and Sundays.
+  </FAQItem>
+  <FAQItem question="What does a conference room in Weil am Rhein cost?">
+    From EUR 19,- per hour for Meeting Room S (2 people). Half-day and full-day rates are available. With the 10-day pass you save 15% on all bookings.
+  </FAQItem>
+  <FAQItem question="Is there a conference room with daylight?">
+    Yes — all our rooms are daylight-flooded. The Kesselhaus has 7.50 meter ceilings and large window fronts.
+  </FAQItem>
+</FAQ>
+
+<FAQPageSchema items={[
+  { question: "How can I book a conference room?", answer: "Simply send an inquiry by phone, email or via our contact form. We will confirm availability at short notice." },
+  { question: "Can I book the room by the hour?", answer: "Yes. All rooms can be booked by the hour, half day or full day — whatever suits your needs." },
+  { question: "What technology is available?", answer: "Projector, screen, whiteboard and high-speed internet (WIFI 5/6 + LAN) are available in all rooms." },
+  { question: "Is there parking?", answer: "Yes. Parking spaces are located directly in front of the building and can be optionally booked at a daily rate of EUR 6,- excl. VAT. First 90 minutes free." },
+  { question: "Where exactly is the conference room located in Weil am Rhein?", answer: "In the historic Kesselhaus, Am Kesselhaus 3, 79576 Weil am Rhein — just 300 meters from the Swiss border. Directly accessible via tram line 8 from Basel (stop Riedlistrasse/Kesselhaus) and close to the A5 motorway." },
+  { question: "Can I book a conference room as a Swiss company?", answer: "Yes. Many of our customers come from Basel and northwestern Switzerland. The border is within walking distance, and prices are in euros — significantly cheaper than comparable rooms in Basel." },
+  { question: "What does a conference room in Weil am Rhein cost?", answer: "From EUR 19,- per hour for Meeting Room S (2 people). Half-day and full-day rates are available. With the 10-day pass you save 15% on all bookings." },
+  { question: "Is there a conference room with daylight?", answer: "Yes — all our rooms are daylight-flooded. The Kesselhaus has 7.50 meter ceilings and large window fronts." },
+]} />
+
+{/* ===== BOOK NOW ===== */}
+<CheckoutWizard product="konferenzraum" title="Book a conference room" />

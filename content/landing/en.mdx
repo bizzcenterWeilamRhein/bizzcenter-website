@@ -1,58 +1,227 @@
 ---
-title: "bizzcenter Constance & Weil am Rhein – Flexible Office Solutions"
-description: "Your Business Center in Constance and Weil am Rhein. Virtual Office, Coworking, Office Rental, Conference Rooms. Your partner for flexible working since 2004."
+title: "bizzcenter – Coworking & Offices in Weil am Rhein"
+description: "Business address, coworking, private offices and conference rooms in the border triangle near Basel. Flexible from 1 day."
 ---
 
 <GlobalOverflowFix />
+<LocalBusinessSchema />
 
-<Hero
-  title="Flexible Office Solutions in Constance & Weil am Rhein"
-  description="In our Business Center we offer you office solutions for flexible and modern working – your reliable partner in the border triangle Germany, Switzerland, France for over 20 years."
-  buttonText="Explore Solutions" buttonHref="/preise"
-  image="/images/hero/kesselhaus.jpg"
+
+<ActiveNavHighlight />
+<LanguageSwitcher />
+<MobileSpacingFix />
+
+<ServiceHero
+  backgroundImage="/images/hero/kesselhaus.jpg"
+  headline="bizzcenter – Workspace Solutions in Weil am Rhein"
+  services={[
+    {
+      title: "Virtual Office",
+      image: "/images/services/virtual-office.jpg",
+      description: "Prestigious business address within a professional business center setup.",
+      links: [
+        { label: "Learn more", href: "/geschaeftsadresse-mieten" }
+      ]
+    },
+    {
+      title: "Coworking",
+      image: "/images/standorte/weil-am-rhein/coworking-loungeecke.jpg",
+      description: "Work efficiently in inspiring spaces and benefit from networking with industry experts.",
+      links: [
+        { label: "Learn more", href: "/coworking" }
+      ]
+    },
+    {
+      title: "Rent an Office",
+      image: "/images/services/buero-mieten.jpg",
+      description: "Furnished offices – ready to work – perfectly tailored to your needs. By the hour or long-term.",
+      links: [
+        { label: "Learn more", href: "/buero-mieten" }
+      ]
+    },
+    {
+      title: "Conference Rooms",
+      image: "/images/standorte/weil-am-rhein/konferenzraum-gross.jpg",
+      description: "Modern bright rooms for up to 35 people. For conferences, meetings, sessions or events.",
+      links: [
+        { label: "Learn more", href: "/konferenzraum-mieten" }
+      ]
+    }
+  ]}
 />
 
-<Features title="Our Office Solutions" subtitle="Tailored solutions for your business – from business addresses to conference rooms">
-  <Feature
-    title="Virtual Office"
-    description="Your company domicile in the bizzcenter. With over 20 years of experience, we are the ideal partner for your business address in Constance or Weil am Rhein."
-    icon="building"
-  />
-  <Feature
-    title="Coworking"
-    description="Efficient working in bright spaces while benefiting from networking with industry experts at the bizzcenter near Lake Constance."
-    icon="users"
-  />
-  <Feature
-    title="Rent an Office"
-    description="Furnished offices – ready to work – perfectly tailored to your needs. We rent by the hour or long-term in Southern Baden."
-    icon="briefcase"
-  />
-  <Feature
-    title="Conference Rooms"
-    description="Our modern bright rooms offer space for up to 35 people and can be used for meetings, conferences and events."
-    icon="monitor"
-  />
+<ServiceGrid
+  title="Services – what can we do for you?"
+  services={[
+    {
+      title: "Projector Rental",
+      icon: "projector",
+      slug: "beamer-mieten",
+      description: "We rent out professional projectors including screens for business presentations or private use. Includes cables, remote control and transport case."
+    },
+    {
+      title: "Swiss Phone Number",
+      icon: "phoneSwiss",
+      slug: "schweizer-telefonnummer",
+      description: "Your personal Swiss landline number with forwarding to the number of your choice."
+    },
+    {
+      title: "Storage Service",
+      icon: "warehouse",
+      slug: "lagerservice",
+      description: "Flexible storage space for your business. Safe, dry and always accessible."
+    },
+    {
+      title: "Fulfillment",
+      icon: "truck",
+      slug: "fulfillment",
+      description: "Storage, picking, invoicing, packing, shipping – we tailor our service to your needs."
+    },
+    {
+      title: "Music Box Rental",
+      icon: "speaker",
+      slug: "musikbox-mieten",
+      description: "Professional portable music box for events, parties and presentations. Available by the day, incl. accessories."
+    }
+  ]}
+/>
+
+{/* Duplicate product boxes removed — same cards are in the Hero above and in "Get started" below */}
+
+<GoogleReviews
+  title="What our customers say"
+  reviews={[
+    {
+      author: "Marco Meier",
+      rating: 5,
+      text: "Beautiful, well-maintained premises in a great location that has everything you need. Perfect coworking spaces. Highly recommended!",
+      source: "Google Review"
+    },
+    {
+      author: "Nana Meier",
+      rating: 5,
+      text: "Flexible, competent, bright rooms, pleasant atmosphere with lots of greenery – as a start-up, it gave us everything we needed.",
+      source: "Google Review"
+    },
+    {
+      author: "Francesco Petrini",
+      rating: 5,
+      text: "Very well organized space and in development. Good WiFi network and easy parking. Perfect solution to work in Germany close to CH/France.",
+      source: "Google Review"
+    },
+    {
+      author: "Katja Falkenburger",
+      rating: 5,
+      text: "The shared and virtual offices offer comfortable premises and flexibility combined with an attractive location close to the Swiss and French borders.",
+      source: "Google Review"
+    },
+    {
+      author: "veprosa",
+      rating: 5,
+      text: "Great, bright office in an attractive location – it couldn't be better. We can warmly recommend bizzcenter Weil am Rhein to everyone!",
+      source: "Google Review"
+    }
+  ]}
+/>
+
+<Features title="All inclusive. No surprises." description="Every membership includes:" columns={3}>
+  <Feature title="High-Speed WiFi" description="Fast internet throughout the entire Kesselhaus." />
+  <Feature title="Reception & Mail Service" description="Professional call handling and daily mail notification." />
+  <Feature title="Kitchen & Lunch" description="Fully equipped kitchen, organic coffee — and a restaurant with lunch menu right in the Kesselhaus." />
+  <Feature title="Printer & Scanner" description="Professional printing infrastructure, copier and scanner." />
+  <Feature title="Flexible Terms" description="From daily to long-term. Monthly cancellable. No risk." />
+  <Feature title="Community & Networking" description="Access to events, workshops and a network of 200+ entrepreneurs." />
 </Features>
 
-<Stats title="bizzcenter in Numbers">
-  <Stat value="22" label="Years of Experience" />
-  <Stat value="200+" label="Satisfied Customers" />
-  <Stat value="2" label="Locations" />
-  <Stat value="35+" label="Years Entrepreneurial Experience" />
+<ImageSlider
+  title="A look inside our spaces"
+  slides={[
+    { src: "/images/standorte/weil-am-rhein/green-office-eingangsbereich.jpeg", caption: "Entrance area — open architecture with lush greenery" },
+    { src: "/images/standorte/weil-am-rhein/green-office.jpg", caption: "Green Office — working among plants and natural light" },
+    { src: "/images/standorte/weil-am-rhein/kesselhaus-aussen.jpg", caption: "The Kesselhaus — heritage-listed industrial architecture" },
+    { src: "/images/standorte/weil-am-rhein/coworking-loungeecke.jpg", caption: "Lounge corner for networking and conversation" },
+    { src: "/images/standorte/weil-am-rhein/quietbox-coworking.jpeg", caption: "Quiet Cube — soundproof for calls and focused work" },
+    { src: "/images/standorte/weil-am-rhein/konferenzraum-gross.jpg", caption: "Large conference room for up to 35 people" },
+    { src: "/images/standorte/weil-am-rhein/green-office-kueche-empore.jpeg", caption: "View of the kitchen and meeting box on the gallery" },
+    { src: "/images/standorte/weil-am-rhein/meetingraum-green-office-4-6-personen.jpg", caption: "Meeting room for 4–6 people" },
+    { src: "/images/standorte/weil-am-rhein/coachingbuero-session.jpg", caption: "Coaching room — space for coaching and consulting" },
+    { src: "/images/standorte/weil-am-rhein/kueche-aufenthaltsraum.jpg", caption: "Kitchen and lounge area" },
+  ]}
+/>
+
+<Stats title="bizzcenter in numbers">
+  <Stat value="200+" label="Customers" description="Freelancers, startups & SMEs" />
+  <Stat value="22" label="Years" description="Experience since 2004" />
+  <Stat value="1" label="Location" description="Weil am Rhein – border triangle" />
+  <Stat value="CO₂" label="neutral" description="Green Office pioneer" />
 </Stats>
 
-<BentoGrid title="Services" subtitle="What can we do for you?">
-  <BentoItem title="Projector Hire" description="We rent out professional projectors including screens for business presentations or private use." />
-  <BentoItem title="Phone Service" description="We answer the phone in your name. Availability Monday – Friday from 9:00 – 17:00." />
-  <BentoItem title="Secretarial Service" description="Call handling, office work, invoicing, copying, printing and mailing services tailored to your needs." />
-  <BentoItem title="Fulfillment" description="Storage, picking, invoicing, packing, shipping – adapted to your needs." />
-  <BentoItem title="Mail Processing" description="We notify you of incoming mail and forward it to you." />
-  <BentoItem title="Individual Service" description="From market analysis to holiday card mailing to telesales – our diverse team is at your service." />
-</BentoGrid>
 
-<BannerCTA
-  title="Ready for flexible office solutions?"
-  subtext="Contact us for a customized offer. We will get back to you within 24 hours."
-  buttonText="Get in Touch" buttonHref="/kontakt"
+{/* Steps section removed */}
+
+<FAQ title="Frequently asked questions">
+  <FAQItem question="Can I try a day for free?">
+    You can book a day pass — e.g. for coworking or a day office. We'll gladly credit it toward a monthly package or a 10-day pass.
+  </FAQItem>
+  <FAQItem question="What is the minimum term?">
+    There are no long commitments. Coworking from 1 day, offices from 1 month, virtual office from 1 month. Monthly cancellable.
+  </FAQItem>
+  <FAQItem question="What is included in the price?">
+    WiFi, kitchen, printer, reception, mail service and access to community events. No hidden costs.
+  </FAQItem>
+  <FAQItem question="Is parking available?">
+    Yes, customer parking spaces are available for your first visit — but not for permanent use. Parking spaces can be optionally added. Bicycle parking is available directly at the Kesselhaus.
+  </FAQItem>
+  <FAQItem question="Where is bizzcenter Weil am Rhein located?">
+    In the historic Kesselhaus, Am Kesselhaus 3, 79576 Weil am Rhein — just 300 meters from the Swiss border. Reachable via tram line 8 from Basel (stop Riedlistrasse/Kesselhaus). EuroAirport Basel-Mulhouse is 15 minutes away by car.
+  </FAQItem>
+  <FAQItem question="Can I use bizzcenter from Basel or Lörrach?">
+    Yes, many of our customers come from Basel, Lörrach and Rheinfelden. Thanks to its location right on the Swiss border and the tram connection, bizzcenter is quickly accessible — ideal as a coworking space near Basel or office in Weil am Rhein.
+  </FAQItem>
+  <FAQItem question="What is a business address and why do I need one?">
+    A business address is a legally valid address you can use for trade registration, commercial register, imprint and tax office — without having to rent your own office. Ideal for freelancers, startups and companies that want to appear professional.
+  </FAQItem>
+  <FAQItem question="Is the business address suitable for Swiss companies?">
+    Yes. Especially for Swiss companies that need a German business address near Basel — e.g. for the German market, commercial register or as a billing address. We also offer a Swiss phone number with forwarding.
+  </FAQItem>
+</FAQ>
+
+<MemberLogos
+  title="We are members of:"
+  logos={[
+    { src: "/images/partner/bundesverband-business-center.jpg", alt: "Bundesverband Business Center" },
+    { src: "/images/partner/wirtschaft-pro-klima.jpg", alt: "Wirtschaft pro Klima" },
+    { src: "/images/partner/ipr-initiative-pro-recyclingpapier.jpg", alt: "IPR – Initiative Pro Recyclingpapier" },
+    { src: "/images/partner/gemeinwohl-oekonomie.jpg", alt: "Gemeinwohl-Ökonomie" },
+    { src: "/images/partner/wirtschaftjunioren.jpg", alt: "Wirtschaftsjunioren Konstanz-Hegau" },
+    { src: "/images/partner/desert-flower.jpg", alt: "Desert Flower Foundation" },
+    { src: "/images/partner/mitglied-ziviler-betrieb.jpg", alt: "Ziviler Betrieb" }
+  ]}
+/>
+
+<LocationMap
+  title="Our location"
+  image="/images/standorte/weil-am-rhein/kesselhaus-aussen.jpg"
+  imageAlt="Kesselhaus Weil am Rhein – exterior view"
+  locations={[
+    {
+      name: "bizzcenter Weil am Rhein GmbH",
+      address: ["Im Schwarzenbach 4", "79576 Weil am Rhein"],
+      phone: "+49 (0)7621 916 5547",
+      mapEmbedUrl: "https://www.google.com/maps?q=bizzcenter+Weil+am+Rhein+Im+Schwarzenbach+4+79576&output=embed"
+    }
+  ]}
+/>
+
+<FeaturesWithBg title="Get started now" columns={2} backgroundImage="/images/standorte/weil-am-rhein/green-office-eingangsbereich.jpeg">
+  <FeatureCard title="Virtual Office" description="Legally valid address for commercial register, imprint and tax office — from EUR 49,- /month excl. VAT." icon="building" link="/geschaeftsadresse-mieten" />
+  <FeatureCard title="Coworking" description="Flexible workspace in the Green Office — day pass, 10-day pass or monthly pass. From EUR 25,- /day excl. VAT." icon="users" link="/coworking" />
+  <FeatureCard title="Rent an Office" description="Furnished single and team offices — by the hour or long-term. Ready to work." icon="key" link="/buero-mieten" />
+  <FeatureCard title="Conference Room" description="Daylight-flooded rooms for 2–25 people — by the hour or full day. From EUR 19,- /hour excl. VAT." icon="monitor" link="/konferenzraum-mieten" />
+</FeaturesWithBg>
+
+<BannerCTAWithForm
+  title="Get in touch"
+  subtext="Free, no-obligation tour at the Kesselhaus. Come by and see for yourself — or write to us directly."
+  backgroundImage="/images/standorte/weil-am-rhein/green-office.jpg"
 />

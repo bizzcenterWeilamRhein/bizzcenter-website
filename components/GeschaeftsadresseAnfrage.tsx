@@ -1,54 +1,228 @@
 'use client';
 
 import React, { useState, useRef, useCallback, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 
-// ─── Tarife ──────────────────────────────────────────────────────────
+// ─── Strings (i18n) ─────────────────────────────────────────────────
 
-const TARIFE = [
-  {
-    id: 'langzeit',
-    label: 'Langzeit',
-    laufzeit: '12 Monate',
-    priceOhne: 49,
-    priceMit: 79,
-    popular: true,
+const STRINGS = {
+  de: {
+    defaultTitle: 'Geschäftsadresse anfragen',
+    subtitle: 'Wählen Sie Ihren Wunschtarif — wir prüfen Ihre Angaben und senden Ihnen ein individuelles Vertragsangebot per E-Mail.',
+
+    // Steps
+    step1Title: '1. Postbearbeitung',
+    pvWithout: 'Ohne Postversand',
+    pvWith: 'Mit Postversand',
+    pvWithoutDesc: 'Post wird vor Ort gesammelt, 24/7 abholbar',
+    pvWithDesc: 'Wöchentliche Weiterleitung an eine Adresse im DACH-Raum',
+
+    summerPromo: 'Sommeraktion — 35% Nachlass bis 30.09.2026',
+    step2Title: '2. Tarif wählen',
+    step2SubWith: 'Inkl. wöchentlicher Postweiterleitung',
+    step2SubWithout: 'Ohne Postversand',
+    step2VatNote: 'Alle Preise zzgl. MwSt.',
+    popularBadge: 'Beliebt',
+    perMonthVat: '/Mon. zzgl. MwSt.',
+
+    // Tarife (lookup by id)
+    tarifLabels: { langzeit: 'Langzeit', standard: 'Standard', flex: 'Flex' } as Record<string, string>,
+    months: (n: number) => `${n} Monate`,
+
+    step3Title: '3. Optionale Zusatzleistungen',
+    step3Sub: 'Nicht verpflichtend — können auch später hinzugebucht werden.',
+    chosen: '✓ Gewählt',
+    addCta: '+ Hinzufügen',
+
+    // Add-ons (lookup by id / price key)
+    addonLabels: {
+      scanpaket: 'Scanpaket',
+      parkplatz: 'Parkplatz',
+      firmenschild: 'Firmenschild',
+      telefon: 'Telefonservice',
+      sekretariat: 'Sekretariatsservice',
+    } as Record<string, string>,
+    addonPrices: {
+      monthly49: 'EUR 49,-/Mon.',
+      once179: 'EUR 179,- einmalig',
+      onRequest: 'auf Anfrage',
+    } as Record<string, string>,
+
+    summaryTitle: 'Ihre Auswahl',
+    summaryTarif: 'Tarif',
+    summaryPv: 'Postversand',
+    summaryMonthly: 'Monatlich',
+    summaryPvWith: 'Mit Weiterleitung',
+    summaryPvWithout: 'Ohne (Abholung vor Ort)',
+    summaryVatNote: 'Alle Preise zzgl. MwSt.',
+
+    step4Title: '4. Ihre Angaben',
+    step4Sub: 'Wir prüfen Ihre Angaben und senden Ihnen ein verbindliches Angebot inkl. Vertrag per E-Mail zu.',
+
+    labelCompany: 'Firmenname *',
+    placeholderCompany: 'Musterfirma GmbH',
+    labelLegalForm: 'Rechtsform',
+    selectPlaceholder: 'Bitte wählen',
+    labelHrNumber: 'Handelsregister-Nummer',
+    placeholderHrNumber: 'z.B. HRB 12345 (falls vorhanden)',
+    labelGewerbeschein: 'Gewerbeschein / Gewerbeanmeldung vorhanden',
+    labelContact: 'Ansprechpartner *',
+    placeholderContact: 'Vor- und Nachname',
+    labelEmail: 'E-Mail *',
+    placeholderEmail: 'ihre@email.de',
+    labelPhone: 'Telefon *',
+    placeholderPhone: '+49 123 456 789',
+    labelStartDate: 'Gewünschter Starttermin',
+    labelNotes: 'Anmerkungen / Fragen',
+    placeholderNotes: 'z.B. besondere Anforderungen, Fragen zum Service...',
+
+    errorSubmit: 'Es gab ein Problem beim Senden. Bitte versuchen Sie es erneut.',
+    submitting: 'Wird gesendet...',
+    submit: 'Unverbindlich anfragen',
+    formFooter: '* Pflichtfelder · Keine Zahlungsdaten erforderlich · Wir melden uns innerhalb von 24h',
+
+    successTitle: 'Anfrage erhalten',
+    successBody: 'Vielen Dank für Ihr Interesse! Wir prüfen Ihre Angaben und melden uns innerhalb von 24 Stunden mit einem individuellen Vertragsangebot bei Ihnen.',
+    successContact: 'Bei Rückfragen erreichen Sie uns unter',
+
+    // Rechtsformen (legal entity types)
+    rechtsformen: [
+      'Einzelunternehmen',
+      'GbR',
+      'GmbH',
+      'UG (haftungsbeschränkt)',
+      'KG',
+      'OHG',
+      'AG',
+      'Freiberufler',
+      'Verein (e.V.)',
+      'Zweigniederlassung',
+      'Sonstige',
+    ],
+
+    // Steps at bottom
+    finalStep1Title: 'Anfrage senden',
+    finalStep1Desc: 'Wählen Sie Ihren Tarif und füllen Sie das Formular aus.',
+    finalStep2Title: 'Wir prüfen & erstellen Ihr Angebot',
+    finalStep2Desc: 'Innerhalb von 24h erhalten Sie ein individuelles Vertragsangebot per E-Mail.',
+    finalStep3Title: 'Vertrag & Start',
+    finalStep3Desc: 'Nach Unterschrift und Kaution ist Ihre Adresse innerhalb von 24h aktiv.',
   },
-  {
-    id: 'standard',
-    label: 'Standard',
-    laufzeit: '6 Monate',
-    priceOhne: 69,
-    priceMit: 99,
+  en: {
+    defaultTitle: 'Request a business address',
+    subtitle: 'Choose your preferred plan — we will review your details and send you a custom contract proposal by email.',
+
+    step1Title: '1. Mail handling',
+    pvWithout: 'Without mail forwarding',
+    pvWith: 'With mail forwarding',
+    pvWithoutDesc: 'Mail is collected on site, accessible 24/7',
+    pvWithDesc: 'Weekly forwarding to any address in the DACH region',
+
+    summerPromo: 'Summer offer — 35% discount until 30.09.2026',
+    step2Title: '2. Choose a plan',
+    step2SubWith: 'Incl. weekly mail forwarding',
+    step2SubWithout: 'Without mail forwarding',
+    step2VatNote: 'All prices excl. VAT.',
+    popularBadge: 'Popular',
+    perMonthVat: '/month excl. VAT',
+
+    tarifLabels: { langzeit: 'Long-term', standard: 'Standard', flex: 'Flex' } as Record<string, string>,
+    months: (n: number) => `${n} months`,
+
+    step3Title: '3. Optional add-ons',
+    step3Sub: 'Not required — you can add them later too.',
+    chosen: '✓ Selected',
+    addCta: '+ Add',
+
+    addonLabels: {
+      scanpaket: 'Scan package',
+      parkplatz: 'Parking',
+      firmenschild: 'Company sign',
+      telefon: 'Phone service',
+      sekretariat: 'Secretarial service',
+    } as Record<string, string>,
+    addonPrices: {
+      monthly49: 'EUR 49,-/month',
+      once179: 'EUR 179,- one-time',
+      onRequest: 'on request',
+    } as Record<string, string>,
+
+    summaryTitle: 'Your selection',
+    summaryTarif: 'Plan',
+    summaryPv: 'Mail handling',
+    summaryMonthly: 'Monthly',
+    summaryPvWith: 'With forwarding',
+    summaryPvWithout: 'Without (on-site pickup)',
+    summaryVatNote: 'All prices excl. VAT.',
+
+    step4Title: '4. Your details',
+    step4Sub: 'We will review your details and send you a binding offer with contract by email.',
+
+    labelCompany: 'Company name *',
+    placeholderCompany: 'Example Company Ltd.',
+    labelLegalForm: 'Legal form',
+    selectPlaceholder: 'Please select',
+    labelHrNumber: 'Commercial register number',
+    placeholderHrNumber: 'e.g. HRB 12345 (if applicable)',
+    labelGewerbeschein: 'Trade registration / business license available',
+    labelContact: 'Contact person *',
+    placeholderContact: 'First and last name',
+    labelEmail: 'Email *',
+    placeholderEmail: 'your@email.com',
+    labelPhone: 'Phone *',
+    placeholderPhone: '+49 123 456 789',
+    labelStartDate: 'Desired start date',
+    labelNotes: 'Comments / questions',
+    placeholderNotes: 'e.g. special requirements, questions about the service...',
+
+    errorSubmit: 'There was a problem sending your request. Please try again.',
+    submitting: 'Sending...',
+    submit: 'Request without obligation',
+    formFooter: '* Required · No payment details needed · We respond within 24h',
+
+    successTitle: 'Request received',
+    successBody: 'Thank you for your interest! We will review your details and get back to you within 24 hours with a custom contract proposal.',
+    successContact: 'For questions, reach us at',
+
+    rechtsformen: [
+      'Sole proprietorship',
+      'GbR (civil-law partnership)',
+      'GmbH (limited liability)',
+      'UG (mini-GmbH)',
+      'KG (limited partnership)',
+      'OHG (general partnership)',
+      'AG (stock corporation)',
+      'Freelancer',
+      'Association (e.V.)',
+      'Branch office',
+      'Other',
+    ],
+
+    finalStep1Title: 'Send request',
+    finalStep1Desc: 'Choose your plan and fill in the form.',
+    finalStep2Title: 'We review & create your offer',
+    finalStep2Desc: 'Within 24h you will receive a custom contract proposal by email.',
+    finalStep3Title: 'Contract & start',
+    finalStep3Desc: 'After signature and deposit, your address is active within 24h.',
   },
-  {
-    id: 'flex',
-    label: 'Flex',
-    laufzeit: '3 Monate',
-    priceOhne: 99,
-    priceMit: 129,
-  },
+};
+
+// ─── Static data (module level — stable across renders) ────────────
+
+type AddonPriceKey = 'monthly49' | 'once179' | 'onRequest';
+
+const TARIFE_DATA = [
+  { id: 'langzeit', laufzeitMonths: 12, priceOhne: 49, priceMit: 79, popular: true },
+  { id: 'standard', laufzeitMonths: 6, priceOhne: 69, priceMit: 99, popular: false },
+  { id: 'flex', laufzeitMonths: 3, priceOhne: 99, priceMit: 129, popular: false },
 ];
 
-const ADDONS = [
-  { id: 'scanpaket', label: 'Scanpaket', price: 'EUR 49,-/Mon.' },
-  { id: 'parkplatz', label: 'Parkplatz', price: 'EUR 49,-/Mon.' },
-  { id: 'firmenschild', label: 'Firmenschild', price: 'EUR 179,- einmalig' },
-  { id: 'telefon', label: 'Telefonservice', price: 'auf Anfrage' },
-  { id: 'sekretariat', label: 'Sekretariatsservice', price: 'auf Anfrage' },
-];
-
-const RECHTSFORMEN = [
-  'Einzelunternehmen',
-  'GbR',
-  'GmbH',
-  'UG (haftungsbeschränkt)',
-  'KG',
-  'OHG',
-  'AG',
-  'Freiberufler',
-  'Verein (e.V.)',
-  'Zweigniederlassung',
-  'Sonstige',
+const ADDONS_DATA: { id: string; priceKey: AddonPriceKey }[] = [
+  { id: 'scanpaket', priceKey: 'monthly49' },
+  { id: 'parkplatz', priceKey: 'monthly49' },
+  { id: 'firmenschild', priceKey: 'once179' },
+  { id: 'telefon', priceKey: 'onRequest' },
+  { id: 'sekretariat', priceKey: 'onRequest' },
 ];
 
 // ─── Component ───────────────────────────────────────────────────────
@@ -57,7 +231,17 @@ interface GeschaeftsadresseAnfrageProps {
   title?: string;
 }
 
-export function GeschaeftsadresseAnfrage({ title = 'Geschäftsadresse anfragen' }: GeschaeftsadresseAnfrageProps) {
+export function GeschaeftsadresseAnfrage({ title }: GeschaeftsadresseAnfrageProps) {
+  const pathname = usePathname();
+  const locale: 'de' | 'en' = pathname?.startsWith('/en') ? 'en' : 'de';
+  const t = STRINGS[locale];
+  const effectiveTitle = title ?? t.defaultTitle;
+
+  // Helpers to get labels from the locale-aware strings table
+  const tarifLabel = (id: string) => t.tarifLabels[id] ?? id;
+  const addonLabel = (id: string) => t.addonLabels[id] ?? id;
+  const addonPrice = (priceKey: AddonPriceKey) => t.addonPrices[priceKey];
+
   // Selection state
   const [tarif, setTarif] = useState<string | null>(null);
   const [postversand, setPostversand] = useState<'ohne' | 'mit'>('ohne');
@@ -85,11 +269,13 @@ export function GeschaeftsadresseAnfrage({ title = 'Geschäftsadresse anfragen' 
   const partialSent = useRef(false);
 
   const buildPayload = useCallback(() => {
-    const selectedTarifObj = TARIFE.find(t => t.id === tarif);
+    const selectedTarifObj = TARIFE_DATA.find(ta => ta.id === tarif);
     const price = selectedTarifObj
       ? postversand === 'mit' ? selectedTarifObj.priceMit : selectedTarifObj.priceOhne
       : null;
-    const addonLabels = ADDONS.filter(a => selectedAddons.has(a.id)).map(a => a.label);
+    const addonLabelList = ADDONS_DATA
+      .filter(a => selectedAddons.has(a.id))
+      .map(a => t.addonLabels[a.id] ?? a.id);
 
     return {
       vorname: name,
@@ -99,21 +285,22 @@ export function GeschaeftsadresseAnfrage({ title = 'Geschäftsadresse anfragen' 
       telefon,
       nachricht: [
         `--- Geschäftsadresse Anfrage (Partial / Auto-Save) ---`,
-        tarif ? `Tarif: ${selectedTarifObj?.label} (${selectedTarifObj?.laufzeit})` : '',
+        `Sprache: ${locale}`,
+        tarif && selectedTarifObj ? `Tarif: ${t.tarifLabels[selectedTarifObj.id]} (${t.months(selectedTarifObj.laufzeitMonths)})` : '',
         `Postversand: ${postversand === 'mit' ? 'Mit Postversand' : 'Ohne Postversand'}`,
         price ? `Preis: EUR ${price},-/Mon. zzgl. MwSt.` : '',
         rechtsform ? `Rechtsform: ${rechtsform}` : '',
         hrNummer ? `HR-Nummer: ${hrNummer}` : '',
         `Gewerbeschein vorhanden: ${gewerbeschein ? 'Ja' : 'Nein'}`,
         startdatum ? `Gewünschter Start: ${startdatum}` : '',
-        addonLabels.length > 0 ? `Add-ons: ${addonLabels.join(', ')}` : '',
+        addonLabelList.length > 0 ? `Add-ons: ${addonLabelList.join(', ')}` : '',
         nachricht ? `Nachricht: ${nachricht}` : '',
       ].filter(Boolean).join('\n'),
       quelle: 'geschaeftsadresse-partial',
       product: 'geschaeftsadresse',
       timestamp: new Date().toISOString(),
     };
-  }, [tarif, postversand, selectedAddons, firma, rechtsform, name, email, telefon, hrNummer, gewerbeschein, startdatum, nachricht]);
+  }, [tarif, postversand, selectedAddons, firma, rechtsform, name, email, telefon, hrNummer, gewerbeschein, startdatum, nachricht, locale, t]);
 
   // Debounced auto-save: fires 5s after last field change, only if enough data
   useEffect(() => {
@@ -161,14 +348,14 @@ export function GeschaeftsadresseAnfrage({ title = 'Geschäftsadresse anfragen' 
     });
   };
 
-  const selectedTarif = TARIFE.find(t => t.id === tarif);
+  const selectedTarif = TARIFE_DATA.find(ta => ta.id === tarif);
   const currentPrice = selectedTarif
     ? postversand === 'mit'
       ? selectedTarif.priceMit
       : selectedTarif.priceOhne
     : null;
 
-  const canSubmit = firma.length >= 2 && name.length >= 2 && email.includes('@') && email.includes('.') && tarif;
+  const canSubmit = firma.length >= 2 && name.length >= 2 && email.includes('@') && email.includes('.') && telefon.length >= 6 && tarif;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -178,7 +365,9 @@ export function GeschaeftsadresseAnfrage({ title = 'Geschäftsadresse anfragen' 
     setError('');
 
     try {
-      const addonLabels = ADDONS.filter(a => selectedAddons.has(a.id)).map(a => a.label);
+      const addonLabelList = ADDONS_DATA
+        .filter(a => selectedAddons.has(a.id))
+        .map(a => t.addonLabels[a.id] ?? a.id);
 
       const res = await fetch('/api/lead', {
         method: 'POST',
@@ -191,14 +380,15 @@ export function GeschaeftsadresseAnfrage({ title = 'Geschäftsadresse anfragen' 
           telefon,
           nachricht: [
             `--- Geschäftsadresse Anfrage ---`,
-            `Tarif: ${selectedTarif?.label} (${selectedTarif?.laufzeit})`,
+            `Sprache: ${locale}`,
+            selectedTarif ? `Tarif: ${t.tarifLabels[selectedTarif.id]} (${t.months(selectedTarif.laufzeitMonths)})` : '',
             `Postversand: ${postversand === 'mit' ? 'Mit Postversand' : 'Ohne Postversand'}`,
             `Preis: EUR ${currentPrice},-/Mon. zzgl. MwSt.`,
             `Rechtsform: ${rechtsform || 'nicht angegeben'}`,
             `HR-Nummer: ${hrNummer || 'nicht angegeben'}`,
             `Gewerbeschein vorhanden: ${gewerbeschein ? 'Ja' : 'Nein'}`,
             `Gewünschter Start: ${startdatum || 'nicht angegeben'}`,
-            addonLabels.length > 0 ? `Add-ons: ${addonLabels.join(', ')}` : '',
+            addonLabelList.length > 0 ? `Add-ons: ${addonLabelList.join(', ')}` : '',
             nachricht ? `\nNachricht: ${nachricht}` : '',
           ]
             .filter(Boolean)
@@ -212,7 +402,7 @@ export function GeschaeftsadresseAnfrage({ title = 'Geschäftsadresse anfragen' 
       if (!res.ok) throw new Error('Fehler beim Senden');
       setSent(true);
     } catch {
-      setError('Es gab ein Problem beim Senden. Bitte versuchen Sie es erneut.');
+      setError(t.errorSubmit);
     } finally {
       setSending(false);
     }
@@ -230,13 +420,10 @@ export function GeschaeftsadresseAnfrage({ title = 'Geschäftsadresse anfragen' 
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
               </svg>
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-3">Anfrage erhalten</h3>
-            <p className="text-gray-600 mb-2">
-              Vielen Dank für Ihr Interesse! Wir prüfen Ihre Angaben und melden uns
-              innerhalb von 24 Stunden mit einem individuellen Vertragsangebot bei Ihnen.
-            </p>
+            <h3 className="text-2xl font-bold text-gray-900 mb-3">{t.successTitle}</h3>
+            <p className="text-gray-600 mb-2">{t.successBody}</p>
             <p className="text-sm text-gray-500">
-              Bei Rückfragen erreichen Sie uns unter{' '}
+              {t.successContact}{' '}
               <a href="tel:+4976217960310" className="text-[#6b7f3e] font-medium hover:underline">
                 +49 7621 796 0310
               </a>
@@ -252,17 +439,14 @@ export function GeschaeftsadresseAnfrage({ title = 'Geschäftsadresse anfragen' 
   return (
     <section className="py-16 px-4" id="formular">
       <div className="max-w-3xl mx-auto">
-        {title && (
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2 text-center">{title}</h2>
+        {effectiveTitle && (
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2 text-center">{effectiveTitle}</h2>
         )}
-        <p className="text-gray-500 text-center mb-10 text-sm">
-          Wählen Sie Ihren Wunschtarif — wir prüfen Ihre Angaben und senden Ihnen ein
-          individuelles Vertragsangebot per E-Mail.
-        </p>
+        <p className="text-gray-500 text-center mb-10 text-sm">{t.subtitle}</p>
 
         {/* ── STEP 1: Postversand ── */}
         <div className="mb-8">
-          <h3 className="text-lg font-bold text-gray-900 mb-3">1. Postbearbeitung</h3>
+          <h3 className="text-lg font-bold text-gray-900 mb-3">{t.step1Title}</h3>
           <div className="grid grid-cols-2 gap-3">
             {(['ohne', 'mit'] as const).map(pv => (
               <button
@@ -276,12 +460,10 @@ export function GeschaeftsadresseAnfrage({ title = 'Geschäftsadresse anfragen' 
                 }`}
               >
                 <p className="font-semibold text-sm text-gray-900">
-                  {pv === 'ohne' ? 'Ohne Postversand' : 'Mit Postversand'}
+                  {pv === 'ohne' ? t.pvWithout : t.pvWith}
                 </p>
                 <p className="text-xs text-gray-500 mt-1">
-                  {pv === 'ohne'
-                    ? 'Post wird vor Ort gesammelt, 24/7 abholbar'
-                    : 'Wöchentliche Weiterleitung an eine Adresse im DACH-Raum'}
+                  {pv === 'ohne' ? t.pvWithoutDesc : t.pvWithDesc}
                 </p>
               </button>
             ))}
@@ -291,38 +473,37 @@ export function GeschaeftsadresseAnfrage({ title = 'Geschäftsadresse anfragen' 
         {/* ── STEP 2: Tarif ── */}
         <div className="mb-8">
           <div className="mb-4 rounded-lg bg-[#6b7f3e] text-white text-center py-2 px-3">
-            <p className="text-sm font-bold">Sommeraktion — 35% Nachlass bis 30.09.2026</p>
+            <p className="text-sm font-bold">{t.summerPromo}</p>
           </div>
-          <h3 className="text-lg font-bold text-gray-900 mb-1">2. Tarif wählen</h3>
+          <h3 className="text-lg font-bold text-gray-900 mb-1">{t.step2Title}</h3>
           <p className="text-xs text-gray-500 mb-3">
-            {postversand === 'mit' ? 'Inkl. wöchentlicher Postweiterleitung' : 'Ohne Postversand'} · Alle
-            Preise zzgl. MwSt.
+            {postversand === 'mit' ? t.step2SubWith : t.step2SubWithout} · {t.step2VatNote}
           </p>
           <div className="grid grid-cols-3 gap-3">
-            {TARIFE.map(t => {
-              const price = postversand === 'mit' ? t.priceMit : t.priceOhne;
+            {TARIFE_DATA.map(ta => {
+              const price = postversand === 'mit' ? ta.priceMit : ta.priceOhne;
               return (
                 <button
-                  key={t.id}
+                  key={ta.id}
                   type="button"
-                  onClick={() => setTarif(t.id)}
+                  onClick={() => setTarif(ta.id)}
                   className={`relative rounded-xl border-2 p-4 text-left transition-all cursor-pointer ${
-                    tarif === t.id
+                    tarif === ta.id
                       ? 'border-[#6b7f3e] bg-[#f0f4e8] shadow-sm'
-                      : t.popular
+                      : ta.popular
                       ? 'border-[#6b7f3e]/50 bg-white hover:bg-[#f0f4e8] hover:border-[#6b7f3e]'
                       : 'border-gray-200 bg-white hover:bg-[#f0f4e8] hover:border-[#6b7f3e]'
                   }`}
                 >
-                  {t.popular && tarif !== t.id && (
+                  {ta.popular && tarif !== ta.id && (
                     <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 text-[9px] font-bold bg-[#6b7f3e] text-white rounded-full px-2 py-0.5">
-                      Beliebt
+                      {t.popularBadge}
                     </span>
                   )}
-                  <p className="text-sm font-semibold text-gray-900">{t.label}</p>
-                  <p className="text-xs text-gray-500 mt-0.5">{t.laufzeit}</p>
+                  <p className="text-sm font-semibold text-gray-900">{tarifLabel(ta.id)}</p>
+                  <p className="text-xs text-gray-500 mt-0.5">{t.months(ta.laufzeitMonths)}</p>
                   <p className="text-lg font-bold text-gray-900 mt-2">EUR {price},-</p>
-                  <p className="text-[10px] text-gray-400">/Mon. zzgl. MwSt.</p>
+                  <p className="text-[10px] text-gray-400">{t.perMonthVat}</p>
                 </button>
               );
             })}
@@ -331,10 +512,10 @@ export function GeschaeftsadresseAnfrage({ title = 'Geschäftsadresse anfragen' 
 
         {/* ── STEP 3: Add-ons ── */}
         <div className="mb-8">
-          <h3 className="text-lg font-bold text-gray-900 mb-1">3. Optionale Zusatzleistungen</h3>
-          <p className="text-xs text-gray-500 mb-3">Nicht verpflichtend — können auch später hinzugebucht werden.</p>
+          <h3 className="text-lg font-bold text-gray-900 mb-1">{t.step3Title}</h3>
+          <p className="text-xs text-gray-500 mb-3">{t.step3Sub}</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-            {ADDONS.map(addon => (
+            {ADDONS_DATA.map(addon => (
               <button
                 key={addon.id}
                 type="button"
@@ -345,14 +526,14 @@ export function GeschaeftsadresseAnfrage({ title = 'Geschäftsadresse anfragen' 
                     : 'border-gray-200 bg-white hover:bg-[#f0f4e8] hover:border-[#6b7f3e]'
                 }`}
               >
-                <div className="text-sm font-semibold text-gray-900">{addon.label}</div>
-                <div className="text-xs font-bold text-gray-700 mt-0.5">+ {addon.price}</div>
+                <div className="text-sm font-semibold text-gray-900">{addonLabel(addon.id)}</div>
+                <div className="text-xs font-bold text-gray-700 mt-0.5">+ {addonPrice(addon.priceKey)}</div>
                 <div
                   className={`text-xs font-medium mt-1 ${
                     selectedAddons.has(addon.id) ? 'text-[#6b7f3e]' : 'text-[#6b7f3e]/50'
                   }`}
                 >
-                  {selectedAddons.has(addon.id) ? '✓ Gewählt' : '+ Hinzufügen'}
+                  {selectedAddons.has(addon.id) ? t.chosen : t.addCta}
                 </div>
               </button>
             ))}
@@ -360,52 +541,49 @@ export function GeschaeftsadresseAnfrage({ title = 'Geschäftsadresse anfragen' 
         </div>
 
         {/* ── Zusammenfassung ── */}
-        {tarif && (
+        {tarif && selectedTarif && (
           <div className="rounded-xl border border-gray-200 bg-gray-50 p-5 mb-8">
-            <p className="text-xs font-bold text-gray-700 mb-2 uppercase tracking-wide">Ihre Auswahl</p>
+            <p className="text-xs font-bold text-gray-700 mb-2 uppercase tracking-wide">{t.summaryTitle}</p>
             <div className="flex justify-between text-sm py-1">
-              <span className="text-gray-500">Tarif</span>
+              <span className="text-gray-500">{t.summaryTarif}</span>
               <span className="font-medium text-gray-900">
-                {selectedTarif?.label} ({selectedTarif?.laufzeit})
+                {tarifLabel(selectedTarif.id)} ({t.months(selectedTarif.laufzeitMonths)})
               </span>
             </div>
             <div className="flex justify-between text-sm py-1">
-              <span className="text-gray-500">Postversand</span>
+              <span className="text-gray-500">{t.summaryPv}</span>
               <span className="font-medium text-gray-900">
-                {postversand === 'mit' ? 'Mit Weiterleitung' : 'Ohne (Abholung vor Ort)'}
+                {postversand === 'mit' ? t.summaryPvWith : t.summaryPvWithout}
               </span>
             </div>
             <div className="flex justify-between text-sm py-1">
-              <span className="text-gray-500">Monatlich</span>
+              <span className="text-gray-500">{t.summaryMonthly}</span>
               <span className="font-bold text-gray-900">EUR {currentPrice},-</span>
             </div>
             {selectedAddons.size > 0 && (
               <div className="border-t border-gray-200 mt-2 pt-2">
-                {ADDONS.filter(a => selectedAddons.has(a.id)).map(a => (
+                {ADDONS_DATA.filter(a => selectedAddons.has(a.id)).map(a => (
                   <div key={a.id} className="flex justify-between text-sm py-0.5">
-                    <span className="text-gray-500">+ {a.label}</span>
-                    <span className="font-medium text-gray-700">{a.price}</span>
+                    <span className="text-gray-500">+ {addonLabel(a.id)}</span>
+                    <span className="font-medium text-gray-700">{addonPrice(a.priceKey)}</span>
                   </div>
                 ))}
               </div>
             )}
-            <p className="text-[10px] text-gray-400 mt-2 text-right">Alle Preise zzgl. MwSt.</p>
+            <p className="text-[10px] text-gray-400 mt-2 text-right">{t.summaryVatNote}</p>
           </div>
         )}
 
         {/* ── STEP 4: Anfrage-Formular ── */}
         <div className="rounded-2xl border border-gray-200 bg-white shadow-sm p-6 md:p-8">
-          <h3 className="text-lg font-bold text-gray-900 mb-1">4. Ihre Angaben</h3>
-          <p className="text-xs text-gray-500 mb-5">
-            Wir prüfen Ihre Angaben und senden Ihnen ein verbindliches Angebot inkl. Vertrag per
-            E-Mail zu.
-          </p>
+          <h3 className="text-lg font-bold text-gray-900 mb-1">{t.step4Title}</h3>
+          <p className="text-xs text-gray-500 mb-5">{t.step4Sub}</p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Firma + Rechtsform */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Firmenname *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t.labelCompany}</label>
                 <input
                   type="text"
                   value={firma}
@@ -413,18 +591,18 @@ export function GeschaeftsadresseAnfrage({ title = 'Geschäftsadresse anfragen' 
                   required
                   minLength={2}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none text-sm"
-                  placeholder="Musterfirma GmbH"
+                  placeholder={t.placeholderCompany}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Rechtsform</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t.labelLegalForm}</label>
                 <select
                   value={rechtsform}
                   onChange={e => setRechtsform(e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none text-sm bg-white"
                 >
-                  <option value="">Bitte wählen</option>
-                  {RECHTSFORMEN.map(rf => (
+                  <option value="">{t.selectPlaceholder}</option>
+                  {t.rechtsformen.map(rf => (
                     <option key={rf} value={rf}>
                       {rf}
                     </option>
@@ -436,14 +614,14 @@ export function GeschaeftsadresseAnfrage({ title = 'Geschäftsadresse anfragen' 
             {/* HR-Nummer */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Handelsregister-Nummer
+                {t.labelHrNumber}
               </label>
               <input
                 type="text"
                 value={hrNummer}
                 onChange={e => setHrNummer(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none text-sm"
-                placeholder="z.B. HRB 12345 (falls vorhanden)"
+                placeholder={t.placeholderHrNumber}
               />
             </div>
 
@@ -457,7 +635,7 @@ export function GeschaeftsadresseAnfrage({ title = 'Geschäftsadresse anfragen' 
                 className="w-4 h-4 text-[#6b7f3e] border-gray-300 rounded focus:ring-[#6b7f3e]"
               />
               <label htmlFor="gewerbeschein" className="text-sm text-gray-700">
-                Gewerbeschein / Gewerbeanmeldung vorhanden
+                {t.labelGewerbeschein}
               </label>
             </div>
 
@@ -465,7 +643,7 @@ export function GeschaeftsadresseAnfrage({ title = 'Geschäftsadresse anfragen' 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Ansprechpartner *
+                  {t.labelContact}
                 </label>
                 <input
                   type="text"
@@ -474,18 +652,18 @@ export function GeschaeftsadresseAnfrage({ title = 'Geschäftsadresse anfragen' 
                   required
                   minLength={2}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none text-sm"
-                  placeholder="Vor- und Nachname"
+                  placeholder={t.placeholderContact}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">E-Mail *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t.labelEmail}</label>
                 <input
                   type="email"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none text-sm"
-                  placeholder="ihre@email.de"
+                  placeholder={t.placeholderEmail}
                 />
               </div>
             </div>
@@ -493,18 +671,21 @@ export function GeschaeftsadresseAnfrage({ title = 'Geschäftsadresse anfragen' 
             {/* Telefon + Startdatum */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Telefon</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t.labelPhone}</label>
                 <input
                   type="tel"
                   value={telefon}
                   onChange={e => setTelefon(e.target.value)}
+                  required
+                  minLength={6}
+                  maxLength={30}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none text-sm"
-                  placeholder="+49 123 456 789"
+                  placeholder={t.placeholderPhone}
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Gewünschter Starttermin
+                  {t.labelStartDate}
                 </label>
                 <input
                   type="date"
@@ -518,14 +699,14 @@ export function GeschaeftsadresseAnfrage({ title = 'Geschäftsadresse anfragen' 
             {/* Nachricht */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Anmerkungen / Fragen
+                {t.labelNotes}
               </label>
               <textarea
                 value={nachricht}
                 onChange={e => setNachricht(e.target.value)}
                 rows={3}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none resize-none text-sm"
-                placeholder="z.B. besondere Anforderungen, Fragen zum Service..."
+                placeholder={t.placeholderNotes}
               />
             </div>
 
@@ -536,33 +717,19 @@ export function GeschaeftsadresseAnfrage({ title = 'Geschäftsadresse anfragen' 
               disabled={!canSubmit || sending}
               className="w-full py-3.5 px-6 bg-[#6b7f3e] text-white font-semibold rounded-lg hover:bg-[#5a6b34] disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-base"
             >
-              {sending ? 'Wird gesendet...' : 'Unverbindlich anfragen'}
+              {sending ? t.submitting : t.submit}
             </button>
 
-            <p className="text-xs text-gray-400 text-center">
-              * Pflichtfelder · Keine Zahlungsdaten erforderlich · Wir melden uns innerhalb von 24h
-            </p>
+            <p className="text-xs text-gray-400 text-center">{t.formFooter}</p>
           </form>
         </div>
 
         {/* ── So geht's weiter ── */}
         <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
-            {
-              step: '1',
-              title: 'Anfrage senden',
-              desc: 'Wählen Sie Ihren Tarif und füllen Sie das Formular aus.',
-            },
-            {
-              step: '2',
-              title: 'Wir prüfen & erstellen Ihr Angebot',
-              desc: 'Innerhalb von 24h erhalten Sie ein individuelles Vertragsangebot per E-Mail.',
-            },
-            {
-              step: '3',
-              title: 'Vertrag & Start',
-              desc: 'Nach Unterschrift und Kaution ist Ihre Adresse innerhalb von 24h aktiv.',
-            },
+            { step: '1', title: t.finalStep1Title, desc: t.finalStep1Desc },
+            { step: '2', title: t.finalStep2Title, desc: t.finalStep2Desc },
+            { step: '3', title: t.finalStep3Title, desc: t.finalStep3Desc },
           ].map(s => (
             <div key={s.step} className="text-center">
               <div className="w-10 h-10 rounded-full bg-[#6b7f3e] text-white flex items-center justify-center mx-auto mb-2 text-sm font-bold">

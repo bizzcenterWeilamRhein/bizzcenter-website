@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { usePathname } from 'next/navigation';
 
 interface PriceItem {
   label: string;
@@ -33,6 +34,9 @@ interface PricingCardsProps {
 }
 
 function PricingCardItem({ card, ctaText, ctaHref }: { card: PricingCard; ctaText?: string; ctaHref?: string }) {
+  const pathname = usePathname();
+  const locale: 'de' | 'en' = pathname?.startsWith('/en') ? 'en' : 'de';
+  const tennerLabel = locale === 'en' ? '10-day pass' : '10er-Karte';
   const [selected, setSelected] = useState<{ index: number; tenner: boolean } | null>(null);
 
   const buildHref = () => {
@@ -124,7 +128,7 @@ function PricingCardItem({ card, ctaText, ctaHref }: { card: PricingCard; ctaTex
                       }`}
                     >
                       <div className="flex items-center justify-between gap-2">
-                        <span className={`text-xs font-medium ${isSelectedTenner ? 'text-white/80' : 'text-gray-500'}`}>10er-Karte</span>
+                        <span className={`text-xs font-medium ${isSelectedTenner ? 'text-white/80' : 'text-gray-500'}`}>{tennerLabel}</span>
                         <span className={`text-[10px] font-bold rounded-full px-1.5 py-0.5 ${isSelectedTenner ? 'bg-white text-[#6b7f3e]' : 'bg-[#6b7f3e] text-white'}`}>−15%</span>
                       </div>
                     </button>

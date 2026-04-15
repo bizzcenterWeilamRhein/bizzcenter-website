@@ -194,5 +194,6 @@ description: "How we handle your data."
 6. **Use straight quotes only** — curly/typographic quotes (“ ” ‘ ’) break MDX parsing. Always use straight quotes (" ').
 7. **Anchor links** — all section-level components accept an optional `id` prop for anchor navigation (e.g. `<FAQ id="faq">` enables `#faq` links). Do not wrap components in extra `<div id="...">` elements.
 8. **Match the existing language** — when editing or adding content (labels, descriptions, placeholders, options), always match the language already used in that file. If the form labels are in German, new fields must also be in German. Never mix languages within a file.
+9. **Nie automatisch git commit oder git push machen.** Änderungen bleiben lokal bis Torben ausdrücklich sagt committen oder pushen.
 
 <!-- END SHIPSITE AUTO-GENERATED -->

@@ -1,33 +1,93 @@
 ---
-title: "Contact – bizzcenter Constance & Weil am Rhein"
-description: "Contact bizzcenter at both locations. Phone, email and contacts for office solutions, coworking and virtual office."
+title: "Contact — bizzcenter Weil am Rhein"
+description: "Contact bizzcenter Weil am Rhein. By phone, contact form or in person at the Kesselhaus."
 ---
 
 <GlobalOverflowFix />
 
-<PageHero
+<ActiveNavHighlight />
+<LanguageSwitcher />
+
+<CompactHero
   title="Contact"
-  description="Your contacts at both locations"
+  description="We look forward to your message — in person, by phone or via our contact form."
+  image="/images/hero/kesselhaus.jpg"
+  imageAlt="bizzcenter Weil am Rhein Kesselhaus"
+  buttonText=""
+  buttonHref=""
+  formId=""
 />
 
-<Features title="bizzcenter Constance" subtitle="Your contact at Lake Constance">
-  <FeatureCard title="Address" description="Lohnerhofstr. 2, 78467 Constance" icon="map-pin" />
-  <FeatureCard title="Phone (DE)" description="+49 (0) 7531 8926 0" icon="phone" />
-  <FeatureCard title="Phone (CH)" description="+41 (0) 715 112 204" icon="phone" />
-  <FeatureCard title="Email" description="info@bizzcenter.de" icon="mail" />
-  <FeatureCard title="Contact Person" description="Timo Schneeweis – Owner bizzcenter Konstanz e.K." icon="users" />
-</Features>
+<section className="max-w-6xl mx-auto px-4 py-16">
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+    {/* Left: Form */}
+    <div>
+      <KontaktFormular />
+    </div>
 
-<Features title="bizzcenter Weil am Rhein" subtitle="Your contact in the border triangle">
-  <FeatureCard title="Address" description="Im Schwarzenbach 4, 79576 Weil am Rhein" icon="map-pin" />
-  <FeatureCard title="Phone (DE)" description="+49 (0)7621 916 5547" icon="phone" />
-  <FeatureCard title="Phone (CH)" description="+41 (0) 715 112 204" icon="phone" />
-  <FeatureCard title="Email" description="weilamrhein@bizzcenter.de" icon="mail" />
-  <FeatureCard title="Contact Person" description="Torben Götz – Managing Director bizzcenter Weil am Rhein GmbH" icon="users" />
-</Features>
+    {/* Right: Info + Image */}
+    <div className="space-y-6">
+      <div className="bg-[#f5f0eb] rounded-2xl p-8">
+        <h3 className="text-xl font-bold text-gray-900 mb-4">Direct line</h3>
+        <div className="space-y-4">
+          <div className="flex items-start gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-[#6b7f3e] mt-0.5 flex-shrink-0"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" /></svg>
+            <div>
+              <p className="font-semibold text-gray-900">Phone</p>
+              <a href="tel:+4976219165547" className="text-[#6b7f3e] hover:underline">+49 (0)7621 916 5547</a>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-[#6b7f3e] mt-0.5 flex-shrink-0"><path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" /></svg>
+            <div>
+              <p className="font-semibold text-gray-900">Viewing</p>
+              <p className="text-gray-600">By prior appointment only</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="rounded-2xl overflow-hidden shadow-md">
+        <img src="/images/standorte/weil-am-rhein/green-office-eingangsbereich.jpeg" alt="Green Office entrance area" className="w-full h-64 object-cover" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<ImageSlider
+  title="A look inside bizzcenter"
+  slides={[
+    { src: "/images/standorte/weil-am-rhein/kesselhaus-aussen.jpg", caption: "Kesselhaus – exterior view" },
+    { src: "/images/standorte/weil-am-rhein/green-office-kueche-empore.jpeg", caption: "Kitchen & meeting box on the gallery" },
+    { src: "/images/standorte/weil-am-rhein/coworking-loungeecke.jpg", caption: "Lounge & coworking" },
+    { src: "/images/standorte/weil-am-rhein/konferenzraum-gross.jpg", caption: "Conference room" },
+    { src: "/images/standorte/weil-am-rhein/green-office-spielbox-loungeecke.jpeg", caption: "Play corner & lounge area" },
+    { src: "/images/standorte/weil-am-rhein/meetingraum-empore-5-personen.jpg", caption: "Meeting room on the gallery" },
+    { src: "/images/standorte/weil-am-rhein/coachingbuero.jpg", caption: "Coaching room" },
+    { src: "/images/standorte/weil-am-rhein/green-office-flurbereich.jpg", caption: "Green Office hallway area" },
+  ]}
+/>
+
+<AlternatingFeatures>
+  <AlternatingFeatureRow title="Our location" description="bizzcenter Weil am Rhein — Am Kesselhaus 3, 79576 Weil am Rhein. Just 300 meters from the Swiss border, directly accessible via tram line 8 from Basel. EuroAirport Basel is only 15 minutes away by car." image="/images/standorte/weil-am-rhein/standortkarte.png" imageAlt="Location map bizzcenter Weil am Rhein" />
+</AlternatingFeatures>
+
+<KontaktFormular />
+
+<FAQ title="Frequently asked questions">
+  <FAQItem question="Can I arrange a viewing appointment?">
+    Yes, gladly! Give us a call or use the contact form — we'll show you our spaces in person.
+  </FAQItem>
+  <FAQItem question="Where can I park?">
+    Parking spaces are available directly at the building. The first 90 minutes are free, after that EUR 6,- per day.
+  </FAQItem>
+  <FAQItem question="How do I get to bizzcenter by public transport?">
+    Tram line 8 from Basel, stop Riedlistrasse/Kesselhaus. About 2 minutes on foot.
+  </FAQItem>
+</FAQ>
 
 <BannerCTA
   title="Schedule an appointment"
-  subtext="We are happy to advise you on virtual office, coworking, office rental and meeting rooms at both locations."
-  buttonText="Email Constance" buttonHref="mailto:info@bizzcenter.de"
+  subtext="Call us at +49 (0)7621 916 5547 or use the contact form above."
+  buttonText="Call"
+  buttonHref="tel:+4976219165547"
 />

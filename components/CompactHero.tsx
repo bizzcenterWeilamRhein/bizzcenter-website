@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { usePathname } from 'next/navigation';
 
 interface CompactHeroProps {
   title: string;
@@ -92,14 +93,103 @@ export function CompactHero({ title, description, image, imageAlt, imagePosition
   );
 }
 
-const tarifLabels: Record<string, string> = {
-  tagespass: 'Tagespass — EUR 25,- zzgl. MwSt.',
-  zehnerkarte: '10er-Karte — EUR 209,- zzgl. MwSt.',
-  monatspass: 'Monatspass — EUR 219,- zzgl. MwSt.',
-  monatsabo: 'Monatsabo — EUR 199,- zzgl. MwSt.',
+// ─── i18n strings for inner hero forms ──────────────────────────────
+
+const HERO_STRINGS = {
+  de: {
+    // HeroForm (generic quote form)
+    heroTitle: 'Angebot in 2 Minuten erstellen',
+    phFirstName: 'Vorname',
+    phLastName: 'Nachname',
+    phEmail: 'E-Mail-Adresse',
+    phCompany: 'Firmenname (optional)',
+    phCompanyRequired: 'Firmenname',
+    phPhone: 'Telefon',
+    legalFormPlaceholder: 'Rechtsform',
+    legalForms: [
+      { value: 'gmbh', label: 'GmbH' },
+      { value: 'ug', label: 'UG (haftungsbeschränkt)' },
+      { value: 'gmbh-co-kg', label: 'GmbH & Co. KG' },
+      { value: 'ag', label: 'AG' },
+      { value: 'ek', label: 'e.K.' },
+      { value: 'einzelunternehmen', label: 'Einzelunternehmen' },
+      { value: 'freiberufler', label: 'Freiberufler/in' },
+      { value: 'gbr', label: 'GbR' },
+      { value: 'sonstige', label: 'Sonstige' },
+    ],
+    heroCreating: 'Wird erstellt...',
+    heroCreate: 'Angebot erstellen →',
+    heroFootnote: 'Kostenlos & unverbindlich · Keine Kreditkarte nötig',
+
+    // Tarif labels (used in HeroForm badge)
+    tarifLabels: {
+      tagespass: 'Tagespass — EUR 25,- zzgl. MwSt.',
+      zehnerkarte: '10er-Karte — EUR 209,- zzgl. MwSt.',
+      monatspass: 'Monatspass — EUR 219,- zzgl. MwSt.',
+      monatsabo: 'Monatsabo — EUR 199,- zzgl. MwSt.',
+    } as Record<string, string>,
+
+    // GeschaeftsadresseHeroForm
+    gaHeroTitle: 'Geschäftsadresse anfragen',
+    pvWithout: 'Ohne Postversand',
+    pvWith: 'Mit Postversand',
+    gaSending: 'Wird gesendet...',
+    gaSubmit: 'Unverbindlich anfragen →',
+    gaFootnote: 'Keine Zahlungsdaten nötig · Angebot innerhalb 24h',
+    gaSuccessTitle: 'Anfrage erhalten!',
+    gaSuccessBody: 'Wir melden uns innerhalb von 24h.',
+  },
+  en: {
+    heroTitle: 'Create a quote in 2 minutes',
+    phFirstName: 'First name',
+    phLastName: 'Last name',
+    phEmail: 'Email address',
+    phCompany: 'Company name (optional)',
+    phCompanyRequired: 'Company name',
+    phPhone: 'Phone',
+    legalFormPlaceholder: 'Legal form',
+    legalForms: [
+      { value: 'gmbh', label: 'GmbH' },
+      { value: 'ug', label: 'UG (mini-GmbH)' },
+      { value: 'gmbh-co-kg', label: 'GmbH & Co. KG' },
+      { value: 'ag', label: 'AG' },
+      { value: 'ek', label: 'e.K.' },
+      { value: 'einzelunternehmen', label: 'Sole proprietorship' },
+      { value: 'freiberufler', label: 'Freelancer' },
+      { value: 'gbr', label: 'GbR' },
+      { value: 'sonstige', label: 'Other' },
+    ],
+    heroCreating: 'Creating...',
+    heroCreate: 'Create quote →',
+    heroFootnote: 'Free & no obligation · No credit card required',
+
+    tarifLabels: {
+      tagespass: 'Day pass — EUR 25,- excl. VAT',
+      zehnerkarte: '10-day pass — EUR 209,- excl. VAT',
+      monatspass: 'Monthly pass — EUR 219,- excl. VAT',
+      monatsabo: 'Monthly subscription — EUR 199,- excl. VAT',
+    } as Record<string, string>,
+
+    gaHeroTitle: 'Request a business address',
+    pvWithout: 'Without mail forwarding',
+    pvWith: 'With mail forwarding',
+    gaSending: 'Sending...',
+    gaSubmit: 'Request without obligation →',
+    gaFootnote: 'No payment details needed · Offer within 24h',
+    gaSuccessTitle: 'Request received!',
+    gaSuccessBody: 'We will get back to you within 24h.',
+  },
 };
 
+function useLocale(): 'de' | 'en' {
+  const pathname = usePathname();
+  return pathname?.startsWith('/en') ? 'en' : 'de';
+}
+
 function HeroForm() {
+  const locale = useLocale();
+  const t = HERO_STRINGS[locale];
+
   const [status, setStatus] = React.useState<'idle' | 'sending'>('idle');
   const [selectedTarif, setSelectedTarif] = React.useState<string | null>(null);
 
@@ -125,7 +215,7 @@ function HeroForm() {
     fetch('/api/lead', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...data, quelle: 'hero-formular', timestamp: new Date().toISOString() }),
+      body: JSON.stringify({ ...data, quelle: 'hero-formular', bemerkungen: `Sprache: ${locale}`, timestamp: new Date().toISOString() }),
     }).catch(() => {});
 
     // GCLID mitführen
@@ -146,41 +236,38 @@ function HeroForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-3">
-      <p className="text-sm font-semibold text-foreground">Angebot in 2 Minuten erstellen</p>
+      <p className="text-sm font-semibold text-foreground">{t.heroTitle}</p>
       {selectedTarif && (
         <div className="rounded-lg bg-primary/10 border border-primary/30 px-3 py-2 text-sm text-primary font-semibold text-center">
-          {tarifLabels[selectedTarif] || selectedTarif}
+          {t.tarifLabels[selectedTarif] || selectedTarif}
         </div>
       )}
       <div className="grid grid-cols-2 gap-2">
-        <input name="vorname" type="text" placeholder="Vorname" required className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
-        <input name="nachname" type="text" placeholder="Nachname" required className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
+        <input name="vorname" type="text" placeholder={t.phFirstName} required className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
+        <input name="nachname" type="text" placeholder={t.phLastName} required className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
       </div>
-      <input name="email" type="email" placeholder="E-Mail-Adresse" required className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
+      <input name="email" type="email" placeholder={t.phEmail} required className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
       <div className="grid grid-cols-2 gap-2">
-        <input name="firma" type="text" placeholder="Firmenname (optional)" className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
+        <input name="firma" type="text" placeholder={t.phCompany} className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
         <select name="rechtsform" className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#6b7f3e] appearance-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' viewBox=\'0 0 12 12\'%3E%3Cpath d=\'M6 8L1 3h10z\' fill=\'%236b7f3e\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center' }}>
-          <option value="">Rechtsform</option>
-          <option value="gmbh">GmbH</option>
-          <option value="ug">UG (haftungsbeschränkt)</option>
-          <option value="gmbh-co-kg">GmbH & Co. KG</option>
-          <option value="ag">AG</option>
-          <option value="ek">e.K.</option>
-          <option value="einzelunternehmen">Einzelunternehmen</option>
-          <option value="freiberufler">Freiberufler/in</option>
-          <option value="gbr">GbR</option>
-          <option value="sonstige">Sonstige</option>
+          <option value="">{t.legalFormPlaceholder}</option>
+          {t.legalForms.map(lf => (
+            <option key={lf.value} value={lf.value}>{lf.label}</option>
+          ))}
         </select>
       </div>
       <button type="submit" disabled={status === 'sending'} className="w-full rounded-lg bg-[#6b7f3e] text-white px-4 py-3 text-sm font-bold hover:opacity-90 transition-opacity disabled:opacity-50 shadow-sm">
-        {status === 'sending' ? 'Wird erstellt...' : 'Angebot erstellen →'}
+        {status === 'sending' ? t.heroCreating : t.heroCreate}
       </button>
-      <p className="text-[10px] text-muted-foreground text-center">Kostenlos & unverbindlich · Keine Kreditkarte nötig</p>
+      <p className="text-[10px] text-muted-foreground text-center">{t.heroFootnote}</p>
     </form>
   );
 }
 
 function GeschaeftsadresseHeroForm() {
+  const locale = useLocale();
+  const t = HERO_STRINGS[locale];
+
   const [status, setStatus] = React.useState<'idle' | 'sending' | 'sent'>('idle');
   const [postversand, setPostversand] = React.useState<'ohne' | 'mit'>('ohne');
 
@@ -196,12 +283,13 @@ function GeschaeftsadresseHeroForm() {
     const vorname = (fd.get('vorname') as string || '').trim();
     const email = (fd.get('email') as string || '').trim();
     const firma = (fd.get('firma') as string || '').trim();
+    const telefon = (fd.get('telefon') as string || '').trim();
 
     // Need at least (name + email) or firma
     const hasMin = (vorname.length >= 2 && email.includes('@')) || firma.length >= 2;
     if (!hasMin) return;
 
-    const hash = JSON.stringify({ vorname, nachname: fd.get('nachname'), email, firma, rechtsform: fd.get('rechtsform'), postversand });
+    const hash = JSON.stringify({ vorname, nachname: fd.get('nachname'), email, telefon, firma, rechtsform: fd.get('rechtsform'), postversand });
     if (hash === lastSavedHash.current) return;
 
     if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current);
@@ -214,9 +302,10 @@ function GeschaeftsadresseHeroForm() {
           nachname: (fd.get('nachname') as string || '').trim(),
           firma,
           email,
-          telefon: '',
+          telefon,
           nachricht: [
             '--- Geschäftsadresse (Hero-Formular, Auto-Save) ---',
+            `Sprache: ${locale}`,
             `Postversand: ${postversand === 'mit' ? 'Mit Postversand' : 'Ohne Postversand'}`,
             fd.get('rechtsform') ? `Rechtsform: ${fd.get('rechtsform')}` : '',
           ].filter(Boolean).join('\n'),
@@ -226,7 +315,7 @@ function GeschaeftsadresseHeroForm() {
         }),
       }).then(() => { lastSavedHash.current = hash; }).catch(() => {});
     }, 5000);
-  }, [postversand]);
+  }, [postversand, locale]);
 
   // Also trigger on postversand change
   React.useEffect(() => { triggerAutoSave(); }, [postversand, triggerAutoSave]);
@@ -248,9 +337,10 @@ function GeschaeftsadresseHeroForm() {
         nachname: data.nachname || '',
         firma: data.firma || '',
         email: data.email || '',
-        telefon: '',
+        telefon: data.telefon || '',
         nachricht: [
           '--- Geschäftsadresse Anfrage (Hero-Formular) ---',
+          `Sprache: ${locale}`,
           `Postversand: ${postversand === 'mit' ? 'Mit Postversand' : 'Ohne Postversand'}`,
           data.rechtsform ? `Rechtsform: ${data.rechtsform}` : '',
         ].filter(Boolean).join('\n'),
@@ -269,15 +359,15 @@ function GeschaeftsadresseHeroForm() {
             <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
           </svg>
         </div>
-        <p className="text-sm font-bold text-foreground">Anfrage erhalten!</p>
-        <p className="text-xs text-muted-foreground mt-1">Wir melden uns innerhalb von 24h.</p>
+        <p className="text-sm font-bold text-foreground">{t.gaSuccessTitle}</p>
+        <p className="text-xs text-muted-foreground mt-1">{t.gaSuccessBody}</p>
       </div>
     );
   }
 
   return (
     <form ref={formRef} onSubmit={handleSubmit} onChange={() => triggerAutoSave()} className="space-y-3">
-      <p className="text-sm font-semibold text-foreground">Geschäftsadresse anfragen</p>
+      <p className="text-sm font-semibold text-foreground">{t.gaHeroTitle}</p>
 
       {/* Postversand Toggle */}
       <div className="grid grid-cols-2 gap-2">
@@ -292,35 +382,30 @@ function GeschaeftsadresseHeroForm() {
                 : 'border-border bg-background text-muted-foreground hover:border-[#6b7f3e]'
             }`}
           >
-            {pv === 'ohne' ? 'Ohne Postversand' : 'Mit Postversand'}
+            {pv === 'ohne' ? t.pvWithout : t.pvWith}
           </button>
         ))}
       </div>
 
       <div className="grid grid-cols-2 gap-2">
-        <input name="vorname" type="text" placeholder="Vorname" required className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
-        <input name="nachname" type="text" placeholder="Nachname" required className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
+        <input name="vorname" type="text" placeholder={t.phFirstName} required className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
+        <input name="nachname" type="text" placeholder={t.phLastName} required className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
       </div>
-      <input name="email" type="email" placeholder="E-Mail-Adresse" required className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
+      <input name="email" type="email" placeholder={t.phEmail} required className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
+      <input name="telefon" type="tel" placeholder={t.phPhone} required minLength={6} maxLength={30} className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
       <div className="grid grid-cols-2 gap-2">
-        <input name="firma" type="text" placeholder="Firmenname" className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
+        <input name="firma" type="text" placeholder={t.phCompanyRequired} className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
         <select name="rechtsform" className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#6b7f3e] appearance-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' viewBox=\'0 0 12 12\'%3E%3Cpath d=\'M6 8L1 3h10z\' fill=\'%236b7f3e\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center' }}>
-          <option value="">Rechtsform</option>
-          <option value="gmbh">GmbH</option>
-          <option value="ug">UG (haftungsbeschränkt)</option>
-          <option value="gmbh-co-kg">GmbH & Co. KG</option>
-          <option value="ag">AG</option>
-          <option value="ek">e.K.</option>
-          <option value="einzelunternehmen">Einzelunternehmen</option>
-          <option value="freiberufler">Freiberufler/in</option>
-          <option value="gbr">GbR</option>
-          <option value="sonstige">Sonstige</option>
+          <option value="">{t.legalFormPlaceholder}</option>
+          {t.legalForms.map(lf => (
+            <option key={lf.value} value={lf.value}>{lf.label}</option>
+          ))}
         </select>
       </div>
       <button type="submit" disabled={status === 'sending'} className="w-full rounded-lg bg-[#6b7f3e] text-white px-4 py-3 text-sm font-bold hover:opacity-90 transition-opacity disabled:opacity-50 shadow-sm">
-        {status === 'sending' ? 'Wird gesendet...' : 'Unverbindlich anfragen →'}
+        {status === 'sending' ? t.gaSending : t.gaSubmit}
       </button>
-      <p className="text-[10px] text-muted-foreground text-center">Keine Zahlungsdaten nötig · Angebot innerhalb 24h</p>
+      <p className="text-[10px] text-muted-foreground text-center">{t.gaFootnote}</p>
     </form>
   );
 }

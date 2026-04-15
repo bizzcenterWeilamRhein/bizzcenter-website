@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { usePathname } from 'next/navigation';
 
 // ─── Types ───────────────────────────────────────────────────────────
 
@@ -54,33 +55,226 @@ const PRICE_MAP: Record<string, string> = {
   'addon_monitor_tag': 'price_1TI23fJHXQhpcKhg2FiMCBEg',
 };
 
-// ─── Product Configs ─────────────────────────────────────────────────
+// ─── i18n Strings ────────────────────────────────────────────────────
+
+const STRINGS = {
+  de: {
+    // GA tarife
+    gaTarifLabels: { langzeit: 'Langzeit', standard: 'Standard', flex: 'Flex' } as Record<string, string>,
+    months: (n: number) => `${n} Monate`,
+    // CW tarife
+    cwTarifLabels: { tagespass: 'Tagespass', '10er': '10er-Karte', monatspass: 'Monatspass', monatsabo: 'Monatsabo' } as Record<string, string>,
+    cwTarifSub: {
+      tagespass: 'pro Tag',
+      '10er': 'einmalig',
+      monatspass: 'pro Monat · flexibel zum Monatsende kündbar',
+      monatsabo: 'pro Monat · 3 Monate Kündigungsfrist',
+    } as Record<string, string>,
+    // Konferenzraum
+    konfRoomLabels: {
+      '2pers': 'Bis 2 Personen',
+      '6pers': 'Bis 6 Personen',
+      '15pers': 'Bis 15 Personen',
+      '25pers': 'Bis 25 Personen',
+    } as Record<string, string>,
+    konfRoomDesc: {
+      '2pers': 'Kleiner Meetingraum',
+      '6pers': 'Meetingraum',
+      '15pers': 'Konferenzraum',
+      '25pers': 'Großer Konferenzraum',
+    } as Record<string, string>,
+    konfDauerLabels: {
+      stunde: 'Stundenweise',
+      halbtags: 'Halbtags',
+      ganztags: 'Ganztags',
+    } as Record<string, string>,
+    // Addons
+    addonLabels: {
+      scan: 'Scanpaket',
+      parkplatz: 'Parkplatz',
+      firmenschild: 'Firmenschild',
+      kaffee: 'Kaffee-Flat',
+      monitor: '27" Monitor',
+      schrank: 'Aktenschrank',
+      kaffee_tag: 'Kaffee-Flat',
+      parkplatz_tag: 'Parkplatz',
+      monitor_tag: '27" Monitor',
+      kaffee_10er: '10x Kaffee-Flat',
+      parkplatz_10er: '10x Parkplatz',
+    } as Record<string, string>,
+    priceMonthly: (amount: number) => `EUR ${amount},-/Mon.`,
+    priceOneTime: (amount: number) => `EUR ${amount},- einmalig`,
+    priceSimple: (amount: number) => `EUR ${amount},-`,
+    // UI
+    popular: 'Beliebt',
+    chosen: '✓ Gewählt',
+    addCta: '+ Hinzufügen',
+    back: 'Zurück',
+    next: 'Weiter',
+    loading: 'Wird geladen...',
+    bookAndPay: 'Jetzt buchen und bezahlen',
+    securePayment: 'Sichere Zahlung via Stripe · SSL-verschlüsselt',
+    // Errors
+    errOptions: 'Bitte wählen Sie alle Optionen aus.',
+    errRequired: 'Bitte füllen Sie alle Pflichtfelder aus.',
+    errEmail: 'Bitte geben Sie eine gültige E-Mail-Adresse ein.',
+    errGeneric: 'Ein Fehler ist aufgetreten.',
+    errConnection: 'Verbindungsfehler. Bitte versuchen Sie es erneut.',
+    // Step labels
+    stepLabelsGA: ['Postversand', 'Tarif', 'Add-ons', 'Ihre Daten'],
+    stepLabelsCW: ['Tarif', 'Add-ons', 'Ihre Daten'],
+    stepLabelsKonf: ['Raumgröße', 'Dauer', 'Add-ons', 'Ihre Daten'],
+    stepLabelsTB: ['Add-ons', 'Ihre Daten'],
+    // Step headings
+    gaPostTitle: 'Wie soll Ihre Post bearbeitet werden?',
+    pvOhne: 'Ohne Postversand',
+    pvMit: 'Mit Postversand',
+    pvOhneDesc: 'Post wird vor Ort gesammelt, 24/7 abholbar',
+    pvMitDesc: 'Wöchentliche Weiterleitung an eine Adresse im DACH-Raum',
+    tarifWaehlen: 'Tarif wählen',
+    inklPostversand: 'Inkl. Postversand',
+    alleVat: 'Alle Preise zzgl. MwSt.',
+    perMonthVat: '/Mon. zzgl. MwSt.',
+    vatNote: 'zzgl. MwSt.',
+    perHour: '/Std.',
+    fromPrice: 'ab EUR',
+    cwPromo: 'Einführungsaktion Green Office — 16% Rabatt bis 30.09.2026',
+    raumWaehlen: 'Raumgröße wählen',
+    dauerWaehlen: 'Dauer wählen',
+    addonsTitle: 'Optionale Add-ons',
+    addonsSub: 'Optional — können auch später hinzugebucht werden.',
+    noAddons: 'Für dieses Produkt sind keine Add-ons verfügbar.',
+    yourData: 'Ihre Daten',
+    summary: 'Zusammenfassung',
+    allVatCheckout: 'Alle Preise zzgl. MwSt. (wird im Checkout berechnet)',
+    labelName: 'Name *',
+    phName: 'Vor- und Nachname',
+    privateCheck: 'Ich buche als Privatperson (keine Firma)',
+    labelCompany: 'Firmenname *',
+    phCompany: 'Musterfirma GmbH',
+    labelEmail: 'E-Mail *',
+    phEmail: 'mail@beispiel.de',
+    summaryPostversand: 'Postversand',
+    summaryMit: 'Mit Weiterleitung',
+    summaryOhne: 'Ohne (Abholung)',
+    summaryTarifFallback: 'Tarif',
+    summaryRaumFallback: 'Raum',
+    summaryTagesbuero: 'Tagesbüro',
+  },
+  en: {
+    gaTarifLabels: { langzeit: 'Long-term', standard: 'Standard', flex: 'Flex' } as Record<string, string>,
+    months: (n: number) => `${n} months`,
+    cwTarifLabels: { tagespass: 'Day pass', '10er': '10-day pass', monatspass: 'Monthly pass', monatsabo: 'Monthly subscription' } as Record<string, string>,
+    cwTarifSub: {
+      tagespass: 'per day',
+      '10er': 'one-time',
+      monatspass: 'per month · cancel flexibly at month-end',
+      monatsabo: 'per month · 3 months notice period',
+    } as Record<string, string>,
+    konfRoomLabels: {
+      '2pers': 'Up to 2 people',
+      '6pers': 'Up to 6 people',
+      '15pers': 'Up to 15 people',
+      '25pers': 'Up to 25 people',
+    } as Record<string, string>,
+    konfRoomDesc: {
+      '2pers': 'Small meeting room',
+      '6pers': 'Meeting room',
+      '15pers': 'Conference room',
+      '25pers': 'Large conference room',
+    } as Record<string, string>,
+    konfDauerLabels: {
+      stunde: 'Hourly',
+      halbtags: 'Half day',
+      ganztags: 'Full day',
+    } as Record<string, string>,
+    addonLabels: {
+      scan: 'Scan package',
+      parkplatz: 'Parking',
+      firmenschild: 'Company sign',
+      kaffee: 'Coffee flat rate',
+      monitor: '27" monitor',
+      schrank: 'Filing cabinet',
+      kaffee_tag: 'Coffee flat rate',
+      parkplatz_tag: 'Parking',
+      monitor_tag: '27" monitor',
+      kaffee_10er: '10x coffee flat rate',
+      parkplatz_10er: '10x parking',
+    } as Record<string, string>,
+    priceMonthly: (amount: number) => `EUR ${amount},-/month`,
+    priceOneTime: (amount: number) => `EUR ${amount},- one-time`,
+    priceSimple: (amount: number) => `EUR ${amount},-`,
+    popular: 'Popular',
+    chosen: '✓ Selected',
+    addCta: '+ Add',
+    back: 'Back',
+    next: 'Next',
+    loading: 'Loading...',
+    bookAndPay: 'Book and pay now',
+    securePayment: 'Secure payment via Stripe · SSL encrypted',
+    errOptions: 'Please select all options.',
+    errRequired: 'Please fill in all required fields.',
+    errEmail: 'Please enter a valid email address.',
+    errGeneric: 'An error occurred.',
+    errConnection: 'Connection error. Please try again.',
+    stepLabelsGA: ['Mail handling', 'Plan', 'Add-ons', 'Your details'],
+    stepLabelsCW: ['Plan', 'Add-ons', 'Your details'],
+    stepLabelsKonf: ['Room size', 'Duration', 'Add-ons', 'Your details'],
+    stepLabelsTB: ['Add-ons', 'Your details'],
+    gaPostTitle: 'How should your mail be handled?',
+    pvOhne: 'Without mail forwarding',
+    pvMit: 'With mail forwarding',
+    pvOhneDesc: 'Mail is collected on site, accessible 24/7',
+    pvMitDesc: 'Weekly forwarding to any address in the DACH region',
+    tarifWaehlen: 'Choose a plan',
+    inklPostversand: 'Incl. mail forwarding',
+    alleVat: 'All prices excl. VAT.',
+    perMonthVat: '/month excl. VAT',
+    vatNote: 'excl. VAT',
+    perHour: '/hour',
+    fromPrice: 'from EUR',
+    cwPromo: 'Introductory offer Green Office — 16% discount until 30.09.2026',
+    raumWaehlen: 'Choose room size',
+    dauerWaehlen: 'Choose duration',
+    addonsTitle: 'Optional add-ons',
+    addonsSub: 'Optional — you can add them later too.',
+    noAddons: 'No add-ons available for this product.',
+    yourData: 'Your details',
+    summary: 'Summary',
+    allVatCheckout: 'All prices excl. VAT (calculated at checkout)',
+    labelName: 'Name *',
+    phName: 'First and last name',
+    privateCheck: 'I am booking as a private person (no company)',
+    labelCompany: 'Company name *',
+    phCompany: 'Example Company Ltd.',
+    labelEmail: 'Email *',
+    phEmail: 'mail@example.com',
+    summaryPostversand: 'Mail handling',
+    summaryMit: 'With forwarding',
+    summaryOhne: 'Without (on-site pickup)',
+    summaryTarifFallback: 'Plan',
+    summaryRaumFallback: 'Room',
+    summaryTagesbuero: 'Day office',
+  },
+};
+
+// ─── Product Configs (data only, labels come from STRINGS) ──────────
 
 const GA_TARIFE = [
-  { id: 'langzeit', label: 'Langzeit', laufzeit: '12 Monate', price: 49, popular: true },
-  { id: 'standard', label: 'Standard', laufzeit: '6 Monate', price: 69 },
-  { id: 'flex', label: 'Flex', laufzeit: '3 Monate', price: 99 },
+  { id: 'langzeit', laufzeitMonths: 12, price: 49, popular: true },
+  { id: 'standard', laufzeitMonths: 6, price: 69 },
+  { id: 'flex', laufzeitMonths: 3, price: 99 },
 ];
 
 const CW_TARIFE = [
-  { id: 'tagespass', label: 'Tagespass', price: 25, sub: 'pro Tag', badge: '−16%' },
-  { id: '10er', label: '10er-Karte', price: 209, sub: 'einmalig', badge: '−16%' },
-  { id: 'monatspass', label: 'Monatspass', price: 219, sub: 'pro Monat · flexibel zum Monatsende kündbar', popular: true, badge: '−16%' },
-  { id: 'monatsabo', label: 'Monatsabo', price: 199, sub: 'pro Monat · 3 Monate Kündigungsfrist', badge: '−16%' },
+  { id: 'tagespass', price: 25, badge: '−16%' },
+  { id: '10er', price: 209, badge: '−16%' },
+  { id: 'monatspass', price: 219, popular: true, badge: '−16%' },
+  { id: 'monatsabo', price: 199, badge: '−16%' },
 ];
 
-const KONF_ROOMS = [
-  { id: '2pers', label: 'Bis 2 Personen', desc: 'Kleiner Meetingraum' },
-  { id: '6pers', label: 'Bis 6 Personen', desc: 'Meetingraum' },
-  { id: '15pers', label: 'Bis 15 Personen', desc: 'Konferenzraum' },
-  { id: '25pers', label: 'Bis 25 Personen', desc: 'Großer Konferenzraum' },
-];
-
-const KONF_DAUER = [
-  { id: 'stunde', label: 'Stundenweise' },
-  { id: 'halbtags', label: 'Halbtags' },
-  { id: 'ganztags', label: 'Ganztags' },
-];
+const KONF_ROOM_IDS = ['2pers', '6pers', '15pers', '25pers'] as const;
+const KONF_DAUER_IDS = ['stunde', 'halbtags', 'ganztags'] as const;
 
 const KONF_PREISE: Record<string, Record<string, number>> = {
   '2pers': { stunde: 19, halbtags: 59, ganztags: 89 },
@@ -89,40 +283,38 @@ const KONF_PREISE: Record<string, Record<string, number>> = {
   '25pers': { stunde: 49, halbtags: 129, ganztags: 199 },
 };
 
-const ADDONS_BY_PRODUCT: Record<ProductType, { id: string; label: string; price: string; monthly: boolean }[]> = {
+const ADDONS_BY_PRODUCT: Record<ProductType, { id: string; priceAmount: number; priceType: 'monthly' | 'once'; monthly: boolean }[]> = {
   geschaeftsadresse: [
-    { id: 'scan', label: 'Scanpaket', price: 'EUR 49,-/Mon.', monthly: true },
-    { id: 'parkplatz', label: 'Parkplatz', price: 'EUR 49,-/Mon.', monthly: true },
-    { id: 'firmenschild', label: 'Firmenschild', price: 'EUR 179,- einmalig', monthly: false },
+    { id: 'scan', priceAmount: 49, priceType: 'monthly', monthly: true },
+    { id: 'parkplatz', priceAmount: 49, priceType: 'monthly', monthly: true },
+    { id: 'firmenschild', priceAmount: 179, priceType: 'once', monthly: false },
   ],
   coworking: [
-    { id: 'parkplatz', label: 'Parkplatz', price: 'EUR 49,-/Mon.', monthly: true },
-    { id: 'kaffee', label: 'Kaffee-Flat', price: 'EUR 29,-/Mon.', monthly: true },
-    { id: 'monitor', label: '27" Monitor', price: 'EUR 27,-/Mon.', monthly: true },
-    { id: 'schrank', label: 'Aktenschrank', price: 'EUR 19,-/Mon.', monthly: true },
+    { id: 'parkplatz', priceAmount: 49, priceType: 'monthly', monthly: true },
+    { id: 'kaffee', priceAmount: 29, priceType: 'monthly', monthly: true },
+    { id: 'monitor', priceAmount: 27, priceType: 'monthly', monthly: true },
+    { id: 'schrank', priceAmount: 19, priceType: 'monthly', monthly: true },
   ],
   konferenzraum: [
-    { id: 'parkplatz', label: 'Parkplatz', price: 'EUR 49,-/Mon.', monthly: true },
-    { id: 'kaffee', label: 'Kaffee-Flat', price: 'EUR 29,-/Mon.', monthly: true },
+    { id: 'parkplatz', priceAmount: 49, priceType: 'monthly', monthly: true },
+    { id: 'kaffee', priceAmount: 29, priceType: 'monthly', monthly: true },
   ],
   tagesbuero: [
-    { id: 'parkplatz', label: 'Parkplatz', price: 'EUR 49,-/Mon.', monthly: true },
-    { id: 'kaffee', label: 'Kaffee-Flat', price: 'EUR 29,-/Mon.', monthly: true },
-    { id: 'monitor', label: '27" Monitor', price: 'EUR 27,-/Mon.', monthly: true },
+    { id: 'parkplatz', priceAmount: 49, priceType: 'monthly', monthly: true },
+    { id: 'kaffee', priceAmount: 29, priceType: 'monthly', monthly: true },
+    { id: 'monitor', priceAmount: 27, priceType: 'monthly', monthly: true },
   ],
 };
 
-// Tagespass-spezifische Add-ons (Einzelpreise pro Tag, nicht monatlich)
 const CW_TAGESPASS_ADDONS = [
-  { id: 'kaffee_tag', label: 'Kaffee-Flat', price: 'EUR 9,-', monthly: false },
-  { id: 'parkplatz_tag', label: 'Parkplatz', price: 'EUR 6,-', monthly: false },
-  { id: 'monitor_tag', label: '27" Monitor', price: 'EUR 5,-', monthly: false },
+  { id: 'kaffee_tag', priceAmount: 9, monthly: false },
+  { id: 'parkplatz_tag', priceAmount: 6, monthly: false },
+  { id: 'monitor_tag', priceAmount: 5, monthly: false },
 ];
 
-// 10er-Karte Add-ons (10x Tagespreis, einmalig)
 const CW_10ER_ADDONS = [
-  { id: 'kaffee_10er', label: '10x Kaffee-Flat', price: 'EUR 90,-', monthly: false },
-  { id: 'parkplatz_10er', label: '10x Parkplatz', price: 'EUR 60,-', monthly: false },
+  { id: 'kaffee_10er', priceAmount: 90, monthly: false },
+  { id: 'parkplatz_10er', priceAmount: 60, monthly: false },
 ];
 
 // ─── Helper Components ───────────────────────────────────────────────
@@ -141,7 +333,7 @@ function StepBadge({ number, done, active }: { number: number; done: boolean; ac
   );
 }
 
-function OptionCard({ selected, onClick, children, popular, centered }: { selected: boolean; onClick: () => void; children: React.ReactNode; popular?: boolean; centered?: boolean }) {
+function OptionCard({ selected, onClick, children, popular, centered, popularLabel }: { selected: boolean; onClick: () => void; children: React.ReactNode; popular?: boolean; centered?: boolean; popularLabel: string }) {
   return (
     <button
       type="button"
@@ -155,14 +347,14 @@ function OptionCard({ selected, onClick, children, popular, centered }: { select
       }`}
     >
       {popular && !selected && (
-        <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 text-[9px] font-bold bg-[#6b7f3e] text-white rounded-full px-2 py-0.5">Beliebt</span>
+        <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 text-[9px] font-bold bg-[#6b7f3e] text-white rounded-full px-2 py-0.5">{popularLabel}</span>
       )}
       {children}
     </button>
   );
 }
 
-function AddonToggle({ addon, selected, onToggle }: { addon: { id: string; label: string; price: string }; selected: boolean; onToggle: () => void }) {
+function AddonToggle({ label, price, selected, onToggle, chosenLabel, addLabel }: { label: string; price: string; selected: boolean; onToggle: () => void; chosenLabel: string; addLabel: string }) {
   return (
     <button
       type="button"
@@ -171,22 +363,22 @@ function AddonToggle({ addon, selected, onToggle }: { addon: { id: string; label
         selected ? 'border-[#6b7f3e] bg-[#f0f4e8]' : 'border-gray-200 bg-white hover:bg-[#f0f4e8] hover:border-[#6b7f3e]'
       }`}
     >
-      <div className="text-sm font-semibold text-gray-900">{addon.label}</div>
-      <div className="text-xs font-bold text-gray-700 mt-0.5">+ {addon.price}</div>
+      <div className="text-sm font-semibold text-gray-900">{label}</div>
+      <div className="text-xs font-bold text-gray-700 mt-0.5">+ {price}</div>
       <div className={`text-xs font-medium mt-1 ${selected ? 'text-[#6b7f3e]' : 'text-[#6b7f3e]/50'}`}>
-        {selected ? '✓ Gewählt' : '+ Hinzufügen'}
+        {selected ? chosenLabel : addLabel}
       </div>
     </button>
   );
 }
 
-function BackButton({ onClick }: { onClick: () => void }) {
+function BackButton({ onClick, label }: { onClick: () => void; label: string }) {
   return (
     <button onClick={onClick} className="text-xs text-gray-500 hover:text-gray-900 mb-3 flex items-center gap-1">
       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
       </svg>
-      Zurück
+      {label}
     </button>
   );
 }
@@ -194,6 +386,17 @@ function BackButton({ onClick }: { onClick: () => void }) {
 // ─── Main Component ──────────────────────────────────────────────────
 
 export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
+  const pathname = usePathname();
+  const locale: 'de' | 'en' = pathname?.startsWith('/en') ? 'en' : 'de';
+  const s = STRINGS[locale];
+
+  // Helper: format addon price
+  const formatAddonPrice = (a: { priceAmount: number; priceType?: 'monthly' | 'once'; monthly: boolean }) => {
+    if (a.priceType === 'once') return s.priceOneTime(a.priceAmount);
+    if (a.monthly) return s.priceMonthly(a.priceAmount);
+    return s.priceSimple(a.priceAmount);
+  };
+
   const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -250,15 +453,15 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
   async function handleCheckout() {
     const priceKey = getMainPriceKey();
     if (!priceKey || !PRICE_MAP[priceKey]) {
-      setError('Bitte wählen Sie alle Optionen aus.');
+      setError(s.errOptions);
       return;
     }
     if (!name || !email || (!firma && !isPrivat)) {
-      setError('Bitte füllen Sie alle Pflichtfelder aus.');
+      setError(s.errRequired);
       return;
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setError('Bitte geben Sie eine gültige E-Mail-Adresse ein.');
+      setError(s.errEmail);
       return;
     }
 
@@ -267,7 +470,7 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
 
     try {
       const addonKeys = Array.from(selectedAddons).map(id => `addon_${id}`);
-      
+
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -278,6 +481,7 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
           customerName: name,
           customerPhone: phone,
           firma,
+          locale,
           successUrl: `${window.location.origin}/buchung-bestaetigt`,
           cancelUrl: window.location.href,
         }),
@@ -287,10 +491,10 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
       if (data.url) {
         window.location.href = data.url;
       } else {
-        setError(data.error || 'Ein Fehler ist aufgetreten.');
+        setError(data.error || s.errGeneric);
       }
     } catch {
-      setError('Verbindungsfehler. Bitte versuchen Sie es erneut.');
+      setError(s.errConnection);
     } finally {
       setLoading(false);
     }
@@ -300,10 +504,10 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
 
   function getStepLabels(): string[] {
     switch (product) {
-      case 'geschaeftsadresse': return ['Postversand', 'Tarif', 'Add-ons', 'Ihre Daten'];
-      case 'coworking': return ['Tarif', 'Add-ons', 'Ihre Daten'];
-      case 'konferenzraum': return ['Raumgröße', 'Dauer', 'Add-ons', 'Ihre Daten'];
-      case 'tagesbuero': return ['Add-ons', 'Ihre Daten'];
+      case 'geschaeftsadresse': return s.stepLabelsGA;
+      case 'coworking': return s.stepLabelsCW;
+      case 'konferenzraum': return s.stepLabelsKonf;
+      case 'tagesbuero': return s.stepLabelsTB;
       default: return [];
     }
   }
@@ -319,24 +523,26 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
     switch (product) {
       case 'geschaeftsadresse': {
         const t = GA_TARIFE.find(t => t.id === gaTarif);
-        items.push({ label: `${t?.label} (${t?.laufzeit})`, value: `EUR ${t?.price},-/Mon.` });
-        items.push({ label: 'Postversand', value: postversand === 'mit' ? 'Mit Weiterleitung' : 'Ohne (Abholung)' });
+        if (t) {
+          items.push({ label: `${s.gaTarifLabels[t.id]} (${s.months(t.laufzeitMonths)})`, value: s.priceMonthly(t.price) });
+        }
+        items.push({ label: s.summaryPostversand, value: postversand === 'mit' ? s.summaryMit : s.summaryOhne });
         break;
       }
       case 'coworking': {
         const t = CW_TARIFE.find(t => t.id === cwTarif);
-        items.push({ label: t?.label || 'Tarif', value: `EUR ${t?.price},-` });
+        items.push({ label: (t && s.cwTarifLabels[t.id]) || s.summaryTarifFallback, value: s.priceSimple(t?.price || 0) });
         break;
       }
       case 'konferenzraum': {
-        const room = KONF_ROOMS.find(r => r.id === konfRoom);
-        const dauer = KONF_DAUER.find(d => d.id === konfDauer);
+        const roomLabel = konfRoom ? s.konfRoomLabels[konfRoom] : s.summaryRaumFallback;
+        const dauerLabel = konfDauer ? s.konfDauerLabels[konfDauer] : '';
         const preis = konfRoom && konfDauer ? KONF_PREISE[konfRoom]?.[konfDauer] : 0;
-        items.push({ label: `${room?.label || 'Raum'} · ${dauer?.label || ''}`, value: `EUR ${preis},-` });
+        items.push({ label: `${roomLabel} · ${dauerLabel}`, value: s.priceSimple(preis) });
         break;
       }
       case 'tagesbuero':
-        items.push({ label: 'Tagesbüro', value: 'EUR 59,-' });
+        items.push({ label: s.summaryTagesbuero, value: s.priceSimple(59) });
         break;
     }
     if (selectedAddons.size > 0) {
@@ -348,7 +554,7 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
       addonSource
         .filter(a => selectedAddons.has(a.id))
         .forEach(a => {
-          items.push({ label: a.label, value: a.price });
+          items.push({ label: s.addonLabels[a.id] || a.id, value: formatAddonPrice(a) });
         });
     }
     return items;
@@ -367,13 +573,13 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
       if (step === 0) {
         return (
           <div>
-            <h3 className="text-lg font-bold text-gray-900 mb-4">Wie soll Ihre Post bearbeitet werden?</h3>
+            <h3 className="text-lg font-bold text-gray-900 mb-4">{s.gaPostTitle}</h3>
             <div className="grid grid-cols-2 gap-3">
               {(['ohne', 'mit'] as const).map(pv => (
-                <OptionCard key={pv} selected={postversand === pv} onClick={() => { setPostversand(pv); setStep(1); }}>
-                  <p className="font-semibold text-sm">{pv === 'ohne' ? 'Ohne Postversand' : 'Mit Postversand'}</p>
+                <OptionCard key={pv} popularLabel={s.popular} selected={postversand === pv} onClick={() => { setPostversand(pv); setStep(1); }}>
+                  <p className="font-semibold text-sm">{pv === 'ohne' ? s.pvOhne : s.pvMit}</p>
                   <p className="text-xs text-gray-500 mt-1">
-                    {pv === 'ohne' ? 'Post wird vor Ort gesammelt, 24/7 abholbar' : 'Wöchentliche Weiterleitung an eine Adresse im DACH-Raum'}
+                    {pv === 'ohne' ? s.pvOhneDesc : s.pvMitDesc}
                   </p>
                 </OptionCard>
               ))}
@@ -384,19 +590,19 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
       if (step === 1) {
         return (
           <div>
-            <BackButton onClick={() => setStep(0)} />
-            <h3 className="text-lg font-bold text-gray-900 mb-4">Tarif wählen</h3>
-            <p className="text-xs text-gray-500 mb-3">{postversand === 'mit' ? 'Inkl. Postversand' : 'Ohne Postversand'} · Alle Preise zzgl. MwSt.</p>
+            <BackButton onClick={() => setStep(0)} label={s.back} />
+            <h3 className="text-lg font-bold text-gray-900 mb-4">{s.tarifWaehlen}</h3>
+            <p className="text-xs text-gray-500 mb-3">{postversand === 'mit' ? s.inklPostversand : s.pvOhne} · {s.alleVat}</p>
             <div className="grid grid-cols-3 gap-3">
               {GA_TARIFE.map(t => (
-                <OptionCard key={t.id} selected={gaTarif === t.id} popular={t.popular} centered={false} onClick={() => { setGaTarif(t.id); setStep(2); }}>
+                <OptionCard key={t.id} popularLabel={s.popular} selected={gaTarif === t.id} popular={t.popular} centered={false} onClick={() => { setGaTarif(t.id); setStep(2); }}>
                   <div className="w-full">
-                    <p className="text-sm font-semibold">{t.label}</p>
-                    <p className="text-xs text-gray-500 mt-0.5">{t.laufzeit}</p>
+                    <p className="text-sm font-semibold">{s.gaTarifLabels[t.id]}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">{s.months(t.laufzeitMonths)}</p>
                   </div>
                   <div className="w-full mt-2">
-                    <p className="text-base font-bold">EUR {t.price},-</p>
-                    <p className="text-[10px] text-gray-400">/Mon. zzgl. MwSt.</p>
+                    <p className="text-base font-bold">{s.priceSimple(t.price)}</p>
+                    <p className="text-[10px] text-gray-400">{s.perMonthVat}</p>
                   </div>
                 </OptionCard>
               ))}
@@ -412,17 +618,17 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
         return (
           <div>
             <div className="mb-4 rounded-lg bg-[#6b7f3e] text-white text-center py-2 px-3">
-              <p className="text-sm font-bold">Einführungsaktion Green Office — 16% Rabatt bis 30.09.2026</p>
+              <p className="text-sm font-bold">{s.cwPromo}</p>
             </div>
-            <h3 className="text-lg font-bold text-gray-900 mb-4">Tarif wählen</h3>
+            <h3 className="text-lg font-bold text-gray-900 mb-4">{s.tarifWaehlen}</h3>
             <div className="grid grid-cols-2 gap-3">
               {CW_TARIFE.map(t => (
-                <OptionCard key={t.id} selected={cwTarif === t.id} popular={t.popular} centered={false} onClick={() => { setCwTarif(t.id); setStep(1); }}>
+                <OptionCard key={t.id} popularLabel={s.popular} selected={cwTarif === t.id} popular={t.popular} centered={false} onClick={() => { setCwTarif(t.id); setStep(1); }}>
                   <div className="w-full text-center">
-                    <div className="text-xs sm:text-sm font-semibold">{t.label}</div>
-                    <div className="text-base sm:text-lg font-bold text-[#1e293b] my-0.5 whitespace-nowrap">EUR {t.price},-</div>
-                    <p className="text-[10px] text-gray-400">zzgl. MwSt.</p>
-                    <p className="text-[10px] sm:text-xs text-gray-500 mt-0.5">{t.sub}</p>
+                    <div className="text-xs sm:text-sm font-semibold">{s.cwTarifLabels[t.id]}</div>
+                    <div className="text-base sm:text-lg font-bold text-[#1e293b] my-0.5 whitespace-nowrap">{s.priceSimple(t.price)}</div>
+                    <p className="text-[10px] text-gray-400">{s.vatNote}</p>
+                    <p className="text-[10px] sm:text-xs text-gray-500 mt-0.5">{s.cwTarifSub[t.id]}</p>
                     {t.badge && <span className="inline-block mt-1 text-[9px] font-bold bg-[#6b7f3e] text-white rounded-full px-1.5 py-0.5">{t.badge}</span>}
                   </div>
                 </OptionCard>
@@ -438,13 +644,13 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
       if (step === 0) {
         return (
           <div>
-            <h3 className="text-lg font-bold text-gray-900 mb-4">Raumgröße wählen</h3>
+            <h3 className="text-lg font-bold text-gray-900 mb-4">{s.raumWaehlen}</h3>
             <div className="grid grid-cols-2 gap-3">
-              {KONF_ROOMS.map(r => (
-                <OptionCard key={r.id} selected={konfRoom === r.id} onClick={() => { setKonfRoom(r.id); setStep(1); }}>
-                  <p className="font-semibold text-sm">{r.label}</p>
-                  <p className="text-xs text-gray-500 mt-1">{r.desc}</p>
-                  <p className="text-xs font-bold text-gray-700 mt-1">ab EUR {KONF_PREISE[r.id].stunde},-/Std.</p>
+              {KONF_ROOM_IDS.map(id => (
+                <OptionCard key={id} popularLabel={s.popular} selected={konfRoom === id} onClick={() => { setKonfRoom(id); setStep(1); }}>
+                  <p className="font-semibold text-sm">{s.konfRoomLabels[id]}</p>
+                  <p className="text-xs text-gray-500 mt-1">{s.konfRoomDesc[id]}</p>
+                  <p className="text-xs font-bold text-gray-700 mt-1">{s.fromPrice} {KONF_PREISE[id].stunde},-{s.perHour}</p>
                 </OptionCard>
               ))}
             </div>
@@ -454,22 +660,22 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
       if (step === 1) {
         return (
           <div>
-            <BackButton onClick={() => setStep(0)} />
-            <h3 className="text-lg font-bold text-gray-900 mb-4">Dauer wählen</h3>
+            <BackButton onClick={() => setStep(0)} label={s.back} />
+            <h3 className="text-lg font-bold text-gray-900 mb-4">{s.dauerWaehlen}</h3>
             <p className="text-xs text-gray-500 mb-3">
-              {KONF_ROOMS.find(r => r.id === konfRoom)?.label} · Alle Preise zzgl. MwSt.
+              {konfRoom ? s.konfRoomLabels[konfRoom] : ''} · {s.alleVat}
             </p>
             <div className="grid grid-cols-3 gap-3">
-              {KONF_DAUER.map(d => {
-                const preis = konfRoom ? KONF_PREISE[konfRoom][d.id] : 0;
+              {KONF_DAUER_IDS.map(id => {
+                const preis = konfRoom ? KONF_PREISE[konfRoom][id] : 0;
                 return (
-                  <OptionCard key={d.id} selected={konfDauer === d.id} centered={false} onClick={() => { setKonfDauer(d.id); setStep(2); }}>
+                  <OptionCard key={id} popularLabel={s.popular} selected={konfDauer === id} centered={false} onClick={() => { setKonfDauer(id); setStep(2); }}>
                     <div className="w-full">
-                      <p className="text-sm font-semibold">{d.label}</p>
+                      <p className="text-sm font-semibold">{s.konfDauerLabels[id]}</p>
                     </div>
                     <div className="w-full mt-2">
-                      <p className="text-base font-bold">EUR {preis},-</p>
-                      <p className="text-[10px] text-gray-400">zzgl. MwSt.</p>
+                      <p className="text-base font-bold">{s.priceSimple(preis)}</p>
+                      <p className="text-[10px] text-gray-400">{s.vatNote}</p>
                     </div>
                   </OptionCard>
                 );
@@ -490,28 +696,31 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
         : ADDONS_BY_PRODUCT[product];
       return (
         <div>
-          {step > 0 && <BackButton onClick={() => setStep(step - 1)} />}
-          <h3 className="text-lg font-bold text-gray-900 mb-1">Optionale Add-ons</h3>
-          <p className="text-xs text-gray-500 mb-4">Optional — können auch später hinzugebucht werden.</p>
+          {step > 0 && <BackButton onClick={() => setStep(step - 1)} label={s.back} />}
+          <h3 className="text-lg font-bold text-gray-900 mb-1">{s.addonsTitle}</h3>
+          <p className="text-xs text-gray-500 mb-4">{s.addonsSub}</p>
           {productAddons.length > 0 ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {productAddons.map(addon => (
                 <AddonToggle
                   key={addon.id}
-                  addon={addon}
+                  label={s.addonLabels[addon.id] || addon.id}
+                  price={formatAddonPrice(addon)}
                   selected={selectedAddons.has(addon.id)}
                   onToggle={() => toggleAddon(addon.id)}
+                  chosenLabel={s.chosen}
+                  addLabel={s.addCta}
                 />
               ))}
             </div>
           ) : (
-            <p className="text-sm text-gray-500">Für dieses Produkt sind keine Add-ons verfügbar.</p>
+            <p className="text-sm text-gray-500">{s.noAddons}</p>
           )}
           <button
             onClick={() => setStep(dataStep)}
             className="mt-4 w-full rounded-lg bg-[#6b7f3e] text-white text-center py-3 text-sm font-semibold hover:opacity-90 transition-opacity"
           >
-            Weiter
+            {s.next}
           </button>
         </div>
       );
@@ -522,30 +731,30 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
       const summary = getSummary();
       return (
         <div>
-          <BackButton onClick={() => setStep(step - 1)} />
-          <h3 className="text-lg font-bold text-gray-900 mb-4">Ihre Daten</h3>
+          <BackButton onClick={() => setStep(step - 1)} label={s.back} />
+          <h3 className="text-lg font-bold text-gray-900 mb-4">{s.yourData}</h3>
 
           {/* Summary */}
           <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 mb-5">
-            <p className="text-xs font-bold text-gray-700 mb-2 uppercase tracking-wide">Zusammenfassung</p>
+            <p className="text-xs font-bold text-gray-700 mb-2 uppercase tracking-wide">{s.summary}</p>
             {summary.map((item, i) => (
               <div key={i} className="flex justify-between text-sm py-1">
                 <span className="text-gray-500">{item.label}</span>
                 <span className="font-medium text-gray-900 text-right">{item.value}</span>
               </div>
             ))}
-            <p className="text-[10px] text-gray-400 mt-2 text-right">Alle Preise zzgl. MwSt. (wird im Checkout berechnet)</p>
+            <p className="text-[10px] text-gray-400 mt-2 text-right">{s.allVatCheckout}</p>
           </div>
 
           {/* Form */}
           <div className="space-y-3">
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">Name *</label>
+              <label className="block text-xs font-medium text-gray-700 mb-1">{s.labelName}</label>
               <input
                 type="text"
                 value={name}
                 onChange={e => setName(e.target.value)}
-                placeholder="Vor- und Nachname"
+                placeholder={s.phName}
                 className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e]"
               />
             </div>
@@ -559,43 +768,31 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
                 onChange={e => { setIsPrivat(e.target.checked); if (e.target.checked) setFirma(''); }}
                 className="w-4 h-4 text-[#6b7f3e] border-gray-300 rounded focus:ring-[#6b7f3e]"
               />
-              <label htmlFor="privat-check" className="text-sm text-gray-700">Ich buche als Privatperson (keine Firma)</label>
+              <label htmlFor="privat-check" className="text-sm text-gray-700">{s.privateCheck}</label>
             </div>
 
             {!isPrivat && (
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1">Firmenname *</label>
+                <label className="block text-xs font-medium text-gray-700 mb-1">{s.labelCompany}</label>
                 <input
                   type="text"
                   value={firma}
                   onChange={e => setFirma(e.target.value)}
-                  placeholder="Musterfirma GmbH"
+                  placeholder={s.phCompany}
                   className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e]"
                 />
               </div>
             )}
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">E-Mail *</label>
+              <label className="block text-xs font-medium text-gray-700 mb-1">{s.labelEmail}</label>
               <input
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
-                placeholder="mail@beispiel.de"
+                placeholder={s.phEmail}
                 className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e]"
               />
             </div>
-            {/* Telefon-Feld vorerst deaktiviert
-            <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">Telefon / Handy</label>
-              <input
-                type="tel"
-                value={phone}
-                onChange={e => setPhone(e.target.value)}
-                placeholder="+49 123 456 789"
-                className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e]"
-              />
-            </div>
-            */}
           </div>
 
           {error && (
@@ -607,14 +804,14 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
             disabled={loading}
             className="mt-5 w-full rounded-lg bg-[#6b7f3e] text-white text-center py-3.5 text-base font-semibold hover:opacity-90 transition-opacity disabled:opacity-50"
           >
-            {loading ? 'Wird geladen...' : 'Jetzt buchen und bezahlen'}
+            {loading ? s.loading : s.bookAndPay}
           </button>
 
           <div className="flex items-center justify-center gap-2 mt-3">
             <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
             </svg>
-            <p className="text-xs text-gray-400">Sichere Zahlung via Stripe · SSL-verschlüsselt</p>
+            <p className="text-xs text-gray-400">{s.securePayment}</p>
           </div>
         </div>
       );
@@ -642,7 +839,7 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
               </svg>
-              Zurück
+              {s.back}
             </button>
 
             {/* Progress */}
