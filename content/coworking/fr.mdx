@@ -1,37 +1,184 @@
 ---
-title: "Coworking Weil am Rhein – Flexible Workspace in the Border Triangle"
-description: "Coworking space in Weil am Rhein: Day pass, 10-pass card, monthly pass. Bright offices, high-speed internet, 24/7 access. bizzcenter near Basel."
+title: "Coworking Weil am Rhein – espace de travail flexible dans le triangle frontalier"
+description: "Espace de coworking à Weil am Rhein : pass journalier, carte 10 jours, pass mensuel. Bureaux lumineux, internet haut débit, accès 24/7. bizzcenter au Kesselhaus près de Bâle."
 ---
 
 <GlobalOverflowFix />
+<BreadcrumbListSchema items={[
+  { name: "Home", href: "/" },
+  { name: "Solutions de bureau", href: "/uebersicht" },
+  { name: "Coworking", href: "/coworking" },
+]} />
 
-<PageHero
-  title="Coworking at bizzcenter Weil"
-  description="Flexible working in bright, green office spaces directly in the border triangle"
-  image="/images/standorte/weil-am-rhein/coworking-arbeitsplatz.jpg"
+<ActiveNavHighlight />
+<LanguageSwitcher />
+{/* ===== HEADLINE + IMAGE ===== */}
+<CompactHero
+  title="Votre poste de travail tranquille dès EUR 25,- /jour HT"
+  description="Sans engagement, disponible immédiatement — travailler dans la verdure, directement dans le triangle frontalier."
+  image="/images/standorte/weil-am-rhein/green-office.jpg"
+  imageAlt="Green Office Weil am Rhein – espace de coworking"
+  buttonText=""
+  buttonHref=""
+  formId=""
 />
 
-<Features title="Coworking Plans" subtitle="Flexible models for every need">
-  <FeatureCard title="Day Pass" description="Day pass with free choice of workspace in our bright, daylight-flooded rooms. Prices excl. VAT." icon="calendar" />
-  <FeatureCard title="10-Pass Card" description="10 day passes for flexible working on 10 days of your choice. Prices excl. VAT." icon="file-text" />
-  <FeatureCard title="Monthly Pass" description="A full month with free choice of workspace. 1 month notice period. Prices excl. VAT." icon="clock" />
-  <FeatureCard title="Monthly Subscription" description="Recurring monthly subscription (3 months notice to end of quarter) with free workspace choice. Prices excl. VAT." icon="repeat" />
+{/* ===== TARIFS ===== */}
+<CheckoutWizard product="coworking" />
+
+{/* ===== SOCIAL PROOF ===== */}
+<GoogleReviews
+  title="Ce que disent nos coworkers"
+  reviews={[
+    {
+      author: "Francesco Petrini",
+      rating: 5,
+      text: "Very well organized space and in development. Good WiFi network and easy parking. Perfect solution to work in Germany close to CH/France.",
+      source: "Google Review"
+    },
+    {
+      author: "Katja Falkenburger",
+      rating: 5,
+      text: "Les bureaux partagés et virtuels offrent des locaux confortables et de la flexibilité, combinés à un emplacement attrayant proche des frontières suisse et française.",
+      source: "Google Review"
+    },
+    {
+      author: "veprosa",
+      rating: 5,
+      text: "Bureau magnifique et lumineux dans un emplacement attractif – on ne peut pas faire mieux. Nous recommandons chaleureusement bizzcenter Weil am Rhein à tout le monde !",
+      source: "Google Review"
+    }
+  ]}
+/>
+
+{/* ===== GALERIE D'IMAGES ===== */}
+<ImageSlider
+  title="Aperçus du coworking"
+  slides={[
+    { src: "/images/standorte/weil-am-rhein/green-office-aufenthaltsraum.jpg", caption: "Espace de travail ouvert avec lounge et végétation" },
+    { src: "/images/standorte/weil-am-rhein/green-office-eingangsbereich.jpeg", caption: "Entrée — architecture ouverte avec végétation luxuriante" },
+    { src: "/images/standorte/weil-am-rhein/quietbox-coworking.jpeg", caption: "Quiet Cube — insonorisé pour appels et travail concentré" },
+    { src: "/images/standorte/weil-am-rhein/green-office-spielbox-loungeecke.jpeg", caption: "Coin jeu et espace lounge — travail family-friendly" },
+    { src: "/images/standorte/weil-am-rhein/green-office-kueche-empore.jpeg", caption: "Vue sur la cuisine et la salle de réunion en mezzanine" },
+    { src: "/images/standorte/weil-am-rhein/coworking-loungeecke.jpg", caption: "Coin lounge pour échanger et networker" },
+    { src: "/images/standorte/weil-am-rhein/kueche-aufenthaltsraum.jpg", caption: "Cuisine et salle de repos" },
+    { src: "/images/standorte/weil-am-rhein/green-office-flurbereich.jpg", caption: "Couloir au Green Office" },
+    { src: "/images/standorte/weil-am-rhein/meetingraum-green-office-4-6-personen.jpg", caption: "Salle de réunion pour 4–6 personnes" },
+    { src: "/images/standorte/weil-am-rhein/coachingbuero-session.jpg", caption: "Bureau de coaching — espace pour conseil et entretiens" },
+    { src: "/images/standorte/weil-am-rhein/meetingraum-empore-5-personen.jpg", caption: "Mezzanine avec vue sur l'espace de coworking" }
+  ]}
+/>
+
+
+
+{/* ===== CE QUI EST INCLUS ===== */}
+<Features title="Ce qui est inclus dans le prix coworking" columns={3}>
+  <Feature title="Internet haut débit" description="Wi-Fi 5/6 et LAN. Suffisamment stable pour visioconférences, applications cloud et téléphonie IP." />
+  <Feature title="Max. 3–4 places par salle" description="Pas de bureau open space bruyant. Petits bureaux calmes pour un travail concentré et productif." />
+  <Feature title="Quiet Cubes" description="Deux espaces de retrait insonorisés pour entretiens confidentiels et appels — utilisation gratuite." />
+  <Feature title="Accès 24/7" description="Votre propre code de porte pour un accès 24h/24, 7j/7 — indépendamment des heures d'ouverture." />
+  <Feature title="Café bio & cuisine" description="Café barista en illimité, thés premium, cuisine entièrement équipée avec lounge pour networker." />
+  <Feature title="Tout inclus" description="Électricité, chauffage, ménage, poste de travail ergonomique, imprimante — aucun coût caché." />
 </Features>
 
-<FAQ title="Frequently Asked Questions about Coworking">
-  <FAQItem question="Who is coworking suitable for?">
-    Our coworking offices in Weil am Rhein are suitable for self-employed people, start-ups, freelancers, small teams and employees who want to work flexibly.
+{/* ===== STATS ===== */}
+<StatsTheme>
+<Stats title="Le coworking en chiffres">
+  <Stat value="3+" label="Salles de coworking" description="Petites et calmes plutôt qu'open space" />
+  <Stat value="2" label="Quiet Cubes" description="Pour appels et entretiens confidentiels" />
+  <Stat value="24/7" label="Accès" description="Votre propre code de porte" />
+  <Stat value="∞" label="Café bio" description="Illimité — autant que vous voulez" />
+</Stats>
+</StatsTheme>
+
+{/* ===== FLUX DE RÉSERVATION INTERACTIF ===== */}
+<div id="buchen">
+<CheckoutWizard product="coworking" title="Réserver le coworking maintenant" />
+</div>
+
+{/* ===== À PROPOS DE NOUS ===== */}
+<AlternatingFeatures>
+  <AlternatingFeatureRow title="Travailler au Green Office" description="Salles baignées de lumière naturelle avec 7,50 m de hauteur sous plafond, végétation luxuriante et café bio. Petits bureaux avec un maximum de 3–4 postes de travail au lieu d'un coworking open space bruyant. Ici, vous travaillez avec concentration et productivité." image="/images/standorte/weil-am-rhein/green-office-eingangsbereich.jpeg" imageAlt="Entrée du Green Office — architecture ouverte" />
+  <AlternatingFeatureRow title="Dans le Kesselhaus historique" description="Le bizzcenter est situé dans le Kesselhaus classé monument historique à Weil am Rhein — à 300 m de la frontière suisse. Facilement accessible par la ligne de tram 8 depuis Bâle (arrêt Riedlistrasse/Kesselhaus), proche de l'autoroute A5 et avec parking sur place." image="/images/standorte/weil-am-rhein/standortkarte.png" imageAlt="Carte du site bizzcenter Weil am Rhein — triangle frontalier de Bâle" />
+</AlternatingFeatures>
+
+{/* ===== FAQ ===== */}
+<FAQ title="Questions fréquentes sur le coworking">
+  <FAQItem question="Dans quelles salles le coworking a-t-il lieu ?">
+    Les deux salles principales sont au rez-de-chaussée du bâtiment-tour, juste à côté de l'entrée principale — c'est aussi là que se trouvent les deux Quiet Boxes pour les appels téléphoniques et le travail concentré. Au Green Office, un bureau supplémentaire est disponible pour le coworking.
   </FAQItem>
-  <FAQItem question="Can I try coworking first?">
-    Yes. You can initially book a day pass and have this credited to a longer-term booking.
+  <FAQItem question="À qui s'adresse le coworking ?">
+    Aux indépendants, startups, freelances, petites équipes et salariés qui souhaitent travailler de manière flexible — sans contrats de location de bureau à long terme.
   </FAQItem>
-  <FAQItem question="Is there 24/7 access to coworking?">
-    Yes. All coworking users receive an individual access code and have 24/7 access to the coworking spaces in Weil am Rhein.
+  <FAQItem question="À qui le coworking ne convient-il pas ?">
+    Le coworking convient moins aux activités à forte affluence de public, à fort niveau sonore ou nécessitant des bureaux fermés exclusifs en permanence. Pour ces cas, nous proposons des bureaux individuels également louables à la journée ou à long terme.
+  </FAQItem>
+  <FAQItem question="Puis-je essayer le coworking d'abord ?">
+    Oui. Réservez d'abord un pass journalier — il sera déduit en cas de réservation à plus long terme.
+  </FAQItem>
+  <FAQItem question="Y a-t-il du coworking sans durée minimale ?">
+    Oui. Le coworking est disponible de manière flexible à la journée (carte 10 jours) ou au mois. Avec des préavis plus longs, vous bénéficiez de tarifs plus avantageux.
+  </FAQItem>
+  <FAQItem question="Quels services sont inclus dans le prix coworking ?">
+    Un poste de travail entièrement équipé dans une atmosphère calme, un Wi-Fi rapide, les charges, l'utilisation des espaces communs ainsi que la cuisine, les toilettes et l'espace chillout.
+  </FAQItem>
+  <FAQItem question="Y a-t-il des postes de travail fixes ou seulement flexibles ?">
+    Les deux. Des postes de travail fixes (fix desks) peuvent être réservés — votre écran reste en place par exemple. Les pass journaliers et cartes 10 jours utilisent les flex desks.
+  </FAQItem>
+  <FAQItem question="À quel point le coworking est-il calme ?">
+    Nos bureaux de coworking sont conçus pour un maximum de 3–4 postes de travail. Cela garantit un travail calme et productif — pas de coworking open space bruyant. Pour ceux qui préfèrent encore plus de calme, un bureau individuel peut être réservé.
+  </FAQItem>
+  <FAQItem question="Quelle est la vitesse d'internet ?">
+    Internet haut débit avec Wi-Fi 5/6 et LAN. Suffisamment stable pour visioconférences, applications cloud et téléphonie IP.
+  </FAQItem>
+  <FAQItem question="Y a-t-il des salles de réunion ou de conférence ?">
+    Oui. Deux Quiet Cubes sont disponibles gratuitement pour les entretiens confidentiels. De plus, des salles de réunion et de conférence peuvent être réservées de manière flexible à l'heure ou à la journée.
+  </FAQItem>
+  <FAQItem question="Puis-je utiliser l'adresse comme adresse commerciale ?">
+    Oui. Avec les forfaits appropriés, l'adresse peut être utilisée comme adresse commerciale et est valable pour les mentions légales.
+  </FAQItem>
+  <FAQItem question="Y a-t-il une réception ou réexpédition du courrier ?">
+    Oui. Selon le forfait, la réception de colis est possible, en option également la réexpédition du courrier — particulièrement en combinaison avec les services de bureau virtuel. Les colis peuvent être récupérés 24/7 avec votre propre code de porte.
+  </FAQItem>
+  <FAQItem question="Y a-t-il un accès 24/7 ?">
+    Oui. Tous les utilisateurs de coworking reçoivent un code d'accès individuel — 24/7, sept jours sur sept, indépendamment des heures d'ouverture.
+  </FAQItem>
+  <FAQItem question="Y a-t-il de bonnes liaisons et des places de parking ?">
+    Oui. Ligne de tram 8 (arrêt Riedlistrasse/Kesselhaus), proche de l'autoroute A5, parking sur place avec 90 minutes de stationnement gratuit ainsi que des tickets journaliers et mensuels en option.
+  </FAQItem>
+  <FAQItem question="Quelle est la différence entre le coworking et un bureau classique ?">
+    Le coworking offre un environnement de travail ouvert et flexible avec des possibilités d'échange. Un bureau individuel offre plus d'intimité et d'exclusivité pour un travail concentré.
+  </FAQItem>
+  <FAQItem question="Quels espaces communs font partie du coworking ?">
+    En plus des postes de travail, on y trouve un espace chillout moderne et végétalisé ainsi qu'un espace cuisine entièrement équipé avec réfrigérateur, possibilité de cuisson et places assises.
+  </FAQItem>
+  <FAQItem question="Des écrans sont-ils disponibles ?">
+    Oui. Des écrans incurvés 27 pouces peuvent être ajoutés en option — pour un travail ergonomique et productif.
+  </FAQItem>
+  <FAQItem question="Y a-t-il des armoires verrouillables ?">
+    Oui. Des casiers et armoires verrouillables de différentes tailles sont disponibles en option pour ranger en toute sécurité matériel de travail et objets de valeur.
+  </FAQItem>
+  <FAQItem question="Quels produits de nettoyage sont utilisés ?">
+    Nous utilisons des produits de nettoyage écologiques de Sonett et Frosch — parce que la durabilité est importante pour nous jusque dans les détails.
+  </FAQItem>
+  <FAQItem question="Y a-t-il un déjeuner à proximité ?">
+    Oui — un restaurant avec menu du jour se trouve directement dans le Kesselhaus. Idéal pour la pause déjeuner sans avoir à quitter le bâtiment.
+  </FAQItem>
+  <FAQItem question="Puis-je amener mon enfant ?">
+    Oui. Au Green Office, il y a un coin jeu confortable où vous pouvez jouer avec votre enfant ou où les enfants plus âgés peuvent s'occuper seuls. Veuillez noter qu'il ne s'agit pas d'un service de garde — la responsabilité de surveillance reste auprès des parents. Pour que tous les coworkers puissent travailler avec concentration, nous demandons de ne pas utiliser le coin jeu comme solution permanente sans accompagnement.
   </FAQItem>
 </FAQ>
 
-<BannerCTA
-  title="Secure your coworking spot now"
-  subtext="Flexible workspaces in Weil am Rhein – directly in the border triangle near Basel."
-  buttonText="Get in Touch" buttonHref="/kontakt"
-/>
+<FAQPageSchema items={[
+  { question: "Dans quelles salles le coworking a-t-il lieu ?", answer: "Les deux salles principales sont au rez-de-chaussée du bâtiment-tour, juste à côté de l'entrée principale — c'est aussi là que se trouvent les deux Quiet Boxes pour les appels téléphoniques et le travail concentré. Au Green Office, un bureau supplémentaire est disponible pour le coworking." },
+  { question: "À qui s'adresse le coworking ?", answer: "Aux indépendants, startups, freelances, petites équipes et salariés qui souhaitent travailler de manière flexible — sans contrats de location de bureau à long terme." },
+  { question: "Puis-je essayer le coworking d'abord ?", answer: "Oui. Réservez d'abord un pass journalier — il sera déduit en cas de réservation à plus long terme." },
+  { question: "Quels services sont inclus dans le prix coworking ?", answer: "Un poste de travail entièrement équipé dans une atmosphère calme, un Wi-Fi rapide, les charges, l'utilisation des espaces communs ainsi que la cuisine, les toilettes et l'espace chillout." },
+  { question: "Y a-t-il des postes de travail fixes ou seulement flexibles ?", answer: "Les deux. Des postes de travail fixes (fix desks) peuvent être réservés — votre écran reste en place par exemple. Les pass journaliers et cartes 10 jours utilisent les flex desks." },
+  { question: "Quelle est la vitesse d'internet ?", answer: "Internet haut débit avec Wi-Fi 5/6 et LAN. Suffisamment stable pour visioconférences, applications cloud et téléphonie IP." },
+  { question: "Y a-t-il un accès 24/7 ?", answer: "Oui. Tous les utilisateurs de coworking reçoivent un code d'accès individuel — 24/7, sept jours sur sept, indépendamment des heures d'ouverture." },
+  { question: "Puis-je utiliser l'adresse comme adresse commerciale ?", answer: "Oui. Avec les forfaits appropriés, l'adresse peut être utilisée comme adresse commerciale et est valable pour les mentions légales." },
+]} />
+
+{/* ===== CTA FINAL ===== */}
+<CheckoutWizard product="coworking" title="Réserver le coworking" />

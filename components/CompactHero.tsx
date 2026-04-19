@@ -179,11 +179,53 @@ const HERO_STRINGS = {
     gaSuccessTitle: 'Request received!',
     gaSuccessBody: 'We will get back to you within 24h.',
   },
+  fr: {
+    heroTitle: 'Obtenir une offre en 2 minutes',
+    phFirstName: 'Prénom',
+    phLastName: 'Nom',
+    phEmail: 'Adresse e-mail',
+    phCompany: 'Nom de l\'entreprise (facultatif)',
+    phCompanyRequired: 'Nom de l\'entreprise',
+    phPhone: 'Téléphone',
+    legalFormPlaceholder: 'Forme juridique',
+    legalForms: [
+      { value: 'gmbh', label: 'GmbH' },
+      { value: 'ug', label: 'UG (SARL simplifiée)' },
+      { value: 'gmbh-co-kg', label: 'GmbH & Co. KG' },
+      { value: 'ag', label: 'AG' },
+      { value: 'ek', label: 'e.K.' },
+      { value: 'einzelunternehmen', label: 'Entreprise individuelle' },
+      { value: 'freiberufler', label: 'Profession libérale' },
+      { value: 'gbr', label: 'GbR' },
+      { value: 'sonstige', label: 'Autre' },
+    ],
+    heroCreating: 'Création en cours...',
+    heroCreate: 'Créer l\'offre →',
+    heroFootnote: 'Gratuit et sans engagement · Aucune carte bancaire requise',
+
+    tarifLabels: {
+      tagespass: 'Pass journalier — EUR 25,- HT',
+      zehnerkarte: 'Carte 10 jours — EUR 209,- HT',
+      monatspass: 'Pass mensuel — EUR 219,- HT',
+      monatsabo: 'Abonnement mensuel — EUR 199,- HT',
+    } as Record<string, string>,
+
+    gaHeroTitle: 'Demander une adresse commerciale',
+    pvWithout: 'Sans réexpédition du courrier',
+    pvWith: 'Avec réexpédition du courrier',
+    gaSending: 'Envoi en cours...',
+    gaSubmit: 'Demander sans engagement →',
+    gaFootnote: 'Aucune donnée de paiement requise · Offre sous 24h',
+    gaSuccessTitle: 'Demande reçue !',
+    gaSuccessBody: 'Nous vous répondrons sous 24h.',
+  },
 };
 
-function useLocale(): 'de' | 'en' {
+function useLocale(): 'de' | 'en' | 'fr' {
   const pathname = usePathname();
-  return pathname?.startsWith('/en') ? 'en' : 'de';
+  if (pathname?.startsWith('/fr')) return 'fr';
+  if (pathname?.startsWith('/en')) return 'en';
+  return 'de';
 }
 
 function HeroForm() {

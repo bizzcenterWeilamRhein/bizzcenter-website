@@ -35,8 +35,8 @@ interface PricingCardsProps {
 
 function PricingCardItem({ card, ctaText, ctaHref }: { card: PricingCard; ctaText?: string; ctaHref?: string }) {
   const pathname = usePathname();
-  const locale: 'de' | 'en' = pathname?.startsWith('/en') ? 'en' : 'de';
-  const tennerLabel = locale === 'en' ? '10-day pass' : '10er-Karte';
+  const locale: 'de' | 'en' | 'fr' = pathname?.startsWith('/fr') ? 'fr' : pathname?.startsWith('/en') ? 'en' : 'de';
+  const tennerLabel = locale === 'en' ? '10-day pass' : locale === 'fr' ? 'Carte 10 jours' : '10er-Karte';
   const [selected, setSelected] = useState<{ index: number; tenner: boolean } | null>(null);
 
   const buildHref = () => {

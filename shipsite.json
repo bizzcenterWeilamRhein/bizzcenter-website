@@ -278,7 +278,12 @@
         ]
       }
     ],
-    "copyright": "© 2026 bizzcenter Weil am Rhein GmbH | Alle Rechte vorbehalten"
+    "copyright": {
+      "de": "© 2026 bizzcenter Weil am Rhein GmbH | Alle Rechte vorbehalten",
+      "en": "© 2026 bizzcenter Weil am Rhein GmbH | All rights reserved",
+      "fr": "© 2026 bizzcenter Weil am Rhein GmbH | Tous droits reserves",
+      "it": "© 2026 bizzcenter Weil am Rhein GmbH | Tutti i diritti riservati"
+    }
   },
   "pages": [
     {
@@ -618,6 +623,15 @@
         "de",
         "fr",
         "it"
+      ]
+    },
+    {
+      "slug": "buchung-bestaetigt",
+      "type": "page",
+      "content": "buchung-bestaetigt",
+      "locales": [
+        "de",
+        "fr"
       ]
     }
   ],

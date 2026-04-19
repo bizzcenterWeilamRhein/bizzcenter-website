@@ -1,11 +1,412 @@
 'use client';
 
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { submitLead } from './submitLead';
 
+/* ── i18n ── */
+const STRINGS = {
+  de: {
+    // Hero
+    heroFrom: 'ab',
+    heroVatNote: 'halber Tag, zzgl. MwSt.',
+    heroBookSuffix: 'buchen',
+    heroLocationSuffix: 'bizzcenter Weil am Rhein',
+    // Rooms
+    roomLabels: {
+      S: 'Meetingraum bis 2 Personen',
+      M: 'Meetingraum bis 6 Personen',
+      L: 'Meetingraum bis 15 Personen',
+      XL: 'Konferenzraum bis 25 Personen',
+    } as Record<string, string>,
+    // Duration & participants
+    sectionDuration: '1. Dauer & Teilnehmer',
+    halfDay: 'Halber Tag',
+    halfDaySub: '4 Stunden',
+    fullDay: 'Ganzer Tag',
+    tenCard: '10er-Karte',
+    participantCount: 'Teilnehmeranzahl',
+    maxPersons: (n: number) => `max. ${n} Personen`,
+    moreSpace: 'Mehr Platz nötig?',
+    switchTo: (label: string, price: number) => `Wechseln zum ${label} — ab EUR ${price},- zzgl. MwSt.`,
+    // Calendar
+    sectionDate: '2. Datum wählen',
+    daysSingular: 'Tag',
+    daysPlural: 'Tage',
+    selectDates: 'Wählen Sie Ihre gewünschten Tage',
+    weekdays: ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'],
+    vatSuffix: 'zzgl. MwSt.',
+    // Addons
+    sectionAddons: '3. Extras hinzubuchen',
+    optionalLabel: '(optional)',
+    priceOnRequest: 'Preis auf Anfrage',
+    addonLabels: {
+      kaffeeflat: 'Kaffee- & Tee-Flat',
+      getraenkeflat: 'Komplett-Flat',
+      beamer: 'Beamer / Präsentationstechnik',
+      monitor: '27" Curved Monitor',
+      moderationskoffer: 'Moderationskoffer',
+      umbaupauschale: 'Umbaupauschale',
+      extrastunde: 'Extrastunde',
+      'extrastunde-10er': '10er-Karte Extrastunden',
+      parkplatz: 'Parkplatz reserviert',
+      'parkplatz-10er': '10er-Karte Parkplatz',
+    } as Record<string, string>,
+    addonDesc: {
+      kaffeeflat: 'Kaffee und Tee — unbegrenzt',
+      getraenkeflat: 'Kaffee, Tee, Mineralwasser und Säfte — unbegrenzt',
+      beamer: 'Full-HD Beamer mit Anschlusskabel',
+      monitor: 'Externer Bildschirm für Präsentationen oder Arbeitsplatz',
+      moderationskoffer: 'Stifte, Karten, Pins, Flipchart-Papier',
+      umbaupauschale: 'Abweichend von Grundbestuhlung (Blockbestuhlung, 20 Plätze)',
+      extrastunde: 'Sie brauchen doch etwas mehr Zeit? Buchen Sie sich bequem eine Stunde hinzu.',
+      'extrastunde-10er': '10 Extrastunden zum Vorteilspreis — 15% günstiger.',
+      parkplatz: 'Reservierter Stellplatz direkt am Gebäude',
+      'parkplatz-10er': '10 Tages-Parkplätze zum Vorteilspreis — 15% günstiger.',
+    } as Record<string, string>,
+    addonPrices: {
+      kaffeeflat: 'EUR 8,- / Person',
+      getraenkeflat: 'EUR 14,- / Person',
+      beamer: '',
+      monitor: 'EUR 9,- / Tag',
+      moderationskoffer: 'EUR 29,- pauschal',
+      umbaupauschale: 'EUR 59,- pauschal',
+      extrastunde: 'EUR 14,- / Stunde',
+      'extrastunde-10er': 'EUR 119,- (10 Stunden)',
+      parkplatz: 'EUR 6,- / Tag',
+      'parkplatz-10er': 'EUR 51,- (10 Tage)',
+    } as Record<string, string>,
+    addonMengeLabels: {
+      kaffeeflat: 'Personen',
+      getraenkeflat: 'Personen',
+      monitor: 'Monitore',
+      extrastunde: 'Stunden',
+      parkplatz: 'Parkplätze',
+    } as Record<string, string>,
+    addonGroups: {
+      'Getränke': 'Getränke',
+      'Technik': 'Technik',
+      'Zeit & Flexibilität': 'Zeit & Flexibilität',
+      'Parkplatz & Lager': 'Parkplatz & Lager',
+      'Sonstiges': 'Sonstiges',
+    } as Record<string, string>,
+    dynamicBeamerTag: (price: number) => `EUR ${price},- / Tag`,
+    dynamicBeamerHalf: (price: number) => `EUR ${price},- / halber Tag`,
+    // Form
+    sectionForm: '4. Ihre Buchungsdaten',
+    labelCompany: 'Firma / Unternehmen',
+    privateRent: 'Ich miete privat (ohne Firma)',
+    labelSalutation: 'Anrede',
+    salutationMr: 'Herr',
+    salutationMs: 'Frau',
+    salutationOther: 'Divers',
+    labelFirstName: 'Vorname',
+    labelLastName: 'Nachname',
+    labelStreet: 'Straße',
+    labelNr: 'Nr.',
+    labelZip: 'PLZ',
+    labelCity: 'Ort',
+    labelEmail: 'E-Mail',
+    labelPhone: 'Telefon',
+    labelRemarks: 'Bemerkungen / Sonderwünsche',
+    // Cancellation
+    cancellationTitle: 'Stornierungsbedingungen:',
+    cancellation7: 'Bis 7 Tage vor Termin: kostenfreie Stornierung',
+    cancellation3to6: '3–6 Tage vor Termin: 50 % des Buchungsbetrags',
+    cancellationLess3: 'Weniger als 3 Tage / Nichterscheinen: 100 % des Buchungsbetrags',
+    cancellationRebook: 'Umbuchungen auf einen anderen Termin sind bis 3 Tage vorher kostenfrei möglich.',
+    agbText: (agbHref: string, dsHref: string) =>
+      `Ich akzeptiere die <a href="${agbHref}" class="text-[#6b7f3e] underline">AGB</a>, <a href="${dsHref}" class="text-[#6b7f3e] underline">Datenschutzerklärung</a> und die oben genannten Stornierungsbedingungen des bizzcenter.`,
+    // Summary
+    yourBooking: 'Ihre Buchung',
+    personSingular: 'Person',
+    personPlural: 'Personen',
+    netto: 'Netto',
+    vat19: 'MwSt. (19%)',
+    totalGross: 'Gesamt (brutto)',
+    selectDateHint: 'Wählen Sie ein Datum im Kalender.',
+    perDay: '/ Tag',
+    // Buttons
+    bookNow: 'Jetzt buchen',
+    processing: 'Weiter zur Zahlung...',
+    submitTooltip: 'Bitte füllen Sie Ihre Buchungsdaten aus und akzeptieren Sie die AGB.',
+    // Errors
+    errSend: 'Fehler beim Senden. Bitte versuchen Sie es erneut.',
+    errNetwork: 'Netzwerkfehler — bitte versuchen Sie es erneut.',
+    // Success
+    successTitle: 'Buchung bestätigt!',
+    successText: 'Vielen Dank für Ihre Buchung! Sie erhalten eine Bestätigung per E-Mail.',
+    successLocation: 'bizzcenter Weil am Rhein',
+    successAddress: 'Am Kesselhaus 3, 79576 Weil am Rhein',
+    successParking: '90 Min. kostenfrei, danach EUR 6,- Tagestarif',
+    locationLabel: 'Standort:',
+    addressLabel: 'Adresse:',
+    parkingLabel: 'Parken:',
+    // Submit lead
+    leadFullDay: 'Ganzer Tag',
+    leadHalfDay: 'Halber Tag',
+  },
+  en: {
+    heroFrom: 'from',
+    heroVatNote: 'half day, excl. VAT',
+    heroBookSuffix: 'book',
+    heroLocationSuffix: 'bizzcenter Weil am Rhein',
+    roomLabels: {
+      S: 'Meeting room up to 2 people',
+      M: 'Meeting room up to 6 people',
+      L: 'Meeting room up to 15 people',
+      XL: 'Conference room up to 25 people',
+    } as Record<string, string>,
+    sectionDuration: '1. Duration & participants',
+    halfDay: 'Half day',
+    halfDaySub: '4 hours',
+    fullDay: 'Full day',
+    tenCard: '10-day pass',
+    participantCount: 'Number of participants',
+    maxPersons: (n: number) => `max. ${n} people`,
+    moreSpace: 'Need more space?',
+    switchTo: (label: string, price: number) => `Switch to ${label} — from EUR ${price},- excl. VAT`,
+    sectionDate: '2. Choose date',
+    daysSingular: 'day',
+    daysPlural: 'days',
+    selectDates: 'Select your preferred dates',
+    weekdays: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    vatSuffix: 'excl. VAT',
+    sectionAddons: '3. Book extras',
+    optionalLabel: '(optional)',
+    priceOnRequest: 'Price on request',
+    addonLabels: {
+      kaffeeflat: 'Coffee & tea flat rate',
+      getraenkeflat: 'All-inclusive flat rate',
+      beamer: 'Beamer / presentation tech',
+      monitor: '27" Curved monitor',
+      moderationskoffer: 'Moderation kit',
+      umbaupauschale: 'Room reconfiguration',
+      extrastunde: 'Extra hour',
+      'extrastunde-10er': '10-pack extra hours',
+      parkplatz: 'Reserved parking',
+      'parkplatz-10er': '10-pack parking',
+    } as Record<string, string>,
+    addonDesc: {
+      kaffeeflat: 'Coffee and tea — unlimited',
+      getraenkeflat: 'Coffee, tea, mineral water and juices — unlimited',
+      beamer: 'Full-HD beamer with connection cables',
+      monitor: 'External monitor for presentations or workspace',
+      moderationskoffer: 'Pens, cards, pins, flipchart paper',
+      umbaupauschale: 'Different from standard seating (block seating, 20 seats)',
+      extrastunde: 'Need a bit more time? Conveniently add an extra hour.',
+      'extrastunde-10er': '10 extra hours at a discounted rate — 15% off.',
+      parkplatz: 'Reserved parking space right at the building',
+      'parkplatz-10er': '10 day parking passes at a discounted rate — 15% off.',
+    } as Record<string, string>,
+    addonPrices: {
+      kaffeeflat: 'EUR 8,- / person',
+      getraenkeflat: 'EUR 14,- / person',
+      beamer: '',
+      monitor: 'EUR 9,- / day',
+      moderationskoffer: 'EUR 29,- flat rate',
+      umbaupauschale: 'EUR 59,- flat rate',
+      extrastunde: 'EUR 14,- / hour',
+      'extrastunde-10er': 'EUR 119,- (10 hours)',
+      parkplatz: 'EUR 6,- / day',
+      'parkplatz-10er': 'EUR 51,- (10 days)',
+    } as Record<string, string>,
+    addonMengeLabels: {
+      kaffeeflat: 'People',
+      getraenkeflat: 'People',
+      monitor: 'Monitors',
+      extrastunde: 'Hours',
+      parkplatz: 'Parking spots',
+    } as Record<string, string>,
+    addonGroups: {
+      'Getränke': 'Beverages',
+      'Technik': 'Technology',
+      'Zeit & Flexibilität': 'Time & flexibility',
+      'Parkplatz & Lager': 'Parking & storage',
+      'Sonstiges': 'Other',
+    } as Record<string, string>,
+    dynamicBeamerTag: (price: number) => `EUR ${price},- / day`,
+    dynamicBeamerHalf: (price: number) => `EUR ${price},- / half day`,
+    sectionForm: '4. Your booking details',
+    labelCompany: 'Company / organization',
+    privateRent: 'I am renting privately (no company)',
+    labelSalutation: 'Salutation',
+    salutationMr: 'Mr.',
+    salutationMs: 'Ms.',
+    salutationOther: 'Other',
+    labelFirstName: 'First name',
+    labelLastName: 'Last name',
+    labelStreet: 'Street',
+    labelNr: 'No.',
+    labelZip: 'Postal code',
+    labelCity: 'City',
+    labelEmail: 'Email',
+    labelPhone: 'Phone',
+    labelRemarks: 'Remarks / special requests',
+    cancellationTitle: 'Cancellation policy:',
+    cancellation7: 'Up to 7 days before: free cancellation',
+    cancellation3to6: '3–6 days before: 50% of the booking amount',
+    cancellationLess3: 'Less than 3 days / no-show: 100% of the booking amount',
+    cancellationRebook: 'Rebookings to another date are free of charge up to 3 days before.',
+    agbText: (agbHref: string, dsHref: string) =>
+      `I accept the <a href="${agbHref}" class="text-[#6b7f3e] underline">Terms & Conditions</a>, <a href="${dsHref}" class="text-[#6b7f3e] underline">Privacy Policy</a> and the cancellation policy stated above.`,
+    yourBooking: 'Your booking',
+    personSingular: 'person',
+    personPlural: 'people',
+    netto: 'Net',
+    vat19: 'VAT (19%)',
+    totalGross: 'Total (gross)',
+    selectDateHint: 'Select a date in the calendar.',
+    perDay: '/ day',
+    bookNow: 'Book now',
+    processing: 'Proceeding to payment...',
+    submitTooltip: 'Please fill in your booking details and accept the terms.',
+    errSend: 'Error sending. Please try again.',
+    errNetwork: 'Network error — please try again.',
+    successTitle: 'Booking confirmed!',
+    successText: 'Thank you for your booking! You will receive a confirmation by email.',
+    successLocation: 'bizzcenter Weil am Rhein',
+    successAddress: 'Am Kesselhaus 3, 79576 Weil am Rhein',
+    successParking: '90 min free, then EUR 6,- daily rate',
+    locationLabel: 'Location:',
+    addressLabel: 'Address:',
+    parkingLabel: 'Parking:',
+    leadFullDay: 'Full day',
+    leadHalfDay: 'Half day',
+  },
+  fr: {
+    heroFrom: 'a partir de',
+    heroVatNote: 'demi-journee, HT',
+    heroBookSuffix: 'reserver',
+    heroLocationSuffix: 'bizzcenter Weil am Rhein',
+    roomLabels: {
+      S: 'Salle de reunion jusqu\'a 2 personnes',
+      M: 'Salle de reunion jusqu\'a 6 personnes',
+      L: 'Salle de reunion jusqu\'a 15 personnes',
+      XL: 'Salle de conference jusqu\'a 25 personnes',
+    } as Record<string, string>,
+    sectionDuration: '1. Duree & participants',
+    halfDay: 'Demi-journee',
+    halfDaySub: '4 heures',
+    fullDay: 'Journee entiere',
+    tenCard: 'Carte 10 jours',
+    participantCount: 'Nombre de participants',
+    maxPersons: (n: number) => `max. ${n} personnes`,
+    moreSpace: 'Besoin de plus d\'espace ?',
+    switchTo: (label: string, price: number) => `Passer a ${label} — a partir de EUR ${price},- HT`,
+    sectionDate: '2. Choisir la date',
+    daysSingular: 'jour',
+    daysPlural: 'jours',
+    selectDates: 'Selectionnez vos dates souhaitees',
+    weekdays: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
+    vatSuffix: 'HT',
+    sectionAddons: '3. Reserver des extras',
+    optionalLabel: '(facultatif)',
+    priceOnRequest: 'Prix sur demande',
+    addonLabels: {
+      kaffeeflat: 'Forfait cafe & the',
+      getraenkeflat: 'Forfait complet',
+      beamer: 'Videoprojecteur / technique de presentation',
+      monitor: 'Ecran incurve 27"',
+      moderationskoffer: 'Kit de moderation',
+      umbaupauschale: 'Reconfiguration de la salle',
+      extrastunde: 'Heure supplementaire',
+      'extrastunde-10er': 'Carte 10 heures supplementaires',
+      parkplatz: 'Place de parking reservee',
+      'parkplatz-10er': 'Carte 10 places de parking',
+    } as Record<string, string>,
+    addonDesc: {
+      kaffeeflat: 'Cafe et the — illimite',
+      getraenkeflat: 'Cafe, the, eau minerale et jus — illimite',
+      beamer: 'Videoprojecteur Full-HD avec cables de connexion',
+      monitor: 'Ecran externe pour presentations ou espace de travail',
+      moderationskoffer: 'Stylos, cartes, epingles, papier pour tableau',
+      umbaupauschale: 'Disposition differente du mobilier standard (disposition en bloc, 20 places)',
+      extrastunde: 'Besoin d\'un peu plus de temps ? Ajoutez facilement une heure supplementaire.',
+      'extrastunde-10er': '10 heures supplementaires a prix reduit — 15% de remise.',
+      parkplatz: 'Place de stationnement reservee devant le batiment',
+      'parkplatz-10er': '10 places de parking journalieres a prix reduit — 15% de remise.',
+    } as Record<string, string>,
+    addonPrices: {
+      kaffeeflat: 'EUR 8,- / personne',
+      getraenkeflat: 'EUR 14,- / personne',
+      beamer: '',
+      monitor: 'EUR 9,- / jour',
+      moderationskoffer: 'EUR 29,- forfait',
+      umbaupauschale: 'EUR 59,- forfait',
+      extrastunde: 'EUR 14,- / heure',
+      'extrastunde-10er': 'EUR 119,- (10 heures)',
+      parkplatz: 'EUR 6,- / jour',
+      'parkplatz-10er': 'EUR 51,- (10 jours)',
+    } as Record<string, string>,
+    addonMengeLabels: {
+      kaffeeflat: 'Personnes',
+      getraenkeflat: 'Personnes',
+      monitor: 'Ecrans',
+      extrastunde: 'Heures',
+      parkplatz: 'Places',
+    } as Record<string, string>,
+    addonGroups: {
+      'Getränke': 'Boissons',
+      'Technik': 'Technique',
+      'Zeit & Flexibilität': 'Temps & flexibilite',
+      'Parkplatz & Lager': 'Parking & stockage',
+      'Sonstiges': 'Autres',
+    } as Record<string, string>,
+    dynamicBeamerTag: (price: number) => `EUR ${price},- / jour`,
+    dynamicBeamerHalf: (price: number) => `EUR ${price},- / demi-journee`,
+    sectionForm: '4. Vos informations de reservation',
+    labelCompany: 'Entreprise / societe',
+    privateRent: 'Je loue a titre prive (sans entreprise)',
+    labelSalutation: 'Civilite',
+    salutationMr: 'M.',
+    salutationMs: 'Mme',
+    salutationOther: 'Autre',
+    labelFirstName: 'Prenom',
+    labelLastName: 'Nom',
+    labelStreet: 'Rue',
+    labelNr: 'N.',
+    labelZip: 'Code postal',
+    labelCity: 'Ville',
+    labelEmail: 'E-mail',
+    labelPhone: 'Telephone',
+    labelRemarks: 'Remarques / souhaits particuliers',
+    cancellationTitle: 'Conditions d\'annulation :',
+    cancellation7: 'Jusqu\'a 7 jours avant : annulation gratuite',
+    cancellation3to6: '3 a 6 jours avant : 50 % du montant de la reservation',
+    cancellationLess3: 'Moins de 3 jours / non-presentation : 100 % du montant de la reservation',
+    cancellationRebook: 'Les reports a une autre date sont gratuits jusqu\'a 3 jours avant.',
+    agbText: (agbHref: string, dsHref: string) =>
+      `J'accepte les <a href="${agbHref}" class="text-[#6b7f3e] underline">CGV</a>, la <a href="${dsHref}" class="text-[#6b7f3e] underline">politique de confidentialite</a> et les conditions d'annulation mentionnees ci-dessus.`,
+    yourBooking: 'Votre reservation',
+    personSingular: 'personne',
+    personPlural: 'personnes',
+    netto: 'Net',
+    vat19: 'TVA (19%)',
+    totalGross: 'Total (TTC)',
+    selectDateHint: 'Selectionnez une date dans le calendrier.',
+    perDay: '/ jour',
+    bookNow: 'Reserver maintenant',
+    processing: 'Passage au paiement...',
+    submitTooltip: 'Veuillez remplir vos informations et accepter les conditions.',
+    errSend: 'Erreur lors de l\'envoi. Veuillez reessayer.',
+    errNetwork: 'Erreur reseau — veuillez reessayer.',
+    successTitle: 'Reservation confirmee !',
+    successText: 'Merci pour votre reservation ! Vous recevrez une confirmation par e-mail.',
+    successLocation: 'bizzcenter Weil am Rhein',
+    successAddress: 'Am Kesselhaus 3, 79576 Weil am Rhein',
+    successParking: '90 min gratuites, puis EUR 6,- tarif journalier',
+    locationLabel: 'Site :',
+    addressLabel: 'Adresse :',
+    parkingLabel: 'Parking :',
+    leadFullDay: 'Journee entiere',
+    leadHalfDay: 'Demi-journee',
+  },
+};
+
 /* ── Hero Galerie ── */
-function HeroGallery({ images, title, subtitle, preisLabel }: {
-  images: string[]; title: string; subtitle: string; preisLabel: string;
+function HeroGallery({ images, title, subtitle, preisLabel, fromLabel, vatNote }: {
+  images: string[]; title: string; subtitle: string; preisLabel: string; fromLabel: string; vatNote: string;
 }) {
   const [current, setCurrent] = useState(0);
 
@@ -46,9 +447,9 @@ function HeroGallery({ images, title, subtitle, preisLabel }: {
           {subtitle && <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: 14, margin: '4px 0 0' }}>{subtitle}</p>}
         </div>
         <div style={{ textAlign: 'right' }}>
-          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 12, margin: 0 }}>ab</p>
+          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 12, margin: 0 }}>{fromLabel}</p>
           <p style={{ fontSize: 24, fontWeight: 700, color: 'white', margin: 0 }}>{preisLabel}</p>
-          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 12, margin: 0 }}>halber Tag, zzgl. MwSt.</p>
+          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 12, margin: 0 }}>{vatNote}</p>
         </div>
       </div>
       {/* Dots */}
@@ -125,10 +526,10 @@ const SHARED_ROOMS: Record<string, string[]> = {
 const _bookedDates: Record<string, string[]> = {}; // Platzhalter
 
 
-/* ── Konfiguration ── */
-const RAEUME: RaumConfig[] = [
+/* ── Konfiguration (non-locale data) ── */
+const RAEUME_DATA: Omit<RaumConfig, 'label'>[] = [
   {
-    id: 'S', label: 'Meetingraum bis 2 Personen', subtitle: '', kapazitaet: 2,
+    id: 'S', subtitle: '', kapazitaet: 2,
     image: '/images/standorte/weil-am-rhein/green-office-buero-2-personen.jpg',
     gallery: [
       '/images/standorte/weil-am-rhein/green-office-buero-2-personen.jpg',
@@ -139,7 +540,7 @@ const RAEUME: RaumConfig[] = [
     preise: { stunde: 19, halberTag: 59, tag: 89, stunde10er: 16, halberTag10er: 49, tag10er: 76 },
   },
   {
-    id: 'M', label: 'Meetingraum bis 6 Personen', subtitle: '', kapazitaet: 6,
+    id: 'M', subtitle: '', kapazitaet: 6,
     image: '/images/standorte/weil-am-rhein/meetingraum-6-personen.jpg',
     gallery: [
       '/images/standorte/weil-am-rhein/meetingraum-6-personen.jpg',
@@ -149,12 +550,12 @@ const RAEUME: RaumConfig[] = [
     preise: { stunde: 29, halberTag: 89, tag: 129, stunde10er: 25, halberTag10er: 76, tag10er: 109 },
   },
   {
-    id: 'L', label: 'Meetingraum bis 15 Personen', subtitle: '', kapazitaet: 15,
+    id: 'L', subtitle: '', kapazitaet: 15,
     image: '/images/standorte/weil-am-rhein/konferenzraum-gross.jpg',
     preise: { stunde: 39, halberTag: 99, tag: 159, stunde10er: 33, halberTag10er: 85, tag10er: 135 },
   },
   {
-    id: 'XL', label: 'Konferenzraum bis 25 Personen', subtitle: '', kapazitaet: 25,
+    id: 'XL', subtitle: '', kapazitaet: 25,
     image: '/images/standorte/weil-am-rhein/konferenzraum-gross.jpg',
     preise: { stunde: 49, halberTag: 129, tag: 199, stunde10er: 42, halberTag10er: 109, tag10er: 169 },
   },
@@ -176,22 +577,18 @@ const AddonIcons: Record<string, React.ReactNode> = {
   parkplatz: <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H18.375m-7.5-8.25h3.75a1.125 1.125 0 011.079.82l.464 1.854a1.125 1.125 0 001.08.82h.39a1.125 1.125 0 011.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125H2.25A1.125 1.125 0 011.125 12V9.75c0-.621.504-1.125 1.125-1.125h.39a1.125 1.125 0 001.08-.82l.464-1.854A1.125 1.125 0 015.25 5.25h3.75" /></svg>,
 };
 
-const ADDONS: Addon[] = [
-  // --- Getränke ---
-  { id: 'kaffeeflat', label: 'Kaffee- & Tee-Flat', beschreibung: 'Kaffee und Tee — unbegrenzt', preis: 'EUR 8,- / Person', preisWert: 8, einheit: 'pro-stueck-tag', icon: '', mitMenge: true, mengeLabel: 'Personen', gruppe: 'Getränke' },
-  { id: 'getraenkeflat', label: 'Komplett-Flat', beschreibung: 'Kaffee, Tee, Mineralwasser und Säfte — unbegrenzt', preis: 'EUR 14,- / Person', preisWert: 14, einheit: 'pro-stueck-tag', icon: '', mitMenge: true, mengeLabel: 'Personen', gruppe: 'Getränke' },
-  // --- Technik ---
-  { id: 'beamer', label: 'Beamer / Präsentationstechnik', beschreibung: 'Full-HD Beamer mit Anschlusskabel', preis: '', preisWert: 0, einheit: 'pauschal', icon: '', gruppe: 'Technik' },
-  { id: 'monitor', label: '27" Curved Monitor', beschreibung: 'Externer Bildschirm für Präsentationen oder Arbeitsplatz', preis: 'EUR 9,- / Tag', preisWert: 9, einheit: 'pro-stueck-tag', icon: '', mitMenge: true, mengeLabel: 'Monitore', gruppe: 'Technik' },
-  { id: 'moderationskoffer', label: 'Moderationskoffer', beschreibung: 'Stifte, Karten, Pins, Flipchart-Papier', preis: 'EUR 29,- pauschal', preisWert: 29, einheit: 'pauschal', icon: '', gruppe: 'Technik' },
-  { id: 'umbaupauschale', label: 'Umbaupauschale', beschreibung: 'Abweichend von Grundbestuhlung (Blockbestuhlung, 20 Plätze)', preis: 'EUR 59,- pauschal', preisWert: 59, einheit: 'pauschal', icon: '', nurRaeume: ['L', 'XL'], gruppe: 'Technik' },
-  // --- Zeit & Flexibilität ---
-  { id: 'extrastunde', label: 'Extrastunde', beschreibung: 'Sie brauchen doch etwas mehr Zeit? Buchen Sie sich bequem eine Stunde hinzu.', preis: 'EUR 14,- / Stunde', preisWert: 14, einheit: 'pro-stueck-tag', icon: '', mitMenge: true, mengeLabel: 'Stunden', gruppe: 'Zeit & Flexibilität' },
-  { id: 'extrastunde-10er', label: '10er-Karte Extrastunden', beschreibung: '10 Extrastunden zum Vorteilspreis — 15% günstiger.', preis: 'EUR 119,- (10 Stunden)', preisWert: 119, einheit: 'pauschal', icon: '', gruppe: 'Zeit & Flexibilität' },
-  // --- Parkplatz & Lager ---
-  { id: 'parkplatz', label: 'Parkplatz reserviert', beschreibung: 'Reservierter Stellplatz direkt am Gebäude', preis: 'EUR 6,- / Tag', preisWert: 6, einheit: 'pro-stueck-tag', icon: '', mitMenge: true, mengeLabel: 'Parkplätze', gruppe: 'Parkplatz & Lager' },
-  { id: 'parkplatz-10er', label: '10er-Karte Parkplatz', beschreibung: '10 Tages-Parkplätze zum Vorteilspreis — 15% günstiger.', preis: 'EUR 51,- (10 Tage)', preisWert: 51, einheit: 'pauschal', icon: '', gruppe: 'Parkplatz & Lager' },
-
+/* Add-on data (non-locale fields) */
+const ADDONS_DATA: { id: string; preisWert: number; einheit: Addon['einheit']; icon: string; mitMenge?: boolean; nurRaeume?: string[]; gruppe: string }[] = [
+  { id: 'kaffeeflat', preisWert: 8, einheit: 'pro-stueck-tag', icon: '', mitMenge: true, gruppe: 'Getränke' },
+  { id: 'getraenkeflat', preisWert: 14, einheit: 'pro-stueck-tag', icon: '', mitMenge: true, gruppe: 'Getränke' },
+  { id: 'beamer', preisWert: 0, einheit: 'pauschal', icon: '', gruppe: 'Technik' },
+  { id: 'monitor', preisWert: 9, einheit: 'pro-stueck-tag', icon: '', mitMenge: true, gruppe: 'Technik' },
+  { id: 'moderationskoffer', preisWert: 29, einheit: 'pauschal', icon: '', gruppe: 'Technik' },
+  { id: 'umbaupauschale', preisWert: 59, einheit: 'pauschal', icon: '', nurRaeume: ['L', 'XL'], gruppe: 'Technik' },
+  { id: 'extrastunde', preisWert: 14, einheit: 'pro-stueck-tag', icon: '', mitMenge: true, gruppe: 'Zeit & Flexibilität' },
+  { id: 'extrastunde-10er', preisWert: 119, einheit: 'pauschal', icon: '', gruppe: 'Zeit & Flexibilität' },
+  { id: 'parkplatz', preisWert: 6, einheit: 'pro-stueck-tag', icon: '', mitMenge: true, gruppe: 'Parkplatz & Lager' },
+  { id: 'parkplatz-10er', preisWert: 51, einheit: 'pauschal', icon: '', gruppe: 'Parkplatz & Lager' },
 ];
 
 /* ── Kalender-Helfer ── */
@@ -209,12 +606,17 @@ function dateStr(y: number, m: number, d: number) {
   return `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
 }
 
-function formatDE(ds: string) {
+function formatDate(ds: string, locale: string) {
+  const loc = locale === 'fr' ? 'fr-FR' : locale === 'en' ? 'en-GB' : 'de-DE';
   const d = new Date(ds + 'T00:00:00');
-  const wday = d.toLocaleDateString('de-DE', { weekday: 'short' }).padEnd(3, ' ');
+  const wday = d.toLocaleDateString(loc, { weekday: 'short' }).padEnd(3, ' ');
   const day = d.getDate();
-  const month = d.toLocaleDateString('de-DE', { month: 'long' });
+  const month = d.toLocaleDateString(loc, { month: 'long' });
   return `${wday} ${String(day).padStart(2, '\u2007')}. ${month}`;
+}
+
+function calendarLocale(locale: string) {
+  return locale === 'fr' ? 'fr-FR' : locale === 'en' ? 'en-GB' : 'de-DE';
 }
 
 function isWeekend(_ds: string) {
@@ -223,6 +625,26 @@ function isWeekend(_ds: string) {
 
 /* ── Komponente ── */
 export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
+  const pathname = usePathname();
+  const locale: 'de' | 'en' | 'fr' = pathname?.startsWith('/fr') ? 'fr' : pathname?.startsWith('/en') ? 'en' : 'de';
+  const t = STRINGS[locale];
+
+  /* Build locale-aware RAEUME */
+  const RAEUME: RaumConfig[] = useMemo(() =>
+    RAEUME_DATA.map(r => ({ ...r, label: t.roomLabels[r.id] || r.id })),
+  [t]);
+
+  /* Build locale-aware ADDONS */
+  const ADDONS: Addon[] = useMemo(() =>
+    ADDONS_DATA.map(a => ({
+      ...a,
+      label: t.addonLabels[a.id] || a.id,
+      beschreibung: t.addonDesc[a.id] || '',
+      preis: t.addonPrices[a.id] || '',
+      mengeLabel: a.mitMenge ? (t.addonMengeLabels[a.id] || '') : undefined,
+    })),
+  [t]);
+
   const [activeRaumId, setActiveRaumId] = useState(raumId);
   const selectedRaum = RAEUME.find(r => r.id === activeRaumId) || RAEUME[0];
 
@@ -278,11 +700,9 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
     if (ds < todayStr || ds > maxDateStr) return;
 
     if (selectedDates.includes(ds)) {
-      // Klick auf bereits gewählten Tag: entfernen
       setSelectedDates(prev => prev.filter(d => d !== ds));
       lastClickedRef.current = null;
     } else if (lastClickedRef.current && lastClickedRef.current !== ds) {
-      // Zweiter Klick auf neuen Tag: Bereich dazwischen füllen
       const range = getWeekdaysInRange(lastClickedRef.current, ds);
       setSelectedDates(prev => {
         const set = new Set(prev);
@@ -291,7 +711,6 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
       });
       lastClickedRef.current = ds;
     } else {
-      // Einzelner Tag: auswählen
       setSelectedDates(prev => [...prev, ds].sort());
       lastClickedRef.current = ds;
     }
@@ -318,11 +737,11 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
     const dynamic = ADDON_PRICES[addonId];
     if (dynamic) {
       return dauer === 'tag'
-        ? `EUR ${dynamic.tag},- / Tag`
-        : `EUR ${dynamic.halberTag},- / halber Tag`;
+        ? t.dynamicBeamerTag(dynamic.tag)
+        : t.dynamicBeamerHalf(dynamic.halberTag);
     }
     return addon.preis;
-  }, [dauer]);
+  }, [dauer, t]);
 
   /* Preisberechnung */
   const preis = useMemo(() => {
@@ -336,7 +755,7 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
     ADDONS.forEach(a => {
       if (!selectedAddons[a.id]) return;
       const p = getAddonPreis(a.id, a);
-      if (p === 0) return; // Preis auf Anfrage
+      if (p === 0) return;
       const menge = addonMengen[a.id] || 1;
       switch (a.einheit) {
         case 'pauschal': addonGesamt += p * tage; break;
@@ -348,7 +767,7 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
     });
 
     return { raum: raumGesamt, addons: addonGesamt, gesamt: raumGesamt + addonGesamt, tage };
-  }, [selectedDates, dauer, use10er, selectedRaum, selectedAddons, teilnehmer, addonMengen, getAddonPreis]);
+  }, [selectedDates, dauer, use10er, selectedRaum, selectedAddons, teilnehmer, addonMengen, getAddonPreis, ADDONS]);
 
   /* Submit */
   const handleSubmit = async () => {
@@ -371,26 +790,26 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
         quelle: 'konferenzraum-buchung',
         bemerkungen: form.bemerkungen || undefined,
         raum: selectedRaum.label,
-        dauer: dauer === 'tag' ? 'Ganzer Tag' : 'Halber Tag',
+        dauer: dauer === 'tag' ? t.leadFullDay : t.leadHalfDay,
         termine: selectedDates,
         addons: activeAddons.length > 0 ? activeAddons : undefined,
         gesamtpreis: preis.gesamt,
       });
 
       if (!result.success) {
-        alert(result.error || 'Fehler beim Senden. Bitte versuchen Sie es erneut.');
+        alert(result.error || t.errSend);
         setSubmitting(false);
         return;
       }
 
       setSubmitted(true);
     } catch {
-      alert('Netzwerkfehler — bitte versuchen Sie es erneut.');
+      alert(t.errNetwork);
     }
     setSubmitting(false);
   };
 
-  const canSubmit = selectedDates.length > 0 && (form.privatmiete || form.firma) && form.anrede && form.name && form.strasse && form.plz && form.ort && form.email && form.agb;
+  const canSubmit = selectedDates.length > 0 && (form.privatmiete || form.firma) && form.anrede && form.name && form.strasse && form.plz && form.ort && form.email && form.telefon && form.agb;
 
   if (submitted) {
     return (
@@ -400,14 +819,14 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
             <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
           </svg>
         </div>
-        <h3 className="text-2xl font-bold text-gray-900">Buchung bestätigt!</h3>
+        <h3 className="text-2xl font-bold text-gray-900">{t.successTitle}</h3>
         <p className="text-gray-600 max-w-md mx-auto">
-          Vielen Dank für Ihre Buchung! Sie erhalten eine Bestätigung per E-Mail.
+          {t.successText}
         </p>
         <div className="bg-white rounded-2xl p-5 max-w-sm mx-auto text-sm text-gray-600 space-y-1 shadow-sm border">
-          <p><strong>Standort:</strong> bizzcenter Weil am Rhein</p>
-          <p><strong>Adresse:</strong> Am Kesselhaus 3, 79576 Weil am Rhein</p>
-          <p><strong>Parken:</strong> 90 Min. kostenfrei, danach EUR 6,- Tagestarif</p>
+          <p><strong>{t.locationLabel}</strong> {t.successLocation}</p>
+          <p><strong>{t.addressLabel}</strong> {t.successAddress}</p>
+          <p><strong>{t.parkingLabel}</strong> {t.successParking}</p>
         </div>
       </div>
     );
@@ -416,31 +835,33 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
   return (
     <div className="w-full max-w-5xl mx-auto space-y-8">
 
-      {/* ══════ RAUM-HEADER MIT GALERIE ══════ */}
+      {/* RAUM-HEADER MIT GALERIE */}
       <HeroGallery
         images={selectedRaum.gallery || [selectedRaum.image]}
-        title={`${selectedRaum.label} buchen`}
-        subtitle={`${selectedRaum.subtitle} · bizzcenter Weil am Rhein`}
+        title={`${selectedRaum.label} ${t.heroBookSuffix}`}
+        subtitle={`${selectedRaum.subtitle} · ${t.heroLocationSuffix}`}
         preisLabel={`EUR ${selectedRaum.preise.halberTag},-`}
+        fromLabel={t.heroFrom}
+        vatNote={t.heroVatNote}
       />
 
-      {/* ══════ HAUPTBEREICH ══════ */}
+      {/* HAUPTBEREICH */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
 
-        {/* ── LINKE SPALTE ── */}
+        {/* LINKE SPALTE */}
         <div className="space-y-8">
 
-          {/* ── 1. Dauer & Teilnehmer ── */}
+          {/* 1. Dauer & Teilnehmer */}
           <section className="bg-white rounded-2xl border shadow-sm p-6 space-y-6">
-            <h3 className="text-lg font-bold text-gray-900">1. Dauer & Teilnehmer</h3>
+            <h3 className="text-lg font-bold text-gray-900">{t.sectionDuration}</h3>
 
-            {/* Dauer — 4 Kästchen in einer Reihe: Halber Tag | 10er Halber Tag | Ganzer Tag | 10er Ganzer Tag */}
+            {/* Dauer */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '8px' }}>
               {[
-                { d: 'halberTag' as const, ten: false, label: 'Halber Tag', sub: '4 Stunden', preis: selectedRaum.preise.halberTag },
-                { d: 'halberTag' as const, ten: true, label: '10er-Karte', sub: 'Halber Tag', preis: selectedRaum.preise.halberTag10er, badge: true },
-                { d: 'tag' as const, ten: false, label: 'Ganzer Tag', sub: '', preis: selectedRaum.preise.tag },
-                { d: 'tag' as const, ten: true, label: '10er-Karte', sub: 'Ganzer Tag', preis: selectedRaum.preise.tag10er, badge: true },
+                { d: 'halberTag' as const, ten: false, label: t.halfDay, sub: t.halfDaySub, preis: selectedRaum.preise.halberTag },
+                { d: 'halberTag' as const, ten: true, label: t.tenCard, sub: t.halfDay, preis: selectedRaum.preise.halberTag10er, badge: true },
+                { d: 'tag' as const, ten: false, label: t.fullDay, sub: '', preis: selectedRaum.preise.tag },
+                { d: 'tag' as const, ten: true, label: t.tenCard, sub: t.fullDay, preis: selectedRaum.preise.tag10er, badge: true },
               ].map((opt, i) => {
                 const active = dauer === opt.d && use10er === opt.ten;
                 return (
@@ -455,7 +876,7 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
                     }}
                   >
                     {opt.badge && (
-                      <span style={{ position: 'absolute', top: '-8px', right: '-4px', fontSize: '9px', fontWeight: 700, backgroundColor: '#6b7f3e', color: '#fff', borderRadius: '9999px', padding: '2px 6px' }}>−15%</span>
+                      <span style={{ position: 'absolute', top: '-8px', right: '-4px', fontSize: '9px', fontWeight: 700, backgroundColor: '#6b7f3e', color: '#fff', borderRadius: '9999px', padding: '2px 6px' }}>-15%</span>
                     )}
                     <p style={{ fontWeight: 600, color: '#111', margin: 0, fontSize: '13px' }}>{opt.label}</p>
                     {opt.sub && <p style={{ fontSize: '11px', color: '#6b7280', margin: '2px 0 0' }}>{opt.sub}</p>}
@@ -469,9 +890,9 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
 
             {/* Teilnehmer */}
             <div>
-              <p className="text-sm font-medium text-gray-700 mb-2">Teilnehmeranzahl</p>
+              <p className="text-sm font-medium text-gray-700 mb-2">{t.participantCount}</p>
               <div className="flex items-center gap-3">
-                <button onClick={() => setTeilnehmer(Math.max(1, teilnehmer - 1))} className="w-10 h-10 rounded-lg border flex items-center justify-center text-lg hover:bg-gray-50">−</button>
+                <button onClick={() => setTeilnehmer(Math.max(1, teilnehmer - 1))} className="w-10 h-10 rounded-lg border flex items-center justify-center text-lg hover:bg-gray-50">-</button>
                 <span className="text-lg font-bold w-8 text-center">{teilnehmer}</span>
                 <button
                   onClick={() => {
@@ -485,7 +906,7 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
                   }}
                   className="w-10 h-10 rounded-lg border flex items-center justify-center text-lg hover:bg-gray-50"
                 >+</button>
-                <span className="text-sm text-gray-400">max. {selectedRaum.kapazitaet} Personen</span>
+                <span className="text-sm text-gray-400">{t.maxPersons(selectedRaum.kapazitaet)}</span>
               </div>
               {teilnehmer >= selectedRaum.kapazitaet && (() => {
                 const bigger = RAEUME.find(r => r.kapazitaet > selectedRaum.kapazitaet);
@@ -494,27 +915,27 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
                     onClick={() => { setActiveRaumId(bigger.id); setTeilnehmer(selectedRaum.kapazitaet + 1); }}
                     className="mt-3 w-full p-3 rounded-xl border-2 border-dashed border-[#6b7f3e]/40 bg-[#f0f4e8]/50 text-left hover:border-[#6b7f3e] hover:bg-[#f0f4e8] transition-all"
                   >
-                    <p className="text-sm font-semibold text-[#6b7f3e]">Mehr Platz nötig?</p>
-                    <p className="text-xs text-gray-600">Wechseln zum <strong>{bigger.label}</strong> — ab EUR {bigger.preise.halberTag},- zzgl. MwSt.</p>
+                    <p className="text-sm font-semibold text-[#6b7f3e]">{t.moreSpace}</p>
+                    <p className="text-xs text-gray-600">{t.switchTo(bigger.label, bigger.preise.halberTag)}</p>
                   </button>
                 ) : null;
               })()}
             </div>
           </section>
 
-          {/* ── 2. Datum wählen ── */}
+          {/* 2. Datum wählen */}
           <section className="bg-white rounded-2xl border shadow-sm p-6 space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-bold text-gray-900">
-                2. Datum wählen
+                {t.sectionDate}
                 {selectedDates.length > 0 && (
                   <span className="ml-2 text-sm font-normal text-[#6b7f3e]">
-                    ({selectedDates.length} {selectedDates.length === 1 ? 'Tag' : 'Tage'})
+                    ({selectedDates.length} {selectedDates.length === 1 ? t.daysSingular : t.daysPlural})
                   </span>
                 )}
               </h3>
               <p className="text-xs text-gray-400">
-                {'Wählen Sie Ihre gewünschten Tage'}
+                {t.selectDates}
               </p>
             </div>
 
@@ -526,7 +947,7 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
               </button>
               <span className="text-sm font-semibold min-w-[140px] text-center">
-                {new Date(calYear, calMonth).toLocaleDateString('de-DE', { month: 'long', year: 'numeric' })}
+                {new Date(calYear, calMonth).toLocaleDateString(calendarLocale(locale), { month: 'long', year: 'numeric' })}
               </span>
               <button onClick={() => {
                 if (calMonth === 11) { setCalMonth(0); setCalYear(y => y + 1); } else setCalMonth(m => m + 1);
@@ -538,7 +959,7 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
             {/* Kalender Grid */}
             <div style={{ maxWidth: '380px', margin: '0 auto' }}>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px', marginBottom: '4px' }}>
-                {['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'].map(d => (
+                {t.weekdays.map(d => (
                   <div key={d} style={{ textAlign: 'center', fontSize: '11px', fontWeight: 500, color: '#9ca3af', padding: '2px 0' }}>{d}</div>
                 ))}
               </div>
@@ -588,34 +1009,34 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
                 <div className="flex flex-wrap gap-2">
                   {selectedDates.map(ds => (
                     <span key={ds} className="inline-flex items-center gap-1 px-3 py-1.5 bg-white text-[#6b7f3e] rounded-full text-sm font-medium shadow-sm border border-[#6b7f3e]/20">
-                      {formatDE(ds)}
-                      <button onClick={() => setSelectedDates(prev => prev.filter(d => d !== ds))} className="ml-1 text-gray-400 hover:text-red-500">×</button>
+                      {formatDate(ds, locale)}
+                      <button onClick={() => setSelectedDates(prev => prev.filter(d => d !== ds))} className="ml-1 text-gray-400 hover:text-red-500">x</button>
                     </span>
                   ))}
                 </div>
                 <div className="flex justify-between items-center pt-2 border-t border-gray-200">
                   <span className="text-sm text-gray-600">
-                    {preis.tage} × {dauer === 'tag' ? 'Ganzer Tag' : 'Halber Tag'} — {selectedRaum.label}
+                    {preis.tage} x {dauer === 'tag' ? t.fullDay : t.halfDay} — {selectedRaum.label}
                   </span>
                   <div className="text-right">
                     <span className="text-lg font-bold text-[#6b7f3e]">EUR {preis.raum},-</span>
-                    <span className="text-xs text-gray-400 ml-1">zzgl. MwSt.</span>
+                    <span className="text-xs text-gray-400 ml-1">{t.vatSuffix}</span>
                   </div>
                 </div>
               </div>
             )}
           </section>
 
-          {/* ── 3. Extras / Add-ons ── */}
+          {/* 3. Extras / Add-ons */}
           <section className="bg-white rounded-2xl border shadow-sm p-6 space-y-4">
-            <h3 className="text-lg font-bold text-gray-900">3. Extras hinzubuchen <span className="text-sm font-normal text-gray-400">(optional)</span></h3>
+            <h3 className="text-lg font-bold text-gray-900">{t.sectionAddons} <span className="text-sm font-normal text-gray-400">{t.optionalLabel}</span></h3>
 
             {(() => {
               const filtered = ADDONS.filter(a => !a.nurRaeume || a.nurRaeume.includes(selectedRaum.id));
               const gruppen = [...new Set(filtered.map(a => a.gruppe || 'Sonstiges'))];
               return gruppen.map(gruppe => (
                 <div key={gruppe} className="space-y-2">
-                  <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide">{gruppe}</p>
+                  <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide">{t.addonGroups[gruppe] || gruppe}</p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {filtered.filter(a => (a.gruppe || 'Sonstiges') === gruppe).map(addon => {
                       const active = selectedAddons[addon.id];
@@ -639,9 +1060,9 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
                               <p className="text-xs text-gray-500 mt-0.5">{addon.beschreibung}</p>
                               <p className="text-xs font-semibold text-[#6b7f3e] mt-1">
                                 {addon.id === 'catering-lunch' ? (
-                                  <span className="text-gray-500 font-normal italic">Preis auf Anfrage</span>
+                                  <span className="text-gray-500 font-normal italic">{t.priceOnRequest}</span>
                                 ) : (
-                                  <>{getAddonPreisLabel(addon.id, addon)} <span className="font-normal text-gray-400">zzgl. MwSt.</span></>
+                                  <>{getAddonPreisLabel(addon.id, addon)} <span className="font-normal text-gray-400">{t.vatSuffix}</span></>
                                 )}
                               </p>
                               {addon.mitMenge && active && (
@@ -650,7 +1071,7 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
                                   <button
                                     onClick={() => setAddonMengen(m => ({ ...m, [addon.id]: Math.max(1, (m[addon.id] || 1) - 1) }))}
                                     className="w-7 h-7 rounded border flex items-center justify-center text-sm hover:bg-gray-50"
-                                  >−</button>
+                                  >-</button>
                                   <span className="text-sm font-bold w-6 text-center">{addonMengen[addon.id] || 1}</span>
                                   <button
                                     onClick={() => setAddonMengen(m => ({ ...m, [addon.id]: Math.min(25, (m[addon.id] || 1) + 1) }))}
@@ -669,118 +1090,116 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
             })()}
           </section>
 
-          {/* ── 4. Kontaktdaten ── */}
+          {/* 4. Kontaktdaten */}
           <section className="bg-white rounded-2xl border shadow-sm p-6 space-y-4">
-            <h3 className="text-lg font-bold text-gray-900">4. Ihre Buchungsdaten</h3>
+            <h3 className="text-lg font-bold text-gray-900">{t.sectionForm}</h3>
 
-            {/* Zeile 1: Firma + Privat-Checkbox */}
+            {/* Firma + Privat-Checkbox */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Firma / Unternehmen {!form.privatmiete && '*'}
+                {t.labelCompany} {!form.privatmiete && '*'}
               </label>
               <input value={form.firma} onChange={e => setForm(f => ({ ...f, firma: e.target.value }))}
                 disabled={form.privatmiete}
                 className={`w-full border rounded-xl px-4 h-[42px] text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none ${form.privatmiete ? 'bg-gray-50 text-gray-400' : ''}`} />
               <label className="flex items-center gap-2 mt-2 cursor-pointer">
                 <input type="checkbox" checked={form.privatmiete} onChange={e => setForm(f => ({ ...f, privatmiete: e.target.checked, firma: e.target.checked ? '' : f.firma }))} className="accent-[#6b7f3e] w-4 h-4" />
-                <span className="text-xs text-gray-500">Ich miete privat (ohne Firma)</span>
+                <span className="text-xs text-gray-500">{t.privateRent}</span>
               </label>
             </div>
 
-            {/* Zeile 2: Anrede + Vorname + Nachname */}
+            {/* Anrede + Vorname + Nachname */}
             <div className="grid grid-cols-[80px_1fr] sm:grid-cols-[100px_1fr_1fr] gap-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Anrede *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t.labelSalutation} *</label>
                 <select value={form.anrede} onChange={e => setForm(f => ({ ...f, anrede: e.target.value }))}
                   className="w-full h-[42px] border rounded-xl px-3 text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none bg-white appearance-none"
                   style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' viewBox=\'0 0 12 12\'%3E%3Cpath d=\'M6 8L1 3h10z\' fill=\'%236b7f3e\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 8px center' }}>
-                  <option value="">—</option>
-                  <option value="Herr">Herr</option>
-                  <option value="Frau">Frau</option>
-                  <option value="Divers">Divers</option>
+                  <option value="">--</option>
+                  <option value={t.salutationMr}>{t.salutationMr}</option>
+                  <option value={t.salutationMs}>{t.salutationMs}</option>
+                  <option value={t.salutationOther}>{t.salutationOther}</option>
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Vorname *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t.labelFirstName} *</label>
                 <input value={form.name.split(' ')[0] || ''} onChange={e => { const last = form.name.split(' ').slice(1).join(' '); setForm(f => ({ ...f, name: e.target.value + (last ? ' ' + last : '') })); }}
                   className="w-full border rounded-xl px-4 h-[42px] text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none" />
               </div>
               <div className="col-span-2 sm:col-span-1">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Nachname *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t.labelLastName} *</label>
                 <input value={form.name.split(' ').slice(1).join(' ') || ''} onChange={e => { const first = form.name.split(' ')[0] || ''; setForm(f => ({ ...f, name: first + ' ' + e.target.value })); }}
                   className="w-full border rounded-xl px-4 h-[42px] text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none" />
               </div>
             </div>
 
-            {/* Zeile 3: Straße + Hausnummer */}
+            {/* Strasse + Hausnummer */}
             <div className="grid grid-cols-[1fr_80px] sm:grid-cols-[1fr_120px] gap-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Straße *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t.labelStreet} *</label>
                 <input value={form.strasse} onChange={e => setForm(f => ({ ...f, strasse: e.target.value }))}
                   className="w-full border rounded-xl px-4 h-[42px] text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Nr. *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t.labelNr} *</label>
                 <input value={form.hausnummer || ''} onChange={e => setForm(f => ({ ...f, hausnummer: e.target.value }))}
                   className="w-full border rounded-xl px-4 h-[42px] text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none" />
               </div>
             </div>
 
-            {/* Zeile 4: PLZ + Ort */}
+            {/* PLZ + Ort */}
             <div className="grid grid-cols-[100px_1fr] sm:grid-cols-[120px_1fr] gap-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">PLZ *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t.labelZip} *</label>
                 <input value={form.plz} onChange={e => setForm(f => ({ ...f, plz: e.target.value }))}
                   className="w-full border rounded-xl px-4 h-[42px] text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Ort *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t.labelCity} *</label>
                 <input value={form.ort} onChange={e => setForm(f => ({ ...f, ort: e.target.value }))}
                   className="w-full border rounded-xl px-4 h-[42px] text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none" />
               </div>
             </div>
 
-            {/* Zeile 5: E-Mail + Telefon */}
+            {/* E-Mail + Telefon */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">E-Mail *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t.labelEmail} *</label>
                 <input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
                   className="w-full border rounded-xl px-4 h-[42px] text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Telefon</label>
-                <input value={form.telefon} onChange={e => setForm(f => ({ ...f, telefon: e.target.value }))}
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t.labelPhone} *</label>
+                <input type="tel" value={form.telefon} onChange={e => setForm(f => ({ ...f, telefon: e.target.value }))}
                   className="w-full border rounded-xl px-4 h-[42px] text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none" />
               </div>
             </div>
 
             {/* Bemerkungen */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Bemerkungen / Sonderwünsche</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t.labelRemarks}</label>
               <textarea value={form.bemerkungen} onChange={e => setForm(f => ({ ...f, bemerkungen: e.target.value }))}
                 className="w-full border rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none" rows={3} />
             </div>
 
             {/* Stornierungsbedingungen */}
             <div className="bg-[#f0f4e8] rounded-xl p-4 text-xs text-gray-600 space-y-1">
-              <p className="font-semibold text-gray-700">Stornierungsbedingungen:</p>
-              <p>Bis 7 Tage vor Termin: kostenfreie Stornierung</p>
-              <p>3–6 Tage vor Termin: 50 % des Buchungsbetrags</p>
-              <p>Weniger als 3 Tage / Nichterscheinen: 100 % des Buchungsbetrags</p>
-              <p className="mt-1 text-gray-400">Umbuchungen auf einen anderen Termin sind bis 3 Tage vorher kostenfrei möglich.</p>
+              <p className="font-semibold text-gray-700">{t.cancellationTitle}</p>
+              <p>{t.cancellation7}</p>
+              <p>{t.cancellation3to6}</p>
+              <p>{t.cancellationLess3}</p>
+              <p className="mt-1 text-gray-400">{t.cancellationRebook}</p>
             </div>
 
             <label className="flex items-start gap-3 cursor-pointer">
               <input type="checkbox" checked={form.agb} onChange={e => setForm(f => ({ ...f, agb: e.target.checked }))} className="mt-1 accent-[#6b7f3e] w-4 h-4" />
-              <span className="text-xs text-gray-600 leading-relaxed">
-                Ich akzeptiere die <a href="/agb" className="text-[#6b7f3e] underline">AGB</a>, <a href="/datenschutz" className="text-[#6b7f3e] underline">Datenschutzerklärung</a> und die oben genannten Stornierungsbedingungen des bizzcenter.
-              </span>
+              <span className="text-xs text-gray-600 leading-relaxed" dangerouslySetInnerHTML={{ __html: t.agbText('/agb', '/datenschutz') }} />
             </label>
           </section>
 
-          {/* ══════ ZUSAMMENFASSUNG UNTEN (nur Mobile) ══════ */}
+          {/* ZUSAMMENFASSUNG UNTEN (nur Mobile) */}
           <div className="lg:hidden bg-white rounded-2xl border shadow-sm p-5 space-y-4">
-            <h4 className="font-bold text-gray-900">Ihre Buchung</h4>
+            <h4 className="font-bold text-gray-900">{t.yourBooking}</h4>
 
             <div className="flex items-center gap-3">
               <img src={selectedRaum.image} alt="" className="w-12 h-12 rounded-lg object-cover" />
@@ -791,7 +1210,7 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
             </div>
 
             <div className="text-sm text-gray-600">
-              <p>{dauer === 'tag' ? 'Ganzer Tag' : 'Halber Tag'} · {teilnehmer} {teilnehmer === 1 ? 'Person' : 'Personen'}</p>
+              <p>{dauer === 'tag' ? t.fullDay : t.halfDay} · {teilnehmer} {teilnehmer === 1 ? t.personSingular : t.personPlural}</p>
             </div>
 
             {selectedDates.length > 0 ? (
@@ -799,7 +1218,7 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
                 <div className="space-y-1 font-mono text-sm">
                   {selectedDates.map(ds => (
                     <div key={ds} className="flex justify-between">
-                      <span className="text-gray-600 tabular-nums">{formatDE(ds)}</span>
+                      <span className="text-gray-600 tabular-nums">{formatDate(ds, locale)}</span>
                       <span className="text-gray-500 tabular-nums text-right min-w-[80px]">EUR {dauer === 'tag' ? selectedRaum.preise.tag : selectedRaum.preise.halberTag},-</span>
                     </div>
                   ))}
@@ -809,7 +1228,7 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
                   <div className="space-y-1">
                     {ADDONS.filter(a => selectedAddons[a.id]).map(a => (
                       <div key={a.id} className="flex justify-between text-sm text-gray-600">
-                        <span>{a.label}{a.mitMenge ? ` (${addonMengen[a.id] || 1}×)` : ''}</span>
+                        <span>{a.label}{a.mitMenge ? ` (${addonMengen[a.id] || 1}x)` : ''}</span>
                         <span>EUR {getAddonPreis(a.id, a) * (a.mitMenge ? (addonMengen[a.id] || 1) : 1) * selectedDates.length},-</span>
                       </div>
                     ))}
@@ -818,35 +1237,35 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
 
                 <div className="border-t pt-3 space-y-1">
                   <div className="flex justify-between text-sm text-gray-600">
-                    <span>Netto</span>
+                    <span>{t.netto}</span>
                     <span>EUR {preis.gesamt},-</span>
                   </div>
                   <div className="flex justify-between text-sm text-gray-600">
-                    <span>MwSt. (19%)</span>
+                    <span>{t.vat19}</span>
                     <span>EUR {(preis.gesamt * 0.19).toFixed(2).replace('.', ',')}</span>
                   </div>
                   <div className="flex justify-between font-bold text-[#6b7f3e] text-lg pt-1">
-                    <span>Gesamt (brutto)</span>
+                    <span>{t.totalGross}</span>
                     <span>EUR {(preis.gesamt * 1.19).toFixed(2).replace('.', ',')}</span>
                   </div>
                 </div>
               </>
             ) : (
-              <p className="text-sm text-gray-400 italic">Wählen Sie ein Datum im Kalender.</p>
+              <p className="text-sm text-gray-400 italic">{t.selectDateHint}</p>
             )}
 
             <button
               onClick={handleSubmit}
               disabled={!canSubmit || submitting}
-              title={!canSubmit ? 'Bitte füllen Sie Ihre Buchungsdaten aus und akzeptieren Sie die AGB.' : ''}
+              title={!canSubmit ? t.submitTooltip : ''}
               className="w-full bg-[#6b7f3e] text-white py-3.5 rounded-xl font-semibold text-base hover:bg-[#5a6b35] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
-              {submitting ? 'Weiter zur Zahlung...' : 'Jetzt buchen'}
+              {submitting ? t.processing : t.bookNow}
             </button>
           </div>
         </div>
 
-        {/* ── BUCHUNGSÜBERSICHT: Bild links, Warenkorb rechts ── */}
+        {/* BUCHUNGSUEBERSICHT: Bild links, Warenkorb rechts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
           {/* Raumbild links */}
           <div>
@@ -861,15 +1280,15 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
 
           {/* Warenkorb rechts */}
           <div className="bg-white rounded-2xl border shadow-sm p-5 space-y-4">
-            <h4 className="font-bold text-gray-900">Ihre Buchung</h4>
+            <h4 className="font-bold text-gray-900">{t.yourBooking}</h4>
 
             {/* Dauer, Teilnehmer & Basispreis */}
             <div className="text-sm text-gray-600 space-y-1">
               <div className="flex justify-between">
-                <span>{dauer === 'tag' ? 'Ganzer Tag' : 'Halber Tag'} · {teilnehmer} {teilnehmer === 1 ? 'Person' : 'Personen'}</span>
-                <span className="font-semibold text-[#6b7f3e]">EUR {use10er ? (dauer === 'tag' ? selectedRaum.preise.tag10er : selectedRaum.preise.halberTag10er) : (dauer === 'tag' ? selectedRaum.preise.tag : selectedRaum.preise.halberTag)},- <span className="text-xs font-normal text-gray-400">/ Tag</span></span>
+                <span>{dauer === 'tag' ? t.fullDay : t.halfDay} · {teilnehmer} {teilnehmer === 1 ? t.personSingular : t.personPlural}</span>
+                <span className="font-semibold text-[#6b7f3e]">EUR {use10er ? (dauer === 'tag' ? selectedRaum.preise.tag10er : selectedRaum.preise.halberTag10er) : (dauer === 'tag' ? selectedRaum.preise.tag : selectedRaum.preise.halberTag)},- <span className="text-xs font-normal text-gray-400">{t.perDay}</span></span>
               </div>
-              {use10er && <p className="text-xs text-[#6b7f3e]">10er-Karte · −15%</p>}
+              {use10er && <p className="text-xs text-[#6b7f3e]">{t.tenCard} · -15%</p>}
             </div>
 
             {selectedDates.length > 0 ? (
@@ -878,7 +1297,7 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
                 <div className="space-y-1 font-mono text-sm">
                   {selectedDates.map(ds => (
                     <div key={ds} className="flex justify-between">
-                      <span className="text-gray-600 tabular-nums">{formatDE(ds)}</span>
+                      <span className="text-gray-600 tabular-nums">{formatDate(ds, locale)}</span>
                       <span className="text-gray-500 tabular-nums text-right min-w-[80px]">EUR {dauer === 'tag' ? selectedRaum.preise.tag : selectedRaum.preise.halberTag},-</span>
                     </div>
                   ))}
@@ -889,7 +1308,7 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
                   <div className="space-y-1">
                     {ADDONS.filter(a => selectedAddons[a.id]).map(a => (
                       <div key={a.id} className="flex justify-between text-sm text-gray-600">
-                        <span>{a.label}{a.mitMenge ? ` (${addonMengen[a.id] || 1}×)` : ''}</span>
+                        <span>{a.label}{a.mitMenge ? ` (${addonMengen[a.id] || 1}x)` : ''}</span>
                         <span>EUR {getAddonPreis(a.id, a) * (a.mitMenge ? (addonMengen[a.id] || 1) : 1) * selectedDates.length},-</span>
                       </div>
                     ))}
@@ -899,30 +1318,30 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
                 {/* Gesamt */}
                 <div className="border-t pt-3 space-y-1">
                   <div className="flex justify-between text-sm text-gray-600">
-                    <span>Netto</span>
+                    <span>{t.netto}</span>
                     <span>EUR {preis.gesamt},-</span>
                   </div>
                   <div className="flex justify-between text-sm text-gray-600">
-                    <span>MwSt. (19%)</span>
+                    <span>{t.vat19}</span>
                     <span>EUR {(preis.gesamt * 0.19).toFixed(2).replace('.', ',')}</span>
                   </div>
                   <div className="flex justify-between font-bold text-[#6b7f3e] text-lg pt-1">
-                    <span>Gesamt (brutto)</span>
+                    <span>{t.totalGross}</span>
                     <span>EUR {(preis.gesamt * 1.19).toFixed(2).replace('.', ',')}</span>
                   </div>
                 </div>
               </>
             ) : (
-              <p className="text-sm text-gray-400 italic">Wählen Sie ein Datum im Kalender.</p>
+              <p className="text-sm text-gray-400 italic">{t.selectDateHint}</p>
             )}
 
             <button
               onClick={handleSubmit}
               disabled={!canSubmit || submitting}
-              title={!canSubmit ? 'Bitte füllen Sie Ihre Buchungsdaten aus und akzeptieren Sie die AGB.' : ''}
+              title={!canSubmit ? t.submitTooltip : ''}
               className="w-full bg-[#6b7f3e] text-white py-3 rounded-xl font-semibold hover:bg-[#5a6b35] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
-              {submitting ? 'Weiter zur Zahlung...' : 'Jetzt buchen'}
+              {submitting ? t.processing : t.bookNow}
             </button>
           </div>
         </div>

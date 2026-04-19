@@ -1,25 +1,210 @@
 ---
-title: "Conference Room Rental in Weil am Rhein – Meeting & Event Rooms"
-description: "Rent a conference room in Weil am Rhein: 2-25 people, daylight-flooded, catering, high-speed internet. bizzcenter in the border triangle Basel."
+title: "Louer une salle de conférence à Weil am Rhein – salles de réunion et d'événement"
+description: "Louer une salle de conférence à Weil am Rhein : 2-25 personnes, baignée de lumière naturelle, restauration, internet haut débit. bizzcenter dans le triangle frontalier de Bâle."
 ---
 
 <GlobalOverflowFix />
+<BreadcrumbListSchema items={[
+  { name: "Home", href: "/" },
+  { name: "Solutions de bureau", href: "/uebersicht" },
+  { name: "Louer une salle de conférence", href: "/konferenzraum-mieten" },
+]} />
 
-<PageHero
-  title="Conference and Meeting Rooms at bizzcenter Weil"
-  description="Daylight-flooded rooms for meetings, conferences and events"
-  image="/images/standorte/weil-am-rhein/konstanz/konferenzraum.jpg"
+<ActiveNavHighlight />
+<LanguageSwitcher />
+{/* ===== HEADLINE + IMAGE ===== */}
+<CompactHero
+  title="Salles de conférence et de réunion dès EUR 19,- /h"
+  description="Salles baignées de lumière naturelle pour 2 à 25 personnes — à l'heure ou à la journée, sans engagement contractuel."
+  image="/images/standorte/weil-am-rhein/konferenzraum-gross.jpg"
+  imageAlt="Salle de conférence au bizzcenter Weil am Rhein"
+  imagePosition="center top"
+  buttonText=""
+  buttonHref=""
+  formId=""
 />
 
-<Features title="Our Room Sizes" subtitle="The right room for every group size">
-  <FeatureCard title="Up to 2 people" description="Daylight-flooded meeting room. Parking directly in front of the building optional at EUR 6/day. Prices excl. VAT." icon="users" />
-  <FeatureCard title="Up to 6 people" description="Daylight-flooded meeting room. Parking optional. Prices excl. VAT." icon="users" />
-  <FeatureCard title="Up to 15 people" description="Daylight-flooded meeting room. Parking optional. Prices excl. VAT." icon="users" />
-  <FeatureCard title="Up to 25 people" description="Daylight-flooded meeting room. Parking optional. Prices excl. VAT." icon="users" />
+{/* ===== TAILLES DE SALLE AVEC TARIFS ===== */}
+<PricingCards
+  title="La salle adaptée à chaque taille de groupe"
+  description="Toutes les salles sont baignées de lumière naturelle et équipées de matériel de présentation moderne. Prix HT."
+  cards={[
+    {
+      title: "Salle de réunion S",
+      subtitle: "Jusqu'à 2 personnes",
+      image: "/images/standorte/weil-am-rhein/green-office-buero-2-personen.jpg",
+      description: "Idéal pour entretiens confidentiels, entretiens d'embauche ou coaching individuel.",
+      ctaHref: "/konferenzraum-buchen",
+      prices: [
+        { label: "Tarif horaire", amount: "EUR 19,-", note: "uniquement disponible avec carte 10 jours", tenner: {} },
+        { label: "Demi-journée", amount: "EUR 59,-", tenner: {} },
+        { label: "Journée entière", amount: "EUR 89,-", tenner: {} }
+      ]
+    },
+    {
+      title: "Salle de réunion M",
+      subtitle: "Jusqu'à 6 personnes",
+      image: "/images/standorte/weil-am-rhein/meetingraum-6-personen.jpg",
+      description: "Parfait pour réunions d'équipe, ateliers et discussions de projet.",
+      ctaHref: "/konferenzraum-6p-buchen",
+      prices: [
+        { label: "Tarif horaire", amount: "EUR 29,-", note: "uniquement disponible avec carte 10 jours", tenner: {} },
+        { label: "Demi-journée", amount: "EUR 89,-", tenner: {} },
+        { label: "Journée entière", amount: "EUR 129,-", tenner: {} }
+      ]
+    },
+    {
+      title: "Salle de conférence L",
+      subtitle: "Jusqu'à 15 personnes",
+      image: "/images/standorte/weil-am-rhein/konferenzraum-gross.jpg",
+      description: "Pour réunions plus importantes, formations et présentations.",
+      ctaHref: "/konferenzraum-15p-buchen",
+      prices: [
+        { label: "Tarif horaire", amount: "EUR 39,-", note: "uniquement disponible avec carte 10 jours", tenner: {} },
+        { label: "Demi-journée", amount: "EUR 99,-", tenner: {} },
+        { label: "Journée entière", amount: "EUR 159,-", tenner: {} }
+      ]
+    },
+    {
+      title: "Salle de conférence XL",
+      subtitle: "Jusqu'à 25 personnes",
+      image: "/images/standorte/weil-am-rhein/konferenzraum-gross.jpg",
+      description: "Pour conférences, congrès et événements plus importants.",
+      ctaHref: "/konferenzraum-25p-buchen",
+      prices: [
+        { label: "Tarif horaire", amount: "EUR 49,-", note: "uniquement disponible avec carte 10 jours", tenner: {} },
+        { label: "Demi-journée", amount: "EUR 129,-", tenner: {} },
+        { label: "Journée entière", amount: "EUR 199,-", tenner: {} }
+      ]
+    }
+  ]}
+  ctaText="Réserver"
+  ctaHref="/konferenzraum-buchen"
+/>
+
+{/* ===== SOCIAL PROOF ===== */}
+<GoogleReviews
+  title="Ce que disent nos clients"
+  reviews={[
+    {
+      author: "Francesco Petrini",
+      rating: 5,
+      text: "Very well organized space and in development. Good WiFi network and easy parking. Perfect solution to work in Germany close to CH/France.",
+      source: "Google Review"
+    },
+    {
+      author: "Katja Falkenburger",
+      rating: 5,
+      text: "Les bureaux partagés et virtuels offrent des locaux confortables et de la flexibilité, combinés à un emplacement attrayant proche des frontières suisse et française.",
+      source: "Google Review"
+    },
+    {
+      author: "veprosa",
+      rating: 5,
+      text: "Bureau magnifique et lumineux dans un emplacement attractif – on ne peut pas faire mieux. Nous recommandons chaleureusement bizzcenter Weil am Rhein à tout le monde !",
+      source: "Google Review"
+    }
+  ]}
+/>
+
+{/* ===== GALERIE D'IMAGES ===== */}
+<ImageSlider
+  title="Nos salles de conférence et de réunion"
+  slides={[
+    { src: "/images/standorte/weil-am-rhein/konferenzraum-gross.jpg", caption: "Grande salle de conférence — jusqu'à 25 personnes" },
+    { src: "/images/standorte/weil-am-rhein/konferenzraum-reihenbestuhlung.png", caption: "Salle de conférence avec disposition en rangées — jusqu'à 15 personnes" },
+    { src: "/images/standorte/weil-am-rhein/meetingraum-6-personen.jpg", caption: "Salle de réunion pour 6 personnes" },
+    { src: "/images/standorte/weil-am-rhein/meetingraum-empore-5-personen.jpg", caption: "Salle de réunion en mezzanine — jusqu'à 5 personnes" },
+    { src: "/images/standorte/weil-am-rhein/coworking-loungeecke.jpg", caption: "Coin lounge pour réunions informelles" },
+    { src: "/images/standorte/weil-am-rhein/kueche-aufenthaltsraum.jpg", caption: "Cuisine et salle de repos pour vos pauses" }
+  ]}
+/>
+
+{/* ===== CE QUI EST INCLUS ===== */}
+<Features title="Tout pour votre réunion parfaite" columns={3}>
+  <Feature title="Internet haut débit" description="Wi-Fi 5/6 et LAN. Suffisamment stable pour visioconférences, applications cloud et téléphonie IP." />
+  <Feature title="Matériel de présentation" description="Projecteur, écran et tableau blanc dans toutes les salles de conférence. Kit d'animation également sur demande." />
+  <Feature title="Restauration" description="Restauration complète pour réunions : pause-café, boissons, viennoiseries ou déjeuner sur demande." />
+  <Feature title="Places de parking" description="Directement devant le bâtiment. Optionnel au tarif journalier de EUR 6,- HT." />
+  <Feature title="Cuisine et lounge" description="Cuisine moderne avec possibilité de réchauffage et de réfrigération. Espace lounge pour les pauses." />
+  <Feature title="Réservation flexible" description="Réservable à l'heure ou à la journée. Pas de durée minimale, aucun coût caché." />
 </Features>
 
-<BannerCTA
-  title="Book a conference room in Weil am Rhein"
-  subtext="Flexible booking – by the hour or full day. In the border triangle near Basel."
-  buttonText="Get in Touch" buttonHref="/kontakt"
-/>
+{/* ===== STATS ===== */}
+<StatsTheme>
+<Stats title="Salles de conférence en chiffres">
+  <Stat value="4" label="Tailles de salle" description="De 2 à 25 personnes" />
+  <Stat value="100%" label="Lumière du jour" description="Toutes les salles baignées de lumière naturelle" />
+  <Stat value="High-Speed" label="Internet" description="Wi-Fi et LAN dans toutes les salles" />
+  <Stat value="300m" label="Vers la Suisse" description="Directement à la frontière" />
+</Stats>
+</StatsTheme>
+
+{/* ===== À PROPOS DU SITE ===== */}
+<AlternatingFeatures>
+  <AlternatingFeatureRow title="Événements au Kesselhaus" description="Bâtiment industriel historique plein de charme : 7,50 m de hauteur sous plafond, architecture ouverte et beaucoup de lumière naturelle. Idéal pour des réunions qui doivent être plus qu'une simple salle de conférence — inspirantes et représentatives." image="/images/hero/kesselhaus.jpg" imageAlt="Kesselhaus Weil am Rhein" />
+  <AlternatingFeatureRow title="Dans le triangle frontalier de Bâle" description="À 300 m de la frontière suisse, directement sur la ligne de tram 8 (arrêt Riedlistrasse/Kesselhaus), proche de l'autoroute A5 et avec parking sur place. Parfaitement accessible pour les équipes d'Allemagne, de Suisse et de France." image="/images/standorte/weil-am-rhein/standortkarte.png" imageAlt="Carte du site bizzcenter Weil am Rhein — triangle frontalier de Bâle" />
+</AlternatingFeatures>
+
+{/* ===== FAQ ===== */}
+<FAQ title="Questions fréquentes sur les salles de conférence">
+  <FAQItem question="Comment puis-je réserver une salle de conférence ?">
+    Il suffit de nous contacter par téléphone, e-mail ou via notre formulaire de contact. Nous vous confirmons la disponibilité rapidement.
+  </FAQItem>
+  <FAQItem question="Puis-je réserver la salle à l'heure ?">
+    Oui. Toutes les salles sont réservables à l'heure, à la demi-journée ou à la journée — selon vos besoins.
+  </FAQItem>
+  <FAQItem question="Y a-t-il de la restauration ?">
+    Oui. De la simple pause-café au déjeuner complet, nous organisons volontiers la restauration de votre réunion.
+  </FAQItem>
+  <FAQItem question="Quel matériel est disponible ?">
+    Projecteur, écran, tableau blanc et internet haut débit (Wi-Fi 5/6 + LAN) sont disponibles dans toutes les salles.
+  </FAQItem>
+  <FAQItem question="Y a-t-il des places de parking ?">
+    Oui. Les places de parking se trouvent directement devant le bâtiment et peuvent être réservées en option au tarif journalier de EUR 6,- HT. 90 minutes gratuites.
+  </FAQItem>
+  <FAQItem question="Comment rejoindre le bizzcenter en transports en commun ?">
+    Ligne de tram 8 depuis Bâle, arrêt Riedlistrasse/Kesselhaus — directement devant la porte.
+  </FAQItem>
+  <FAQItem question="Puis-je visiter la salle au préalable ?">
+    Oui. Convenez d'une visite sans engagement — nous vous montrons volontiers nos locaux.
+  </FAQItem>
+  <FAQItem question="Y a-t-il de quoi manger sur place ?">
+    Oui — un restaurant avec menu du jour se trouve directement dans le Kesselhaus. Parfait pour les réunions plus longues ou les réservations à la journée.
+  </FAQItem>
+  <FAQItem question="Où se trouve exactement la salle de conférence à Weil am Rhein ?">
+    Dans le Kesselhaus historique, Am Kesselhaus 3, 79576 Weil am Rhein — à seulement 300 mètres de la frontière suisse. Directement accessible par la ligne de tram 8 depuis Bâle (arrêt Riedlistrasse/Kesselhaus) et proche de l'autoroute A5.
+  </FAQItem>
+  <FAQItem question="Puis-je réserver une salle de conférence en tant qu'entreprise suisse ?">
+    Oui. Beaucoup de nos clients viennent de Bâle et du nord-ouest de la Suisse. La frontière est accessible à pied, et les prix sont en euros — nettement moins chers que des salles comparables à Bâle.
+  </FAQItem>
+  <FAQItem question="À quelle distance la salle de conférence est-elle de l'EuroAirport Bâle ?">
+    L'EuroAirport Basel-Mulhouse-Freiburg n'est qu'à environ 15 minutes en voiture. Idéal pour les réunions avec des participants internationaux.
+  </FAQItem>
+  <FAQItem question="Les salles conviennent-elles aux ateliers et formations ?">
+    Oui. Les salles L (15 personnes) et XL (25 personnes) en particulier conviennent parfaitement aux ateliers, formations et séminaires d'une journée. Un forfait de réaménagement pour des dispositions alternatives peut être réservé en option.
+  </FAQItem>
+  <FAQItem question="Puis-je également réserver la salle de conférence le week-end ?">
+    Oui. Nos salles sont réservables 7 jours sur 7 — y compris les samedis et dimanches.
+  </FAQItem>
+  <FAQItem question="Combien coûte une salle de conférence à Weil am Rhein ?">
+    Dès EUR 19,- de l'heure pour la salle de réunion S (2 personnes). Des tarifs demi-journée et journée entière sont disponibles. Avec la carte 10 jours, vous économisez 15% sur toutes les réservations.
+  </FAQItem>
+  <FAQItem question="Y a-t-il une salle de conférence avec lumière naturelle ?">
+    Oui — toutes nos salles sont baignées de lumière naturelle. Le Kesselhaus a 7,50 mètres de hauteur sous plafond et de grandes baies vitrées.
+  </FAQItem>
+</FAQ>
+
+<FAQPageSchema items={[
+  { question: "Comment puis-je réserver une salle de conférence ?", answer: "Il suffit de nous contacter par téléphone, e-mail ou via notre formulaire de contact. Nous vous confirmons la disponibilité rapidement." },
+  { question: "Puis-je réserver la salle à l'heure ?", answer: "Oui. Toutes les salles sont réservables à l'heure, à la demi-journée ou à la journée — selon vos besoins." },
+  { question: "Quel matériel est disponible ?", answer: "Projecteur, écran, tableau blanc et internet haut débit (Wi-Fi 5/6 + LAN) sont disponibles dans toutes les salles." },
+  { question: "Y a-t-il des places de parking ?", answer: "Oui. Les places de parking se trouvent directement devant le bâtiment et peuvent être réservées en option au tarif journalier de EUR 6,- HT. 90 minutes gratuites." },
+  { question: "Où se trouve exactement la salle de conférence à Weil am Rhein ?", answer: "Dans le Kesselhaus historique, Am Kesselhaus 3, 79576 Weil am Rhein — à seulement 300 mètres de la frontière suisse. Directement accessible par la ligne de tram 8 depuis Bâle (arrêt Riedlistrasse/Kesselhaus) et proche de l'autoroute A5." },
+  { question: "Puis-je réserver une salle de conférence en tant qu'entreprise suisse ?", answer: "Oui. Beaucoup de nos clients viennent de Bâle et du nord-ouest de la Suisse. La frontière est accessible à pied, et les prix sont en euros — nettement moins chers que des salles comparables à Bâle." },
+  { question: "Combien coûte une salle de conférence à Weil am Rhein ?", answer: "Dès EUR 19,- de l'heure pour la salle de réunion S (2 personnes). Des tarifs demi-journée et journée entière sont disponibles. Avec la carte 10 jours, vous économisez 15% sur toutes les réservations." },
+  { question: "Y a-t-il une salle de conférence avec lumière naturelle ?", answer: "Oui — toutes nos salles sont baignées de lumière naturelle. Le Kesselhaus a 7,50 mètres de hauteur sous plafond et de grandes baies vitrées." },
+]} />
+
+{/* ===== RÉSERVER MAINTENANT ===== */}
+<CheckoutWizard product="konferenzraum" title="Réserver une salle de conférence" />

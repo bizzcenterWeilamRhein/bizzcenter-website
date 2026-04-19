@@ -1,32 +1,121 @@
 ---
-title: "Rent an Office in Weil am Rhein – Ready-to-Work Offices"
-description: "Rent a furnished office in Weil am Rhein. Ready-to-work with LAN/WLAN, telephone, utilities included. Short rental periods at bizzcenter in the border triangle."
+title: "Louer un bureau à Weil am Rhein – entièrement équipé, prêt à emménager"
+description: "Louer un bureau à Weil am Rhein : entièrement équipé, internet haut débit, accès 24/7. Dès EUR 399,- HT. bizzcenter au Kesselhaus près de Bâle."
 ---
 
 <GlobalOverflowFix />
+<BreadcrumbListSchema items={[
+  { name: "Home", href: "/" },
+  { name: "Solutions de bureau", href: "/uebersicht" },
+  { name: "Louer un bureau", href: "/buero-mieten" },
+]} />
 
-<PageHero
-  title="Rent an Office in Weil am Rhein"
-  description="Benefit from our offices – ready to work"
-  image="/images/standorte/weil-am-rhein/coworking-arbeitsplatz.jpg"
+<ActiveNavHighlight />
+<LanguageSwitcher />
+{/* ===== GALERIE EN HAUT ===== */}
+<ImageSlider
+  title=""
+  slides={[
+    { src: "/images/standorte/weil-am-rhein/green-office-einzelbuero.jpg", caption: "Bureau individuel au bizzcenter" },
+    { src: "/images/standorte/weil-am-rhein/green-office.jpg", caption: "Green Office — lumière naturelle et végétation" },
+    { src: "/images/standorte/weil-am-rhein/green-office-buero-2-personen.jpg", caption: "Bureau pour 2 personnes" },
+    { src: "/images/standorte/weil-am-rhein/kueche-aufenthaltsraum.jpg", caption: "Cuisine et salle de repos" },
+    { src: "/images/standorte/weil-am-rhein/green-office-flurbereich.jpg", caption: "Couloir au Green Office" }
+  ]}
 />
 
-## What does that mean exactly?
+{/* ===== INFO + FORMULAIRE CÔTE À CÔTE ===== */}
+<BueroAnfrage />
 
-Renting an office always involves a lot of effort and costs. We recognized this back in 2004, so we take all the work out of this process for you so that you can focus on your business.
+{/* ===== SOCIAL PROOF ===== */}
+<GoogleReviews
+  title="Ce que disent nos locataires de bureaux"
+  reviews={[
+    {
+      author: "veprosa",
+      rating: 5,
+      text: "Bureau magnifique et lumineux dans un emplacement attractif – on ne peut pas faire mieux. Nous recommandons chaleureusement bizzcenter Weil am Rhein à tout le monde !",
+      source: "Google Review"
+    },
+    {
+      author: "Katja Falkenburger",
+      rating: 5,
+      text: "Les bureaux partagés et virtuels offrent des locaux confortables et de la flexibilité, combinés à un emplacement attrayant proche des frontières suisse et française.",
+      source: "Google Review"
+    },
+    {
+      author: "Francesco Petrini",
+      rating: 5,
+      text: "Very well organized space and in development. Good WiFi network and easy parking. Perfect solution to work in Germany close to CH/France.",
+      source: "Google Review"
+    }
+  ]}
+/>
 
-<Features title="Our offices are already equipped with:">
-  <FeatureCard title="High-quality office equipment" description="First-class furniture and equipment for productive working" icon="check" />
-  <FeatureCard title="LAN/WLAN" description="High-speed internet for all requirements" icon="wifi" />
-  <FeatureCard title="Telephone/Fax" description="Optionally available" icon="phone" />
+{/* ===== CE QUI EST INCLUS ===== */}
+<div style={{ marginBottom: '-2rem' }}>
+<Features title="Ce qui est inclus dans le prix du bureau" columns={3}>
+  <FeatureCard title="Entièrement meublé" description="Bureau, chaise, étagères — tout est là. Apportez juste votre ordinateur portable." icon="check" />
+  <FeatureCard title="Internet haut débit" description="Wi-Fi 5/6 et LAN. Suffisamment stable pour visioconférences, applications cloud et téléphonie IP." icon="check" />
+  <FeatureCard title="Charges incluses" description="Électricité, chauffage, eau, ménage — aucun coût caché." icon="check" />
+  <FeatureCard title="Accès 24/7" description="Votre propre code de porte pour un accès 24h/24, 7j/7." icon="check" />
+  <FeatureCard title="Verrouillable et privé" description="Votre propre bureau avec porte verrouillable — pas d'open space, pas de distractions." icon="check" />
+  <FeatureCard title="Réception du courrier" description="Réception de courrier et de colis incluse. Réexpédition et service de numérisation en option." icon="check" />
 </Features>
+</div>
 
-We take over ancillary costs (water/electricity), office cleaning, and offer flexible additional office and conference rooms, mail processing, and short rental periods.
+{/* ===== À PROPOS DE NOUS ===== */}
+<AlternatingFeatures>
+  <AlternatingFeatureRow title="Bureaux prêts à l'emploi" description="Nos bureaux individuels sont entièrement meublés : bureau, chaise, étagères, internet haut débit — apportez juste votre ordinateur portable. Pas de commission de courtage, pas de frais d'installation. Productif dès le premier jour." image="/images/standorte/weil-am-rhein/green-office-einzelbuero.jpg" imageAlt="Bureau individuel Green Office au bizzcenter" />
+  <AlternatingFeatureRow title="Dans le Kesselhaus historique" description="Le bizzcenter est situé dans le Kesselhaus classé monument historique à Weil am Rhein — à 300 m de la frontière suisse. Facilement accessible par la ligne de tram 8 depuis Bâle (arrêt Riedlistrasse/Kesselhaus), proche de l'autoroute A5 et avec parking sur place." image="/images/hero/kesselhaus.jpg" imageAlt="Kesselhaus Weil am Rhein" />
+</AlternatingFeatures>
 
-We are at your disposal as a competent partner with over 20 years of experience in flexible office services and company start-ups in Germany and Switzerland.
+{/* ===== FAQ ===== */}
+<FAQ title="Questions fréquentes sur la location de bureau à Weil am Rhein">
+  <FAQItem question="À qui s'adresse un bureau au bizzcenter ?">
+    Aux indépendants, petites entreprises, consultants et équipes qui ont besoin d'un espace de travail propre et fermé — sans les coûts et les démarches d'un bail traditionnel.
+  </FAQItem>
+  <FAQItem question="Quelle est la différence avec le coworking ?">
+    Dans un bureau, vous avez votre propre salle verrouillable — idéal pour le travail confidentiel, les rendez-vous clients ou quand vous avez simplement besoin de calme. Le coworking est plus ouvert et flexible.
+  </FAQItem>
+  <FAQItem question="Quelle est la taille des bureaux ?">
+    Nos bureaux font entre 8 et 20 m² — idéal pour 1 à 3 personnes. Des surfaces plus grandes sont disponibles sur demande.
+  </FAQItem>
+  <FAQItem question="Où se trouve exactement le bizzcenter à Weil am Rhein ?">
+    Dans le Kesselhaus historique, Am Kesselhaus 3, 79576 Weil am Rhein — à seulement 300 mètres de la frontière suisse. Directement accessible par la ligne de tram 8 depuis Bâle (arrêt Riedlistrasse/Kesselhaus) et proche de l'autoroute A5.
+  </FAQItem>
+  <FAQItem question="Puis-je louer un bureau à Weil am Rhein en tant qu'entreprise suisse ?">
+    Oui. Beaucoup de nos locataires sont des entreprises suisses qui cherchent un site allemand dans le triangle frontalier de Bâle. La frontière est accessible à pied.
+  </FAQItem>
+  <FAQItem question="Combien coûte un bureau à Weil am Rhein ?">
+    Dès EUR 399,- HT par mois — incluant l'ameublement, l'internet haut débit, les charges et l'accès 24/7. Aucun coût caché.
+  </FAQItem>
+  <FAQItem question="Puis-je utiliser l'adresse comme adresse commerciale ?">
+    Oui. L'utilisation comme adresse commerciale légalement valide peut être ajoutée en option — idéal pour le registre du commerce, les mentions légales et l'inscription commerciale.
+  </FAQItem>
+  <FAQItem question="Y a-t-il des places de parking ?">
+    Oui. 90 minutes gratuites sur le site. Des places journalières et mensuelles peuvent être réservées en option.
+  </FAQItem>
+  <FAQItem question="Y a-t-il des salles de réunion ou de conférence ?">
+    Oui. Des salles de réunion et de conférence pour 2 à 25 personnes peuvent être ajoutées de manière flexible à l'heure ou à la journée.
+  </FAQItem>
+  <FAQItem question="Comment est la liaison vers Bâle et la France ?">
+    Excellente. La ligne de tram 8 va directement à Bâle (arrêt devant la porte). L'autoroute A5 est à 2 minutes. Saint-Louis (France) est à 5 minutes en voiture. EuroAirport Basel-Mulhouse à 15 minutes.
+  </FAQItem>
+  <FAQItem question="Les bureaux conviennent-ils au coaching et au conseil ?">
+    Oui, parfaitement. Nos bureaux sont fermés et calmes — idéal pour les entretiens confidentiels. Nous avons aussi des salles spécialement aménagées pour le coaching et le conseil. Plus d'informations sur notre page <a href="/coachingbuero-mieten" style={{color: '#6b7f3e', textDecoration: 'underline'}}>Bureau de coaching et de conseil</a>.
+  </FAQItem>
+  <FAQItem question="Y a-t-il un déjeuner à proximité ?">
+    Oui — un restaurant avec menu du jour se trouve directement dans le Kesselhaus. Idéal pour la pause déjeuner sans avoir à quitter le bâtiment.
+  </FAQItem>
+  <FAQItem question="Y a-t-il une durée minimale ?">
+    Durée minimale de 3 mois, résiliation à la fin du trimestre. Les durées plus longues offrent des conditions plus attractives.
+  </FAQItem>
+</FAQ>
 
+{/* ===== CTA FINAL ===== */}
 <BannerCTA
-  title="Your Office in Weil am Rhein"
-  subtext="We look forward to hearing from you and will usually get back to you within 24 hours."
-  buttonText="Send Inquiry" buttonHref="/kontakt"
+  title="Demander un bureau"
+  subtext="Entièrement équipé dès EUR 399,- HT. Prêt à emménager."
+  buttonText="Demander maintenant" buttonHref="#buero-anfrage"
 />

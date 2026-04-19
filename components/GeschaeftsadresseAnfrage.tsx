@@ -205,6 +205,103 @@ const STRINGS = {
     finalStep3Title: 'Contract & start',
     finalStep3Desc: 'After signature and deposit, your address is active within 24h.',
   },
+  fr: {
+    defaultTitle: 'Demander une adresse commerciale',
+    subtitle: 'Choisissez votre formule préférée — nous examinerons vos informations et vous enverrons une proposition de contrat personnalisée par e-mail.',
+
+    step1Title: '1. Traitement du courrier',
+    pvWithout: 'Sans réexpédition du courrier',
+    pvWith: 'Avec réexpédition du courrier',
+    pvWithoutDesc: 'Le courrier est collecté sur place, accessible 24/7',
+    pvWithDesc: 'Réexpédition hebdomadaire vers une adresse dans la région DACH',
+
+    summerPromo: 'Offre d\'été — 35% de remise jusqu\'au 30/09/2026',
+    step2Title: '2. Choisir une formule',
+    step2SubWith: 'Avec réexpédition hebdomadaire du courrier',
+    step2SubWithout: 'Sans réexpédition du courrier',
+    step2VatNote: 'Tous les prix hors TVA.',
+    popularBadge: 'Populaire',
+    perMonthVat: '/mois HT',
+
+    tarifLabels: { langzeit: 'Longue durée', standard: 'Standard', flex: 'Flex' } as Record<string, string>,
+    months: (n: number) => `${n} mois`,
+
+    step3Title: '3. Options supplémentaires',
+    step3Sub: 'Non obligatoire — peuvent aussi être ajoutées plus tard.',
+    chosen: '✓ Sélectionné',
+    addCta: '+ Ajouter',
+
+    addonLabels: {
+      scanpaket: 'Pack de numérisation',
+      parkplatz: 'Place de parking',
+      firmenschild: 'Enseigne d\'entreprise',
+      telefon: 'Service téléphonique',
+      sekretariat: 'Service de secrétariat',
+    } as Record<string, string>,
+    addonPrices: {
+      monthly49: 'EUR 49,-/mois',
+      once179: 'EUR 179,- une fois',
+      onRequest: 'sur demande',
+    } as Record<string, string>,
+
+    summaryTitle: 'Votre sélection',
+    summaryTarif: 'Formule',
+    summaryPv: 'Traitement du courrier',
+    summaryMonthly: 'Mensuel',
+    summaryPvWith: 'Avec réexpédition',
+    summaryPvWithout: 'Sans (retrait sur place)',
+    summaryVatNote: 'Tous les prix hors TVA.',
+
+    step4Title: '4. Vos informations',
+    step4Sub: 'Nous examinerons vos informations et vous enverrons une offre ferme incluant le contrat par e-mail.',
+
+    labelCompany: 'Nom de l\'entreprise *',
+    placeholderCompany: 'Exemple Entreprise SARL',
+    labelLegalForm: 'Forme juridique',
+    selectPlaceholder: 'Veuillez choisir',
+    labelHrNumber: 'Numéro de registre du commerce',
+    placeholderHrNumber: 'par ex. HRB 12345 (le cas échéant)',
+    labelGewerbeschein: 'Inscription commerciale / licence d\'exploitation disponible',
+    labelContact: 'Personne de contact *',
+    placeholderContact: 'Prénom et nom',
+    labelEmail: 'E-mail *',
+    placeholderEmail: 'votre@email.com',
+    labelPhone: 'Téléphone *',
+    placeholderPhone: '+49 123 456 789',
+    labelStartDate: 'Date de début souhaitée',
+    labelNotes: 'Commentaires / questions',
+    placeholderNotes: 'par ex. exigences particulières, questions sur le service...',
+
+    errorSubmit: 'Un problème est survenu lors de l\'envoi. Veuillez réessayer.',
+    submitting: 'Envoi en cours...',
+    submit: 'Demander sans engagement',
+    formFooter: '* Champs obligatoires · Aucune donnée de paiement requise · Réponse sous 24h',
+
+    successTitle: 'Demande reçue',
+    successBody: 'Merci de votre intérêt ! Nous examinerons vos informations et vous répondrons sous 24 heures avec une proposition de contrat personnalisée.',
+    successContact: 'Pour toute question, contactez-nous au',
+
+    rechtsformen: [
+      'Entreprise individuelle',
+      'GbR (société civile)',
+      'GmbH (SARL)',
+      'UG (SARL simplifiée)',
+      'KG (société en commandite)',
+      'OHG (société en nom collectif)',
+      'AG (société anonyme)',
+      'Profession libérale',
+      'Association (e.V.)',
+      'Succursale',
+      'Autre',
+    ],
+
+    finalStep1Title: 'Envoyer la demande',
+    finalStep1Desc: 'Choisissez votre formule et remplissez le formulaire.',
+    finalStep2Title: 'Nous examinons et préparons votre offre',
+    finalStep2Desc: 'Sous 24h, vous recevrez une proposition de contrat personnalisée par e-mail.',
+    finalStep3Title: 'Contrat et démarrage',
+    finalStep3Desc: 'Après signature et dépôt de garantie, votre adresse est active sous 24h.',
+  },
 };
 
 // ─── Static data (module level — stable across renders) ────────────
@@ -233,7 +330,7 @@ interface GeschaeftsadresseAnfrageProps {
 
 export function GeschaeftsadresseAnfrage({ title }: GeschaeftsadresseAnfrageProps) {
   const pathname = usePathname();
-  const locale: 'de' | 'en' = pathname?.startsWith('/en') ? 'en' : 'de';
+  const locale: 'de' | 'en' | 'fr' = pathname?.startsWith('/fr') ? 'fr' : pathname?.startsWith('/en') ? 'en' : 'de';
   const t = STRINGS[locale];
   const effectiveTitle = title ?? t.defaultTitle;
 

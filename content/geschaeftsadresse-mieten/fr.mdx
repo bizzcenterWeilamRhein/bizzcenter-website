@@ -1,31 +1,36 @@
 ---
-title: "Adresse commerciale Weil am Rhein – Bureau virtuel dans le triangle frontalier de Bâle"
-description: "Louer une adresse commerciale à Weil am Rhein. Valable pour RC & administration fiscale. Service postal, 300m de la Suisse. Dès EUR 49,-."
+title: "Adresse commerciale Weil am Rhein – bureau virtuel dans le triangle frontalier de Bâle"
+description: "Louer une adresse commerciale à Weil am Rhein. Légalement valide pour registre du commerce et administration fiscale. Service postal, à 300 m de la Suisse. Dès EUR 49,-."
 ---
 
 <GlobalOverflowFix />
-
+<BreadcrumbListSchema items={[
+  { name: "Home", href: "/" },
+  { name: "Solutions de bureau", href: "/uebersicht" },
+  { name: "Louer une adresse commerciale", href: "/geschaeftsadresse-mieten" },
+]} />
 
 <ActiveNavHighlight />
 <LanguageSwitcher />
-{/* ===== HEADLINE + BILD ===== */}
+{/* ===== HEADLINE + IMAGE ===== */}
 <CompactHero
   title="Votre adresse commerciale à Weil am Rhein"
-  description="Offre de lancement jusqu'au 30.09.2026 — Forfait de base sans envoi postal dès EUR 49,- /mois HT."
+  description="Offre d'été jusqu'au 30/09/2026 — 35% de remise. Forfait de base sans réexpédition du courrier dès EUR 49,- /mois HT."
   image="/images/standorte/weil-am-rhein/green-office.jpg"
-  imageAlt="Green Office Weil am Rhein – deux coworkers en conversation"
+  imageAlt="Green Office Weil am Rhein – deux coworkers en discussion"
   buttonText=""
   buttonHref=""
   formId="formular"
+  formVariant="geschaeftsadresse"
 >
   <ul className="mt-4 space-y-2 text-sm md:text-base text-foreground list-none">
-    <li className="flex items-start gap-2"><span className="text-primary mt-0.5">✓</span> Valable pour registre du commerce & administration fiscale</li>
+    <li className="flex items-start gap-2"><span className="text-primary mt-0.5">✓</span> Légalement valide pour le registre du commerce et l'administration fiscale</li>
     <li className="flex items-start gap-2"><span className="text-primary mt-0.5">✓</span> À seulement 300 mètres de la frontière suisse</li>
-    <li className="flex items-start gap-2"><span className="text-primary mt-0.5">✓</span> Enregistrement commercial & inscription RC en Allemagne possible</li>
-    <li className="flex items-start gap-2"><span className="text-primary mt-0.5">✓</span> Réception et transfert du courrier</li>
-    <li className="flex items-start gap-2"><span className="text-primary mt-0.5">✓</span> Bureaux & salles de conférence réservables à l'heure</li>
-    <li className="flex items-start gap-2"><span className="text-primary mt-0.5">✓</span> Adresse commerciale représentative au sein d'un business center professionnel</li>
-    <li className="flex items-start gap-2"><span className="text-primary mt-0.5">✓</span> Prêt en 24 heures</li>
+    <li className="flex items-start gap-2"><span className="text-primary mt-0.5">✓</span> Inscription commerciale et inscription au registre du commerce en Allemagne possibles</li>
+    <li className="flex items-start gap-2"><span className="text-primary mt-0.5">✓</span> Réception et réexpédition du courrier</li>
+    <li className="flex items-start gap-2"><span className="text-primary mt-0.5">✓</span> Bureaux et salles de conférence réservables à l'heure</li>
+    <li className="flex items-start gap-2"><span className="text-primary mt-0.5">✓</span> Adresse commerciale prestigieuse au sein d'un business center professionnel</li>
+    <li className="flex items-start gap-2"><span className="text-primary mt-0.5">✓</span> Opérationnel sous 24 heures</li>
   </ul>
 </CompactHero>
 
@@ -42,122 +47,133 @@ description: "Louer une adresse commerciale à Weil am Rhein. Valable pour RC & 
     {
       author: "Katja Falkenburger",
       rating: 5,
-      text: "Die Gemeinschafts- und virtuellen Büros bieten komfortable Räumlichkeiten und Flexibilität verknüpft mit einer attraktiven, grenznahen Lage zur Schweiz und nach Frankreich.",
+      text: "Les bureaux partagés et virtuels offrent des locaux confortables et de la flexibilité, combinés à un emplacement attrayant proche des frontières suisse et française.",
       source: "Google Review"
     },
     {
       author: "veprosa",
       rating: 5,
-      text: "Tolles, helles Büro in attraktiver Lage – besser geht es nicht. Wir können das bizzcenter Weil am Rhein jedem nur wärmstens empfehlen!",
+      text: "Bureau magnifique et lumineux dans un emplacement attractif – on ne peut pas faire mieux. Nous recommandons chaleureusement bizzcenter Weil am Rhein à tout le monde !",
       source: "Google Review"
     }
   ]}
 />
 
-{/* ===== 4 GRÜNDE ===== */}
-<FeaturesWithBg title="4 raisons pour votre adresse commerciale au bizzcenter" columns={2} backgroundImage="/images/standorte/weil-am-rhein/green-office-eingangsbereich.jpeg">
-  <FeatureCard title="Votre siège UE — à 300 mètres de Bâle" description="Vous avez besoin d'une adresse commerciale allemande pour commercer dans l'UE, créer une succursale ou enregistrer une entreprise. Chez nous, vous obtenez exactement cela — directement à la frontière suisse, sans long trajet." icon="map-pin" />
-  <FeatureCard title="Plus de 22 ans d'expérience dans la zone frontalière" description="Depuis 2004, nous accompagnons les entreprises suisses dans leur entrée sur le marché UE. Nous connaissons les particularités fiscales et réglementaires des deux côtés de la frontière — et vous évitons des erreurs coûteuses." icon="flag-de-ch" />
-  <FeatureCard title="Tout sous un même toit — de l'adresse postale à la salle de réunion" description="Commencez avec une adresse commerciale représentative et un service postal. Si vous avez besoin de plus, réservez des bureaux et salles de conférence à l'heure. Sans bail à long terme, sans frais fixes." icon="building" />
-  <FeatureCard title="Prêt en 24 heures" description="Dès que le contrat et la caution sont reçus, votre adresse commerciale est active le jour ouvrable suivant — avec réception du courrier, adresse légale et tout ce qui va avec." icon="clock" />
+{/* ===== 4 RAISONS ===== */}
+<FeaturesWithBg title="4 raisons de choisir votre adresse commerciale au bizzcenter" columns={2} backgroundImage="/images/standorte/weil-am-rhein/green-office-eingangsbereich.jpeg">
+  <FeatureCard title="Votre siège UE — à 300 mètres de Bâle" description="Vous avez besoin d'une adresse commerciale allemande pour commercer dans l'UE, créer une succursale ou enregistrer une activité. Nous vous offrons exactement cela — directement à la frontière suisse, sans long déplacement." icon="map-pin" />
+  <FeatureCard title="Plus de 22 ans d'expérience dans la région frontalière" description="Depuis 2004, nous accompagnons les entreprises suisses dans leur entrée sur le marché européen. Nous connaissons les particularités fiscales et réglementaires des deux côtés de la frontière — et vous évitons des erreurs coûteuses." icon="flag-de-ch" />
+  <FeatureCard title="Tout sous un même toit — de l'adresse postale à la salle de réunion" description="Commencez avec une adresse commerciale prestigieuse et un service postal. Si vous avez besoin de plus, réservez des bureaux et salles de conférence à l'heure. Sans bail à long terme, sans frais fixes." icon="building" />
+  <FeatureCard title="Opérationnel en 24 heures" description="Dès que le contrat et le dépôt de garantie sont en place, votre adresse commerciale est active le jour ouvré suivant — avec réception du courrier, adresse légalement valide et tout ce qui va avec." icon="clock" />
 </FeaturesWithBg>
 
-{/* ===== IHR NUTZEN ===== */}
+{/* ===== VOS AVANTAGES ===== */}
 <FeaturesWithBg title="Vos avantages" columns={3} backgroundImage="/images/standorte/weil-am-rhein/green-office-flurbereich.jpg">
-  <FeatureCard title="Adresse commerciale légale" description="Pour registre du commerce, enregistrement d'entreprise, impressum, Google Business et administration fiscale. Pas d'adresse c/o — votre nom d'entreprise sur la boîte aux lettres." icon="landmark" />
-  <FeatureCard title="Demander numéro EORI" description="Avec une adresse commerciale allemande, vous pouvez demander votre numéro EORI pour le commerce de marchandises dans l'UE." icon="globe" />
-  <FeatureCard title="N° TVA intracommunautaire" description="Demandez un numéro de TVA allemand pour le commerce intracommunautaire dans l'UE." icon="file-text" />
-  <FeatureCard title="Protéger l'adresse privée" description="Votre adresse personnelle reste privée — seule votre adresse commerciale apparaît au registre du commerce, dans l'impressum et sur les factures." icon="shield" />
-  <FeatureCard title="Créer succursale allemande" description="Installation simple d'un siège ou d'une succursale en Allemagne — directement à la frontière suisse." icon="building" />
-  <FeatureCard title="Durées flexibles" description="Durées de location courtes, pas de frais cachés. Un engagement plus long est récompensé par des conditions attractives." icon="calendar" />
+  <FeatureCard title="Adresse commerciale légalement valide" description="Pour le registre du commerce, l'inscription commerciale, les mentions légales, Google Business et l'administration fiscale. Pas d'adresse c/o — votre nom d'entreprise sur la boîte aux lettres." icon="landmark" />
+  <FeatureCard title="Demander un numéro EORI" description="Avec une adresse commerciale allemande, vous pouvez demander votre numéro EORI pour le commerce de marchandises dans l'UE." icon="globe" />
+  <FeatureCard title="Numéro de TVA (USt-ID)" description="Demandez un numéro d'identification TVA allemand pour le commerce intracommunautaire dans l'UE." icon="file-text" />
+  <FeatureCard title="Protégez votre adresse privée" description="Votre adresse personnelle reste privée — seule votre adresse commerciale apparaît dans le registre du commerce, les mentions légales et sur les factures." icon="shield" />
+  <FeatureCard title="Créer une succursale allemande" description="Création facile d'un site d'entreprise ou d'une succursale en Allemagne — directement à la frontière suisse." icon="building" />
+  <FeatureCard title="Durées flexibles" description="Durées de location courtes, aucun coût caché. Les engagements plus longs sont récompensés par des conditions attractives." icon="calendar" />
 </FeaturesWithBg>
 
-{/* ===== JETZT BUCHEN ===== */}
+{/* ===== DEMANDER MAINTENANT ===== */}
 <div style={{ marginTop: '3rem', marginBottom: '4rem' }}>
-<CheckoutWizard product="geschaeftsadresse" title="Réserver adresse commerciale maintenant" />
+<GeschaeftsadresseAnfrage title="Demander une adresse commerciale maintenant" />
 </div>
 
-{/* ===== WAS IST ENTHALTEN ===== */}
+{/* ===== CE QUI EST INCLUS ===== */}
 <FeaturesWithBg title="Ce qui est inclus dans votre adresse commerciale" columns={2} backgroundImage="/images/standorte/weil-am-rhein/green-office-eingangsbereich.jpeg">
-  <FeatureCard title="Réception courrier & colis" description="Nous recevons votre courrier et vos colis au nom de votre entreprise." icon="mail" />
-  <FeatureCard title="Transfert postal" description="Transfert de votre courrier d'affaires dans la zone DACH." icon="globe" />
-  <FeatureCard title="Retrait colis 24/7" description="Retirer les colis à tout moment avec votre propre code d'accès — 7 jours sur 7." icon="package" />
-  <FeatureCard title="Bureaux & salles de conférence" description="Réservable à l'heure selon les besoins. Pour rendez-vous clients, meetings ou travail concentré." icon="monitor" />
+  <FeatureCard title="Réception du courrier et des colis" description="Nous recevons votre courrier et vos colis au nom de votre entreprise." icon="mail" />
+  <FeatureCard title="Réexpédition du courrier" description="Réexpédition de votre courrier professionnel dans la région DACH." icon="globe" />
+  <FeatureCard title="Retrait de colis 24/7" description="Récupérez vos colis à tout moment avec votre propre code de porte — 7 jours sur 7." icon="package" />
+  <FeatureCard title="Bureaux et salles de conférence" description="Réservation à l'heure selon vos besoins. Pour rendez-vous clients, réunions ou travail concentré." icon="monitor" />
 </FeaturesWithBg>
 
-<Features title="Forfaits complémentaires" columns={4}>
-  <FeatureCard title="Coworking" description="Postes de travail flexibles au Green Office à prix préférentiels pour tous les clients adresse commerciale." icon="users" />
-  <FeatureCard title="Service téléphonique" description="Réception d'appels au nom de votre entreprise. Lun-Ven 9h-17h." icon="phone" />
-  <FeatureCard title="Service secrétariat" description="Réception d'appels professionnelle, gestion de rendez-vous et correspondance." icon="users" />
-  <FeatureCard title="Plaque d'entreprise" description="Votre nom d'entreprise sur le panneau d'affichage à l'entrée du bâtiment." icon="landmark" />
+<Features title="Forfaits supplémentaires" columns={4}>
+  <FeatureCard title="Coworking" description="Postes de travail flexibles au Green Office à tarifs préférentiels pour tous les clients d'adresses commerciales." icon="users" />
+  <FeatureCard title="Service téléphonique" description="Appels reçus au nom de votre entreprise. Lun–Ven 9h–17h." icon="phone" />
+  <FeatureCard title="Service de secrétariat" description="Réception d'appels professionnelle, gestion d'agenda et correspondance." icon="users" />
+  <FeatureCard title="Enseigne d'entreprise" description="Le nom de votre entreprise sur la signalétique à l'entrée du bâtiment." icon="landmark" />
 </Features>
 
 {/* ===== CTA ===== */}
 <BannerCTA
-  title="Réserver maintenant"
-  subtext="Adresse commerciale dès EUR 49,-/mois. Durées flexibles. Pas de frais cachés."
-  buttonText="Réserver maintenant" buttonHref="#buchen"
+  title="Demander maintenant"
+  subtext="Adresse commerciale dès EUR 49,-/mois. Durées flexibles. Aucun coût caché."
+  buttonText="Demander maintenant" buttonHref="#formular"
 />
 
-{/* ===== ÜBER UNS ===== */}
+{/* ===== À PROPOS DE NOUS ===== */}
 <AlternatingFeatures>
-  <AlternatingFeatureRow title="Votre siège au Kesselhaus" description="Le bizzcenter se trouve dans le Kesselhaus classé monument historique à Weil am Rhein — un point fort architectural directement à la frontière suisse. Votre nom d'entreprise est affiché sur la boîte aux lettres et le bâtiment. Pas d'adresse c/o, mais une adresse commerciale légale complète avec plus de 22 ans d'expérience." image="/images/standorte/weil-am-rhein/standortkarte.png" imageAlt="Carte de localisation bizzcenter Weil am Rhein — Triangle frontalier de Bâle" />
-  <AlternatingFeatureRow title="Travailler au Green Office" description="En tant que client adresse commerciale, vous pouvez réserver à tout moment des places de coworking, des bureaux à la journée ou des salles de conférence — à prix préférentiels. Travaillez dans des espaces baignés de lumière naturelle avec 7,50m de hauteur sous plafond, Internet haut débit et café bio." image="/images/standorte/weil-am-rhein/green-office-kueche-empore.jpeg" imageAlt="Vue sur la cuisine et la mezzanine au Green Office" />
+  <AlternatingFeatureRow title="Votre siège social au Kesselhaus" description="Le bizzcenter est situé dans le Kesselhaus classé monument historique à Weil am Rhein — un point fort architectural directement à la frontière suisse. Le nom de votre entreprise est affiché sur la boîte aux lettres et le bâtiment. Pas d'adresse c/o, mais une adresse commerciale complète et légalement valide avec plus de 22 ans d'expérience." image="/images/standorte/weil-am-rhein/standortkarte.png" imageAlt="Carte du site bizzcenter Weil am Rhein — triangle frontalier de Bâle" />
+  <AlternatingFeatureRow title="Travailler au Green Office" description="En tant que client d'adresse commerciale, vous pouvez réserver à tout moment des espaces de coworking, des bureaux à la journée ou des salles de conférence — à des tarifs préférentiels. Travaillez dans des salles baignées de lumière naturelle avec 7,50 m de hauteur sous plafond, internet haut débit et café bio." image="/images/standorte/weil-am-rhein/green-office-kueche-empore.jpeg" imageAlt="Vue sur la cuisine et la mezzanine au Green Office" />
 </AlternatingFeatures>
 
-{/* ===== FINALER CTA MIT BUCHUNG ===== */}
-<CheckoutWizard product="geschaeftsadresse" title="Réserver adresse commerciale" />
+{/* ===== CTA FINAL AVEC FORMULAIRE ===== */}
+<GeschaeftsadresseAnfrage title="Demander une adresse commerciale" />
 
 {/* ===== SOCIAL PROOF ===== */}
 <Stats title="bizzcenter en chiffres">
   <Stat value="22" label="Ans" description="D'expérience depuis 2004" />
-  <Stat value="200+" label="Clients" description="Freelancers, startups & PME" />
+  <Stat value="200+" label="Clients" description="Freelances, startups & PME" />
   <Stat value="300m" label="vers Bâle" description="Directement à la frontière suisse" />
-  <Stat value="24/7" label="Accès" description="Retrait colis à tout moment" />
+  <Stat value="24/7" label="Accès" description="Récupérez vos colis à tout moment" />
 </Stats>
 
 {/* ===== FAQ ===== */}
-<FAQ title="Questions fréquentes sur l'adresse commerciale">
-  <FAQItem question="Qu'est-ce qu'une adresse de domiciliation ou adresse commerciale ?">
-    Une adresse de domiciliation est une adresse commerciale légale que vous pouvez utiliser pour votre entreprise sans y travailler en permanence. Elle sert de siège officiel pour l'impressum, les factures, le registre du commerce et les autorités.
+<FAQ title="Questions fréquentes sur les adresses commerciales">
+  <FAQItem question="Qu'est-ce qu'une adresse de domiciliation ou commerciale ?">
+    Une adresse de domiciliation est une adresse commerciale légalement valide que vous pouvez utiliser pour votre entreprise sans être présent en permanence sur place. Elle sert de siège officiel pour les mentions légales, les factures, le registre du commerce et les autorités.
   </FAQItem>
-  <FAQItem question="Pour qui convient une adresse commerciale au bizzcenter Weil am Rhein ?">
-    Pour les fondateurs, indépendants, freelancers, entreprises en ligne, agences, structures holding ainsi que les entreprises étrangères qui ont besoin d'une adresse légalement sûre en Allemagne.
+  <FAQItem question="À qui s'adresse une adresse commerciale au bizzcenter Weil am Rhein ?">
+    Aux fondateurs, indépendants, freelances, entreprises en ligne, agences, structures de holding et entreprises étrangères qui ont besoin d'une adresse légalement valide en Allemagne.
   </FAQItem>
-  <FAQItem question="L'adresse est-elle légale et autorisée pour le registre du commerce ?">
-    Oui. L'adresse commerciale au bizzcenter Weil am Rhein est entièrement légale et appropriée pour les inscriptions au registre du commerce, l'enregistrement d'entreprise ainsi que pour l'administration fiscale et les autorités. Ce n'est pas une adresse c/o, mais une adresse d'entreprise complète avec votre nom d'entreprise.
+  <FAQItem question="L'adresse est-elle légalement valide et acceptée pour le registre du commerce ?">
+    Oui. L'adresse commerciale au bizzcenter Weil am Rhein est entièrement légalement valide et acceptée pour les inscriptions au registre du commerce, l'inscription commerciale ainsi que pour l'administration fiscale et les autorités. Il ne s'agit pas d'une adresse c/o, mais d'une adresse d'entreprise complète au nom de votre société.
   </FAQItem>
-  <FAQItem question="Puis-je utiliser l'adresse dans l'impressum et sur mon site web ?">
-    Oui. L'adresse peut être utilisée dans l'impressum, sur le site web, dans les profils Google Business, sur les factures, le papier à lettres et dans les signatures email.
+  <FAQItem question="Puis-je utiliser l'adresse dans mes mentions légales et sur mon site web ?">
+    Oui. L'adresse peut être utilisée dans les mentions légales, sur le site web, dans les profils Google Business, sur les factures, le papier à en-tête et dans les signatures e-mail.
   </FAQItem>
-  <FAQItem question="Quelle est la différence entre adresse de domiciliation et bureau virtuel ?">
-    L'adresse de domiciliation est la pure adresse commerciale. Un bureau virtuel étend cela avec des services de secrétariat comme la réception d'appels, le service de numérisation et des postes de travail ou salles de réunion utilisables en option.
+  <FAQItem question="Quelle est la différence entre une adresse de domiciliation et un bureau virtuel ?">
+    L'adresse de domiciliation est l'adresse commerciale pure. Un bureau virtuel y ajoute des services de secrétariat tels que la réception d'appels, le service de numérisation et des postes de travail ou salles de réunion utilisables en option.
   </FAQItem>
-  <FAQItem question="Comment fonctionne la réception et le transfert du courrier ?">
-    Le courrier entrant est traité de manière fiable et transféré à n'importe quelle adresse en Allemagne, Suisse et autres pays. En option, une boîte aux lettres personnelle peut également être utilisée. Les colis peuvent être retirés 7 jours sur 7, 24/7 avec un accès individuel.
+  <FAQItem question="Comment fonctionnent la réception et la réexpédition du courrier ?">
+    Le courrier entrant est traité de manière fiable et réexpédié vers n'importe quelle adresse en Allemagne, en Suisse et dans d'autres pays. Une boîte aux lettres personnelle peut également être utilisée en option. Les colis peuvent être récupérés 7 jours sur 7, 24/7 avec un code d'accès individuel.
   </FAQItem>
   <FAQItem question="Puis-je utiliser l'adresse commerciale depuis l'étranger ?">
     Oui. De nombreux clients utilisent l'adresse commerciale depuis la Suisse, l'Autriche ou d'autres pays pour avoir une présence en Allemagne sans être physiquement sur place. Cela permet de commercer au sein de l'UE.
   </FAQItem>
-  <FAQItem question="Un enregistrement commercial est-il possible avec cette adresse ?">
-    Oui. L'adresse peut être utilisée pour l'enregistrement commercial ainsi que pour les entreprises existantes comme adresse d'affaires.
+  <FAQItem question="L'inscription commerciale est-elle possible avec cette adresse ?">
+    Oui. L'adresse peut être utilisée pour l'inscription commerciale ainsi que pour les entreprises existantes comme adresse professionnelle.
   </FAQItem>
-  <FAQItem question="Puis-je enregistrer plusieurs entreprises sous une adresse ?">
-    Oui, si les conditions légales sont remplies. Particulièrement pertinent pour les structures holding ou les agences avec plusieurs sociétés. Pour plusieurs entreprises, nous proposons des forfaits combinés avantageux.
+  <FAQItem question="Puis-je enregistrer plusieurs entreprises à une seule adresse ?">
+    Oui, à condition que les exigences légales soient remplies. Particulièrement pertinent pour les structures de holding ou les agences avec plusieurs sociétés. Nous proposons des forfaits combinés avantageux pour plusieurs entreprises.
   </FAQItem>
-  <FAQItem question="Dans combien de temps puis-je utiliser mon adresse commerciale ?">
-    Dès que le contrat est signé et la caution payée, nous configurons votre adresse commerciale dans les 24 heures. En règle générale, vous êtes prêt le jour même.
+  <FAQItem question="Combien de temps avant de pouvoir utiliser mon adresse commerciale ?">
+    Une fois le contrat signé et le dépôt de garantie payé, nous mettons en place votre adresse commerciale sous 24 heures. En général, vous êtes opérationnel le jour même.
   </FAQItem>
-  <FAQItem question="Y a-t-il des durées minimales ou des engagements longs ?">
-    Durée minimale 3 mois, résiliation à la fin du trimestre. Des durées plus longues (12 ou 24 mois) offrent des conditions plus attractives. Prix transparents sans frais cachés.
+  <FAQItem question="Y a-t-il des durées minimales ou des engagements contractuels longs ?">
+    Durée minimale de 3 mois, résiliation à la fin du trimestre. Les durées plus longues (12 ou 24 mois) offrent des conditions plus attractives. Tarifs transparents sans coûts cachés.
   </FAQItem>
-  <FAQItem question="Puis-je utiliser en plus des postes de travail ou salles de réunion ?">
-    Oui. Les clients avec adresses commerciales peuvent réserver de manière flexible des pass coworking à la journée, des bureaux fixes, des salles de réunion et des bureaux fixes à prix préférentiels.
+  <FAQItem question="Puis-je également utiliser des postes de travail ou des salles de réunion ?">
+    Oui. Les clients d'adresses commerciales peuvent ajouter de manière flexible des pass journaliers de coworking, des fix desks, des salles de réunion et des bureaux fixes à des tarifs préférentiels.
   </FAQItem>
-  <FAQItem question="Qu'est-ce que nos clients combinent volontiers avec l'adresse commerciale ?">
-    Postes de travail coworking (parfois aussi à tarifs réduits en heures creuses), plaques d'entreprise à l'entrée principale, armoires de bureau verrouillables pour le stockage des documents commerciaux, service de numérisation, numéros de téléphone allemands et suisses, petites surfaces de stockage ainsi que services de fulfillment (stockage, préparation de commandes et expédition) sont des combinaisons populaires.
+  <FAQItem question="Que combinent volontiers nos clients avec leur adresse commerciale ?">
+    Postes de travail de coworking (parfois à tarifs réduits en heures creuses), enseignes d'entreprise à l'entrée principale, armoires à dossiers verrouillables pour le stockage de documents commerciaux, service de numérisation, numéros de téléphone allemands et suisses, espaces de stockage de petite taille ainsi que services de fulfillment (stockage, préparation et expédition) sont des combinaisons populaires.
   </FAQItem>
   <FAQItem question="Où se trouve exactement le bizzcenter Weil am Rhein ?">
-    Im Schwarzenbach 4, 79576 Weil am Rhein — dans le Kesselhaus classé monument historique. À 300m de la frontière suisse, facilement accessible en voiture et transports publics (ligne de tram 8 depuis Bâle, arrêt Riedlistrasse/Kesselhaus). EuroAirport Basel à seulement 8 km.
+    Im Schwarzenbach 4, 79576 Weil am Rhein — dans le Kesselhaus classé monument historique. À 300 m de la frontière suisse, facilement accessible en voiture et en transports en commun (ligne de tram 8 depuis Bâle, arrêt Riedlistrasse/Kesselhaus). EuroAirport Bâle à seulement 8 km.
   </FAQItem>
 </FAQ>
+
+<FAQPageSchema items={[
+  { question: "Qu'est-ce qu'une adresse de domiciliation ou commerciale ?", answer: "Une adresse de domiciliation est une adresse commerciale légalement valide que vous pouvez utiliser pour votre entreprise sans être présent en permanence sur place. Elle sert de siège officiel pour les mentions légales, les factures, le registre du commerce et les autorités." },
+  { question: "L'adresse est-elle légalement valide et acceptée pour le registre du commerce ?", answer: "Oui. L'adresse commerciale au bizzcenter Weil am Rhein est entièrement légalement valide et acceptée pour les inscriptions au registre du commerce, l'inscription commerciale ainsi que pour l'administration fiscale et les autorités. Il ne s'agit pas d'une adresse c/o, mais d'une adresse d'entreprise complète au nom de votre société." },
+  { question: "Puis-je utiliser l'adresse dans mes mentions légales et sur mon site web ?", answer: "Oui. L'adresse peut être utilisée dans les mentions légales, sur le site web, dans les profils Google Business, sur les factures, le papier à en-tête et dans les signatures e-mail." },
+  { question: "Quelle est la différence entre une adresse de domiciliation et un bureau virtuel ?", answer: "L'adresse de domiciliation est l'adresse commerciale pure. Un bureau virtuel y ajoute des services de secrétariat tels que la réception d'appels, le service de numérisation et des postes de travail ou salles de réunion utilisables en option." },
+  { question: "Comment fonctionnent la réception et la réexpédition du courrier ?", answer: "Le courrier entrant est traité de manière fiable et réexpédié vers n'importe quelle adresse en Allemagne, en Suisse et dans d'autres pays. Une boîte aux lettres personnelle peut également être utilisée en option. Les colis peuvent être récupérés 7 jours sur 7, 24/7 avec un code d'accès individuel." },
+  { question: "Puis-je utiliser l'adresse commerciale depuis l'étranger ?", answer: "Oui. De nombreux clients utilisent l'adresse commerciale depuis la Suisse, l'Autriche ou d'autres pays pour avoir une présence en Allemagne sans être physiquement sur place. Cela permet de commercer au sein de l'UE." },
+  { question: "L'inscription commerciale est-elle possible avec cette adresse ?", answer: "Oui. L'adresse peut être utilisée pour l'inscription commerciale ainsi que pour les entreprises existantes comme adresse professionnelle." },
+  { question: "Combien de temps avant de pouvoir utiliser mon adresse commerciale ?", answer: "Une fois le contrat signé et le dépôt de garantie payé, nous mettons en place votre adresse commerciale sous 24 heures. En général, vous êtes opérationnel le jour même." },
+]} />

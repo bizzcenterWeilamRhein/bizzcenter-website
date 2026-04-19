@@ -42,11 +42,30 @@ const STRINGS = {
     successTitle: 'Message sent',
     successBody: 'Thank you for your inquiry. We will get back to you shortly.',
   },
+  fr: {
+    title: 'Formulaire de contact',
+    subtitle: 'Écrivez-nous — nous vous répondrons rapidement.',
+    labelFirstName: 'Prénom',
+    placeholderFirstName: 'Votre prénom',
+    labelLastName: 'Nom',
+    placeholderLastName: 'Votre nom',
+    labelCompany: 'Entreprise',
+    placeholderCompany: 'Nom de l\'entreprise (facultatif)',
+    labelPhone: 'Téléphone',
+    placeholderPhone: '+49 ...',
+    labelMessage: 'Votre demande',
+    placeholderMessage: 'Comment pouvons-nous vous aider ?',
+    submitting: 'Envoi en cours...',
+    submit: 'Envoyer le message',
+    errorGeneric: 'Une erreur est survenue lors de l\'envoi. Veuillez réessayer ou nous appeler.',
+    successTitle: 'Message envoyé',
+    successBody: 'Merci pour votre demande. Nous vous répondrons rapidement.',
+  },
 };
 
 export function KontaktFormular() {
   const pathname = usePathname();
-  const locale: 'de' | 'en' = pathname?.startsWith('/en') ? 'en' : 'de';
+  const locale: 'de' | 'en' | 'fr' = pathname?.startsWith('/fr') ? 'fr' : pathname?.startsWith('/en') ? 'en' : 'de';
   const t = STRINGS[locale];
 
   const [vorname, setVorname] = useState('');
