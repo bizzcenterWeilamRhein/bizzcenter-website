@@ -631,7 +631,8 @@
       "content": "buchung-bestaetigt",
       "locales": [
         "de",
-        "fr"
+        "fr",
+        "it"
       ]
     }
   ],

@@ -1,89 +1,185 @@
 ---
-title: "Beamer mieten in Weil am Rhein – Profi-Projektor mit Leinwand"
-description: "Beamer mit Leinwand in Weil am Rhein mieten. Profi-Gerät inkl. Kabel und Fernbedienung. Ab EUR 39,- zzgl. MwSt. Abholung im Kesselhaus."
+title: "Noleggio proiettore a Weil am Rhein – Proiettore Full-HD con schermo"
+description: "Noleggio proiettore professionale con schermo a Weil am Rhein. Full-HD, 3100 lumen, accessori inclusi. A partire da EUR 59,- /giorno IVA esclusa. Disponibile subito nel Kesselhaus."
 ---
 
 <GlobalOverflowFix />
-
-
 <ActiveNavHighlight />
 <LanguageSwitcher />
-{/* ===== HEADLINE + BILD ===== */}
-<CompactHero
-  title="Beamer mieten — Profi-Projektor inkl. Leinwand"
-  description="Tagesweise mietbar, sofort verfügbar — Abholung im Kesselhaus."
-  image="/images/services/beamer-mieten.png"
-  imageAlt="Beamer mieten in Weil am Rhein — bizzcenter"
-/>
 
-{/* ===== LEISTUNGSÜBERSICHT ===== */}
-<Features title="Was Sie erhalten" columns={3}>
-  <FeatureCard title="Profi-Beamer" description="Full-HD-Projektor mit hoher Lichtstärke — für helle Räume und große Präsentationen geeignet." icon="monitor" />
-  <FeatureCard title="Leinwand inklusive" description="Portable Leinwand im Stativ — schnell aufgebaut, professionelle Projektionsfläche." icon="columns" />
-  <FeatureCard title="Alles dabei" description="HDMI-Kabel, VGA-Adapter, Fernbedienung, Verlängerungskabel — handlich verpackt in einer Transporttasche." icon="package" />
-  <FeatureCard title="Kaution EUR 150,-" description="Bei Abholung: EUR 150,- Kaution (bar oder Karte) + Ausweiskopie. Kaution wird bei Rückgabe vollständig erstattet." icon="shield" />
-  <FeatureCard title="Flexibel mieten" description="Tageweise oder mehrtägig mietbar. Abholung im Kesselhaus." icon="calendar" />
-  <FeatureCard title="Für jeden Anlass" description="Geschäftspräsentation, Workshop, Filmabend, Vereinsversammlung oder private Feier." icon="users" />
-  <FeatureCard title="Einfache Bedienung" description="Plug & Play — Laptop anschließen, einschalten, fertig. Keine technischen Vorkenntnisse nötig." icon="zap" />
-</Features>
+{/* ===== 1. HERO — Sala conferenze come immagine fullwidth ===== */}
+<section className="relative w-full h-[35vh] min-h-[280px] max-h-[400px] overflow-hidden">
+  <img
+    src="/images/standorte/weil-am-rhein/konferenzraum-gross.jpg"
+    alt="Sala conferenze con proiettore nel bizzcenter Weil am Rhein"
+    className="absolute inset-0 w-full h-full object-cover"
+  />
+  <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-transparent" />
+  <div className="relative h-full flex items-start pt-8 md:pt-12 px-6 md:px-12">
+    <div className="max-w-3xl">
+      <h1 className="text-3xl md:text-5xl font-bold text-white mb-3 drop-shadow-lg">
+        Noleggio proiettore Full-HD a Weil am Rhein
+      </h1>
+      <p className="text-lg text-white/90 drop-shadow">
+        Proiettore professionale con schermo e accessori inclusi. Ritirare, montare, iniziare.
+      </p>
+    </div>
+  </div>
+</section>
 
-{/* ===== PREIS ===== */}
-<FeaturesWithBg title="Preise" columns={2} backgroundImage="/images/standorte/weil-am-rhein/konferenzraum-gross.jpg">
-  <FeatureCard title="Beamer + Leinwand" description="EUR 59,- pro Tag zzgl. MwSt. Inkl. alle Kabel und Transporttasche." icon="monitor" />
-  <FeatureCard title="Nur Beamer" description="EUR 39,- pro Tag zzgl. MwSt. Ohne Leinwand, nur Projektor mit Zubehör." icon="tag" />
-</FeaturesWithBg>
+{/* ===== 2. BOX PRODOTTO — Immagine proiettore + prezzi + prenotazione ===== */}
+<section className="relative z-10 -mt-32 px-4 md:px-8 pb-12">
+  <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
+      {/* Immagine — solo proiettore, centrato su bianco */}
+      <div className="bg-white flex items-center justify-center p-8 md:p-12">
+        <img
+          src="/images/services/weil-am-rhein/beamer-nur-projektor.png"
+          alt="Epson EH-TW650 proiettore Full-HD — bizzcenter Weil am Rhein"
+          className="max-w-full max-h-[280px] object-contain"
+        />
+      </div>
+      {/* Info + Prezzi */}
+      <div className="p-8 md:p-10 flex flex-col justify-center">
+        <p className="text-sm text-[#6b7f3e] font-semibold uppercase tracking-wide mb-2">Epson EH-TW650</p>
+        <h2 className="text-2xl font-bold text-gray-900 mb-3">Proiettore Full-HD con schermo</h2>
+        <p className="text-gray-600 mb-6">3100 ANSI lumen, 1920x1080, incl. HDMI, VGA, telecomando e borsa da trasporto. Ritiro nel Kesselhaus.</p>
 
-{/* ===== SO FUNKTIONIERT'S ===== */}
-<Steps title="So funktioniert die Beamer-Miete">
-  <Step title="Online buchen" description="Wählen Sie Ihr Paket und Ihren Wunschtermin über das Buchungsformular unten." />
-  <Step title="Abholen" description="Holen Sie das Set im Kesselhaus ab — Am Kesselhaus 3, Weil am Rhein." />
-  <Step title="Nutzen und zurückgeben" description="Nutzen Sie den Beamer so lange wie gebucht und bringen Sie ihn danach einfach zurück." />
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+          <div className="rounded-xl border-2 border-gray-200 bg-white hover:bg-[#f0f4e8] hover:border-[#6b7f3e] transition-all p-4 text-center cursor-default">
+            <div className="text-xs sm:text-sm font-semibold text-gray-700">1 giorno</div>
+            <div className="text-base sm:text-lg font-bold text-[#1e293b] my-0.5">EUR 59,-</div>
+            <p className="text-[10px] sm:text-xs text-gray-500 whitespace-nowrap">IVA esclusa</p>
+          </div>
+          <div className="rounded-xl border-2 border-gray-200 bg-white hover:bg-[#f0f4e8] hover:border-[#6b7f3e] transition-all p-4 text-center cursor-default">
+            <div className="text-xs sm:text-sm font-semibold text-gray-700">2 giorni</div>
+            <div className="text-base sm:text-lg font-bold text-[#1e293b] my-0.5">EUR 109,-</div>
+            <p className="text-[10px] sm:text-xs text-gray-500 whitespace-nowrap">IVA esclusa</p>
+          </div>
+          <div className="rounded-xl border-2 border-gray-200 bg-white hover:bg-[#f0f4e8] hover:border-[#6b7f3e] transition-all p-4 text-center cursor-default">
+            <div className="text-xs sm:text-sm font-semibold text-gray-700">Ve-Do</div>
+            <div className="text-base sm:text-lg font-bold text-[#1e293b] my-0.5">EUR 139,-</div>
+            <p className="text-[10px] sm:text-xs text-gray-500 whitespace-nowrap">IVA esclusa</p>
+          </div>
+          <div className="rounded-xl border-2 border-gray-200 bg-white hover:bg-[#f0f4e8] hover:border-[#6b7f3e] transition-all p-4 text-center cursor-default">
+            <div className="text-xs sm:text-sm font-semibold text-gray-700">Settimana</div>
+            <div className="text-base sm:text-lg font-bold text-[#1e293b] my-0.5">EUR 199,-</div>
+            <p className="text-[10px] sm:text-xs text-gray-500 whitespace-nowrap">IVA esclusa</p>
+          </div>
+        </div>
+
+        <a
+          href="#buchen"
+          className="block w-full bg-[#6b7f3e] text-white text-center py-3.5 rounded-lg font-semibold text-lg hover:bg-[#5a6c34] transition-colors no-underline"
+        >
+          Verifica disponibilità e prenota
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{/* ===== 3. COME FUNZIONA ===== */}
+<Steps title="Come funziona">
+  <Step title="Prenota online" description="Verifica la disponibilità, scegli il pacchetto e la data, paga direttamente online." />
+  <Step title="Ritira nel Kesselhaus" description="Am Kesselhaus 3, Weil am Rhein. Cauzione EUR 150,- (contanti o carta) + copia del documento d'identità." />
+  <Step title="Usa e riconsegna" description="Plug & Play — collega il laptop, fatto. Dopo l'uso basta riconsegnare, cauzione restituita." />
 </Steps>
 
-{/* ===== FÜR WEN ===== */}
+{/* ===== 4. MODULO DI PRENOTAZIONE ===== */}
+<div id="buchen">
+<BeamerBuchung />
+</div>
+
+{/* ===== 5. DATI TECNICI ===== */}
+<FeaturesWithBg title="Dati tecnici — Epson EH-TW650" columns={3} backgroundImage="/images/standorte/weil-am-rhein/meetingraum.jpg">
+  <FeatureCard title="Risoluzione Full-HD" description="1920 x 1080 pixel — immagini e testi nitidissimi, anche con proiezione grande." icon="monitor" />
+  <FeatureCard title="3100 ANSI lumen" description="Elevata luminosità — ben visibile anche in ambienti luminosi. Ideale per sale conferenze con luce naturale." icon="sun" />
+  <FeatureCard title="Tecnologia 3LCD" description="Colori naturali senza effetto arcobaleno. Rapporto di contrasto 15.000:1 per neri profondi." icon="eye" />
+</FeaturesWithBg>
+
+{/* ===== 6. VANTAGGI ===== */}
+<Features title="Perché noleggiare da noi?" columns={3}>
+  <FeatureCard
+    title="Disponibile subito"
+    description="Nessuna spedizione, nessuna attesa. Ritira il proiettore nel Kesselhaus e usalo lo stesso giorno. Prenotabile anche a breve termine."
+    icon="zap"
+  />
+  <FeatureCard
+    title="Tutto incluso"
+    description="Proiettore Full-HD, schermo, cavo HDMI, adattatore VGA, telecomando, prolunga — tutto in una borsa da trasporto."
+    icon="package"
+  />
+  <FeatureCard
+    title="Prezzi giornalieri equi"
+    description="A partire da EUR 59,- al giorno IVA esclusa. Nessun costo nascosto, nessuna durata minima."
+    icon="tag"
+  />
+</Features>
+
+{/* ===== 7. PER CHI ===== */}
 <AlternatingFeatures>
-  <AlternatingFeatureRow title="Für Unternehmen" description="Ob Kundenpräsentation, Strategieworkshop oder Schulung — mit einem Profi-Beamer machen Ihre Inhalte Eindruck. Kombinierbar mit unseren Konferenzräumen für 2–25 Personen." image="/images/standorte/weil-am-rhein/konferenzraum-gross.jpg" imageAlt="Konferenzraum mit Beamer" link="/konferenzraum-mieten" />
-  <AlternatingFeatureRow title="Für Privatpersonen & Vereine" description="Filmabend im Garten, Vereinsversammlung, Geburtstagspräsentation oder Fotoshow — leihen Sie sich professionelle Technik für Ihren Anlass. Einfach abholen und loslegen." image="/images/standorte/weil-am-rhein/green-office-eingangsbereich.jpeg" imageAlt="bizzcenter Kesselhaus" />
+  <AlternatingFeatureRow
+    title="Per aziende"
+    description="Presentazione clienti, workshop strategico, formazione o pitch — con un proiettore professionale i vostri contenuti fanno colpo. Combinate il proiettore con una delle nostre sale conferenze per 2-25 persone."
+    image="/images/standorte/weil-am-rhein/konferenzraum-gross.jpg"
+    imageAlt="Sala conferenze con proiettore nel bizzcenter Weil am Rhein"
+    link="/konferenzraum-mieten"
+  />
+  <AlternatingFeatureRow
+    title="Per privati e associazioni"
+    description="Serata cinema in giardino, assemblea di associazione, presentazione per compleanno o proiezione di foto — tecnologia professionale per ogni occasione. Basta ritirare e iniziare, nessuna conoscenza tecnica necessaria."
+    image="/images/standorte/weil-am-rhein/kesselhaus-aussen.jpg"
+    imageAlt="Kesselhaus Weil am Rhein — ritiro proiettore"
+  />
 </AlternatingFeatures>
 
-{/* ===== FAQ ===== */}
-<FAQ title="Häufige Fragen zur Beamer-Miete">
-  <FAQItem question="Was ist im Mietset enthalten?">
-    Ein Full-HD-Beamer, eine portable Leinwand mit Stativ, HDMI-Kabel, VGA-Adapter, Fernbedienung, Verlängerungskabel und eine Transporttasche. Alles, was Sie für eine professionelle Präsentation brauchen.
+{/* ===== 8. CTA ===== */}
+<BannerCTA
+  title="Prenota subito il proiettore"
+  buttonText="Al modulo di prenotazione"
+  buttonHref="#buchen"
+  subtext="Disponibile subito. Ritiro nel Kesselhaus Weil am Rhein."
+/>
+
+{/* ===== 9. FAQ ===== */}
+<FAQ title="Domande frequenti sul noleggio proiettore">
+  <FAQItem question="Cosa è incluso nel set a noleggio?">
+    Proiettore Full-HD (Epson EH-TW650), schermo portatile con treppiede (1,50 x 1,50 m), cavo HDMI, adattatore VGA, telecomando, prolunga e una borsa da trasporto.
   </FAQItem>
-  <FAQItem question="Kann ich den Beamer auch ohne Leinwand mieten?">
-    Ja. Nur Beamer mit Zubehör (ohne Leinwand): EUR 39,- pro Tag zzgl. MwSt.
+  <FAQItem question="Posso noleggiare il proiettore senza schermo?">
+    Il proiettore viene sempre noleggiato come set completo con schermo: EUR 59,- al giorno IVA esclusa.
   </FAQItem>
-  <FAQItem question="Wie hell ist der Beamer?">
-    Der Beamer hat eine hohe Lichtstärke und ist auch für helle Räume und Tageslicht geeignet. Für optimale Ergebnisse empfehlen wir leicht abgedunkelte Räume.
+  <FAQItem question="Quanto è luminoso il proiettore?">
+    3100 ANSI lumen. Ciò lo rende adatto anche ad ambienti luminosi e luce diurna. Per risultati ottimali consigliamo ambienti leggermente oscurati.
   </FAQItem>
-  <FAQItem question="Funktioniert der Beamer mit meinem Laptop / Mac?">
-    Ja. HDMI-Kabel und VGA-Adapter sind inklusive. Für neuere MacBooks mit USB-C benötigen Sie einen eigenen USB-C-auf-HDMI-Adapter.
+  <FAQItem question="Il proiettore funziona con Mac / laptop USB-C?">
+    Sì. HDMI e VGA sono inclusi. Per MacBook con USB-C è necessario un proprio adattatore USB-C-HDMI.
   </FAQItem>
-  <FAQItem question="Kann ich den Beamer auch am Wochenende abholen/zurückgeben?">
-    Die Abholung ist während der Geschäftszeiten möglich. Rückgabe kann flexibel vereinbart werden — sprechen Sie uns einfach an.
+  <FAQItem question="Posso prenotare anche a breve termine?">
+    Sì, anche prenotazioni in giornata sono possibili, se il proiettore è disponibile. Chiamate o prenotate direttamente qui sopra.
   </FAQItem>
-  <FAQItem question="Wird der Beamer geliefert?">
-    Nein, der Beamer wird im Kesselhaus abgeholt und dort auch wieder zurückgegeben. Am Kesselhaus 3, 79576 Weil am Rhein.
+  <FAQItem question="Il proiettore viene consegnato?">
+    No. Ritiro e restituzione nel Kesselhaus, Am Kesselhaus 3, 79576 Weil am Rhein.
   </FAQItem>
-  <FAQItem question="Kann ich den Beamer direkt im Konferenzraum nutzen?">
-    Ja. Buchen Sie einen unserer Konferenzräume und den Beamer dazu — wir stellen alles für Sie auf. <a href="/konferenzraum-mieten" className="text-[#6b7f3e] underline">Konferenzräume ansehen</a>
+  <FAQItem question="Posso usare il proiettore nella sala conferenze?">
+    Sì. Prenotate una sala conferenze in aggiunta — noi prepariamo tutto per voi. <a href="/konferenzraum-mieten" className="text-[#6b7f3e] underline">Vedi sale conferenze</a>
   </FAQItem>
-  <FAQItem question="Muss ich eine Kaution hinterlegen?">
-    Ja. Bei Abholung hinterlegen Sie eine Kaution von EUR 150,- (bar oder per Karte) sowie eine Kopie oder einen Scan Ihres Ausweises. Die Kaution wird bei vollständiger Rückgabe des Sets erstattet.
+  <FAQItem question="Come funziona la cauzione?">
+    Al ritiro depositate EUR 150,- (contanti o carta) + copia del documento d'identità. Alla restituzione completa ricevete immediatamente la cauzione indietro.
   </FAQItem>
-  <FAQItem question="Was passiert bei Beschädigung?">
-    Bei normalem Gebrauch übernehmen wir die Abnutzung. Bei Beschädigung durch unsachgemäßen Gebrauch wird die Kaution einbehalten bzw. der Zeitwert in Rechnung gestellt.
+  <FAQItem question="Cosa succede in caso di danni?">
+    L'usura normale è a nostro carico. In caso di danni per uso improprio, la cauzione viene trattenuta o viene addebitato il valore residuo.
+  </FAQItem>
+  <FAQItem question="Ci sono sconti per noleggi di più giorni?">
+    I prezzi giornalieri si applicano per ogni giorno iniziato. Per periodi più lunghi (da 5 giorni) contattateci per un'offerta personalizzata.
   </FAQItem>
 </FAQ>
 
-{/* ===== BUCHUNGSFORMULAR ===== */}
-<BeamerBuchung />
-
-{/* ===== FINALER CTA ===== */}
+{/* ===== 10. CTA FINALE ===== */}
 <BannerCTA
-  title="Fragen zur Beamer-Miete?"
-  buttonText="Anrufen"
+  title="Domande? Siamo felici di aiutarvi."
+  buttonText="Chiama ora"
   buttonHref="tel:+4976219165547"
-  subtext="Telefonisch unter +49 (0)7621 916 5547."
+  subtext="+49 (0)7621 916 5547 — lun-ven 08:00-18:00"
 />
