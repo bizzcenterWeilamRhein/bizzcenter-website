@@ -64,6 +64,11 @@ export function LanguageSwitcher() {
         link.style.cssText = `display:flex;align-items:center;gap:8px;padding:8px 12px;text-decoration:none;color:#374151;font-size:13px;transition:background 0.15s;${locale === currentLocale ? 'background:#f0f4e8;font-weight:600;' : ''}`;
         link.onmouseenter = () => { link.style.background = locale === currentLocale ? '#f0f4e8' : '#f9fafb'; };
         link.onmouseleave = () => { link.style.background = locale === currentLocale ? '#f0f4e8' : 'transparent'; };
+        link.onclick = (e) => {
+          e.preventDefault();
+          document.cookie = `NEXT_LOCALE=${locale};path=/;max-age=31536000;samesite=lax`;
+          window.location.href = localePath;
+        };
 
         const img = document.createElement('img');
         img.src = `https://flagcdn.com/w40/${FLAGS[locale].code}.png`;
