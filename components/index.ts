@@ -42,6 +42,7 @@ export { InquiryForm } from './InquiryForm';
 export { KontaktFormular } from './KontaktFormular';
 export { BannerCTAWithForm } from './BannerCTAWithForm';
 export { BeamerBuchung } from './BeamerBuchung';
+export { FensterputzroboterBuchung } from './FensterputzroboterBuchung';
 
 export { GlobalOverflowFix } from './GlobalOverflowFix';
 export { LocalBusinessSchema } from './StructuredData';
