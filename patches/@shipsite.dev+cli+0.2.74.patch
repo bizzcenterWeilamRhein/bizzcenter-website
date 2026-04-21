@@ -1,8 +1,8 @@
 diff --git a/node_modules/@shipsite.dev/cli/dist/workspace/generators/page.js b/node_modules/@shipsite.dev/cli/dist/workspace/generators/page.js
-index b2a9509..8bf3493 100644
+index c43681b..e89ab53 100644
 --- a/node_modules/@shipsite.dev/cli/dist/workspace/generators/page.js
 +++ b/node_modules/@shipsite.dev/cli/dist/workspace/generators/page.js
-@@ -74,9 +74,21 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
+@@ -92,9 +92,21 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
          title: frontmatter.title,
          description: frontmatter.description,
          url: canonicalUrl,
