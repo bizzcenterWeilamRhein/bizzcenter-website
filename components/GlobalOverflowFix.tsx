@@ -68,6 +68,17 @@ export function GlobalOverflowFix() {
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{ __html: CONSENT_SCRIPT }}
       />
+      <style>{`
+        header [data-slot="navigation-menu-content"] ul {
+          grid-template-columns: 1fr !important;
+          width: auto !important;
+          min-width: 260px;
+          max-width: 340px;
+        }
+        header [data-slot="navigation-menu-list"] > [data-slot="navigation-menu-item"] > a[data-slot="navigation-menu-link"] {
+          color: var(--foreground) !important;
+        }
+      `}</style>
       <CookieBanner />
     </>
   );

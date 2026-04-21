@@ -69,26 +69,46 @@ description: "Fensterputzroboter mieten in Weil am Rhein. ECOVACS WINBOT W2S Omn
         </div>
 
         <a
-          href="#buchen"
+          href="/kontakt?produkt=fensterputzroboter-winbot-w2s"
           className="block w-full bg-[#6b7f3e] text-white text-center py-3.5 rounded-lg font-semibold text-lg hover:bg-[#5a6c34] transition-colors no-underline"
         >
-          Verfügbarkeit prüfen & buchen
+          Verfügbarkeit anfragen
         </a>
       </div>
     </div>
   </div>
 </section>
 
-{/* ===== 3. SO FUNKTIONIERT'S ===== */}
-<Steps title="So einfach geht's">
-  <Step title="Online buchen" description="Verfügbarkeit prüfen, Paket und Datum wählen, direkt online bezahlen." />
-  <Step title="Im Kesselhaus abholen" description="Am Kesselhaus 3, Weil am Rhein. Kaution EUR 200,- (bar oder Karte) + Ausweiskopie." />
-  <Step title="Nutzen und zurückbringen" description="Roboter ans Fenster setzen, einschalten, sauber. Nach Gebrauch einfach zurückbringen, Kaution zurück." />
+{/* ===== 3. PRODUKT ANSEHEN (Video + Herstellerlink) ===== */}
+<section className="py-12 px-4 max-w-6xl mx-auto">
+  <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8 text-center">Der Roboter in Aktion</h2>
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+    <div>
+      <h3 className="text-lg font-semibold text-gray-900 mb-3">Alle technischen Details</h3>
+      <div className="rounded-xl border border-gray-200 bg-[#f5f0eb] p-6 flex flex-col justify-center" style={{ minHeight: '240px' }}>
+        <p className="text-gray-700 mb-4">Der Hersteller Ecovacs bietet auf der offiziellen Produktseite umfangreiche technische Informationen und Produktvideos.</p>
+        <a href="https://www.ecovacs.com/de/winbot-window-cleaning-robot/winbot-w2s-omni" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-[#6b7f3e] font-semibold hover:underline">
+          Alle technischen Details beim Hersteller ansehen →
+        </a>
+      </div>
+    </div>
+    <div>
+      <h3 className="text-lg font-semibold text-gray-900 mb-3">So arbeitet der Roboter am Fenster</h3>
+      <YouTubeEmbed videoId="1JBxRo0CGkI" title="ECOVACS WINBOT W2S OMNI — Test: Der beste Fensterputzroboter 2025?" channel="Tech-Reviewer" />
+    </div>
+  </div>
+</section>
+
+{/* ===== 4. SO FUNKTIONIERT'S ===== */}
+<Steps title="So funktioniert's">
+  <Step title="Anfrage stellen" description="Kontaktformular mit gewünschtem Zeitraum ausfüllen. Wir melden uns innerhalb von 24 Stunden (werktags) mit einer Verfügbarkeitsbestätigung." />
+  <Step title="Bestätigung & Buchungsdetails" description="Nach Prüfung der Verfügbarkeit erhalten Sie eine Bestätigung mit allen Details zur Abholung, Kaution und benötigten Unterlagen." />
+  <Step title="Abholung im Kesselhaus" description="Am Kesselhaus 3, 79576 Weil am Rhein. Der Termin wird individuell abgestimmt." />
+  <Step title="Nutzung & Rückgabe" description="Vor Nutzung werden Kaution und Ausweiskopie hinterlegt — Details teilen wir mit der Buchungsbestätigung mit. Die Kaution wird bei unbeschädigter Rückgabe erstattet." />
 </Steps>
 
-{/* ===== 4. BUCHUNGSFORMULAR ===== */}
-<div id="buchen">
-<FensterputzroboterBuchung />
+<div id="buchen" className="text-center py-8">
+  <a href="/kontakt?produkt=fensterputzroboter-winbot-w2s" className="inline-block bg-[#6b7f3e] text-white px-8 py-3.5 rounded-lg font-semibold text-lg hover:bg-[#5a6c34] transition-colors no-underline">Verfügbarkeit anfragen</a>
 </div>
 
 {/* ===== 5. TECHNISCHE DATEN ===== */}
@@ -136,10 +156,10 @@ description: "Fensterputzroboter mieten in Weil am Rhein. ECOVACS WINBOT W2S Omn
 
 {/* ===== 8. CTA ===== */}
 <BannerCTA
-  title="Fensterputzroboter direkt buchen"
-  buttonText="Zum Buchungsformular"
-  buttonHref="#buchen"
-  subtext="Sofort verfügbar. Abholung im Kesselhaus Weil am Rhein."
+  title="Fensterputzroboter anfragen"
+  buttonText="Zum Kontaktformular"
+  buttonHref="/kontakt?produkt=fensterputzroboter-winbot-w2s"
+  subtext="Wir melden uns innerhalb von 24 Stunden (werktags) mit einer Verfügbarkeitsbestätigung."
 />
 
 {/* ===== 9. FAQ ===== */}
@@ -166,20 +186,20 @@ description: "Fensterputzroboter mieten in Weil am Rhein. ECOVACS WINBOT W2S Omn
     Ja. Der WINBOT W2S hat drei Wasserdüsen, die das Reinigungstuch automatisch befeuchten. So wird jede Scheibe gründlich und streifenfrei sauber.
   </FAQItem>
   <FAQItem question="Wie funktioniert die Kaution?">
-    Bei Abholung hinterlegen Sie EUR 200,- (bar oder Karte) + Ausweiskopie. Bei vollständiger Rückgabe erhalten Sie die Kaution sofort zurück.
+    Vor Nutzung werden Kaution und Ausweiskopie hinterlegt — die genauen Details (Höhe, Zahlungsweg, Ablauf) teilen wir mit der Buchungsbestätigung mit. Die Kaution wird bei vollständiger und unbeschädigter Rückgabe erstattet.
   </FAQItem>
   <FAQItem question="Was passiert bei Beschädigung?">
     Normale Abnutzung übernehmen wir. Bei Schäden durch unsachgemässen Gebrauch wird die Kaution einbehalten oder der Zeitwert berechnet.
   </FAQItem>
-  <FAQItem question="Kann ich auch kurzfristig buchen?">
-    Ja, auch Same-Day-Buchungen sind möglich, sofern der Roboter verfügbar ist. Rufen Sie an oder buchen Sie direkt oben.
+  <FAQItem question="Kann ich auch kurzfristig anfragen?">
+    Ja, auch kurzfristige Anfragen sind möglich, sofern der Roboter verfügbar ist. Senden Sie einfach eine Anfrage über das Kontaktformular mit Ihrem Wunschzeitraum — wir melden uns innerhalb von 24 Stunden (werktags).
   </FAQItem>
 </FAQ>
 
 {/* ===== 10. FINALER CTA ===== */}
 <BannerCTA
   title="Fragen? Wir helfen gerne."
-  buttonText="Jetzt anrufen"
-  buttonHref="tel:+4976219165547"
-  subtext="+49 (0)7621 916 5547 - Mo-Fr 08:00-18:00 Uhr"
+  buttonText="Zum Kontaktformular"
+  buttonHref="/kontakt"
+  subtext="Wir melden uns zeitnah bei Ihnen."
 />

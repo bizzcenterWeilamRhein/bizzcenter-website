@@ -69,26 +69,41 @@ description: "Profi-Beamer mit Leinwand mieten in Weil am Rhein. Full-HD, 3100 L
         </div>
 
         <a
-          href="#buchen"
+          href="/kontakt?produkt=beamer-epson-eh-tw650"
           className="block w-full bg-[#6b7f3e] text-white text-center py-3.5 rounded-lg font-semibold text-lg hover:bg-[#5a6c34] transition-colors no-underline"
         >
-          Verfügbarkeit prüfen & buchen
+          Verfügbarkeit anfragen
         </a>
       </div>
     </div>
   </div>
 </section>
 
-{/* ===== 3. SO FUNKTIONIERT'S ===== */}
-<Steps title="So einfach geht's">
-  <Step title="Online buchen" description="Verfügbarkeit prüfen, Paket und Datum wählen, direkt online bezahlen." />
-  <Step title="Im Kesselhaus abholen" description="Am Kesselhaus 3, Weil am Rhein. Kaution EUR 150,- (bar oder Karte) + Ausweiskopie." />
-  <Step title="Nutzen und zurückbringen" description="Plug & Play — Laptop anschließen, fertig. Nach Gebrauch einfach zurückbringen, Kaution zurück." />
+{/* ===== 3. PRODUKT ANSEHEN (Videos) ===== */}
+<section className="py-12 px-4 max-w-6xl mx-auto">
+  <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8 text-center">Das Gerät im Überblick</h2>
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div>
+      <h3 className="text-lg font-semibold text-gray-900 mb-3">Der Beamer im Überblick</h3>
+      <YouTubeEmbed videoId="63ihVWW0sEM" title="EPSON 3LCD Full HD Heimkino Beamer EH-TW650 — Vorstellung" channel="Tech-Reviewer" />
+    </div>
+    <div>
+      <h3 className="text-lg font-semibold text-gray-900 mb-3">So sieht das Projektionsbild aus</h3>
+      <YouTubeEmbed videoId="OAGwmBg1lwU" title="Epson EH-TW650 Projector Review — Best Affordable Big Screen Experience" channel="Tech-Reviewer" />
+    </div>
+  </div>
+</section>
+
+{/* ===== 4. SO FUNKTIONIERT'S ===== */}
+<Steps title="So funktioniert's">
+  <Step title="Anfrage stellen" description="Kontaktformular mit gewünschtem Zeitraum ausfüllen. Wir melden uns innerhalb von 24 Stunden (werktags) mit einer Verfügbarkeitsbestätigung." />
+  <Step title="Bestätigung & Buchungsdetails" description="Nach Prüfung der Verfügbarkeit erhalten Sie eine Bestätigung mit allen Details zur Abholung, Kaution und benötigten Unterlagen." />
+  <Step title="Abholung im Kesselhaus" description="Am Kesselhaus 3, 79576 Weil am Rhein. Der Termin wird individuell abgestimmt." />
+  <Step title="Nutzung & Rückgabe" description="Vor Nutzung werden Kaution und Ausweiskopie hinterlegt — Details teilen wir mit der Buchungsbestätigung mit. Die Kaution wird bei unbeschädigter Rückgabe erstattet." />
 </Steps>
 
-{/* ===== 4. BUCHUNGSFORMULAR ===== */}
-<div id="buchen">
-<BeamerBuchung />
+<div id="buchen" className="text-center py-8">
+  <a href="/kontakt?produkt=beamer-epson-eh-tw650" className="inline-block bg-[#6b7f3e] text-white px-8 py-3.5 rounded-lg font-semibold text-lg hover:bg-[#5a6c34] transition-colors no-underline">Verfügbarkeit anfragen</a>
 </div>
 
 {/* ===== 5. TECHNISCHE DATEN ===== */}
@@ -136,10 +151,10 @@ description: "Profi-Beamer mit Leinwand mieten in Weil am Rhein. Full-HD, 3100 L
 
 {/* ===== 8. CTA ===== */}
 <BannerCTA
-  title="Beamer direkt buchen"
-  buttonText="Zum Buchungsformular"
-  buttonHref="#buchen"
-  subtext="Sofort verfügbar. Abholung im Kesselhaus Weil am Rhein."
+  title="Beamer anfragen"
+  buttonText="Zum Kontaktformular"
+  buttonHref="/kontakt?produkt=beamer-epson-eh-tw650"
+  subtext="Wir melden uns innerhalb von 24 Stunden (werktags) mit einer Verfügbarkeitsbestätigung."
 />
 
 {/* ===== 9. FAQ ===== */}
@@ -156,8 +171,8 @@ description: "Profi-Beamer mit Leinwand mieten in Weil am Rhein. Full-HD, 3100 L
   <FAQItem question="Funktioniert der Beamer mit Mac / USB-C Laptop?">
     Ja. HDMI und VGA sind inklusive. Für MacBooks mit USB-C benötigen Sie einen eigenen USB-C-auf-HDMI-Adapter.
   </FAQItem>
-  <FAQItem question="Kann ich auch kurzfristig buchen?">
-    Ja, auch Same-Day-Buchungen sind möglich, sofern der Beamer verfügbar ist. Rufen Sie an oder buchen Sie direkt oben.
+  <FAQItem question="Kann ich auch kurzfristig anfragen?">
+    Ja, auch kurzfristige Anfragen sind möglich, sofern der Beamer verfügbar ist. Senden Sie einfach eine Anfrage über das Kontaktformular mit Ihrem Wunschzeitraum — wir melden uns innerhalb von 24 Stunden (werktags).
   </FAQItem>
   <FAQItem question="Wird der Beamer geliefert?">
     Nein. Abholung und Rückgabe im Kesselhaus, Am Kesselhaus 3, 79576 Weil am Rhein.
@@ -166,7 +181,7 @@ description: "Profi-Beamer mit Leinwand mieten in Weil am Rhein. Full-HD, 3100 L
     Ja. Buchen Sie einen Konferenzraum dazu — wir stellen alles für Sie auf. <a href="/konferenzraum-mieten" className="text-[#6b7f3e] underline">Konferenzräume ansehen</a>
   </FAQItem>
   <FAQItem question="Wie funktioniert die Kaution?">
-    Bei Abholung hinterlegen Sie EUR 150,- (bar oder Karte) + Ausweiskopie. Bei vollständiger Rückgabe erhalten Sie die Kaution sofort zurück.
+    Vor Nutzung werden Kaution und Ausweiskopie hinterlegt — die genauen Details (Höhe, Zahlungsweg, Ablauf) teilen wir mit der Buchungsbestätigung mit. Die Kaution wird bei vollständiger und unbeschädigter Rückgabe erstattet.
   </FAQItem>
   <FAQItem question="Was passiert bei Beschädigung?">
     Normale Abnutzung übernehmen wir. Bei Schäden durch unsachgemäßen Gebrauch wird die Kaution einbehalten oder der Zeitwert berechnet.
@@ -179,7 +194,7 @@ description: "Profi-Beamer mit Leinwand mieten in Weil am Rhein. Full-HD, 3100 L
 {/* ===== 10. FINALER CTA ===== */}
 <BannerCTA
   title="Fragen? Wir helfen gerne."
-  buttonText="Jetzt anrufen"
-  buttonHref="tel:+4976219165547"
-  subtext="+49 (0)7621 916 5547 — Mo–Fr 08:00–18:00 Uhr"
+  buttonText="Zum Kontaktformular"
+  buttonHref="/kontakt"
+  subtext="Wir melden uns zeitnah bei Ihnen."
 />

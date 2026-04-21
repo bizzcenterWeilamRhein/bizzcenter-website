@@ -23,17 +23,19 @@ export function LanguageSwitcher() {
       ? pathname
       : '/' + segments.slice(1).join('/') || '/';
 
-    // ── HEADER: Dropdown Language Switcher ──
-    const headerRight = document.querySelector('header nav') || document.querySelector('header');
-    if (headerRight) {
-      const old = document.getElementById('lang-switcher-header');
-      if (old) old.remove();
+    // Remove any existing switchers
+    document.querySelectorAll('.lang-switcher-container').forEach(el => el.remove());
 
+    const headerNav = document.querySelector('header nav') || document.querySelector('header');
+    if (!headerNav) return;
+
+    const closeHandlers: Array<() => void> = [];
+
+    function buildSwitcher() {
       const container = document.createElement('div');
-      container.id = 'lang-switcher-header';
-      container.style.cssText = 'position:relative;display:inline-flex;align-items:center;margin-left:8px;';
+      container.className = 'lang-switcher-container';
+      container.style.cssText = 'position:relative;display:inline-flex;align-items:center;';
 
-      // Current flag button
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.style.cssText = 'display:flex;align-items:center;gap:4px;cursor:pointer;border:none;background:none;padding:4px 6px;border-radius:6px;transition:background 0.2s;';
@@ -51,7 +53,6 @@ export function LanguageSwitcher() {
       arrow.style.cssText = 'font-size:10px;color:#6b7280;line-height:1;';
       btn.appendChild(arrow);
 
-      // Dropdown menu
       const menu = document.createElement('div');
       menu.style.cssText = 'display:none;position:absolute;top:100%;right:0;margin-top:4px;background:#fff;border:1px solid #e5e7eb;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.1);overflow:hidden;z-index:9999;min-width:140px;';
 
@@ -86,30 +87,39 @@ export function LanguageSwitcher() {
       container.appendChild(btn);
       container.appendChild(menu);
 
-      // Toggle dropdown
       btn.onclick = (e) => {
         e.stopPropagation();
         menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
       };
 
-      // Close on click outside
       const closeHandler = () => { menu.style.display = 'none'; };
       document.addEventListener('click', closeHandler);
+      closeHandlers.push(closeHandler);
 
-      const navRight = headerRight.querySelector('[class*="NavbarRight"]')
-        || headerRight.querySelector('[class*="navbar-right"]')
-        || headerRight.querySelector('[class*="hidden md:flex"]');
-
-      if (navRight) {
-        navRight.appendChild(container);
-      } else {
-        const headerInner = headerRight.querySelector('.container-main') || headerRight;
-        headerInner.appendChild(container);
-      }
-
-      // Cleanup
-      return () => { document.removeEventListener('click', closeHandler); };
+      return container;
     }
+
+    // Desktop: append into NavbarRight (visible only >= md)
+    const desktopWrapper = headerNav.querySelector('[class*="hidden"][class*="md:flex"]')
+      || headerNav.querySelector('[class*="NavbarRight"]');
+    if (desktopWrapper) {
+      const c = buildSwitcher();
+      (c as HTMLElement).style.marginLeft = '8px';
+      desktopWrapper.appendChild(c);
+    }
+
+    // Mobile: insert before burger inside the md:hidden wrapper (visible only < md)
+    const mobileWrapper = headerNav.querySelector('[class*="md:hidden"]');
+    if (mobileWrapper) {
+      const c = buildSwitcher();
+      (c as HTMLElement).style.marginRight = '4px';
+      mobileWrapper.insertBefore(c, mobileWrapper.firstChild);
+    }
+
+    return () => {
+      closeHandlers.forEach(h => document.removeEventListener('click', h));
+      document.querySelectorAll('.lang-switcher-container').forEach(el => el.remove());
+    };
   }, [pathname]);
 
   return null;

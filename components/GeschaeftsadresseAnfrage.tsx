@@ -8,7 +8,10 @@ import { usePathname } from 'next/navigation';
 const STRINGS = {
   de: {
     defaultTitle: 'Geschäftsadresse anfragen',
-    subtitle: 'Wählen Sie Ihren Wunschtarif — wir prüfen Ihre Angaben und senden Ihnen ein individuelles Vertragsangebot per E-Mail.',
+    subtitle: 'Wir prüfen Ihre Angaben und senden Ihnen ein individuelles Vertragsangebot per E-Mail.',
+    startupBadge: 'Startup-Konditionen',
+    startupPriceSuffix: '/Monat',
+    startupDesc: 'Basispaket ohne Postversand · zzgl. MwSt.',
 
     // Steps
     step1Title: '1. Postbearbeitung',
@@ -110,7 +113,10 @@ const STRINGS = {
   },
   en: {
     defaultTitle: 'Request a business address',
-    subtitle: 'Choose your preferred plan — we will review your details and send you a custom contract proposal by email.',
+    subtitle: 'We will review your details and send you a custom contract proposal by email.',
+    startupBadge: 'Startup conditions',
+    startupPriceSuffix: '/month',
+    startupDesc: 'Basic package without mail forwarding · plus VAT.',
 
     step1Title: '1. Mail handling',
     pvWithout: 'Without mail forwarding',
@@ -207,7 +213,10 @@ const STRINGS = {
   },
   fr: {
     defaultTitle: 'Demander une adresse commerciale',
-    subtitle: 'Choisissez votre formule préférée — nous examinerons vos informations et vous enverrons une proposition de contrat personnalisée par e-mail.',
+    subtitle: 'Nous examinerons vos informations et vous enverrons une proposition de contrat personnalisée par e-mail.',
+    startupBadge: 'Conditions startup',
+    startupPriceSuffix: '/mois',
+    startupDesc: 'Forfait de base sans réexpédition du courrier · hors TVA.',
 
     step1Title: '1. Traitement du courrier',
     pvWithout: 'Sans réexpédition du courrier',
@@ -340,7 +349,7 @@ export function GeschaeftsadresseAnfrage({ title }: GeschaeftsadresseAnfrageProp
   const addonPrice = (priceKey: AddonPriceKey) => t.addonPrices[priceKey];
 
   // Selection state
-  const [tarif, setTarif] = useState<string | null>(null);
+  const [tarif, setTarif] = useState<string | null>('langzeit');
   const [postversand, setPostversand] = useState<'ohne' | 'mit'>('ohne');
   const [selectedAddons, setSelectedAddons] = useState<Set<string>>(new Set());
 
@@ -541,7 +550,17 @@ export function GeschaeftsadresseAnfrage({ title }: GeschaeftsadresseAnfrageProp
         )}
         <p className="text-gray-500 text-center mb-10 text-sm">{t.subtitle}</p>
 
-        {/* ── STEP 1: Postversand ── */}
+        {/* ── Startup-Konditionen Info-Box ── */}
+        <div className="mb-8 rounded-xl border-2 border-[#6b7f3e] bg-[#f0f4e8] p-5 text-center">
+          <p className="text-xs font-bold text-[#6b7f3e] uppercase tracking-wide mb-1">{t.startupBadge}</p>
+          <p className="text-3xl font-bold text-gray-900">
+            EUR 49,-<span className="text-base font-normal text-gray-600">{t.startupPriceSuffix}</span>
+          </p>
+          <p className="text-sm text-gray-600 mt-1">{t.startupDesc}</p>
+        </div>
+
+        {/* ── Preis-/Tarif-Auswahl temporär deaktiviert — siehe historisches Snippet unten zur Reaktivierung ── */}
+        {/*
         <div className="mb-8">
           <h3 className="text-lg font-bold text-gray-900 mb-3">{t.step1Title}</h3>
           <div className="grid grid-cols-2 gap-3">
@@ -567,7 +586,6 @@ export function GeschaeftsadresseAnfrage({ title }: GeschaeftsadresseAnfrageProp
           </div>
         </div>
 
-        {/* ── STEP 2: Tarif ── */}
         <div className="mb-8">
           <div className="mb-4 rounded-lg bg-[#6b7f3e] text-white text-center py-2 px-3">
             <p className="text-sm font-bold">{t.summerPromo}</p>
@@ -607,7 +625,6 @@ export function GeschaeftsadresseAnfrage({ title }: GeschaeftsadresseAnfrageProp
           </div>
         </div>
 
-        {/* ── STEP 3: Add-ons ── */}
         <div className="mb-8">
           <h3 className="text-lg font-bold text-gray-900 mb-1">{t.step3Title}</h3>
           <p className="text-xs text-gray-500 mb-3">{t.step3Sub}</p>
@@ -637,7 +654,6 @@ export function GeschaeftsadresseAnfrage({ title }: GeschaeftsadresseAnfrageProp
           </div>
         </div>
 
-        {/* ── Zusammenfassung ── */}
         {tarif && selectedTarif && (
           <div className="rounded-xl border border-gray-200 bg-gray-50 p-5 mb-8">
             <p className="text-xs font-bold text-gray-700 mb-2 uppercase tracking-wide">{t.summaryTitle}</p>
@@ -670,6 +686,7 @@ export function GeschaeftsadresseAnfrage({ title }: GeschaeftsadresseAnfrageProp
             <p className="text-[10px] text-gray-400 mt-2 text-right">{t.summaryVatNote}</p>
           </div>
         )}
+        */}
 
         {/* ── STEP 4: Anfrage-Formular ── */}
         <div className="rounded-2xl border border-gray-200 bg-white shadow-sm p-6 md:p-8">

@@ -99,13 +99,7 @@
               "fr": "Numéro suisse",
               "it": "Numero svizzero"
             },
-            "href": "/schweizer-telefonnummer",
-            "description": {
-              "de": "Schweizer Festnetznummer",
-              "en": "Swiss landline number",
-              "fr": "Numéro fixe suisse",
-              "it": "Numero fisso svizzero"
-            }
+            "href": "/schweizer-telefonnummer"
           },
           {
             "label": {
@@ -142,6 +136,15 @@
               "it": "Affittare cassa musicale"
             },
             "href": "/musikbox-mieten"
+          },
+          {
+            "label": {
+              "de": "Teufel Boomster 4 mieten",
+              "en": "Rent Teufel Boomster 4",
+              "fr": "Louer Teufel Boomster 4",
+              "it": "Noleggiare Teufel Boomster 4"
+            },
+            "href": "/musikbox-boomster-mieten"
           }
         ]
       },
@@ -639,6 +642,17 @@
       "slug": "fensterputzroboter-mieten",
       "type": "page",
       "content": "fensterputzroboter-mieten",
+      "locales": [
+        "de",
+        "en",
+        "fr",
+        "it"
+      ]
+    },
+    {
+      "slug": "musikbox-boomster-mieten",
+      "type": "page",
+      "content": "musikbox-boomster-mieten",
       "locales": [
         "de",
         "en",

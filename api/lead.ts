@@ -32,6 +32,10 @@ interface LeadData {
   termine?: string[];
   addons?: string[];
   gesamtpreis?: number;
+  // Product inquiry fields (structured so CRM can later generate booking from it)
+  wunschterminVon?: string;
+  wunschterminBis?: string;
+  zeitraumFreitext?: string;
 }
 
 async function getM365Token(): Promise<string | null> {
@@ -77,7 +81,7 @@ function esc(str: string): string {
   return str.replace(/[&<>"']/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m] || m));
 }
 
-async function sendNotificationEmail(lead: { firstName: string; lastName: string; firma?: string; telefon?: string; email?: string; nachricht?: string; quelle: string; product?: string }) {
+async function sendNotificationEmail(lead: { firstName: string; lastName: string; firma?: string; telefon?: string; email?: string; nachricht?: string; quelle: string; product?: string; wunschterminVon?: string; wunschterminBis?: string; zeitraumFreitext?: string }) {
   const token = await getM365Token();
   if (!token) {
     console.warn('M365 token not available — skipping email notification');
@@ -85,17 +89,28 @@ async function sendNotificationEmail(lead: { firstName: string; lastName: string
   }
 
   const quelleInfo = getQuelleInfo(lead.quelle);
+  const hasTimeRange = lead.wunschterminVon && lead.wunschterminBis;
   const subject = `Neue Anfrage: ${esc(lead.firstName)} ${esc(lead.lastName)}${lead.firma ? ` (${esc(lead.firma)})` : ''} — ${quelleInfo.name}`;
+
+  // Prominent time-range block (rendered above the regular details)
+  const timeRangeBlock = hasTimeRange
+    ? `<div style="background:#f0f4e8;border-left:4px solid #6b7f3e;padding:12px 16px;margin:0 0 16px 0;border-radius:4px;">
+         <p style="margin:0 0 4px 0;font-size:12px;font-weight:bold;color:#6b7f3e;text-transform:uppercase;letter-spacing:0.05em;">Wunschtermin</p>
+         <p style="margin:0;font-size:16px;font-weight:600;color:#1f2a37;">${esc(lead.wunschterminVon!)} — ${esc(lead.wunschterminBis!)}</p>
+         ${lead.zeitraumFreitext ? `<p style="margin:4px 0 0 0;font-size:14px;color:#374151;">Zeitraum: ${esc(lead.zeitraumFreitext)}</p>` : ''}
+       </div>`
+    : '';
 
   const lines = [
     `<h2>Neue Anfrage über ${esc(quelleInfo.name)}</h2>`,
     `<p style="color:#666;font-size:13px;margin:0 0 16px 0;">Quelle: <strong>${esc(quelleInfo.seite)}</strong></p>`,
+    lead.product ? `<p style="font-size:15px;margin:0 0 12px 0;"><strong>Produkt/Service:</strong> ${esc(lead.product)}</p>` : '',
+    timeRangeBlock,
     `<table style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:14px;">`,
     `<tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Name:</td><td>${esc(lead.firstName)} ${esc(lead.lastName)}</td></tr>`,
     lead.firma ? `<tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Firma:</td><td>${esc(lead.firma)}</td></tr>` : '',
     lead.telefon ? `<tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Telefon:</td><td><a href="tel:${esc(lead.telefon)}">${esc(lead.telefon)}</a></td></tr>` : '',
     lead.email ? `<tr><td style="padding:4px 12px 4px 0;font-weight:bold;">E-Mail:</td><td><a href="mailto:${esc(lead.email)}">${esc(lead.email)}</a></td></tr>` : '',
-    lead.product ? `<tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Produkt/Service:</td><td>${esc(lead.product)}</td></tr>` : '',
     `</table>`,
     lead.nachricht ? `<h3 style="margin:20px 0 8px 0;">Nachricht:</h3><p style="background:#f5f5f5;padding:12px;border-radius:8px;white-space:pre-wrap;">${esc(lead.nachricht)}</p>` : '',
   ].filter(Boolean).join('\n');
@@ -114,6 +129,61 @@ async function sendNotificationEmail(lead: { firstName: string; lastName: string
     });
   } catch (err) {
     console.error('Email notification failed:', err);
+  }
+}
+
+async function sendCustomerConfirmation(lead: { firstName: string; email: string; product?: string; wunschterminVon?: string; wunschterminBis?: string; zeitraumFreitext?: string }) {
+  const token = await getM365Token();
+  if (!token) return;
+
+  const hasTimeRange = lead.wunschterminVon && lead.wunschterminBis;
+  const isProductInquiry = !!lead.product && hasTimeRange;
+  const subject = isProductInquiry
+    ? `Ihre Anfrage bei bizzcenter: ${esc(lead.product!)}`
+    : 'Ihre Anfrage bei bizzcenter Weil am Rhein';
+
+  const intro = isProductInquiry
+    ? `<p>vielen Dank für Ihre Anfrage zu <strong>${esc(lead.product!)}</strong>.</p>
+       <p>Wir prüfen die Verfügbarkeit für den gewünschten Zeitraum und melden uns innerhalb von <strong>24 Stunden (werktags)</strong> bei Ihnen.</p>`
+    : `<p>vielen Dank für Ihre Anfrage. Wir melden uns innerhalb von <strong>24 Stunden (werktags)</strong> bei Ihnen.</p>`;
+
+  const summary = isProductInquiry
+    ? `<div style="background:#f5f0eb;border-radius:8px;padding:16px;margin:16px 0;">
+         <p style="margin:0 0 8px 0;font-size:13px;font-weight:bold;color:#6b7f3e;text-transform:uppercase;letter-spacing:0.05em;">Ihre Anfrage</p>
+         <p style="margin:0 0 4px 0;"><strong>Produkt:</strong> ${esc(lead.product!)}</p>
+         <p style="margin:0;"><strong>Wunschtermin:</strong> ${esc(lead.wunschterminVon!)} — ${esc(lead.wunschterminBis!)}</p>
+         ${lead.zeitraumFreitext ? `<p style="margin:4px 0 0 0;"><strong>Zeitraum:</strong> ${esc(lead.zeitraumFreitext)}</p>` : ''}
+       </div>`
+    : '';
+
+  const body = `
+    <div style="font-family:Arial,sans-serif;font-size:14px;color:#1f2a37;max-width:600px;">
+      <p>Hallo ${esc(lead.firstName)},</p>
+      ${intro}
+      ${summary}
+      <p>Mit freundlichen Grüßen<br/>Ihr Team vom bizzcenter Weil am Rhein</p>
+      <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0 12px 0;"/>
+      <p style="font-size:12px;color:#6b7280;margin:0;">
+        bizzcenter Weil am Rhein · Am Kesselhaus 3 · 79576 Weil am Rhein<br/>
+        <a href="https://weil.bizzcenter.de" style="color:#6b7f3e;">weil.bizzcenter.de</a>
+      </p>
+    </div>
+  `;
+
+  try {
+    await fetch(`https://graph.microsoft.com/v1.0/users/${NOTIFICATION_EMAIL}/sendMail`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: {
+          subject,
+          body: { contentType: 'HTML', content: body },
+          toRecipients: [{ emailAddress: { address: lead.email } }],
+        },
+      }),
+    });
+  } catch (err) {
+    console.error('Customer confirmation email failed:', err);
   }
 }
 
@@ -155,6 +225,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const descParts: string[] = [];
     descParts.push(`Quelle: ${data.quelle}`);
     if (data.product) descParts.push(`Produkt: ${data.product}`);
+    if (data.wunschterminVon && data.wunschterminBis) {
+      descParts.push(`Wunschtermin: ${data.wunschterminVon} bis ${data.wunschterminBis}`);
+    }
+    if (data.zeitraumFreitext) descParts.push(`Zeitraum: ${data.zeitraumFreitext}`);
     if (data.anrede) descParts.push(`Anrede: ${data.anrede}`);
     if (data.telefon) descParts.push(`Telefon: ${data.telefon}`);
     if (data.raum) descParts.push(`Raum: ${data.raum}`);
@@ -250,7 +324,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }
       })(),
       
-      // 2. E-Mail Notification
+      // 2. E-Mail Notification ans Team
       sendNotificationEmail({
         firstName,
         lastName,
@@ -260,7 +334,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         nachricht: data.nachricht || data.bemerkungen,
         quelle: data.quelle,
         product: data.product,
+        wunschterminVon: data.wunschterminVon,
+        wunschterminBis: data.wunschterminBis,
+        zeitraumFreitext: data.zeitraumFreitext,
       }).then(() => 'email-ok'),
+
+      // 2b. Bestätigungsmail an den Kunden (nur wenn E-Mail vorhanden)
+      data.email
+        ? sendCustomerConfirmation({
+            firstName,
+            email: data.email,
+            product: data.product,
+            wunschterminVon: data.wunschterminVon,
+            wunschterminBis: data.wunschterminBis,
+            zeitraumFreitext: data.zeitraumFreitext,
+          }).then(() => 'customer-ok')
+        : Promise.resolve('customer-skipped'),
 
       // 3. Zendesk Sell Lead
       (async () => {
@@ -299,11 +388,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const crmSuccess = results[0].status === 'fulfilled';
     const emailSuccess = results[1].status === 'fulfilled';
-    const zendeskSuccess = results[2].status === 'fulfilled';
+    const customerSuccess = results[2].status === 'fulfilled';
+    const zendeskSuccess = results[3].status === 'fulfilled';
 
     if (!crmSuccess) console.error('CRM lead creation failed:', results[0].status === 'rejected' ? results[0].reason : 'unknown');
     if (!emailSuccess) console.error('Email notification failed:', results[1].status === 'rejected' ? results[1].reason : 'unknown');
-    if (!zendeskSuccess) console.error('Zendesk Sell lead failed:', results[2].status === 'rejected' ? results[2].reason : 'unknown');
+    if (!customerSuccess) console.error('Customer confirmation failed:', results[2].status === 'rejected' ? results[2].reason : 'unknown');
+    if (!zendeskSuccess) console.error('Zendesk Sell lead failed:', results[3].status === 'rejected' ? results[3].reason : 'unknown');
 
     // Success wenn mindestens einer erfolgreich
     if (crmSuccess || emailSuccess || zendeskSuccess) {
