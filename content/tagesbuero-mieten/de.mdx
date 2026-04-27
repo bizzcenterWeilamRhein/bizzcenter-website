@@ -1,6 +1,6 @@
 ---
-title: "Tagesbüro Weil am Rhein buchen – Einzelbüro im Dreiländereck"
-description: "Tagesbüro in Weil am Rhein direkt buchen. EUR 89,- inkl. MwSt. Sofortbuchung mit Parkplatz-Option im Dreiländereck Basel."
+title: "Tagesbüro Weil am Rhein buchen — ab 79 EUR im Dreiländereck"
+description: "Tagesbüro im bizzcenter Weil am Rhein: 1 Tag ab 79 EUR (Aktion statt 89), Woche 349 EUR, 10er-Karte 669 EUR, Monat 649 EUR. Sofortbuchung im Dreiländereck Basel."
 ---
 
 <GlobalOverflowFix />
@@ -15,13 +15,21 @@ description: "Tagesbüro in Weil am Rhein direkt buchen. EUR 89,- inkl. MwSt. So
 <LanguageSwitcher />
 <PageHero
   title="Tagesbüro buchen"
-  description="Sofort Buchung im bizzcenter Weil am Rhein"
+  description="Sofort verfügbar im bizzcenter Weil am Rhein — Tag, Woche, 10er-Karte oder Monat."
 />
 
 Wir bestätigen Ihnen direkt mit der Bezahlung ein Tagesbüro sofort oder an Ihrem Wunschtermin.
 
-<Features title="Tagesbüro">
-  <FeatureCard title="Preis" description="EUR 89,- inkl. 19% MwSt." icon="tag" />
+{/* ===== PREISÜBERSICHT ===== */}
+<Features title="Ihre Buchungsoptionen" columns={4}>
+  <FeatureCard title="1 Tag" description="EUR 79,- statt 89,- — Aktionspreis (zzgl. MwSt.)" icon="calendar" />
+  <FeatureCard title="1 Woche" description="EUR 349,- für 5 Tage — Wochenpaket" icon="calendar-days" />
+  <FeatureCard title="10er-Karte" description="EUR 669,- für 10 Tage — 16% Rabatt" icon="ticket" />
+  <FeatureCard title="1 Monat" description="EUR 649,- / Monat" icon="repeat" />
+</Features>
+
+{/* ===== WAS INKLUSIVE IST ===== */}
+<Features title="Inklusive bei jeder Buchung" columns={2}>
   <FeatureCard title="Sofortbuchung" description="Direkte Bestätigung nach Bezahlung" icon="check" />
   <FeatureCard title="Zugangsdaten" description="Nach Zahlungseingang umgehend per E-Mail oder SMS" icon="mail" />
 </Features>

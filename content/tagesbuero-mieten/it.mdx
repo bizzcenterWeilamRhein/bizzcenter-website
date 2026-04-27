@@ -1,6 +1,6 @@
 ---
-title: "Prenotare ufficio giornaliero Weil am Rhein – Ufficio singolo nel triangolo dei tre confini"
-description: "Prenotate subito un ufficio giornaliero a Weil am Rhein. EUR 89,- IVA inclusa. Prenotazione immediata con opzione parcheggio nel triangolo dei tre confini Basilea."
+title: "Ufficio giornaliero Weil am Rhein — da 79 EUR nel triangolo dei tre confini"
+description: "Ufficio giornaliero al bizzcenter Weil am Rhein: 1 giorno da 79 EUR (offerta invece di 89), settimana 349 EUR, carta 10 giorni 669 EUR, mese 649 EUR. Prenotazione immediata nel triangolo dei tre confini Basilea."
 ---
 
 <GlobalOverflowFix />
@@ -15,16 +15,24 @@ description: "Prenotate subito un ufficio giornaliero a Weil am Rhein. EUR 89,- 
 <LanguageSwitcher />
 <PageHero
   title="Prenotare ufficio giornaliero"
-  description="Prenotazione immediata al bizzcenter Weil am Rhein"
+  description="Disponibile subito al bizzcenter Weil am Rhein — al giorno, alla settimana, carta 10 giorni o al mese."
 />
 
-Vi confermiamo un ufficio giornaliero direttamente con il pagamento, subito o alla data desiderata.
+Vi confermiamo l'ufficio giornaliero direttamente con il pagamento, subito o alla data desiderata.
 
-<Features title="Ufficio giornaliero">
-  <FeatureCard title="Prezzo" description="EUR 89,- IVA 19% inclusa" icon="tag" />
+{/* ===== PANORAMICA PREZZI ===== */}
+<Features title="Le vostre opzioni di prenotazione" columns={4}>
+  <FeatureCard title="1 giorno" description="EUR 79,- invece di 89,- — prezzo promozionale (IVA esclusa)" icon="calendar" />
+  <FeatureCard title="1 settimana" description="EUR 349,- per 5 giorni — pacchetto settimana" icon="calendar-days" />
+  <FeatureCard title="Carta 10 giorni" description="EUR 669,- per 10 giorni — 16% di sconto" icon="ticket" />
+  <FeatureCard title="1 mese" description="EUR 649,- / mese" icon="repeat" />
+</Features>
+
+{/* ===== INCLUSO IN OGNI PRENOTAZIONE ===== */}
+<Features title="Incluso in ogni prenotazione" columns={2}>
   <FeatureCard title="Prenotazione immediata" description="Conferma diretta dopo il pagamento" icon="check" />
-  <FeatureCard title="Dati di accesso" description="Dopo il ricevimento del pagamento immediatamente via e-mail o SMS" icon="mail" />
+  <FeatureCard title="Dati di accesso" description="Inviati immediatamente via e-mail o SMS dopo il pagamento" icon="mail" />
 </Features>
 
 {/* ===== PRENOTA ORA ===== */}
-<CheckoutWizard product="tagesbuero" title="Prenota ora l'ufficio giornaliero" />
+<CheckoutWizard product="tagesbuero" title="Prenota subito l'ufficio giornaliero" />

@@ -1,6 +1,6 @@
 ---
-title: "Bureau à la journée Weil am Rhein — Bureau individuel au triangle des trois frontières"
-description: "Réservez un bureau à la journée à Weil am Rhein. EUR 89,- TTC. Réservation instantanée avec option parking au triangle des trois frontières Bâle."
+title: "Bureau à la journée Weil am Rhein — dès 79 EUR au triangle des trois frontières"
+description: "Bureau à la journée au bizzcenter Weil am Rhein : 1 jour dès 79 EUR (action au lieu de 89), semaine 349 EUR, carte 10 jours 669 EUR, mois 649 EUR. Réservation immédiate au triangle des trois frontières Bâle."
 ---
 
 <GlobalOverflowFix />
@@ -15,16 +15,24 @@ description: "Réservez un bureau à la journée à Weil am Rhein. EUR 89,- TTC.
 <LanguageSwitcher />
 <PageHero
   title="Réserver un bureau à la journée"
-  description="Réservation instantanée au bizzcenter Weil am Rhein"
+  description="Disponible immédiatement au bizzcenter Weil am Rhein — à la journée, à la semaine, carte 10 jours ou au mois."
 />
 
-Nous vous confirmons un bureau à la journée directement après le paiement, immédiatement ou à la date souhaitée.
+Nous vous confirmons votre bureau à la journée directement après le paiement, immédiatement ou à la date souhaitée.
 
-<Features title="Bureau à la journée">
-  <FeatureCard title="Prix" description="EUR 89,- TTC (19% TVA incluse)" icon="tag" />
+{/* ===== APERÇU DES PRIX ===== */}
+<Features title="Vos options de réservation" columns={4}>
+  <FeatureCard title="1 jour" description="EUR 79,- au lieu de 89,- — prix promo (HT)" icon="calendar" />
+  <FeatureCard title="1 semaine" description="EUR 349,- pour 5 jours — forfait semaine" icon="calendar-days" />
+  <FeatureCard title="Carte 10 jours" description="EUR 669,- pour 10 jours — 16% de remise" icon="ticket" />
+  <FeatureCard title="1 mois" description="EUR 649,- / mois" icon="repeat" />
+</Features>
+
+{/* ===== INCLUS DANS CHAQUE RÉSERVATION ===== */}
+<Features title="Inclus dans chaque réservation" columns={2}>
   <FeatureCard title="Réservation instantanée" description="Confirmation directe après paiement" icon="check" />
   <FeatureCard title="Données d'accès" description="Envoyées par e-mail ou SMS dès réception du paiement" icon="mail" />
 </Features>
 
 {/* ===== RESERVER MAINTENANT ===== */}
-<CheckoutWizard product="tagesbuero" title="Réserver un bureau à la journée" />
+<CheckoutWizard product="tagesbuero" title="Réserver votre bureau à la journée" />

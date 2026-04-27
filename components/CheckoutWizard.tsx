@@ -41,17 +41,20 @@ const PRICE_MAP: Record<string, string> = {
   'konf_25pers_halbtags': 'price_1T9o4mJHXQhpcKhggHANaEYb',
   'konf_25pers_ganztags': 'price_1T9o4mJHXQhpcKhgrbx9LCJ8',
   // Tagesbüro
-  'tb': 'price_1T9o4nJHXQhpcKhgqrQ95gxs',
-  // Add-ons
+  'tb_tag': 'price_1TQlQZJHXQhpcKhghYjwFQ4i',
+  'tb_woche': 'price_1TQlQZJHXQhpcKhgPr3jCNG4',
+  'tb_10er': 'price_1TQlQaJHXQhpcKhgUa5EM2lK',
+  'tb_monat': 'price_1TQlQaJHXQhpcKhgyHt3eikF',
+  // Add-ons (monatlich)
   'addon_parkplatz': 'price_1T9o4oJHXQhpcKhgbEUDDEwb',
+  'addon_parkplatz_fest': 'price_1TQlQbJHXQhpcKhgSKaCIF1e',
   'addon_kaffee': 'price_1T9o4oJHXQhpcKhgsLkqzfRu',
   'addon_monitor': 'price_1T9o4pJHXQhpcKhgyjto6kpz',
   'addon_schrank': 'price_1T9o4pJHXQhpcKhgFsScY4uu',
   'addon_scan': 'price_1T9o4qJHXQhpcKhgtzdpeiKG',
   'addon_firmenschild': 'price_1T9o4rJHXQhpcKhgKee1emBB',
-  // Tagespass Add-ons (Einzelpreise pro Tag)
+  // Tagespass Add-ons (einmalig pro Tag — nur Kaffee/Monitor, kein Parkplatz)
   'addon_kaffee_tag': 'price_1T9pwHJHXQhpcKhge5UguPpX',
-  'addon_parkplatz_tag': 'price_1T9pwMJHXQhpcKhgvhgn43QW',
   'addon_monitor_tag': 'price_1TI23fJHXQhpcKhg2FiMCBEg',
 };
 
@@ -69,6 +72,20 @@ const STRINGS = {
       '10er': 'einmalig',
       monatspass: 'pro Monat · flexibel zum Monatsende kündbar',
       monatsabo: 'pro Monat · 3 Monate Kündigungsfrist',
+    } as Record<string, string>,
+    // Tagesbüro tarife
+    tbTarifLabels: { tag: 'Einzeltag', woche: '1 Woche', '10er': '10er-Karte', monat: '1 Monat' } as Record<string, string>,
+    tbTarifSub: {
+      tag: 'Aktion: 79,- statt 89,-',
+      woche: '5 Tage · Wochenpaket',
+      '10er': '10 Tage flex · 16% Rabatt',
+      monat: 'pro Monat',
+    } as Record<string, string>,
+    tbTarifBadges: {
+      tag: '−11%',
+      woche: '−12%',
+      '10er': '−16%',
+      monat: '',
     } as Record<string, string>,
     // Konferenzraum
     konfRoomLabels: {
@@ -91,16 +108,14 @@ const STRINGS = {
     // Addons
     addonLabels: {
       scan: 'Scanpaket',
-      parkplatz: 'Parkplatz',
+      parkplatz: 'Parkkarte (flexibel)',
+      parkplatz_fest: 'Fester Stellplatz',
       firmenschild: 'Firmenschild',
       kaffee: 'Kaffee-Flat',
       monitor: '27" Monitor',
       schrank: 'Aktenschrank',
       kaffee_tag: 'Kaffee-Flat',
-      parkplatz_tag: 'Parkplatz',
       monitor_tag: '27" Monitor',
-      kaffee_10er: '10x Kaffee-Flat',
-      parkplatz_10er: '10x Parkplatz',
     } as Record<string, string>,
     priceMonthly: (amount: number) => `EUR ${amount},-/Mon.`,
     priceOneTime: (amount: number) => `EUR ${amount},- einmalig`,
@@ -124,7 +139,7 @@ const STRINGS = {
     stepLabelsGA: ['Postversand', 'Tarif', 'Add-ons', 'Ihre Daten'],
     stepLabelsCW: ['Tarif', 'Add-ons', 'Ihre Daten'],
     stepLabelsKonf: ['Raumgröße', 'Dauer', 'Add-ons', 'Ihre Daten'],
-    stepLabelsTB: ['Add-ons', 'Ihre Daten'],
+    stepLabelsTB: ['Tarif', 'Add-ons', 'Ihre Daten'],
     // Step headings
     gaPostTitle: 'Wie soll Ihre Post bearbeitet werden?',
     pvOhne: 'Ohne Postversand',
@@ -171,6 +186,19 @@ const STRINGS = {
       monatspass: 'per month · cancel flexibly at month-end',
       monatsabo: 'per month · 3 months notice period',
     } as Record<string, string>,
+    tbTarifLabels: { tag: 'Single day', woche: '1 week', '10er': '10-day card', monat: '1 month' } as Record<string, string>,
+    tbTarifSub: {
+      tag: 'Offer: 79,- instead of 89,-',
+      woche: '5 days · weekly package',
+      '10er': '10 flexible days · 16% discount',
+      monat: 'per month',
+    } as Record<string, string>,
+    tbTarifBadges: {
+      tag: '−11%',
+      woche: '−12%',
+      '10er': '−16%',
+      monat: '',
+    } as Record<string, string>,
     konfRoomLabels: {
       '2pers': 'Up to 2 people',
       '6pers': 'Up to 6 people',
@@ -190,16 +218,14 @@ const STRINGS = {
     } as Record<string, string>,
     addonLabels: {
       scan: 'Scan package',
-      parkplatz: 'Parking',
+      parkplatz: 'Parking card (flexible)',
+      parkplatz_fest: 'Reserved parking space',
       firmenschild: 'Company sign',
       kaffee: 'Coffee flat rate',
       monitor: '27" monitor',
       schrank: 'Filing cabinet',
       kaffee_tag: 'Coffee flat rate',
-      parkplatz_tag: 'Parking',
       monitor_tag: '27" monitor',
-      kaffee_10er: '10x coffee flat rate',
-      parkplatz_10er: '10x parking',
     } as Record<string, string>,
     priceMonthly: (amount: number) => `EUR ${amount},-/month`,
     priceOneTime: (amount: number) => `EUR ${amount},- one-time`,
@@ -220,7 +246,7 @@ const STRINGS = {
     stepLabelsGA: ['Mail handling', 'Plan', 'Add-ons', 'Your details'],
     stepLabelsCW: ['Plan', 'Add-ons', 'Your details'],
     stepLabelsKonf: ['Room size', 'Duration', 'Add-ons', 'Your details'],
-    stepLabelsTB: ['Add-ons', 'Your details'],
+    stepLabelsTB: ['Plan', 'Add-ons', 'Your details'],
     gaPostTitle: 'How should your mail be handled?',
     pvOhne: 'Without mail forwarding',
     pvMit: 'With mail forwarding',
@@ -266,6 +292,19 @@ const STRINGS = {
       monatspass: 'par mois · annulable de manière flexible en fin de mois',
       monatsabo: 'par mois · préavis de 3 mois',
     } as Record<string, string>,
+    tbTarifLabels: { tag: 'Journée', woche: '1 semaine', '10er': 'Carte 10 jours', monat: '1 mois' } as Record<string, string>,
+    tbTarifSub: {
+      tag: 'Promo : 79,- au lieu de 89,-',
+      woche: '5 jours · forfait semaine',
+      '10er': '10 jours flexibles · 16% de remise',
+      monat: 'par mois',
+    } as Record<string, string>,
+    tbTarifBadges: {
+      tag: '−11%',
+      woche: '−12%',
+      '10er': '−16%',
+      monat: '',
+    } as Record<string, string>,
     konfRoomLabels: {
       '2pers': 'Jusqu\'à 2 personnes',
       '6pers': 'Jusqu\'à 6 personnes',
@@ -285,16 +324,14 @@ const STRINGS = {
     } as Record<string, string>,
     addonLabels: {
       scan: 'Pack de numérisation',
-      parkplatz: 'Place de parking',
+      parkplatz: 'Carte parking (flexible)',
+      parkplatz_fest: 'Place fixe réservée',
       firmenschild: 'Enseigne d\'entreprise',
       kaffee: 'Forfait café',
       monitor: 'Écran 27"',
       schrank: 'Armoire à dossiers',
       kaffee_tag: 'Forfait café',
-      parkplatz_tag: 'Place de parking',
       monitor_tag: 'Écran 27"',
-      kaffee_10er: '10x forfait café',
-      parkplatz_10er: '10x place de parking',
     } as Record<string, string>,
     priceMonthly: (amount: number) => `EUR ${amount},-/mois`,
     priceOneTime: (amount: number) => `EUR ${amount},- une fois`,
@@ -315,7 +352,7 @@ const STRINGS = {
     stepLabelsGA: ['Courrier', 'Formule', 'Options', 'Vos informations'],
     stepLabelsCW: ['Formule', 'Options', 'Vos informations'],
     stepLabelsKonf: ['Taille de salle', 'Durée', 'Options', 'Vos informations'],
-    stepLabelsTB: ['Options', 'Vos informations'],
+    stepLabelsTB: ['Formule', 'Options', 'Vos informations'],
     gaPostTitle: 'Comment votre courrier doit-il être traité ?',
     pvOhne: 'Sans réexpédition du courrier',
     pvMit: 'Avec réexpédition du courrier',
@@ -368,6 +405,13 @@ const CW_TARIFE = [
   { id: 'monatsabo', price: 199, badge: '−16%' },
 ];
 
+const TB_TARIFE: { id: string; price: number; badge?: string; popular?: boolean }[] = [
+  { id: 'tag', price: 79, badge: '−11%' },
+  { id: 'woche', price: 349, badge: '−12%' },
+  { id: '10er', price: 669, badge: '−16%' },
+  { id: 'monat', price: 649, popular: true },
+];
+
 const KONF_ROOM_IDS = ['2pers', '6pers', '15pers', '25pers'] as const;
 const KONF_DAUER_IDS = ['stunde', 'halbtags', 'ganztags'] as const;
 
@@ -386,6 +430,7 @@ const ADDONS_BY_PRODUCT: Record<ProductType, { id: string; priceAmount: number; 
   ],
   coworking: [
     { id: 'parkplatz', priceAmount: 49, priceType: 'monthly', monthly: true },
+    { id: 'parkplatz_fest', priceAmount: 79, priceType: 'monthly', monthly: true },
     { id: 'kaffee', priceAmount: 29, priceType: 'monthly', monthly: true },
     { id: 'monitor', priceAmount: 27, priceType: 'monthly', monthly: true },
     { id: 'schrank', priceAmount: 19, priceType: 'monthly', monthly: true },
@@ -394,22 +439,33 @@ const ADDONS_BY_PRODUCT: Record<ProductType, { id: string; priceAmount: number; 
     { id: 'parkplatz', priceAmount: 49, priceType: 'monthly', monthly: true },
     { id: 'kaffee', priceAmount: 29, priceType: 'monthly', monthly: true },
   ],
-  tagesbuero: [
-    { id: 'parkplatz', priceAmount: 49, priceType: 'monthly', monthly: true },
-    { id: 'kaffee', priceAmount: 29, priceType: 'monthly', monthly: true },
-    { id: 'monitor', priceAmount: 27, priceType: 'monthly', monthly: true },
-  ],
+  // Tagesbüro lädt tarif-spezifisch (Tag/Woche/10er/Monat) — siehe TB_*_ADDONS unten
+  tagesbuero: [],
 };
 
+// Coworking Tagespass: nur einmalige Tages-Add-ons, kein Parkplatz (laut Geschäftsregel: Park-Optionen nur bei Monatsbuchungen)
 const CW_TAGESPASS_ADDONS = [
   { id: 'kaffee_tag', priceAmount: 9, monthly: false },
-  { id: 'parkplatz_tag', priceAmount: 6, monthly: false },
   { id: 'monitor_tag', priceAmount: 5, monthly: false },
 ];
 
-const CW_10ER_ADDONS = [
-  { id: 'kaffee_10er', priceAmount: 90, monthly: false },
-  { id: 'parkplatz_10er', priceAmount: 60, monthly: false },
+// Coworking 10er-Karte: keine Add-ons im Wizard
+const CW_10ER_ADDONS: { id: string; priceAmount: number; monthly: boolean }[] = [];
+
+// Tagesbüro tarif-spezifische Add-ons
+const TB_TAG_ADDONS = [
+  { id: 'kaffee_tag', priceAmount: 9, monthly: false },
+  { id: 'monitor_tag', priceAmount: 5, monthly: false },
+];
+
+const TB_WOCHE_ADDONS: { id: string; priceAmount: number; monthly: boolean }[] = [];
+const TB_10ER_ADDONS: { id: string; priceAmount: number; monthly: boolean }[] = [];
+
+const TB_MONAT_ADDONS = [
+  { id: 'parkplatz', priceAmount: 49, priceType: 'monthly' as const, monthly: true },
+  { id: 'parkplatz_fest', priceAmount: 79, priceType: 'monthly' as const, monthly: true },
+  { id: 'kaffee', priceAmount: 29, priceType: 'monthly' as const, monthly: true },
+  { id: 'monitor', priceAmount: 27, priceType: 'monthly' as const, monthly: true },
 ];
 
 // ─── Helper Components ───────────────────────────────────────────────
@@ -503,6 +559,9 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
   // Coworking state
   const [cwTarif, setCwTarif] = useState<string | null>(null);
 
+  // Tagesbüro state
+  const [tbTarif, setTbTarif] = useState<string | null>(null);
+
   // Konferenzraum state
   const [konfRoom, setKonfRoom] = useState<string | null>(null);
   const [konfDauer, setKonfDauer] = useState<string | null>(null);
@@ -537,7 +596,8 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
         if (!konfRoom || !konfDauer) return null;
         return `konf_${konfRoom}_${konfDauer}`;
       case 'tagesbuero':
-        return 'tb';
+        if (!tbTarif) return null;
+        return `tb_${tbTarif}`;
       default:
         return null;
     }
@@ -636,16 +696,22 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
         items.push({ label: `${roomLabel} · ${dauerLabel}`, value: s.priceSimple(preis) });
         break;
       }
-      case 'tagesbuero':
-        items.push({ label: s.summaryTagesbuero, value: s.priceSimple(59) });
+      case 'tagesbuero': {
+        const t = TB_TARIFE.find(t => t.id === tbTarif);
+        const tarifLabel = tbTarif ? s.tbTarifLabels[tbTarif] : s.summaryTagesbuero;
+        items.push({ label: `${s.summaryTagesbuero} · ${tarifLabel}`, value: s.priceSimple(t?.price || 0) });
         break;
+      }
     }
     if (selectedAddons.size > 0) {
-      const addonSource = product === 'coworking' && cwTarif === '10er'
-        ? CW_10ER_ADDONS
-        : product === 'coworking' && cwTarif === 'tagespass'
-        ? CW_TAGESPASS_ADDONS
-        : ADDONS_BY_PRODUCT[product];
+      const addonSource =
+        product === 'coworking' && cwTarif === '10er' ? CW_10ER_ADDONS :
+        product === 'coworking' && cwTarif === 'tagespass' ? CW_TAGESPASS_ADDONS :
+        product === 'tagesbuero' && tbTarif === 'tag' ? TB_TAG_ADDONS :
+        product === 'tagesbuero' && tbTarif === 'woche' ? TB_WOCHE_ADDONS :
+        product === 'tagesbuero' && tbTarif === '10er' ? TB_10ER_ADDONS :
+        product === 'tagesbuero' && tbTarif === 'monat' ? TB_MONAT_ADDONS :
+        ADDONS_BY_PRODUCT[product];
       addonSource
         .filter(a => selectedAddons.has(a.id))
         .forEach(a => {
@@ -659,7 +725,7 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
 
   const stepLabels = getStepLabels();
   const maxSteps = getMaxSteps();
-  const addonsStep = product === 'tagesbuero' ? 0 : product === 'coworking' ? 1 : product === 'geschaeftsadresse' ? 2 : 2;
+  const addonsStep = product === 'tagesbuero' ? 1 : product === 'coworking' ? 1 : product === 'geschaeftsadresse' ? 2 : 2;
   const dataStep = addonsStep + 1;
 
   function renderCurrentStep() {
@@ -734,6 +800,30 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
       }
     }
 
+    // ── TAGESBÜRO ──
+    if (product === 'tagesbuero') {
+      if (step === 0) {
+        return (
+          <div>
+            <h3 className="text-lg font-bold text-gray-900 mb-4">{s.tarifWaehlen}</h3>
+            <div className="grid grid-cols-2 gap-3">
+              {TB_TARIFE.map(t => (
+                <OptionCard key={t.id} popularLabel={s.popular} selected={tbTarif === t.id} popular={t.popular} centered={false} onClick={() => { setTbTarif(t.id); setStep(1); }}>
+                  <div className="w-full text-center">
+                    <div className="text-xs sm:text-sm font-semibold">{s.tbTarifLabels[t.id]}</div>
+                    <div className="text-base sm:text-lg font-bold text-[#1e293b] my-0.5 whitespace-nowrap">{s.priceSimple(t.price)}</div>
+                    <p className="text-[10px] text-gray-400">{s.vatNote}</p>
+                    <p className="text-[10px] sm:text-xs text-gray-500 mt-0.5">{s.tbTarifSub[t.id]}</p>
+                    {t.badge && <span className="inline-block mt-1 text-[9px] font-bold bg-[#6b7f3e] text-white rounded-full px-1.5 py-0.5">{t.badge}</span>}
+                  </div>
+                </OptionCard>
+              ))}
+            </div>
+          </div>
+        );
+      }
+    }
+
     // ── KONFERENZRAUM ──
     if (product === 'konferenzraum') {
       if (step === 0) {
@@ -783,12 +873,17 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
 
     // ── ADD-ONS (shared) ──
     if (step === addonsStep) {
-      // Coworking: 10er → 10x Add-ons, Tagespass → Tages-Add-ons, Monatspass/Abo → monatliche Add-ons
-      const productAddons = product === 'coworking' && cwTarif === '10er'
-        ? CW_10ER_ADDONS
-        : product === 'coworking' && cwTarif === 'tagespass'
-        ? CW_TAGESPASS_ADDONS
-        : ADDONS_BY_PRODUCT[product];
+      // Tarif-spezifische Add-ons:
+      // - Coworking: 10er → leer, Tagespass → Tages-Add-ons, Monatspass/Abo → monatliche Add-ons
+      // - Tagesbüro: Tag → Tages-Add-ons, Woche/10er → leer, Monat → monatliche Add-ons
+      const productAddons =
+        product === 'coworking' && cwTarif === '10er' ? CW_10ER_ADDONS :
+        product === 'coworking' && cwTarif === 'tagespass' ? CW_TAGESPASS_ADDONS :
+        product === 'tagesbuero' && tbTarif === 'tag' ? TB_TAG_ADDONS :
+        product === 'tagesbuero' && tbTarif === 'woche' ? TB_WOCHE_ADDONS :
+        product === 'tagesbuero' && tbTarif === '10er' ? TB_10ER_ADDONS :
+        product === 'tagesbuero' && tbTarif === 'monat' ? TB_MONAT_ADDONS :
+        ADDONS_BY_PRODUCT[product];
       return (
         <div>
           {step > 0 && <BackButton onClick={() => setStep(step - 1)} label={s.back} />}

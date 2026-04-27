@@ -1,0 +1,38 @@
+---
+title: "Day Office Weil am Rhein — from EUR 79 in the Three-Country Triangle"
+description: "Day office at bizzcenter Weil am Rhein: 1 day from EUR 79 (special offer instead of 89), week EUR 349, 10-pass card EUR 669, monthly EUR 649. Instant booking in the Basel Three-Country Triangle."
+---
+
+<GlobalOverflowFix />
+<BreadcrumbListSchema items={[
+  { name: "Home", href: "/" },
+  { name: "Office Solutions", href: "/uebersicht" },
+  { name: "Rent Office", href: "/buero-mieten" },
+  { name: "Day Office", href: "/tagesbuero-mieten" },
+]} />
+
+<ActiveNavHighlight />
+<LanguageSwitcher />
+<PageHero
+  title="Book a Day Office"
+  description="Available immediately at bizzcenter Weil am Rhein — by the day, week, 10-pass card or month."
+/>
+
+We confirm your day office directly upon payment — for today or your preferred date.
+
+{/* ===== PRICE OVERVIEW ===== */}
+<Features title="Your booking options" columns={4}>
+  <FeatureCard title="1 Day" description="EUR 79,- instead of 89,- — special offer (excl. VAT)" icon="calendar" />
+  <FeatureCard title="1 Week" description="EUR 349,- for 5 days — weekly package" icon="calendar-days" />
+  <FeatureCard title="10-Pass Card" description="EUR 669,- for 10 days — 16% discount" icon="ticket" />
+  <FeatureCard title="1 Month" description="EUR 649,- / month" icon="repeat" />
+</Features>
+
+{/* ===== WHAT IS INCLUDED ===== */}
+<Features title="Included with every booking" columns={2}>
+  <FeatureCard title="Instant booking" description="Direct confirmation after payment" icon="check" />
+  <FeatureCard title="Access details" description="Sent via email or SMS immediately upon payment" icon="mail" />
+</Features>
+
+{/* ===== BOOK NOW ===== */}
+<CheckoutWizard product="tagesbuero" title="Book your day office now" />

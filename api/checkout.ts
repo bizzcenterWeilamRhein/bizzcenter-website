@@ -32,19 +32,20 @@ const PRICES: Record<string, string> = {
   'konf_25pers_halbtags': 'price_1T9o4mJHXQhpcKhggHANaEYb',
   'konf_25pers_ganztags': 'price_1T9o4mJHXQhpcKhgrbx9LCJ8',
   // Tagesbüro
-  'tb': 'price_1T9o4nJHXQhpcKhgqrQ95gxs',
+  'tb_tag': 'price_1TQlQZJHXQhpcKhghYjwFQ4i',
+  'tb_woche': 'price_1TQlQZJHXQhpcKhgPr3jCNG4',
+  'tb_10er': 'price_1TQlQaJHXQhpcKhgUa5EM2lK',
+  'tb_monat': 'price_1TQlQaJHXQhpcKhgyHt3eikF',
   // Add-ons (monatlich)
   'addon_parkplatz': 'price_1T9o4oJHXQhpcKhgbEUDDEwb',
+  'addon_parkplatz_fest': 'price_1TQlQbJHXQhpcKhgSKaCIF1e',
   'addon_kaffee': 'price_1T9o4oJHXQhpcKhgsLkqzfRu',
   'addon_monitor': 'price_1T9o4pJHXQhpcKhgyjto6kpz',
   'addon_schrank': 'price_1T9o4pJHXQhpcKhgFsScY4uu',
   'addon_scan': 'price_1T9o4qJHXQhpcKhgtzdpeiKG',
   'addon_firmenschild': 'price_1T9o4rJHXQhpcKhgKee1emBB',
-  // Add-ons (Tagespass)
+  // Add-ons (einmalig pro Tag — nur Kaffee/Monitor, kein Parkplatz)
   'addon_kaffee_tag': 'price_1T9pwHJHXQhpcKhge5UguPpX',
-  'addon_parkplatz_tag': 'price_1T9pwMJHXQhpcKhgvhgn43QW',
-  'addon_kaffee_10er': 'price_1T9r4bJHXQhpcKhgPtF12IgU',
-  'addon_parkplatz_10er': 'price_1T9r4gJHXQhpcKhgMHWRIYix',
   'addon_monitor_tag': 'price_1TI23fJHXQhpcKhg2FiMCBEg',
 };
 
@@ -97,7 +98,7 @@ async function getOrCreateTaxRate(): Promise<string> {
 
 const RECURRING_KEYS = new Set(
   Object.keys(PRICES).filter(k =>
-    k.startsWith('ga_') || k.startsWith('cw_monats') ||
+    k.startsWith('ga_') || k.startsWith('cw_monats') || k === 'tb_monat' ||
     (k.startsWith('addon_') && k !== 'addon_firmenschild' && !k.endsWith('_tag') && !k.endsWith('_10er'))
   )
 );
@@ -144,17 +145,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // ─── Upsell mapping: which add-on keys are available per product category ───
+    // (Park-Optionen nur bei Monatsbuchungen — laut Geschäftsregel)
     const UPSELL_MAP: Record<string, string[]> = {
-      'cw_tagespass': ['addon_kaffee_tag', 'addon_parkplatz_tag', 'addon_monitor_tag'],
-      'cw_10er': ['addon_kaffee_10er', 'addon_parkplatz_10er'],
+      'cw_tagespass': ['addon_kaffee_tag', 'addon_monitor_tag'],
+      'cw_10er': [],
       'cw_monatspass': ['addon_kaffee', 'addon_parkplatz', 'addon_monitor', 'addon_schrank'],
       'cw_monatsabo': ['addon_kaffee', 'addon_parkplatz', 'addon_monitor', 'addon_schrank'],
-      'tb': ['addon_kaffee_tag', 'addon_parkplatz_tag', 'addon_monitor_tag'],
+      'tb_tag': ['addon_kaffee_tag', 'addon_monitor_tag'],
+      'tb_woche': [],
+      'tb_10er': [],
+      'tb_monat': ['addon_kaffee', 'addon_parkplatz', 'addon_monitor'],
     };
-    // Konferenzraum upsells
+    // Konferenzraum upsells (Kaffee als Tages-Add-on, kein Parkplatz)
     for (const prefix of ['konf_2pers', 'konf_6pers', 'konf_15pers', 'konf_25pers']) {
       for (const dur of ['_stunde', '_halbtags', '_ganztags']) {
-        UPSELL_MAP[prefix + dur] = ['addon_kaffee_tag', 'addon_parkplatz_tag'];
+        UPSELL_MAP[prefix + dur] = ['addon_kaffee_tag'];
       }
     }
 
