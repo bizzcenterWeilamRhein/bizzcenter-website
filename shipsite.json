@@ -2,8 +2,8 @@
   "$schema": "./node_modules/@shipsite.dev/core/shipsite.schema.json",
   "name": " ",
   "url": "https://weil.bizzcenter.de",
-  "logo": "/images/logo-header.svg",
-  "favicon": "/favicon.png",
+  "logo": "/images/logos/logo-header.svg",
+  "favicon": "/favicon.ico",
   "ogImage": "/images/og/og-image.jpg",
   "darkMode": false,
   "colors": {
