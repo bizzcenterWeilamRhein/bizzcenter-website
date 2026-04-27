@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 
 const STRINGS: Record<string, { title: string; subtitle: string; short: string; shortDesc: string; long: string; longDesc: string; close: string }> = {
   de: {
-    title: 'Für wie lange möchten Sie ein Büro mieten?',
+    title: 'Bitte wähle die Mietdauer aus.',
     subtitle: '',
     short: 'Kurzfristig',
     shortDesc: 'bis 3 Monate — Tagesbüro',
@@ -15,7 +15,7 @@ const STRINGS: Record<string, { title: string; subtitle: string; short: string; 
     close: 'Schließen',
   },
   en: {
-    title: 'For how long would you like to rent an office?',
+    title: 'Please choose the rental duration.',
     subtitle: '',
     short: 'Short-term',
     shortDesc: 'up to 3 months — day office',
@@ -24,7 +24,7 @@ const STRINGS: Record<string, { title: string; subtitle: string; short: string; 
     close: 'Close',
   },
   fr: {
-    title: 'Pour combien de temps souhaitez-vous louer un bureau ?',
+    title: 'Veuillez choisir la durée de location.',
     subtitle: '',
     short: 'Court terme',
     shortDesc: "jusqu'à 3 mois — bureau à la journée",
@@ -33,7 +33,7 @@ const STRINGS: Record<string, { title: string; subtitle: string; short: string; 
     close: 'Fermer',
   },
   it: {
-    title: 'Per quanto tempo desiderate affittare un ufficio?',
+    title: 'Scegliete la durata di affitto.',
     subtitle: '',
     short: 'Breve termine',
     shortDesc: 'fino a 3 mesi — ufficio giornaliero',
