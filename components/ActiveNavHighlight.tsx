@@ -42,6 +42,32 @@ export function ActiveNavHighlight() {
       logoImg.style.height = 'auto';
     }
 
+    // Eröffnungsangebot-Hinweis nur auf der Startseite (alle Locales) anzeigen
+    const navbarLeft = header.querySelector('[data-slot="navbar-left"]');
+    const isHomepage = pathname === '/' || /^\/(en|fr|it)\/?$/.test(pathname);
+    const existingBadge = navbarLeft?.querySelector('[data-eroeffnungs-badge]');
+
+    if (navbarLeft && isHomepage && !existingBadge) {
+      const badge = document.createElement('span');
+      badge.setAttribute('data-eroeffnungs-badge', 'true');
+      badge.textContent = 'Eröffnungsangebot';
+      badge.style.cssText = [
+        'display:inline-flex',
+        'align-items:center',
+        'padding:4px 10px',
+        'background-color:#B2FF00',
+        'color:#2d3748',
+        'font-size:0.8rem',
+        'font-weight:600',
+        'border-radius:6px',
+        'white-space:nowrap',
+        'line-height:1.2',
+      ].join(';');
+      navbarLeft.appendChild(badge);
+    } else if (existingBadge && !isHomepage) {
+      existingBadge.remove();
+    }
+
     const links = header.querySelectorAll<HTMLAnchorElement>('a[href]');
     links.forEach(link => {
       const href = link.getAttribute('href');
