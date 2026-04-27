@@ -6,8 +6,8 @@ import { usePathname } from 'next/navigation';
 
 const STRINGS: Record<string, { title: string; subtitle: string; short: string; shortDesc: string; long: string; longDesc: string; close: string }> = {
   de: {
-    title: 'Welches Büro suchen Sie?',
-    subtitle: 'Bitte wählen Sie Ihre gewünschte Mietdauer:',
+    title: 'Für wie lange möchten Sie ein Büro mieten?',
+    subtitle: '',
     short: 'Kurzfristig',
     shortDesc: 'bis 3 Monate — Tagesbüro',
     long: 'Langfristig',
@@ -15,8 +15,8 @@ const STRINGS: Record<string, { title: string; subtitle: string; short: string; 
     close: 'Schließen',
   },
   en: {
-    title: 'Which office are you looking for?',
-    subtitle: 'Please choose your desired rental duration:',
+    title: 'For how long would you like to rent an office?',
+    subtitle: '',
     short: 'Short-term',
     shortDesc: 'up to 3 months — day office',
     long: 'Long-term',
@@ -24,8 +24,8 @@ const STRINGS: Record<string, { title: string; subtitle: string; short: string; 
     close: 'Close',
   },
   fr: {
-    title: 'Quel bureau cherchez-vous ?',
-    subtitle: 'Choisissez votre durée de location souhaitée :',
+    title: 'Pour combien de temps souhaitez-vous louer un bureau ?',
+    subtitle: '',
     short: 'Court terme',
     shortDesc: "jusqu'à 3 mois — bureau à la journée",
     long: 'Long terme',
@@ -33,8 +33,8 @@ const STRINGS: Record<string, { title: string; subtitle: string; short: string; 
     close: 'Fermer',
   },
   it: {
-    title: 'Quale ufficio state cercando?',
-    subtitle: 'Scegliete la durata di affitto desiderata:',
+    title: 'Per quanto tempo desiderate affittare un ufficio?',
+    subtitle: '',
     short: 'Breve termine',
     shortDesc: 'fino a 3 mesi — ufficio giornaliero',
     long: 'Lungo termine',
@@ -103,8 +103,8 @@ export function BueroAuswahlModal() {
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-black/50 z-50 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
         <Dialog.Content className="fixed left-[50%] top-[50%] z-50 w-[92vw] max-w-md translate-x-[-50%] translate-y-[-50%] rounded-2xl bg-white p-6 shadow-xl data-[state=open]:animate-in data-[state=closed]:animate-out">
-          <Dialog.Title className="text-lg font-bold text-gray-900 mb-1">{s.title}</Dialog.Title>
-          <Dialog.Description className="text-sm text-gray-500 mb-5">{s.subtitle}</Dialog.Description>
+          <Dialog.Title className="text-lg font-bold text-gray-900 mb-5">{s.title}</Dialog.Title>
+          {s.subtitle && <Dialog.Description className="text-sm text-gray-500 -mt-3 mb-5">{s.subtitle}</Dialog.Description>}
 
           <div className="grid gap-3">
             <a
