@@ -59,9 +59,31 @@ export function BueroAuswahlModal() {
         setOpen(true);
       }
     }
+
+    function handleClick(e: MouseEvent) {
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+      const link = target.closest('a');
+      if (!link) return;
+      const href = link.getAttribute('href');
+      if (!href || !href.endsWith('#buero-auswahl')) return;
+      e.preventDefault();
+      e.stopPropagation();
+      setOpen(true);
+      try {
+        history.replaceState(null, '', window.location.pathname + window.location.search + '#buero-auswahl');
+      } catch {}
+    }
+
     checkHash();
     window.addEventListener('hashchange', checkHash);
-    return () => window.removeEventListener('hashchange', checkHash);
+    window.addEventListener('popstate', checkHash);
+    document.addEventListener('click', handleClick, true);
+    return () => {
+      window.removeEventListener('hashchange', checkHash);
+      window.removeEventListener('popstate', checkHash);
+      document.removeEventListener('click', handleClick, true);
+    };
   }, []);
 
   function handleClose() {
