@@ -1,6 +1,6 @@
 ---
-title: "Bureau à la journée Weil am Rhein — dès 79 EUR au triangle des trois frontières"
-description: "Bureau à la journée au bizzcenter Weil am Rhein : 1 jour dès 79 EUR (action au lieu de 89), semaine 349 EUR, carte 10 jours 669 EUR, mois 649 EUR. Réservation immédiate au triangle des trois frontières Bâle."
+title: "Bureau à la journée Weil am Rhein — dès 79 EUR/jour au triangle des trois frontières"
+description: "Bureau individuel au bizzcenter Weil am Rhein. 1 jour 79 EUR (action), 1 semaine 349 EUR, carte 10 jours 669 EUR, 1 mois 649 EUR. Réservation immédiate au triangle des trois frontières Bâle."
 ---
 
 <GlobalOverflowFix />
@@ -13,26 +13,98 @@ description: "Bureau à la journée au bizzcenter Weil am Rhein : 1 jour dès 79
 
 <ActiveNavHighlight />
 <LanguageSwitcher />
-<PageHero
-  title="Réserver un bureau à la journée"
-  description="Disponible immédiatement au bizzcenter Weil am Rhein — à la journée, à la semaine, carte 10 jours ou au mois."
+
+{/* ===== TITRE + IMAGE ===== */}
+<CompactHero
+  title="Votre bureau individuel dès EUR 79,- /jour HT"
+  description="Disponible immédiatement, sans engagement — à la journée, à la semaine, carte 10 jours ou au mois. Au cœur du triangle des trois frontières de Bâle."
+  image="/images/standorte/weil-am-rhein/green-office-einzelbuero.jpg"
+  imageAlt="Bureau individuel au bizzcenter Weil am Rhein — meublé, prêt à l'emploi"
+  buttonText=""
+  buttonHref=""
+  formId=""
 />
 
-Nous vous confirmons votre bureau à la journée directement après le paiement, immédiatement ou à la date souhaitée.
-
-{/* ===== APERÇU DES PRIX ===== */}
-<Features title="Vos options de réservation" columns={4}>
-  <FeatureCard title="1 jour" description="EUR 79,- au lieu de 89,- — prix promo (HT)" icon="calendar" />
-  <FeatureCard title="1 semaine" description="EUR 349,- pour 5 jours — forfait semaine" icon="calendar-days" />
-  <FeatureCard title="Carte 10 jours" description="EUR 669,- pour 10 jours — 16% de remise" icon="ticket" />
-  <FeatureCard title="1 mois" description="EUR 649,- / mois" icon="repeat" />
-</Features>
-
-{/* ===== INCLUS DANS CHAQUE RÉSERVATION ===== */}
-<Features title="Inclus dans chaque réservation" columns={2}>
-  <FeatureCard title="Réservation instantanée" description="Confirmation directe après paiement" icon="check" />
-  <FeatureCard title="Données d'accès" description="Envoyées par e-mail ou SMS dès réception du paiement" icon="mail" />
-</Features>
-
-{/* ===== RESERVER MAINTENANT ===== */}
+{/* ===== RÉSERVER MAINTENANT — EN HAUT ===== */}
+<div id="buchen">
 <CheckoutWizard product="tagesbuero" title="Réserver votre bureau à la journée" />
+</div>
+
+{/* ===== GALERIE D'IMAGES ===== */}
+<ImageSlider
+  title="Aperçu du bureau à la journée"
+  slides={[
+    { src: "/images/standorte/weil-am-rhein/green-office-einzelbuero.jpg", caption: "Bureau individuel — meublé, calme, prêt à l'emploi" },
+    { src: "/images/standorte/weil-am-rhein/green-office-buero-2-personen.jpg", caption: "Bureau jusqu'à 2 personnes" },
+    { src: "/images/standorte/weil-am-rhein/coachingbuero.jpg", caption: "Bureau de coaching — aussi disponible comme bureau à la journée" },
+    { src: "/images/standorte/weil-am-rhein/green-office-eingangsbereich.jpeg", caption: "Entrée — architecture ouverte avec végétation luxuriante" },
+    { src: "/images/standorte/weil-am-rhein/green-office-kueche-empore.jpeg", caption: "Cuisine & lounge pour networker" },
+    { src: "/images/standorte/weil-am-rhein/kesselhaus-aussen.jpg", caption: "Le Kesselhaus historique — classé monument historique" }
+  ]}
+/>
+
+{/* ===== INCLUS DANS LE PRIX ===== */}
+<Features title="Ce qui est inclus dans le prix du bureau à la journée" columns={3}>
+  <Feature title="Internet haut débit" description="Wi-Fi 5/6 et LAN. Suffisamment stable pour visioconférences, applications cloud et téléphonie IP." />
+  <Feature title="Votre propre bureau individuel" description="Salle fermable pour un travail concentré et des entretiens confidentiels — pas d'open space." />
+  <Feature title="Réservation instantanée" description="Confirmation directe après paiement — données d'accès par e-mail ou SMS." />
+  <Feature title="Accès 24/7" description="Votre propre code de porte pour un accès 24h/24 — même en dehors des heures d'ouverture." />
+  <Feature title="Cuisine & lounge" description="Thés premium et cuisine entièrement équipée avec lounge pour networker — café bio en option." />
+  <Feature title="Tout inclus" description="Électricité, chauffage, ménage, poste de travail ergonomique, imprimante — aucun coût caché." />
+</Features>
+
+{/* ===== STATS ===== */}
+<StatsTheme>
+<Stats title="Le bureau à la journée en chiffres">
+  <Stat value="79" label="EUR dès" description="par jour (action)" />
+  <Stat value="24/7" label="Accès" description="Votre propre code de porte" />
+  <Stat value="0" label="Durée min." description="Réservez maintenant, commencez maintenant" />
+</Stats>
+</StatsTheme>
+
+{/* ===== À PROPOS ===== */}
+<AlternatingFeatures>
+  <AlternatingFeatureRow title="Bureau individuel meublé au Green Office" description="Salles baignées de lumière naturelle avec 7,50 m de hauteur sous plafond et végétation luxuriante. Entièrement meublé avec bureau, chaise ergonomique et tout ce dont vous avez besoin — entrez, branchez, travaillez." image="/images/standorte/weil-am-rhein/green-office-einzelbuero.jpg" imageAlt="Bureau individuel au Green Office — meublé et calme" />
+  <AlternatingFeatureRow title="Dans le Kesselhaus historique" description="Le bizzcenter est situé dans le Kesselhaus classé monument historique à Weil am Rhein — à 300 m de la frontière suisse. Facilement accessible par la ligne de tram 8 depuis Bâle (arrêt Riedlistrasse/Kesselhaus), proche de l'autoroute A5 et avec parking sur place." image="/images/standorte/weil-am-rhein/standortkarte.png" imageAlt="Carte du site bizzcenter Weil am Rhein — triangle frontalier de Bâle" />
+</AlternatingFeatures>
+
+{/* ===== FAQ ===== */}
+<FAQ title="Questions fréquentes sur le bureau à la journée">
+  <FAQItem question="Combien coûte un bureau à la journée ?">
+    Actuellement 79 EUR au lieu de 89 EUR par jour (promo, HT). Forfait semaine 349 EUR (5 jours), carte 10 jours 669 EUR (10 jours flexibles, 16% de remise), 1 mois 649 EUR.
+  </FAQItem>
+  <FAQItem question="Comment la réservation est-elle confirmée ?">
+    Directement après le paiement en ligne, vous recevez les données d'accès par e-mail ou SMS — vous pouvez utiliser le bureau immédiatement ou à la date souhaitée.
+  </FAQItem>
+  <FAQItem question="Qu'est-ce qui est inclus dans le prix ?">
+    Bureau individuel meublé, Wi-Fi haut débit, électricité, chauffage, ménage, imprimante, cuisine & lounge, accès 24/7. Aucun coût caché.
+  </FAQItem>
+  <FAQItem question="Y a-t-il des places de parking ?">
+    Pour les réservations mensuelles, une place fixe réservée (79 EUR/mois) peut être ajoutée en option. Pour les visiteurs à la journée, des places clients et 90 min de stationnement gratuit sont disponibles.
+  </FAQItem>
+  <FAQItem question="Puis-je tester le bureau à la journée ?">
+    Oui — commencez par une seule journée. Nous l'imputons volontiers sur une réservation plus longue.
+  </FAQItem>
+  <FAQItem question="Quelle est la différence avec la carte 10 jours ?">
+    La carte 10 jours offre 10 jours de travail flexibles à utiliser selon vos besoins — 16% moins cher que 10 journées individuelles. Idéal si vous venez régulièrement mais à des dates variables.
+  </FAQItem>
+  <FAQItem question="Puis-je utiliser le bureau à la journée mensuellement ?">
+    Oui — le tarif mensuel est de 649 EUR/mois (abonnement, résiliable mensuellement) et inclut votre propre bureau individuel. Pour des besoins à plus long terme, nous recommandons nos options de location de bureau à long terme.
+  </FAQItem>
+  <FAQItem question="Y a-t-il des salles de réunion ou de conférence à proximité ?">
+    Oui — des salles de réunion et de conférence pour 2 à 25 personnes sont disponibles directement au Kesselhaus, réservables à l'heure ou à la journée.
+  </FAQItem>
+  <FAQItem question="Comment est l'accessibilité ?">
+    Ligne de tram 8 (arrêt Riedlistrasse/Kesselhaus) directement depuis Bâle, proche de l'A5, EuroAirport Bâle-Mulhouse à 15 minutes en voiture.
+  </FAQItem>
+</FAQ>
+
+<FAQPageSchema items={[
+  { question: "Combien coûte un bureau à la journée ?", answer: "Actuellement 79 EUR au lieu de 89 EUR par jour (promo, HT). Forfait semaine 349 EUR, carte 10 jours 669 EUR, 1 mois 649 EUR." },
+  { question: "Comment la réservation est-elle confirmée ?", answer: "Directement après le paiement en ligne, vous recevez les données d'accès par e-mail ou SMS — vous pouvez utiliser le bureau immédiatement ou à la date souhaitée." },
+  { question: "Qu'est-ce qui est inclus dans le prix ?", answer: "Bureau individuel meublé, Wi-Fi haut débit, électricité, chauffage, ménage, imprimante, cuisine & lounge, accès 24/7." },
+  { question: "Puis-je tester le bureau à la journée ?", answer: "Oui — commencez par une seule journée. Nous l'imputons volontiers sur une réservation plus longue." },
+]} />
+
+{/* ===== CTA FINAL DE RÉSERVATION ===== */}
+<CheckoutWizard product="tagesbuero" title="Réserver le bureau à la journée" />

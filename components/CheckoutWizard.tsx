@@ -425,18 +425,16 @@ const KONF_PREISE: Record<string, Record<string, number>> = {
 const ADDONS_BY_PRODUCT: Record<ProductType, { id: string; priceAmount: number; priceType: 'monthly' | 'once'; monthly: boolean }[]> = {
   geschaeftsadresse: [
     { id: 'scan', priceAmount: 49, priceType: 'monthly', monthly: true },
-    { id: 'parkplatz', priceAmount: 49, priceType: 'monthly', monthly: true },
+    { id: 'parkplatz_fest', priceAmount: 79, priceType: 'monthly', monthly: true },
     { id: 'firmenschild', priceAmount: 179, priceType: 'once', monthly: false },
   ],
   coworking: [
-    { id: 'parkplatz', priceAmount: 49, priceType: 'monthly', monthly: true },
     { id: 'parkplatz_fest', priceAmount: 79, priceType: 'monthly', monthly: true },
     { id: 'kaffee', priceAmount: 29, priceType: 'monthly', monthly: true },
     { id: 'monitor', priceAmount: 27, priceType: 'monthly', monthly: true },
     { id: 'schrank', priceAmount: 19, priceType: 'monthly', monthly: true },
   ],
   konferenzraum: [
-    { id: 'parkplatz', priceAmount: 49, priceType: 'monthly', monthly: true },
     { id: 'kaffee', priceAmount: 29, priceType: 'monthly', monthly: true },
   ],
   // Tagesbüro lädt tarif-spezifisch (Tag/Woche/10er/Monat) — siehe TB_*_ADDONS unten
@@ -462,7 +460,6 @@ const TB_WOCHE_ADDONS: { id: string; priceAmount: number; monthly: boolean }[] =
 const TB_10ER_ADDONS: { id: string; priceAmount: number; monthly: boolean }[] = [];
 
 const TB_MONAT_ADDONS = [
-  { id: 'parkplatz', priceAmount: 49, priceType: 'monthly' as const, monthly: true },
   { id: 'parkplatz_fest', priceAmount: 79, priceType: 'monthly' as const, monthly: true },
   { id: 'kaffee', priceAmount: 29, priceType: 'monthly' as const, monthly: true },
   { id: 'monitor', priceAmount: 27, priceType: 'monthly' as const, monthly: true },

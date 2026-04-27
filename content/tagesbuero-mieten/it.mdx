@@ -1,6 +1,6 @@
 ---
-title: "Ufficio giornaliero Weil am Rhein — da 79 EUR nel triangolo dei tre confini"
-description: "Ufficio giornaliero al bizzcenter Weil am Rhein: 1 giorno da 79 EUR (offerta invece di 89), settimana 349 EUR, carta 10 giorni 669 EUR, mese 649 EUR. Prenotazione immediata nel triangolo dei tre confini Basilea."
+title: "Ufficio giornaliero Weil am Rhein — da 79 EUR/giorno nel triangolo dei tre confini"
+description: "Ufficio individuale al bizzcenter Weil am Rhein. 1 giorno 79 EUR (offerta), 1 settimana 349 EUR, carta 10 giorni 669 EUR, 1 mese 649 EUR. Prenotazione immediata nel triangolo dei tre confini Basilea."
 ---
 
 <GlobalOverflowFix />
@@ -13,26 +13,98 @@ description: "Ufficio giornaliero al bizzcenter Weil am Rhein: 1 giorno da 79 EU
 
 <ActiveNavHighlight />
 <LanguageSwitcher />
-<PageHero
-  title="Prenotare ufficio giornaliero"
-  description="Disponibile subito al bizzcenter Weil am Rhein — al giorno, alla settimana, carta 10 giorni o al mese."
+
+{/* ===== TITOLO + IMMAGINE ===== */}
+<CompactHero
+  title="Il vostro ufficio individuale da EUR 79,- /giorno IVA escl."
+  description="Disponibile subito, senza vincolo contrattuale — al giorno, alla settimana, carta 10 giorni o al mese. Direttamente nel triangolo dei tre confini di Basilea."
+  image="/images/standorte/weil-am-rhein/green-office-einzelbuero.jpg"
+  imageAlt="Ufficio individuale al bizzcenter Weil am Rhein — arredato, pronto all'uso"
+  buttonText=""
+  buttonHref=""
+  formId=""
 />
 
-Vi confermiamo l'ufficio giornaliero direttamente con il pagamento, subito o alla data desiderata.
-
-{/* ===== PANORAMICA PREZZI ===== */}
-<Features title="Le vostre opzioni di prenotazione" columns={4}>
-  <FeatureCard title="1 giorno" description="EUR 79,- invece di 89,- — prezzo promozionale (IVA esclusa)" icon="calendar" />
-  <FeatureCard title="1 settimana" description="EUR 349,- per 5 giorni — pacchetto settimana" icon="calendar-days" />
-  <FeatureCard title="Carta 10 giorni" description="EUR 669,- per 10 giorni — 16% di sconto" icon="ticket" />
-  <FeatureCard title="1 mese" description="EUR 649,- / mese" icon="repeat" />
-</Features>
-
-{/* ===== INCLUSO IN OGNI PRENOTAZIONE ===== */}
-<Features title="Incluso in ogni prenotazione" columns={2}>
-  <FeatureCard title="Prenotazione immediata" description="Conferma diretta dopo il pagamento" icon="check" />
-  <FeatureCard title="Dati di accesso" description="Inviati immediatamente via e-mail o SMS dopo il pagamento" icon="mail" />
-</Features>
-
-{/* ===== PRENOTA ORA ===== */}
+{/* ===== PRENOTA ORA — IN ALTO ===== */}
+<div id="buchen">
 <CheckoutWizard product="tagesbuero" title="Prenota subito l'ufficio giornaliero" />
+</div>
+
+{/* ===== GALLERIA IMMAGINI ===== */}
+<ImageSlider
+  title="All'interno dell'ufficio giornaliero"
+  slides={[
+    { src: "/images/standorte/weil-am-rhein/green-office-einzelbuero.jpg", caption: "Ufficio individuale — arredato, tranquillo, pronto all'uso" },
+    { src: "/images/standorte/weil-am-rhein/green-office-buero-2-personen.jpg", caption: "Ufficio fino a 2 persone" },
+    { src: "/images/standorte/weil-am-rhein/coachingbuero.jpg", caption: "Ufficio di coaching — anche disponibile come ufficio giornaliero" },
+    { src: "/images/standorte/weil-am-rhein/green-office-eingangsbereich.jpeg", caption: "Ingresso — architettura aperta con vegetazione rigogliosa" },
+    { src: "/images/standorte/weil-am-rhein/green-office-kueche-empore.jpeg", caption: "Cucina e lounge per il networking" },
+    { src: "/images/standorte/weil-am-rhein/kesselhaus-aussen.jpg", caption: "Il Kesselhaus storico — tutelato come monumento" }
+  ]}
+/>
+
+{/* ===== COSA È INCLUSO ===== */}
+<Features title="Cosa è incluso nel prezzo dell'ufficio giornaliero" columns={3}>
+  <Feature title="Internet ad alta velocità" description="WIFI 5/6 e LAN. Abbastanza stabile per videoconferenze, applicazioni cloud e telefonia IP." />
+  <Feature title="Il tuo ufficio individuale" description="Stanza chiudibile per lavoro concentrato e conversazioni riservate — niente atmosfera open space." />
+  <Feature title="Prenotazione immediata" description="Conferma diretta dopo il pagamento — dati di accesso via e-mail o SMS." />
+  <Feature title="Accesso 24/7" description="Codice di accesso personale 24 ore su 24 — anche fuori dagli orari di apertura." />
+  <Feature title="Cucina e lounge" description="Tè premium e cucina completamente attrezzata con lounge per il networking — caffè bio disponibile come opzione." />
+  <Feature title="Tutto incluso" description="Elettricità, riscaldamento, pulizia, postazione ergonomica, stampante — nessun costo nascosto." />
+</Features>
+
+{/* ===== STATS ===== */}
+<StatsTheme>
+<Stats title="Ufficio giornaliero in cifre">
+  <Stat value="79" label="EUR da" description="al giorno (offerta)" />
+  <Stat value="24/7" label="Accesso" description="Il tuo codice di accesso personale" />
+  <Stat value="0" label="Durata min." description="Prenota ora, inizia ora" />
+</Stats>
+</StatsTheme>
+
+{/* ===== CHI SIAMO ===== */}
+<AlternatingFeatures>
+  <AlternatingFeatureRow title="Ufficio individuale arredato nel Green Office" description="Stanze inondate di luce naturale con soffitti alti 7,50 m e rigogliosa vegetazione. Completamente arredato con scrivania, sedia ergonomica e tutto ciò di cui avete bisogno — entrate, collegate, lavorate." image="/images/standorte/weil-am-rhein/green-office-einzelbuero.jpg" imageAlt="Ufficio individuale nel Green Office — arredato e tranquillo" />
+  <AlternatingFeatureRow title="Nello storico Kesselhaus" description="Il bizzcenter si trova nello storico Kesselhaus tutelato a Weil am Rhein — a 300 m dal confine svizzero. Facilmente raggiungibile con il tram linea 8 da Basilea (fermata Riedlistrasse/Kesselhaus), vicino all'autostrada A5 e con parcheggi in loco." image="/images/standorte/weil-am-rhein/standortkarte.png" imageAlt="Mappa del bizzcenter Weil am Rhein — triangolo dei tre confini Basilea" />
+</AlternatingFeatures>
+
+{/* ===== FAQ ===== */}
+<FAQ title="Domande frequenti sull'ufficio giornaliero">
+  <FAQItem question="Quanto costa un ufficio giornaliero?">
+    Attualmente 79 EUR invece di 89 EUR al giorno (offerta, IVA escl.). Pacchetto settimanale 349 EUR (5 giorni), carta 10 giorni 669 EUR (10 giorni flessibili, 16% di sconto), 1 mese 649 EUR.
+  </FAQItem>
+  <FAQItem question="Quanto velocemente viene confermata la prenotazione?">
+    Subito dopo il pagamento online ricevi i dati di accesso via e-mail o SMS — puoi utilizzare l'ufficio immediatamente o alla data desiderata.
+  </FAQItem>
+  <FAQItem question="Cosa è incluso nel prezzo?">
+    Ufficio individuale arredato, WiFi ad alta velocità, elettricità, riscaldamento, pulizia, stampante, cucina e lounge, accesso 24/7. Nessun costo nascosto.
+  </FAQItem>
+  <FAQItem question="Sono disponibili parcheggi?">
+    Per le prenotazioni mensili è possibile aggiungere opzionalmente un posto auto fisso riservato (79 EUR/mese). Per gli ospiti giornalieri sono disponibili parcheggi clienti e 90 min di parcheggio gratuito.
+  </FAQItem>
+  <FAQItem question="Posso provare l'ufficio giornaliero?">
+    Sì — inizia con una singola giornata. La accreditiamo volentieri su una prenotazione più lunga.
+  </FAQItem>
+  <FAQItem question="Qual è la differenza con la carta 10 giorni?">
+    La carta 10 giorni offre 10 giorni lavorativi flessibili da utilizzare secondo necessità — 16% più economica di 10 giorni singoli. Ideale se vieni regolarmente ma in date irregolari.
+  </FAQItem>
+  <FAQItem question="Posso utilizzare l'ufficio giornaliero mensilmente?">
+    Sì — la tariffa mensile è di 649 EUR/mese (abbonamento, disdicibile mensilmente) e include il proprio ufficio individuale. Per esigenze a lungo termine consigliamo le nostre opzioni di affitto a lungo termine.
+  </FAQItem>
+  <FAQItem question="Ci sono sale riunioni o conferenze nelle vicinanze?">
+    Sì — sale riunioni e conferenze per 2–25 persone sono disponibili direttamente nel Kesselhaus, prenotabili in modo flessibile a ore o per l'intera giornata.
+  </FAQItem>
+  <FAQItem question="Com'è il collegamento?">
+    Tram linea 8 (fermata Riedlistrasse/Kesselhaus) direttamente da Basilea, vicino all'autostrada A5, EuroAirport Basilea-Mulhouse a 15 minuti d'auto.
+  </FAQItem>
+</FAQ>
+
+<FAQPageSchema items={[
+  { question: "Quanto costa un ufficio giornaliero?", answer: "Attualmente 79 EUR invece di 89 EUR al giorno (offerta, IVA escl.). Pacchetto settimanale 349 EUR, carta 10 giorni 669 EUR, 1 mese 649 EUR." },
+  { question: "Quanto velocemente viene confermata la prenotazione?", answer: "Subito dopo il pagamento online ricevi i dati di accesso via e-mail o SMS — puoi utilizzare l'ufficio immediatamente o alla data desiderata." },
+  { question: "Cosa è incluso nel prezzo?", answer: "Ufficio individuale arredato, WiFi ad alta velocità, elettricità, riscaldamento, pulizia, stampante, cucina e lounge, accesso 24/7." },
+  { question: "Posso provare l'ufficio giornaliero?", answer: "Sì — inizia con una singola giornata. La accreditiamo volentieri su una prenotazione più lunga." },
+]} />
+
+{/* ===== CTA FINALE DI PRENOTAZIONE ===== */}
+<CheckoutWizard product="tagesbuero" title="Prenota ufficio giornaliero" />

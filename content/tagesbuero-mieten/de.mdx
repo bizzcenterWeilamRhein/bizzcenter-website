@@ -1,6 +1,6 @@
 ---
-title: "Tagesbüro Weil am Rhein buchen — ab 79 EUR im Dreiländereck"
-description: "Tagesbüro im bizzcenter Weil am Rhein: 1 Tag ab 79 EUR (Aktion statt 89), Woche 349 EUR, 10er-Karte 669 EUR, Monat 649 EUR. Sofortbuchung im Dreiländereck Basel."
+title: "Tagesbüro Weil am Rhein buchen — ab 79 EUR/Tag im Dreiländereck"
+description: "Einzelbüro im bizzcenter Weil am Rhein direkt buchen. 1 Tag 79 EUR (Aktion), 1 Woche 349 EUR, 10er-Karte 669 EUR, 1 Monat 649 EUR. Sofortbuchung im Dreiländereck Basel."
 ---
 
 <GlobalOverflowFix />
@@ -13,26 +13,98 @@ description: "Tagesbüro im bizzcenter Weil am Rhein: 1 Tag ab 79 EUR (Aktion st
 
 <ActiveNavHighlight />
 <LanguageSwitcher />
-<PageHero
-  title="Tagesbüro buchen"
-  description="Sofort verfügbar im bizzcenter Weil am Rhein — Tag, Woche, 10er-Karte oder Monat."
+
+{/* ===== HEADLINE + BILD ===== */}
+<CompactHero
+  title="Dein Einzelbüro ab EUR 79,- /Tag zzgl. MwSt."
+  description="Sofort verfügbar, ohne Vertragsbindung — Tag, Woche, 10er-Karte oder Monat. Direkt im Dreiländereck Basel."
+  image="/images/standorte/weil-am-rhein/green-office-einzelbuero.jpg"
+  imageAlt="Einzelbüro im bizzcenter Weil am Rhein — möbliert, ready to work"
+  buttonText=""
+  buttonHref=""
+  formId=""
 />
 
-Wir bestätigen Ihnen direkt mit der Bezahlung ein Tagesbüro sofort oder an Ihrem Wunschtermin.
+{/* ===== JETZT BUCHEN — OBEN ===== */}
+<div id="buchen">
+<CheckoutWizard product="tagesbuero" title="Jetzt Tagesbüro buchen" />
+</div>
 
-{/* ===== PREISÜBERSICHT ===== */}
-<Features title="Ihre Buchungsoptionen" columns={4}>
-  <FeatureCard title="1 Tag" description="EUR 79,- statt 89,- — Aktionspreis (zzgl. MwSt.)" icon="calendar" />
-  <FeatureCard title="1 Woche" description="EUR 349,- für 5 Tage — Wochenpaket" icon="calendar-days" />
-  <FeatureCard title="10er-Karte" description="EUR 669,- für 10 Tage — 16% Rabatt" icon="ticket" />
-  <FeatureCard title="1 Monat" description="EUR 649,- / Monat" icon="repeat" />
-</Features>
+{/* ===== BILDERGALERIE ===== */}
+<ImageSlider
+  title="Einblicke ins Tagesbüro"
+  slides={[
+    { src: "/images/standorte/weil-am-rhein/green-office-einzelbuero.jpg", caption: "Einzelbüro — möbliert, ruhig, ready to work" },
+    { src: "/images/standorte/weil-am-rhein/green-office-buero-2-personen.jpg", caption: "Büro für bis zu 2 Personen" },
+    { src: "/images/standorte/weil-am-rhein/coachingbuero.jpg", caption: "Coachingbüro — auch als Tagesbüro nutzbar" },
+    { src: "/images/standorte/weil-am-rhein/green-office-eingangsbereich.jpeg", caption: "Eingangsbereich — offene Architektur mit üppiger Begrünung" },
+    { src: "/images/standorte/weil-am-rhein/green-office-kueche-empore.jpeg", caption: "Küche & Lounge zum Netzwerken" },
+    { src: "/images/standorte/weil-am-rhein/kesselhaus-aussen.jpg", caption: "Das historische Kesselhaus — denkmalgeschützt" }
+  ]}
+/>
 
 {/* ===== WAS INKLUSIVE IST ===== */}
-<Features title="Inklusive bei jeder Buchung" columns={2}>
-  <FeatureCard title="Sofortbuchung" description="Direkte Bestätigung nach Bezahlung" icon="check" />
-  <FeatureCard title="Zugangsdaten" description="Nach Zahlungseingang umgehend per E-Mail oder SMS" icon="mail" />
+<Features title="Was im Tagesbüro-Preis enthalten ist" columns={3}>
+  <Feature title="Highspeed-Internet" description="WIFI 5/6 und LAN. Stabil genug für Videokonferenzen, Cloud-Anwendungen und IP-Telefonie." />
+  <Feature title="Eigenes Einzelbüro" description="Abschließbarer Raum für konzentriertes Arbeiten und vertrauliche Gespräche — keine Großraum-Atmosphäre." />
+  <Feature title="Sofortbuchung" description="Direkte Bestätigung nach Bezahlung — Zugangsdaten per E-Mail oder SMS." />
+  <Feature title="24/7 Zugang" description="Eigener Türcode für den Zugang rund um die Uhr — auch außerhalb der Öffnungszeiten." />
+  <Feature title="Küche & Lounge" description="Premium-Tees und voll ausgestattete Küche mit Lounge zum Netzwerken — Bio-Kaffee optional zubuchbar." />
+  <Feature title="Alles inklusive" description="Strom, Heizung, Reinigung, ergonomischer Arbeitsplatz, Drucker — keine versteckten Zusatzkosten." />
 </Features>
 
-{/* ===== JETZT BUCHEN ===== */}
-<CheckoutWizard product="tagesbuero" title="Jetzt Tagesbüro buchen" />
+{/* ===== STATS ===== */}
+<StatsTheme>
+<Stats title="Tagesbüro in Zahlen">
+  <Stat value="79" label="EUR ab" description="pro Tag (Aktion)" />
+  <Stat value="24/7" label="Zugang" description="Dein eigener Türcode" />
+  <Stat value="0" label="Min. Laufzeit" description="Sofort buchen, sofort starten" />
+</Stats>
+</StatsTheme>
+
+{/* ===== ÜBER UNS ===== */}
+<AlternatingFeatures>
+  <AlternatingFeatureRow title="Möbliertes Einzelbüro im Green Office" description="Tageslichtdurchflutete Räume mit 7,50m Deckenhöhe und üppiger Begrünung. Voll möbliert mit Schreibtisch, ergonomischem Stuhl und allem was du brauchst — einfach reinkommen, anschließen, arbeiten." image="/images/standorte/weil-am-rhein/green-office-einzelbuero.jpg" imageAlt="Einzelbüro im Green Office — möbliert und ruhig" />
+  <AlternatingFeatureRow title="Im historischen Kesselhaus" description="Das bizzcenter befindet sich im denkmalgeschützten Kesselhaus in Weil am Rhein — 300m von der Schweizer Grenze. Gut erreichbar mit Tramlinie 8 von Basel (Haltestelle Riedlistrasse/Kesselhaus), nahe der A5 und mit Parkplätzen vor Ort." image="/images/standorte/weil-am-rhein/standortkarte.png" imageAlt="Standortkarte bizzcenter Weil am Rhein — Dreiländereck Basel" />
+</AlternatingFeatures>
+
+{/* ===== FAQ ===== */}
+<FAQ title="Häufig gestellte Fragen zum Tagesbüro">
+  <FAQItem question="Was kostet ein Tagesbüro?">
+    Aktuell 79 EUR statt 89 EUR pro Tag (Aktion, zzgl. MwSt.). Wochenpaket 349 EUR (5 Tage), 10er-Karte 669 EUR (10 flexible Tage, 16% Rabatt), 1 Monat 649 EUR.
+  </FAQItem>
+  <FAQItem question="Wie schnell ist die Buchung bestätigt?">
+    Direkt nach der Online-Bezahlung erhältst du Zugangsdaten per E-Mail oder SMS — du kannst das Büro sofort oder zu deinem Wunschtermin nutzen.
+  </FAQItem>
+  <FAQItem question="Was ist im Preis enthalten?">
+    Möbliertes Einzelbüro, Highspeed-WLAN, Strom, Heizung, Reinigung, Drucker, Küche & Lounge, 24/7 Zugang. Keine versteckten Kosten.
+  </FAQItem>
+  <FAQItem question="Gibt es Parkplätze?">
+    Bei Monatsbuchungen kann ein fester Stellplatz (79 EUR/Mon) optional dazugebucht werden. Für Tagesgäste stehen Kundenparkplätze sowie 90 Min kostenfreies Parken zur Verfügung.
+  </FAQItem>
+  <FAQItem question="Kann ich das Tagesbüro testen?">
+    Ja — du kannst zunächst einen einzelnen Tag buchen. Bei einer längerfristigen Buchung rechnen wir den Tag gerne an.
+  </FAQItem>
+  <FAQItem question="Was ist der Unterschied zur 10er-Karte?">
+    Die 10er-Karte ist für 10 flexible Arbeitstage, die du nach Bedarf einlösen kannst — 16% günstiger als 10 Einzeltage. Ideal, wenn du regelmäßig, aber unregelmäßig vor Ort bist.
+  </FAQItem>
+  <FAQItem question="Kann ich das Tagesbüro auch monatlich nutzen?">
+    Ja — der Monatstarif kostet 649 EUR/Monat (Subscription, monatlich kündbar) und schließt das eigene Einzelbüro ein. Bei längerfristigem Bedarf empfehlen wir unsere langfristigen Büromiet-Optionen.
+  </FAQItem>
+  <FAQItem question="Gibt es Meeting- oder Konferenzräume in der Nähe?">
+    Ja — direkt im Kesselhaus stehen Konferenz- und Meetingräume für 2–25 Personen flexibel stunden- oder tageweise zur Verfügung.
+  </FAQItem>
+  <FAQItem question="Wie ist die Anbindung?">
+    Tramlinie 8 (Haltestelle Riedlistrasse/Kesselhaus) direkt von Basel, nahe der A5, EuroAirport Basel-Mulhouse 15 Autominuten entfernt.
+  </FAQItem>
+</FAQ>
+
+<FAQPageSchema items={[
+  { question: "Was kostet ein Tagesbüro?", answer: "Aktuell 79 EUR statt 89 EUR pro Tag (Aktion, zzgl. MwSt.). Wochenpaket 349 EUR, 10er-Karte 669 EUR, 1 Monat 649 EUR." },
+  { question: "Wie schnell ist die Buchung bestätigt?", answer: "Direkt nach der Online-Bezahlung erhältst du Zugangsdaten per E-Mail oder SMS — du kannst das Büro sofort oder zu deinem Wunschtermin nutzen." },
+  { question: "Was ist im Preis enthalten?", answer: "Möbliertes Einzelbüro, Highspeed-WLAN, Strom, Heizung, Reinigung, Drucker, Küche & Lounge, 24/7 Zugang." },
+  { question: "Kann ich das Tagesbüro testen?", answer: "Ja — du kannst zunächst einen einzelnen Tag buchen. Bei einer längerfristigen Buchung rechnen wir den Tag gerne an." },
+]} />
+
+{/* ===== FINALER BUCHUNGS-CTA ===== */}
+<CheckoutWizard product="tagesbuero" title="Tagesbüro buchen" />

@@ -1,6 +1,6 @@
 ---
-title: "Day Office Weil am Rhein — from EUR 79 in the Three-Country Triangle"
-description: "Day office at bizzcenter Weil am Rhein: 1 day from EUR 79 (special offer instead of 89), week EUR 349, 10-pass card EUR 669, monthly EUR 649. Instant booking in the Basel Three-Country Triangle."
+title: "Day Office Weil am Rhein — from EUR 79/day in the Three-Country Triangle"
+description: "Single office at bizzcenter Weil am Rhein. 1 day EUR 79 (special offer), 1 week EUR 349, 10-pass card EUR 669, 1 month EUR 649. Instant booking in the Basel Three-Country Triangle."
 ---
 
 <GlobalOverflowFix />
@@ -13,26 +13,98 @@ description: "Day office at bizzcenter Weil am Rhein: 1 day from EUR 79 (special
 
 <ActiveNavHighlight />
 <LanguageSwitcher />
-<PageHero
-  title="Book a Day Office"
-  description="Available immediately at bizzcenter Weil am Rhein — by the day, week, 10-pass card or month."
+
+{/* ===== HEADLINE + IMAGE ===== */}
+<CompactHero
+  title="Your single office from EUR 79,- /day excl. VAT"
+  description="Available immediately, no contract — by the day, week, 10-pass card or month. Right in the Basel Three-Country Triangle."
+  image="/images/standorte/weil-am-rhein/green-office-einzelbuero.jpg"
+  imageAlt="Single office at bizzcenter Weil am Rhein — furnished, ready to work"
+  buttonText=""
+  buttonHref=""
+  formId=""
 />
 
-We confirm your day office directly upon payment — for today or your preferred date.
+{/* ===== BOOK NOW — TOP ===== */}
+<div id="buchen">
+<CheckoutWizard product="tagesbuero" title="Book your day office now" />
+</div>
 
-{/* ===== PRICE OVERVIEW ===== */}
-<Features title="Your booking options" columns={4}>
-  <FeatureCard title="1 Day" description="EUR 79,- instead of 89,- — special offer (excl. VAT)" icon="calendar" />
-  <FeatureCard title="1 Week" description="EUR 349,- for 5 days — weekly package" icon="calendar-days" />
-  <FeatureCard title="10-Pass Card" description="EUR 669,- for 10 days — 16% discount" icon="ticket" />
-  <FeatureCard title="1 Month" description="EUR 649,- / month" icon="repeat" />
-</Features>
+{/* ===== IMAGE GALLERY ===== */}
+<ImageSlider
+  title="Inside the day office"
+  slides={[
+    { src: "/images/standorte/weil-am-rhein/green-office-einzelbuero.jpg", caption: "Single office — furnished, quiet, ready to work" },
+    { src: "/images/standorte/weil-am-rhein/green-office-buero-2-personen.jpg", caption: "Office for up to 2 people" },
+    { src: "/images/standorte/weil-am-rhein/coachingbuero.jpg", caption: "Coaching office — also available as day office" },
+    { src: "/images/standorte/weil-am-rhein/green-office-eingangsbereich.jpeg", caption: "Entrance area — open architecture with lush greenery" },
+    { src: "/images/standorte/weil-am-rhein/green-office-kueche-empore.jpeg", caption: "Kitchen & lounge for networking" },
+    { src: "/images/standorte/weil-am-rhein/kesselhaus-aussen.jpg", caption: "The historic Kesselhaus — heritage-listed" }
+  ]}
+/>
 
 {/* ===== WHAT IS INCLUDED ===== */}
-<Features title="Included with every booking" columns={2}>
-  <FeatureCard title="Instant booking" description="Direct confirmation after payment" icon="check" />
-  <FeatureCard title="Access details" description="Sent via email or SMS immediately upon payment" icon="mail" />
+<Features title="What's included in the day office price" columns={3}>
+  <Feature title="High-Speed Internet" description="WIFI 5/6 and LAN. Stable enough for video conferencing, cloud applications and IP telephony." />
+  <Feature title="Your own single office" description="Lockable room for focused work and confidential conversations — no open-plan atmosphere." />
+  <Feature title="Instant booking" description="Direct confirmation after payment — access details via email or SMS." />
+  <Feature title="24/7 Access" description="Your own door code for round-the-clock access — even outside opening hours." />
+  <Feature title="Kitchen & lounge" description="Premium teas and fully equipped kitchen with lounge for networking — organic coffee available as add-on." />
+  <Feature title="All inclusive" description="Electricity, heating, cleaning, ergonomic workspace, printer — no hidden extra costs." />
 </Features>
 
-{/* ===== BOOK NOW ===== */}
-<CheckoutWizard product="tagesbuero" title="Book your day office now" />
+{/* ===== STATS ===== */}
+<StatsTheme>
+<Stats title="Day office in numbers">
+  <Stat value="79" label="EUR from" description="per day (special offer)" />
+  <Stat value="24/7" label="Access" description="Your own door code" />
+  <Stat value="0" label="Min. term" description="Book now, start now" />
+</Stats>
+</StatsTheme>
+
+{/* ===== ABOUT US ===== */}
+<AlternatingFeatures>
+  <AlternatingFeatureRow title="Furnished single office in the Green Office" description="Daylight-flooded rooms with 7.50m ceiling height and lush greenery. Fully furnished with desk, ergonomic chair and everything you need — just walk in, plug in, work." image="/images/standorte/weil-am-rhein/green-office-einzelbuero.jpg" imageAlt="Single office in the Green Office — furnished and quiet" />
+  <AlternatingFeatureRow title="In the historic Kesselhaus" description="bizzcenter is located in the heritage-listed Kesselhaus in Weil am Rhein — 300m from the Swiss border. Easily accessible via tram line 8 from Basel (stop Riedlistrasse/Kesselhaus), close to the A5 motorway and with parking on site." image="/images/standorte/weil-am-rhein/standortkarte.png" imageAlt="Location map bizzcenter Weil am Rhein — Three-Country Triangle Basel" />
+</AlternatingFeatures>
+
+{/* ===== FAQ ===== */}
+<FAQ title="Frequently asked questions about the day office">
+  <FAQItem question="What does a day office cost?">
+    Currently EUR 79 instead of EUR 89 per day (special offer, excl. VAT). Weekly package EUR 349 (5 days), 10-pass card EUR 669 (10 flexible days, 16% discount), 1 month EUR 649.
+  </FAQItem>
+  <FAQItem question="How quickly is the booking confirmed?">
+    Right after online payment you receive access details via email or SMS — you can use the office immediately or on your preferred date.
+  </FAQItem>
+  <FAQItem question="What's included in the price?">
+    Furnished single office, high-speed WiFi, electricity, heating, cleaning, printer, kitchen & lounge, 24/7 access. No hidden costs.
+  </FAQItem>
+  <FAQItem question="Is parking available?">
+    For monthly bookings, a reserved parking space (EUR 79/month) can be added optionally. For day guests, customer parking and 90 min free parking are available.
+  </FAQItem>
+  <FAQItem question="Can I try the day office?">
+    Yes — start with a single day. We're happy to credit it towards a longer booking.
+  </FAQItem>
+  <FAQItem question="What's the difference with the 10-pass card?">
+    The 10-pass card gives you 10 flexible working days you can redeem as needed — 16% cheaper than 10 single days. Ideal if you need the office regularly but on irregular days.
+  </FAQItem>
+  <FAQItem question="Can I use the day office monthly?">
+    Yes — the monthly tariff is EUR 649/month (subscription, cancellable monthly) and includes your own single office. For longer-term needs we recommend our long-term office rental options.
+  </FAQItem>
+  <FAQItem question="Are there meeting or conference rooms nearby?">
+    Yes — conference and meeting rooms for 2–25 people are available right in the Kesselhaus, flexibly bookable by the hour or day.
+  </FAQItem>
+  <FAQItem question="How is the location connected?">
+    Tram line 8 (stop Riedlistrasse/Kesselhaus) directly from Basel, close to the A5 motorway, EuroAirport Basel-Mulhouse 15 minutes by car.
+  </FAQItem>
+</FAQ>
+
+<FAQPageSchema items={[
+  { question: "What does a day office cost?", answer: "Currently EUR 79 instead of EUR 89 per day (special offer, excl. VAT). Weekly package EUR 349, 10-pass card EUR 669, 1 month EUR 649." },
+  { question: "How quickly is the booking confirmed?", answer: "Right after online payment you receive access details via email or SMS — you can use the office immediately or on your preferred date." },
+  { question: "What's included in the price?", answer: "Furnished single office, high-speed WiFi, electricity, heating, cleaning, printer, kitchen & lounge, 24/7 access." },
+  { question: "Can I try the day office?", answer: "Yes — start with a single day. We're happy to credit it towards a longer booking." },
+]} />
+
+{/* ===== FINAL BOOKING CTA ===== */}
+<CheckoutWizard product="tagesbuero" title="Book day office" />

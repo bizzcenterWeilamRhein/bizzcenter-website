@@ -149,12 +149,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const UPSELL_MAP: Record<string, string[]> = {
       'cw_tagespass': ['addon_kaffee_tag', 'addon_monitor_tag'],
       'cw_10er': [],
-      'cw_monatspass': ['addon_kaffee', 'addon_parkplatz', 'addon_monitor', 'addon_schrank'],
-      'cw_monatsabo': ['addon_kaffee', 'addon_parkplatz', 'addon_monitor', 'addon_schrank'],
+      'cw_monatspass': ['addon_kaffee', 'addon_parkplatz_fest', 'addon_monitor', 'addon_schrank'],
+      'cw_monatsabo': ['addon_kaffee', 'addon_parkplatz_fest', 'addon_monitor', 'addon_schrank'],
       'tb_tag': ['addon_kaffee_tag', 'addon_monitor_tag'],
       'tb_woche': [],
       'tb_10er': [],
-      'tb_monat': ['addon_kaffee', 'addon_parkplatz', 'addon_monitor'],
+      'tb_monat': ['addon_kaffee', 'addon_parkplatz_fest', 'addon_monitor'],
     };
     // Konferenzraum upsells (Kaffee als Tages-Add-on, kein Parkplatz)
     for (const prefix of ['konf_2pers', 'konf_6pers', 'konf_15pers', 'konf_25pers']) {

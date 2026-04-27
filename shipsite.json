@@ -583,6 +583,17 @@
       ]
     },
     {
+      "slug": "buero-auswahl",
+      "type": "page",
+      "content": "buero-auswahl",
+      "locales": [
+        "de",
+        "en",
+        "fr",
+        "it"
+      ]
+    },
+    {
       "slug": "coworking-vitra-campus",
       "type": "page",
       "content": "coworking-vitra-campus",
