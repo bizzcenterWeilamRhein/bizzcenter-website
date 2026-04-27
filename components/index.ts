@@ -37,6 +37,7 @@ export { KonferenzBuchung } from './KonferenzBuchung';
 export { ActiveNavHighlight } from './ActiveNavHighlight';
 export { LanguageSwitcher } from './LanguageSwitcher';
 export { CheckoutWizard } from './CheckoutWizard';
+export { BueroAuswahlModal } from './BueroAuswahlModal';
 export { GeschaeftsadresseAnfrage } from './GeschaeftsadresseAnfrage';
 export { InquiryForm } from './InquiryForm';
 export { KontaktFormular } from './KontaktFormular';
@@ -44,6 +45,7 @@ export { BannerCTAWithForm } from './BannerCTAWithForm';
 export { BeamerBuchung } from './BeamerBuchung';
 export { FensterputzroboterBuchung } from './FensterputzroboterBuchung';
 export { YouTubeEmbed } from './YouTubeEmbed';
+export { PurchaseTrackingOnMount } from './PurchaseTrackingOnMount';
 
 export { GlobalOverflowFix } from './GlobalOverflowFix';
 export { LocalBusinessSchema } from './StructuredData';

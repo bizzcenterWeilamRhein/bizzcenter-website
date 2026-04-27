@@ -53,9 +53,11 @@ const PRICE_MAP: Record<string, string> = {
   'addon_schrank': 'price_1T9o4pJHXQhpcKhgFsScY4uu',
   'addon_scan': 'price_1T9o4qJHXQhpcKhgtzdpeiKG',
   'addon_firmenschild': 'price_1T9o4rJHXQhpcKhgKee1emBB',
-  // Tagespass Add-ons (einmalig pro Tag — nur Kaffee/Monitor, kein Parkplatz)
+  // Tagespass / 10er-Karte Add-ons (einmalig)
   'addon_kaffee_tag': 'price_1T9pwHJHXQhpcKhge5UguPpX',
   'addon_monitor_tag': 'price_1TI23fJHXQhpcKhg2FiMCBEg',
+  'addon_parkplatz_tag': 'price_1T9pwMJHXQhpcKhgvhgn43QW',
+  'addon_parkplatz_10er': 'price_1T9r4gJHXQhpcKhgMHWRIYix',
 };
 
 // ─── i18n Strings ────────────────────────────────────────────────────
@@ -108,7 +110,6 @@ const STRINGS = {
     // Addons
     addonLabels: {
       scan: 'Scanpaket',
-      parkplatz: 'Parkkarte (flexibel)',
       parkplatz_fest: 'Fester Stellplatz',
       firmenschild: 'Firmenschild',
       kaffee: 'Kaffee-Flat',
@@ -116,6 +117,8 @@ const STRINGS = {
       schrank: 'Aktenschrank',
       kaffee_tag: 'Kaffee-Flat',
       monitor_tag: '27" Monitor',
+      parkplatz_tag: 'Tagesparkplatz',
+      parkplatz_10er: '10x Tagesparkplatz',
     } as Record<string, string>,
     priceMonthly: (amount: number) => `EUR ${amount},-/Mon.`,
     priceOneTime: (amount: number) => `EUR ${amount},- einmalig`,
@@ -218,7 +221,6 @@ const STRINGS = {
     } as Record<string, string>,
     addonLabels: {
       scan: 'Scan package',
-      parkplatz: 'Parking card (flexible)',
       parkplatz_fest: 'Reserved parking space',
       firmenschild: 'Company sign',
       kaffee: 'Coffee flat rate',
@@ -226,6 +228,8 @@ const STRINGS = {
       schrank: 'Filing cabinet',
       kaffee_tag: 'Coffee flat rate',
       monitor_tag: '27" monitor',
+      parkplatz_tag: 'Day parking',
+      parkplatz_10er: '10x day parking',
     } as Record<string, string>,
     priceMonthly: (amount: number) => `EUR ${amount},-/month`,
     priceOneTime: (amount: number) => `EUR ${amount},- one-time`,
@@ -324,7 +328,6 @@ const STRINGS = {
     } as Record<string, string>,
     addonLabels: {
       scan: 'Pack de numérisation',
-      parkplatz: 'Carte parking (flexible)',
       parkplatz_fest: 'Place fixe réservée',
       firmenschild: 'Enseigne d\'entreprise',
       kaffee: 'Forfait café',
@@ -332,6 +335,8 @@ const STRINGS = {
       schrank: 'Armoire à dossiers',
       kaffee_tag: 'Forfait café',
       monitor_tag: 'Écran 27"',
+      parkplatz_tag: 'Parking journalier',
+      parkplatz_10er: '10x parking journalier',
     } as Record<string, string>,
     priceMonthly: (amount: number) => `EUR ${amount},-/mois`,
     priceOneTime: (amount: number) => `EUR ${amount},- une fois`,
@@ -454,10 +459,14 @@ const CW_10ER_ADDONS: { id: string; priceAmount: number; monthly: boolean }[] = 
 const TB_TAG_ADDONS = [
   { id: 'kaffee_tag', priceAmount: 9, monthly: false },
   { id: 'monitor_tag', priceAmount: 5, monthly: false },
+  { id: 'parkplatz_tag', priceAmount: 6, monthly: false },
 ];
 
 const TB_WOCHE_ADDONS: { id: string; priceAmount: number; monthly: boolean }[] = [];
-const TB_10ER_ADDONS: { id: string; priceAmount: number; monthly: boolean }[] = [];
+
+const TB_10ER_ADDONS = [
+  { id: 'parkplatz_10er', priceAmount: 60, monthly: false },
+];
 
 const TB_MONAT_ADDONS = [
   { id: 'parkplatz_fest', priceAmount: 79, priceType: 'monthly' as const, monthly: true },

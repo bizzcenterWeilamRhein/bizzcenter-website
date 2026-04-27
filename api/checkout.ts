@@ -44,9 +44,11 @@ const PRICES: Record<string, string> = {
   'addon_schrank': 'price_1T9o4pJHXQhpcKhgFsScY4uu',
   'addon_scan': 'price_1T9o4qJHXQhpcKhgtzdpeiKG',
   'addon_firmenschild': 'price_1T9o4rJHXQhpcKhgKee1emBB',
-  // Add-ons (einmalig pro Tag — nur Kaffee/Monitor, kein Parkplatz)
+  // Add-ons (einmalig — Tagespass / 10er)
   'addon_kaffee_tag': 'price_1T9pwHJHXQhpcKhge5UguPpX',
   'addon_monitor_tag': 'price_1TI23fJHXQhpcKhg2FiMCBEg',
+  'addon_parkplatz_tag': 'price_1T9pwMJHXQhpcKhgvhgn43QW',
+  'addon_parkplatz_10er': 'price_1T9r4gJHXQhpcKhgMHWRIYix',
 };
 
 // Cached tax rate ID — fetched/created once per cold start
@@ -151,9 +153,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       'cw_10er': [],
       'cw_monatspass': ['addon_kaffee', 'addon_parkplatz_fest', 'addon_monitor', 'addon_schrank'],
       'cw_monatsabo': ['addon_kaffee', 'addon_parkplatz_fest', 'addon_monitor', 'addon_schrank'],
-      'tb_tag': ['addon_kaffee_tag', 'addon_monitor_tag'],
+      'tb_tag': ['addon_kaffee_tag', 'addon_monitor_tag', 'addon_parkplatz_tag'],
       'tb_woche': [],
-      'tb_10er': [],
+      'tb_10er': ['addon_parkplatz_10er'],
       'tb_monat': ['addon_kaffee', 'addon_parkplatz_fest', 'addon_monitor'],
     };
     // Konferenzraum upsells (Kaffee als Tages-Add-on, kein Parkplatz)
