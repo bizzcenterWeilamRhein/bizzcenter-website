@@ -81,6 +81,15 @@
               "it": "Affittare sala coaching"
             },
             "href": "/coachingbuero-mieten"
+          },
+          {
+            "label": {
+              "de": "Tagesbüro mieten",
+              "en": "Day Office Rental",
+              "fr": "Louer bureau à la journée",
+              "it": "Affittare ufficio giornaliero"
+            },
+            "href": "/tagesbuero-mieten"
           }
         ]
       },
