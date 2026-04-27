@@ -45,7 +45,8 @@ export { BannerCTAWithForm } from './BannerCTAWithForm';
 export { BeamerBuchung } from './BeamerBuchung';
 export { FensterputzroboterBuchung } from './FensterputzroboterBuchung';
 export { YouTubeEmbed } from './YouTubeEmbed';
-export { PurchaseTrackingOnMount } from './PurchaseTrackingOnMount';
+// PurchaseTrackingOnMount: Datei noch nicht committet (Tracking-Setup ausstehend)
+// → Export wieder reinnehmen, sobald PurchaseTrackingOnMount.tsx live ist.
 
 export { GlobalOverflowFix } from './GlobalOverflowFix';
 export { LocalBusinessSchema } from './StructuredData';
