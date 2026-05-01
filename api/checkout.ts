@@ -124,7 +124,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   try {
-    const { priceId, addons, successUrl, cancelUrl, customerEmail, customerName, customerPhone, firma } = req.body;
+    const { priceId, addons, successUrl, cancelUrl, customerEmail, customerName, customerPhone, firma, locale } = req.body;
+    const checkoutLocale: 'de' | 'en' | 'fr' | 'it' = ['de', 'en', 'fr', 'it'].includes(locale) ? locale : 'de';
 
     if (!priceId || !PRICES[priceId]) {
       return res.status(400).json({ error: 'Ungültiges Produkt' });
@@ -247,7 +248,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (mode === 'payment' && !stripeCustomerId) {
       params.append('customer_creation', 'always');
     }
-    params.append('locale', 'de');
+    params.append('locale', checkoutLocale);
     params.append('payment_method_types[0]', 'card');
     params.append('tax_id_collection[enabled]', 'true');
     params.append('phone_number_collection[enabled]', 'true');
@@ -264,6 +265,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (firma) params.append('metadata[firma]', firma);
     if (customerName) params.append('metadata[customer_name]', customerName);
     if (customerPhone) params.append('metadata[phone]', customerPhone);
+    params.append('metadata[locale]', checkoutLocale);
 
     lineItems.forEach((item, i) => {
       params.append(`line_items[${i}][price]`, item.price);

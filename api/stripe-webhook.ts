@@ -15,6 +15,23 @@ const ZENDESK_WON_STAGE_ID = process.env.ZENDESK_WON_STAGE_ID
   ? Number(process.env.ZENDESK_WON_STAGE_ID)
   : undefined;
 
+const MS_TENANT_ID = process.env.MS_TENANT_ID || '';
+const MS_CLIENT_ID = process.env.MS_CLIENT_ID || '';
+const MS_CLIENT_SECRET = process.env.MS_CLIENT_SECRET || '';
+const WELCOME_MAILBOX = 'info@greenofficeweil.com';
+
+// Stripe-Price-IDs, die die Coworking-Welcome-Mail auslösen
+const COWORKING_WELCOME_PRICE_IDS = new Set([
+  'price_1T9o4gJHXQhpcKhgEvhhl86t', // cw_tagespass
+]);
+
+// Betreff der Vorlagen-Entwürfe in der Shared Mailbox (muss exakt mit dem
+// Outlook-Entwurf übereinstimmen, sonst wird die Vorlage nicht gefunden)
+const WELCOME_DRAFT_SUBJECTS: Record<'de' | 'en', string> = {
+  de: 'bizzcenter Weil am Rhein | Coworking Tagespass | Anfahrtsbeschreibung | Infos',
+  en: 'bizzcenter Weil am Rhein | Coworking Day Pass | Directions | Information',
+};
+
 const stripe = new Stripe(STRIPE_KEY);
 
 async function readRawBody(req: NextApiRequest): Promise<Buffer> {
@@ -122,6 +139,100 @@ async function createDeal(args: {
   }).catch(err => console.error('Zendesk note attach failed:', err));
 }
 
+async function getGraphToken(): Promise<string | null> {
+  if (!MS_TENANT_ID || !MS_CLIENT_ID || !MS_CLIENT_SECRET) return null;
+  try {
+    const res = await fetch(`https://login.microsoftonline.com/${MS_TENANT_ID}/oauth2/v2.0/token`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        client_id: MS_CLIENT_ID,
+        client_secret: MS_CLIENT_SECRET,
+        scope: 'https://graph.microsoft.com/.default',
+        grant_type: 'client_credentials',
+      }),
+    });
+    const data = await res.json();
+    return data.access_token || null;
+  } catch (err) {
+    console.error('Graph token failed:', err);
+    return null;
+  }
+}
+
+interface DraftAttachment {
+  name: string;
+  contentType: string;
+  contentBytes?: string;
+  contentId?: string;
+  isInline: boolean;
+}
+
+async function sendWelcomeEmail(args: {
+  customerEmail: string;
+  customerName: string;
+  locale: 'de' | 'en';
+}): Promise<void> {
+  const token = await getGraphToken();
+  if (!token) {
+    console.error('Welcome email: Graph token unavailable');
+    return;
+  }
+  const auth = { Authorization: `Bearer ${token}` };
+  const mbx = `https://graph.microsoft.com/v1.0/users/${encodeURIComponent(WELCOME_MAILBOX)}`;
+  const draftSubject = WELCOME_DRAFT_SUBJECTS[args.locale];
+
+  const filter = `subject eq '${draftSubject.replace(/'/g, "''")}'`;
+  const listRes = await fetch(`${mbx}/mailFolders/drafts/messages?$filter=${encodeURIComponent(filter)}&$top=1&$select=id,subject`, { headers: auth });
+  if (!listRes.ok) {
+    console.error('Welcome email: list drafts failed:', listRes.status, await listRes.text().catch(() => ''));
+    return;
+  }
+  const list = await listRes.json() as { value?: Array<{ id: string; subject: string }> };
+  const draft = list.value?.[0];
+  if (!draft) {
+    console.error('Welcome email: draft not found for locale', args.locale, 'subject:', draftSubject);
+    return;
+  }
+
+  const msgRes = await fetch(`${mbx}/messages/${encodeURIComponent(draft.id)}?$select=subject,body`, { headers: auth });
+  if (!msgRes.ok) {
+    console.error('Welcome email: read draft failed:', msgRes.status);
+    return;
+  }
+  const msg = await msgRes.json() as { subject: string; body: { contentType: string; content: string } };
+
+  const attRes = await fetch(`${mbx}/messages/${encodeURIComponent(draft.id)}/attachments`, { headers: auth });
+  const attData = attRes.ok
+    ? (await attRes.json() as { value?: DraftAttachment[] })
+    : { value: [] };
+  const attachments = (attData.value || []).map(a => ({
+    '@odata.type': '#microsoft.graph.fileAttachment',
+    name: a.name,
+    contentType: a.contentType,
+    contentBytes: a.contentBytes,
+    contentId: a.contentId,
+    isInline: a.isInline,
+  }));
+
+  const sendRes = await fetch(`${mbx}/sendMail`, {
+    method: 'POST',
+    headers: { ...auth, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      message: {
+        subject: msg.subject,
+        body: { contentType: msg.body.contentType, content: msg.body.content },
+        toRecipients: [{ emailAddress: { address: args.customerEmail, name: args.customerName || undefined } }],
+        attachments,
+      },
+      saveToSentItems: true,
+    }),
+  });
+  if (!sendRes.ok) {
+    console.error('Welcome email: sendMail failed:', sendRes.status, await sendRes.text().catch(() => ''));
+  }
+}
+
 async function processCheckoutCompleted(session: Stripe.Checkout.Session): Promise<void> {
   if (!ZENDESK_TOKEN) {
     console.warn('ZENDESK_SELL_API_TOKEN nicht gesetzt — Webhook übersprungen');
@@ -140,16 +251,20 @@ async function processCheckoutCompleted(session: Stripe.Checkout.Session): Promi
   const lastName = nameParts.slice(1).join(' ');
   const phone = session.customer_details?.phone || undefined;
 
-  // Line Items für Geschäftsname / Produkt-Code laden
+  // Line Items für Geschäftsname / Produkt-Code / Welcome-Mail-Trigger laden
   let dealName = 'Stripe-Zahlung';
   let productCode = 'unknown';
+  const allPriceIds: string[] = [];
   try {
-    const lineItems = await stripe.checkout.sessions.listLineItems(session.id, { limit: 10 });
+    const lineItems = await stripe.checkout.sessions.listLineItems(session.id, { limit: 25 });
+    for (const item of lineItems.data) {
+      const pid = typeof item.price === 'string' ? item.price : item.price?.id || '';
+      if (pid) allPriceIds.push(pid);
+    }
     if (lineItems.data.length > 0) {
       const first = lineItems.data[0];
       dealName = first.description || dealName;
-      const priceId = typeof first.price === 'string' ? first.price : first.price?.id || '';
-      productCode = priceId.split('_')[0] || productCode;
+      productCode = (allPriceIds[0] || '').split('_')[0] || productCode;
       if (lineItems.data.length > 1) {
         dealName += ` + ${lineItems.data.length - 1} weitere`;
       }
@@ -187,6 +302,16 @@ async function processCheckoutCompleted(session: Stripe.Checkout.Session): Promi
     sessionId: session.id,
     description,
   });
+
+  // Welcome-Mail bei bestimmten Produkten (z. B. Coworking-Tagespass)
+  // DE-Mail nur wenn locale explizit 'de'; alles andere (en/fr/it/es/unbekannt) → EN-Mail
+  const triggersWelcomeEmail = allPriceIds.some(pid => COWORKING_WELCOME_PRICE_IDS.has(pid));
+  if (triggersWelcomeEmail) {
+    const localeMeta = (session.metadata?.locale || '').toLowerCase();
+    const locale: 'de' | 'en' = localeMeta === 'de' ? 'de' : 'en';
+    sendWelcomeEmail({ customerEmail: email, customerName: fullName, locale })
+      .catch(err => console.error('sendWelcomeEmail error:', err));
+  }
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
