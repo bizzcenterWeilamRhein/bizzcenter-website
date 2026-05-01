@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import { trackLeadSubmitted } from './lib/tracking';
 
 // ─── Strings (i18n) ─────────────────────────────────────────────────
 
@@ -63,11 +64,12 @@ const STRINGS = {
     step4Sub: 'Wir prüfen Ihre Angaben und senden Ihnen ein verbindliches Angebot inkl. Vertrag per E-Mail zu.',
 
     labelCompany: 'Firmenname *',
+    labelCompanyOptional: 'Firmenname',
     placeholderCompany: 'Musterfirma GmbH',
+    placeholderCompanyDisabled: 'Wird neu gegründet — Name noch unbekannt',
     labelLegalForm: 'Rechtsform',
     selectPlaceholder: 'Bitte wählen',
-    labelHrNumber: 'Handelsregister-Nummer',
-    placeholderHrNumber: 'z.B. HRB 12345 (falls vorhanden)',
+    labelFirmaNeuGegruendet: 'Firma wird neu gegründet — Firmenname noch unbekannt',
     labelGewerbeschein: 'Gewerbeschein / Gewerbeanmeldung vorhanden',
     labelContact: 'Ansprechpartner *',
     placeholderContact: 'Vor- und Nachname',
@@ -75,7 +77,6 @@ const STRINGS = {
     placeholderEmail: 'ihre@email.de',
     labelPhone: 'Telefon *',
     placeholderPhone: '+49 123 456 789',
-    labelStartDate: 'Gewünschter Starttermin',
     labelNotes: 'Anmerkungen / Fragen',
     placeholderNotes: 'z.B. besondere Anforderungen, Fragen zum Service...',
 
@@ -165,11 +166,12 @@ const STRINGS = {
     step4Sub: 'We will review your details and send you a binding offer with contract by email.',
 
     labelCompany: 'Company name *',
+    labelCompanyOptional: 'Company name',
     placeholderCompany: 'Example Company Ltd.',
+    placeholderCompanyDisabled: 'Newly founded — name not yet known',
     labelLegalForm: 'Legal form',
     selectPlaceholder: 'Please select',
-    labelHrNumber: 'Commercial register number',
-    placeholderHrNumber: 'e.g. HRB 12345 (if applicable)',
+    labelFirmaNeuGegruendet: 'Company is being newly founded — name not yet known',
     labelGewerbeschein: 'Trade registration / business license available',
     labelContact: 'Contact person *',
     placeholderContact: 'First and last name',
@@ -177,7 +179,6 @@ const STRINGS = {
     placeholderEmail: 'your@email.com',
     labelPhone: 'Phone *',
     placeholderPhone: '+49 123 456 789',
-    labelStartDate: 'Desired start date',
     labelNotes: 'Comments / questions',
     placeholderNotes: 'e.g. special requirements, questions about the service...',
 
@@ -265,11 +266,12 @@ const STRINGS = {
     step4Sub: 'Nous examinerons vos informations et vous enverrons une offre ferme incluant le contrat par e-mail.',
 
     labelCompany: 'Nom de l\'entreprise *',
+    labelCompanyOptional: 'Nom de l\'entreprise',
     placeholderCompany: 'Exemple Entreprise SARL',
+    placeholderCompanyDisabled: 'En cours de création — nom non encore défini',
     labelLegalForm: 'Forme juridique',
     selectPlaceholder: 'Veuillez choisir',
-    labelHrNumber: 'Numéro de registre du commerce',
-    placeholderHrNumber: 'par ex. HRB 12345 (le cas échéant)',
+    labelFirmaNeuGegruendet: 'Entreprise en cours de création — nom non encore défini',
     labelGewerbeschein: 'Inscription commerciale / licence d\'exploitation disponible',
     labelContact: 'Personne de contact *',
     placeholderContact: 'Prénom et nom',
@@ -277,7 +279,6 @@ const STRINGS = {
     placeholderEmail: 'votre@email.com',
     labelPhone: 'Téléphone *',
     placeholderPhone: '+49 123 456 789',
-    labelStartDate: 'Date de début souhaitée',
     labelNotes: 'Commentaires / questions',
     placeholderNotes: 'par ex. exigences particulières, questions sur le service...',
 
@@ -355,13 +356,12 @@ export function GeschaeftsadresseAnfrage({ title }: GeschaeftsadresseAnfrageProp
 
   // Form state
   const [firma, setFirma] = useState('');
+  const [firmaUnbekannt, setFirmaUnbekannt] = useState(false);
   const [rechtsform, setRechtsform] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [telefon, setTelefon] = useState('');
-  const [hrNummer, setHrNummer] = useState('');
   const [gewerbeschein, setGewerbeschein] = useState(false);
-  const [startdatum, setStartdatum] = useState('');
   const [nachricht, setNachricht] = useState('');
 
   // UI state
@@ -386,7 +386,7 @@ export function GeschaeftsadresseAnfrage({ title }: GeschaeftsadresseAnfrageProp
     return {
       vorname: name,
       nachname: '',
-      firma,
+      firma: firmaUnbekannt ? '(Firma wird neu gegründet — Name noch unbekannt)' : firma,
       email,
       telefon,
       nachricht: [
@@ -395,10 +395,9 @@ export function GeschaeftsadresseAnfrage({ title }: GeschaeftsadresseAnfrageProp
         tarif && selectedTarifObj ? `Tarif: ${t.tarifLabels[selectedTarifObj.id]} (${t.months(selectedTarifObj.laufzeitMonths)})` : '',
         `Postversand: ${postversand === 'mit' ? 'Mit Postversand' : 'Ohne Postversand'}`,
         price ? `Preis: EUR ${price},-/Mon. zzgl. MwSt.` : '',
+        firmaUnbekannt ? 'Hinweis: Firma wird neu gegründet — Firmenname noch unbekannt' : '',
         rechtsform ? `Rechtsform: ${rechtsform}` : '',
-        hrNummer ? `HR-Nummer: ${hrNummer}` : '',
         `Gewerbeschein vorhanden: ${gewerbeschein ? 'Ja' : 'Nein'}`,
-        startdatum ? `Gewünschter Start: ${startdatum}` : '',
         addonLabelList.length > 0 ? `Add-ons: ${addonLabelList.join(', ')}` : '',
         nachricht ? `Nachricht: ${nachricht}` : '',
       ].filter(Boolean).join('\n'),
@@ -406,19 +405,19 @@ export function GeschaeftsadresseAnfrage({ title }: GeschaeftsadresseAnfrageProp
       product: 'geschaeftsadresse',
       timestamp: new Date().toISOString(),
     };
-  }, [tarif, postversand, selectedAddons, firma, rechtsform, name, email, telefon, hrNummer, gewerbeschein, startdatum, nachricht, locale, t]);
+  }, [tarif, postversand, selectedAddons, firma, firmaUnbekannt, rechtsform, name, email, telefon, gewerbeschein, nachricht, locale, t]);
 
   // Debounced auto-save: fires 5s after last field change, only if enough data
   useEffect(() => {
     // Don't auto-save after successful submit
     if (sent) return;
 
-    // Need at least (name + email) OR firma to track
-    const hasMinData = (name.length >= 2 && email.includes('@')) || firma.length >= 2;
+    // Need at least (name + email) OR firma OR firmaUnbekannt to track
+    const hasMinData = (name.length >= 2 && email.includes('@')) || firma.length >= 2 || firmaUnbekannt;
     if (!hasMinData) return;
 
     // Build a hash of current form state to avoid duplicate saves
-    const hash = JSON.stringify({ tarif, postversand, firma, rechtsform, name, email, telefon, hrNummer, gewerbeschein, startdatum, nachricht, addons: [...selectedAddons].sort() });
+    const hash = JSON.stringify({ tarif, postversand, firma, firmaUnbekannt, rechtsform, name, email, telefon, gewerbeschein, nachricht, addons: [...selectedAddons].sort() });
     if (hash === lastSavedHash.current) return;
 
     if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current);
@@ -443,7 +442,7 @@ export function GeschaeftsadresseAnfrage({ title }: GeschaeftsadresseAnfrageProp
     return () => {
       if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current);
     };
-  }, [tarif, postversand, firma, rechtsform, name, email, telefon, hrNummer, gewerbeschein, startdatum, nachricht, selectedAddons, sent, buildPayload]);
+  }, [tarif, postversand, firma, firmaUnbekannt, rechtsform, name, email, telefon, gewerbeschein, nachricht, selectedAddons, sent, buildPayload]);
 
   const toggleAddon = (id: string) => {
     setSelectedAddons(prev => {
@@ -461,7 +460,7 @@ export function GeschaeftsadresseAnfrage({ title }: GeschaeftsadresseAnfrageProp
       : selectedTarif.priceOhne
     : null;
 
-  const canSubmit = firma.length >= 2 && name.length >= 2 && email.includes('@') && email.includes('.') && telefon.length >= 6 && tarif;
+  const canSubmit = (firma.length >= 2 || firmaUnbekannt) && name.length >= 2 && email.includes('@') && email.includes('.') && telefon.length >= 6 && tarif;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -481,7 +480,7 @@ export function GeschaeftsadresseAnfrage({ title }: GeschaeftsadresseAnfrageProp
         body: JSON.stringify({
           vorname: name,
           nachname: '',
-          firma,
+          firma: firmaUnbekannt ? '(Firma wird neu gegründet — Name noch unbekannt)' : firma,
           email,
           telefon,
           nachricht: [
@@ -490,10 +489,9 @@ export function GeschaeftsadresseAnfrage({ title }: GeschaeftsadresseAnfrageProp
             selectedTarif ? `Tarif: ${t.tarifLabels[selectedTarif.id]} (${t.months(selectedTarif.laufzeitMonths)})` : '',
             `Postversand: ${postversand === 'mit' ? 'Mit Postversand' : 'Ohne Postversand'}`,
             `Preis: EUR ${currentPrice},-/Mon. zzgl. MwSt.`,
+            firmaUnbekannt ? 'Hinweis: Firma wird neu gegründet — Firmenname noch unbekannt' : '',
             `Rechtsform: ${rechtsform || 'nicht angegeben'}`,
-            `HR-Nummer: ${hrNummer || 'nicht angegeben'}`,
             `Gewerbeschein vorhanden: ${gewerbeschein ? 'Ja' : 'Nein'}`,
-            `Gewünschter Start: ${startdatum || 'nicht angegeben'}`,
             addonLabelList.length > 0 ? `Add-ons: ${addonLabelList.join(', ')}` : '',
             nachricht ? `\nNachricht: ${nachricht}` : '',
           ]
@@ -506,6 +504,14 @@ export function GeschaeftsadresseAnfrage({ title }: GeschaeftsadresseAnfrageProp
       });
 
       if (!res.ok) throw new Error('Fehler beim Senden');
+      const responseData = await res.json().catch(() => ({}));
+      // Tracking nur am finalen Submit, NICHT bei Auto-Save (quelle = geschaeftsadresse-partial).
+      trackLeadSubmitted('geschaeftsadresse_anfrage', {
+        leadId: responseData?.leadId,
+        tarif: selectedTarif?.id,
+        postversand,
+        addons: Array.from(selectedAddons),
+      });
       setSent(true);
     } catch {
       setError(t.errorSubmit);
@@ -697,23 +703,27 @@ export function GeschaeftsadresseAnfrage({ title }: GeschaeftsadresseAnfrageProp
             {/* Firma + Rechtsform */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{t.labelCompany}</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {firmaUnbekannt ? t.labelCompanyOptional : t.labelCompany}
+                </label>
                 <input
                   type="text"
-                  value={firma}
+                  value={firmaUnbekannt ? '' : firma}
                   onChange={e => setFirma(e.target.value)}
-                  required
-                  minLength={2}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none text-sm"
-                  placeholder={t.placeholderCompany}
+                  required={!firmaUnbekannt}
+                  minLength={firmaUnbekannt ? undefined : 2}
+                  disabled={firmaUnbekannt}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none text-sm disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed"
+                  placeholder={firmaUnbekannt ? t.placeholderCompanyDisabled : t.placeholderCompany}
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">{t.labelLegalForm}</label>
                 <select
-                  value={rechtsform}
+                  value={firmaUnbekannt ? '' : rechtsform}
                   onChange={e => setRechtsform(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none text-sm bg-white"
+                  disabled={firmaUnbekannt}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none text-sm bg-white disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed"
                 >
                   <option value="">{t.selectPlaceholder}</option>
                   {t.rechtsformen.map(rf => (
@@ -725,18 +735,24 @@ export function GeschaeftsadresseAnfrage({ title }: GeschaeftsadresseAnfrageProp
               </div>
             </div>
 
-            {/* HR-Nummer */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                {t.labelHrNumber}
-              </label>
+            {/* Firma wird neu gegründet */}
+            <div className="flex items-center gap-3">
               <input
-                type="text"
-                value={hrNummer}
-                onChange={e => setHrNummer(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none text-sm"
-                placeholder={t.placeholderHrNumber}
+                type="checkbox"
+                id="firmaUnbekannt"
+                checked={firmaUnbekannt}
+                onChange={e => {
+                  setFirmaUnbekannt(e.target.checked);
+                  if (e.target.checked) {
+                    setFirma('');
+                    setRechtsform('');
+                  }
+                }}
+                className="w-4 h-4 text-[#6b7f3e] border-gray-300 rounded focus:ring-[#6b7f3e]"
               />
+              <label htmlFor="firmaUnbekannt" className="text-sm text-gray-700">
+                {t.labelFirmaNeuGegruendet}
+              </label>
             </div>
 
             {/* Gewerbeschein */}
@@ -782,32 +798,19 @@ export function GeschaeftsadresseAnfrage({ title }: GeschaeftsadresseAnfrageProp
               </div>
             </div>
 
-            {/* Telefon + Startdatum */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{t.labelPhone}</label>
-                <input
-                  type="tel"
-                  value={telefon}
-                  onChange={e => setTelefon(e.target.value)}
-                  required
-                  minLength={6}
-                  maxLength={30}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none text-sm"
-                  placeholder={t.placeholderPhone}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t.labelStartDate}
-                </label>
-                <input
-                  type="date"
-                  value={startdatum}
-                  onChange={e => setStartdatum(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none text-sm"
-                />
-              </div>
+            {/* Telefon */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t.labelPhone}</label>
+              <input
+                type="tel"
+                value={telefon}
+                onChange={e => setTelefon(e.target.value)}
+                required
+                minLength={6}
+                maxLength={30}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none text-sm"
+                placeholder={t.placeholderPhone}
+              />
             </div>
 
             {/* Nachricht */}
