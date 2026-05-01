@@ -446,10 +446,11 @@ const ADDONS_BY_PRODUCT: Record<ProductType, { id: string; priceAmount: number; 
   tagesbuero: [],
 };
 
-// Coworking Tagespass: nur einmalige Tages-Add-ons, kein Parkplatz (laut Geschäftsregel: Park-Optionen nur bei Monatsbuchungen)
+// Coworking Tagespass: einmalige Tages-Add-ons (inkl. Tagesparkplatz)
 const CW_TAGESPASS_ADDONS = [
   { id: 'kaffee_tag', priceAmount: 9, monthly: false },
   { id: 'monitor_tag', priceAmount: 5, monthly: false },
+  { id: 'parkplatz_tag', priceAmount: 6, monthly: false },
 ];
 
 // Coworking 10er-Karte: keine Add-ons im Wizard
