@@ -2,8 +2,6 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 const STRIPE_KEY = process.env.STRIPE_SECRET_KEY || '';
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://weil.bizzcenter.de';
-const ZENDESK_TOKEN = process.env.ZENDESK_SELL_API_TOKEN || '';
-const ZENDESK_API = 'https://api.getbase.com/v2';
 
 const PRICES: Record<string, string> = {
   // Geschäftsadresse
@@ -300,7 +298,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(500).json({ error: session.error?.message || 'Stripe Fehler' });
     }
 
-    // ─── Lead sync: Zendesk Sell + CRM (fire-and-forget) ───
+    // ─── Lead sync: CRM (fire-and-forget) ───
+    // Zendesk Sell wird über api/stripe-webhook.ts NACH erfolgreicher Zahlung befüllt
+    // (Upsert by Email → Kontakt + Deal). Hier nur noch interner CRM-Eintrag.
     const nameParts = (customerName || '').trim().split(/\s+/);
     const firstName = nameParts[0] || '';
     const lastName = nameParts.slice(1).join(' ') || '';
@@ -312,28 +312,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     descParts.push(`Stripe Session: ${session.id}`);
     descParts.push(`Modus: ${mode}`);
     const description = descParts.join('\n');
-
-    // Zendesk Sell
-    if (ZENDESK_TOKEN && (customerEmail || firma)) {
-      fetch(`${ZENDESK_API}/leads`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${ZENDESK_TOKEN}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          data: {
-            first_name: firstName,
-            last_name: lastName || undefined,
-            organization_name: firma || undefined,
-            email: customerEmail || undefined,
-            phone: customerPhone || undefined,
-            description,
-            tags: ['website', 'stripe-checkout', priceId.split('_')[0]],
-          },
-        }),
-      }).catch(err => console.error('Zendesk Sell lead error:', err));
-    }
 
     // CRM (Supabase DB)
     (async () => {
