@@ -81,6 +81,35 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
     }
 
+    if (action === 'find') {
+      const subject = String(req.query.subject || '');
+      if (!subject) return res.status(400).json({ error: 'missing subject' });
+      const filter = `subject eq '${subject.replace(/'/g, "''")}'`;
+      const url = `${MBX}/mailFolders/drafts/messages?$filter=${encodeURIComponent(filter)}&$top=5&$select=id,subject`;
+      const r = await fetch(url, { headers: auth });
+      const data = await r.json();
+      return res.status(200).json({ httpStatus: r.status, url, found: (data.value || []).length, data });
+    }
+
+    if (action === 'test-send') {
+      const to = String(req.query.to || '');
+      if (!to) return res.status(400).json({ error: 'missing to' });
+      const sendRes = await fetch(`${MBX}/sendMail`, {
+        method: 'POST',
+        headers: { ...auth, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: {
+            subject: 'Test from diagnose-graph',
+            body: { contentType: 'Text', content: 'Test mail aus dem bizzcenter diagnose-graph Endpoint.' },
+            toRecipients: [{ emailAddress: { address: to } }],
+          },
+          saveToSentItems: false,
+        }),
+      });
+      const txt = sendRes.ok ? 'OK' : await sendRes.text();
+      return res.status(200).json({ httpStatus: sendRes.status, response: txt });
+    }
+
     if (action === 'clone') {
       if (req.method !== 'POST') return res.status(405).json({ error: 'POST required' });
       const srcId = String(req.query.srcId || '');
