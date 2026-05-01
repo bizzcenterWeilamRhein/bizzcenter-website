@@ -1,10 +1,11 @@
 ---
 title: "Buchung bestätigt – bizzcenter Weil am Rhein"
-description: "Ihre Buchung war erfolgreich. Vielen Dank für Ihr Vertrauen."
+description: "Deine Buchung war erfolgreich. Vielen Dank für dein Vertrauen."
 noindex: true
 ---
 
 <GlobalOverflowFix />
+<PurchaseTrackingOnMount produkt="checkout_generisch" allowWithoutParam />
 
 <div className="max-w-2xl mx-auto text-center py-20 px-4">
 
@@ -16,30 +17,37 @@ noindex: true
 
   <h1 className="text-3xl font-bold text-gray-900 mb-4">Buchung erfolgreich!</h1>
 
-  <p className="text-lg text-gray-600 mb-6">
-    Vielen Dank für Ihre Buchung. Sie erhalten in Kürze eine Bestätigung per E-Mail.
+  <p className="text-lg text-gray-600 mb-8">
+    Vielen Dank für deine Buchung. Hier findest du alle wichtigen Infos für deinen Aufenthalt — Anfahrt, Zugangscode, WLAN, Räume.
   </p>
 
+  <a
+    href="/coworking-rauminfos.pdf"
+    download
+    className="inline-flex items-center gap-2 rounded-lg bg-[#6b7f3e] text-white px-6 py-4 text-base font-semibold hover:opacity-90 transition-opacity mb-10"
+  >
+    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+    </svg>
+    Rauminfos & Zugangsdaten herunterladen (PDF)
+  </a>
+
   <div className="rounded-xl border border-gray-200 bg-gray-50 p-6 mb-8 text-left">
-    <h2 className="text-sm font-bold text-gray-700 uppercase tracking-wide mb-3">Nächste Schritte</h2>
+    <h2 className="text-sm font-bold text-gray-700 uppercase tracking-wide mb-3">Was als nächstes passiert</h2>
     <ul className="space-y-2 text-sm text-gray-600">
       <li className="flex gap-2">
         <span className="text-[#6b7f3e] font-bold">1.</span>
-        <span>Prüfen Sie Ihre E-Mail — Sie erhalten eine Zahlungsbestätigung von Stripe.</span>
+        <span>Du erhältst zusätzlich eine Bestätigung per E-Mail mit allen Infos.</span>
       </li>
       <li className="flex gap-2">
         <span className="text-[#6b7f3e] font-bold">2.</span>
-        <span>Unser Team meldet sich umgehend bei Ihnen mit allen Details.</span>
-      </li>
-      <li className="flex gap-2">
-        <span className="text-[#6b7f3e] font-bold">3.</span>
-        <span>Bei Fragen erreichen Sie uns über unser <a href="/kontakt" className="text-[#6b7f3e] underline">Kontaktformular</a>.</span>
+        <span>Bei Fragen erreichst du uns über unser <a href="/kontakt" className="text-[#6b7f3e] underline">Kontaktformular</a>.</span>
       </li>
     </ul>
   </div>
 
   <div className="flex gap-3 justify-center">
-    <a href="/" className="inline-flex items-center rounded-lg bg-[#6b7f3e] text-white px-6 py-3 text-sm font-semibold hover:opacity-90 transition-opacity">
+    <a href="/" className="inline-flex items-center rounded-lg border border-gray-300 bg-white px-6 py-3 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors">
       Zurück zur Startseite
     </a>
   </div>
