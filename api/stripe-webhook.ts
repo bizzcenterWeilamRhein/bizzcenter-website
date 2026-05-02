@@ -42,7 +42,7 @@ async function readRawBody(req: NextApiRequest): Promise<Buffer> {
   return Buffer.concat(chunks);
 }
 
-async function findContactByEmail(email: string): Promise<number | null> {
+async function findContactByEmail(email: string): Promise<{ id: number; organizationId: number | null } | null> {
   const url = `${ZENDESK_API}/contacts?email=${encodeURIComponent(email)}&per_page=1`;
   const res = await fetch(url, {
     headers: {
@@ -54,16 +54,31 @@ async function findContactByEmail(email: string): Promise<number | null> {
     console.error('Zendesk contact search failed:', res.status, await res.text().catch(() => ''));
     return null;
   }
-  const data = await res.json() as { items?: Array<{ data: { id: number } }> };
-  return data.items?.[0]?.data?.id ?? null;
+  const data = await res.json() as { items?: Array<{ data: { id: number; contact_id?: number | null } }> };
+  const hit = data.items?.[0]?.data;
+  if (!hit) return null;
+  return { id: hit.id, organizationId: hit.contact_id ?? null };
 }
 
-async function createContact(args: {
-  email: string;
-  firstName: string;
-  lastName: string;
-  phone?: string;
-}): Promise<number | null> {
+async function findOrganizationByName(name: string): Promise<number | null> {
+  const url = `${ZENDESK_API}/contacts?name=${encodeURIComponent(name)}&is_organization=true&per_page=10`;
+  const res = await fetch(url, {
+    headers: {
+      'Authorization': `Bearer ${ZENDESK_TOKEN}`,
+      'Accept': 'application/json',
+    },
+  });
+  if (!res.ok) {
+    console.error('Zendesk org search failed:', res.status, await res.text().catch(() => ''));
+    return null;
+  }
+  const data = await res.json() as { items?: Array<{ data: { id: number; name?: string; is_organization?: boolean } }> };
+  // Exact case-insensitive match (Zendesk's name= ist Substring-Filter)
+  const match = data.items?.find(i => i.data.is_organization && (i.data.name || '').toLowerCase() === name.toLowerCase());
+  return match?.data.id ?? null;
+}
+
+async function createOrganization(name: string): Promise<number | null> {
   const res = await fetch(`${ZENDESK_API}/contacts`, {
     method: 'POST',
     headers: {
@@ -72,20 +87,85 @@ async function createContact(args: {
     },
     body: JSON.stringify({
       data: {
-        first_name: args.firstName,
-        last_name: args.lastName || '(kein Nachname)',
-        email: args.email,
-        phone: args.phone || undefined,
-        is_organization: false,
+        name,
+        is_organization: true,
       },
     }),
+  });
+  if (!res.ok) {
+    console.error('Zendesk org create failed:', res.status, await res.text().catch(() => ''));
+    return null;
+  }
+  const data = await res.json() as { data: { id: number } };
+  return data.data.id;
+}
+
+async function findOrCreateOrganization(firma: string | undefined): Promise<number | null> {
+  if (!firma) return null;
+  const existing = await findOrganizationByName(firma);
+  if (existing) return existing;
+  return await createOrganization(firma);
+}
+
+async function createContact(args: {
+  email: string;
+  firstName: string;
+  lastName: string;
+  phone?: string;
+  organizationId?: number | null;
+}): Promise<number | null> {
+  const data: Record<string, unknown> = {
+    first_name: args.firstName,
+    last_name: args.lastName || '(kein Nachname)',
+    email: args.email,
+    phone: args.phone || undefined,
+    is_organization: false,
+  };
+  // Zendesk Sell verwendet `contact_id` auf Person-Kontakten als Verweis
+  // auf die Parent-Organization (eine Contact-Row mit is_organization=true).
+  if (args.organizationId) data.contact_id = args.organizationId;
+
+  const res = await fetch(`${ZENDESK_API}/contacts`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${ZENDESK_TOKEN}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ data }),
   });
   if (!res.ok) {
     console.error('Zendesk contact create failed:', res.status, await res.text().catch(() => ''));
     return null;
   }
-  const data = await res.json() as { data: { id: number } };
-  return data.data.id;
+  const result = await res.json() as { data: { id: number } };
+  return result.data.id;
+}
+
+async function getContactMeta(contactId: number): Promise<{ etag?: string } | null> {
+  const r = await fetch(`${ZENDESK_API}/contacts/${contactId}`, {
+    headers: { 'Authorization': `Bearer ${ZENDESK_TOKEN}`, 'Accept': 'application/json' },
+  });
+  if (!r.ok) return null;
+  const data = await r.json() as { meta?: { http?: { etag?: string } } };
+  return { etag: data.meta?.http?.etag };
+}
+
+async function attachContactToOrg(contactId: number, organizationId: number): Promise<void> {
+  // Zendesk Sell verlangt If-Match Header beim Update
+  const meta = await getContactMeta(contactId);
+  const headers: Record<string, string> = {
+    'Authorization': `Bearer ${ZENDESK_TOKEN}`,
+    'Content-Type': 'application/json',
+  };
+  if (meta?.etag) headers['If-Match'] = meta.etag;
+  const r = await fetch(`${ZENDESK_API}/contacts/${contactId}`, {
+    method: 'PUT',
+    headers,
+    body: JSON.stringify({ data: { contact_id: organizationId } }),
+  });
+  if (!r.ok) {
+    console.error('Zendesk contact org attach failed:', r.status, await r.text().catch(() => ''));
+  }
 }
 
 async function createDeal(args: {
@@ -290,16 +370,34 @@ async function processCheckoutCompleted(session: Stripe.Checkout.Session): Promi
   const localeMeta = (session.metadata?.locale || '').toLowerCase();
   const locale: 'de' | 'en' = localeMeta === 'de' ? 'de' : 'en';
 
+  // Firma aus Custom-Field (Payment-Link / direkte Session) ODER Metadata (Wizard)
+  const customFields = (session.custom_fields || []) as Array<{ key?: string; text?: { value?: string | null } }>;
+  const firmaFromCustom = customFields.find(f => f.key === 'firma')?.text?.value || '';
+  const firmaFromMeta = session.metadata?.firma || '';
+  const firma = (firmaFromCustom || firmaFromMeta).trim() || undefined;
+
   const tasks: Promise<unknown>[] = [
     (async () => {
-      let contactId = await findContactByEmail(email);
+      // Schritt 1: Falls Firma vorhanden, Organization in Zendesk Sell finden oder anlegen
+      const orgId = firma ? await findOrCreateOrganization(firma) : null;
+
+      // Schritt 2: Kontakt suchen
+      const existing = await findContactByEmail(email);
+      let contactId: number | null = existing?.id || null;
+
       if (!contactId) {
-        contactId = await createContact({ email, firstName, lastName, phone });
+        // Neuer Kontakt — direkt mit Org-Verknüpfung anlegen (falls vorhanden)
+        contactId = await createContact({ email, firstName, lastName, phone, organizationId: orgId });
+      } else if (orgId && existing && !existing.organizationId) {
+        // Bestehender Kontakt ohne Org → Org nachträglich verknüpfen
+        await attachContactToOrg(contactId, orgId);
       }
+
       if (!contactId) {
         console.error('Zendesk: Kontakt konnte weder gefunden noch angelegt werden:', email);
         return;
       }
+
       await createDeal({
         contactId,
         name: dealName,
