@@ -277,15 +277,6 @@ async function processCheckoutCompleted(session: Stripe.Checkout.Session): Promi
   const currency = (session.currency || 'eur').toUpperCase();
 
   // Kontakt suchen oder anlegen (Upsert by Email)
-  let contactId = await findContactByEmail(email);
-  if (!contactId) {
-    contactId = await createContact({ email, firstName, lastName, phone });
-  }
-  if (!contactId) {
-    console.error('Zendesk: Kontakt konnte weder gefunden noch angelegt werden:', email);
-    return;
-  }
-
   const description = [
     `Quelle: stripe-checkout`,
     `Stripe Session: ${session.id}`,
@@ -293,25 +284,42 @@ async function processCheckoutCompleted(session: Stripe.Checkout.Session): Promi
     `Modus: ${session.mode}`,
   ].join('\n');
 
-  await createDeal({
-    contactId,
-    name: dealName,
-    value,
-    currency,
-    productCode,
-    sessionId: session.id,
-    description,
-  });
-
-  // Welcome-Mail bei bestimmten Produkten (z. B. Coworking-Tagespass)
-  // DE-Mail nur wenn locale explizit 'de'; alles andere (en/fr/it/es/unbekannt) → EN-Mail
+  // Zendesk-Sync und Welcome-Mail unabhängig + parallel — Fehler in dem einen
+  // soll den anderen nicht blockieren.
   const triggersWelcomeEmail = allPriceIds.some(pid => COWORKING_WELCOME_PRICE_IDS.has(pid));
+  const localeMeta = (session.metadata?.locale || '').toLowerCase();
+  const locale: 'de' | 'en' = localeMeta === 'de' ? 'de' : 'en';
+
+  const tasks: Promise<unknown>[] = [
+    (async () => {
+      let contactId = await findContactByEmail(email);
+      if (!contactId) {
+        contactId = await createContact({ email, firstName, lastName, phone });
+      }
+      if (!contactId) {
+        console.error('Zendesk: Kontakt konnte weder gefunden noch angelegt werden:', email);
+        return;
+      }
+      await createDeal({
+        contactId,
+        name: dealName,
+        value,
+        currency,
+        productCode,
+        sessionId: session.id,
+        description,
+      });
+    })().catch(err => console.error('Zendesk-Sync fehlgeschlagen:', err)),
+  ];
+
   if (triggersWelcomeEmail) {
-    const localeMeta = (session.metadata?.locale || '').toLowerCase();
-    const locale: 'de' | 'en' = localeMeta === 'de' ? 'de' : 'en';
-    sendWelcomeEmail({ customerEmail: email, customerName: fullName, locale })
-      .catch(err => console.error('sendWelcomeEmail error:', err));
+    tasks.push(
+      sendWelcomeEmail({ customerEmail: email, customerName: fullName, locale })
+        .catch(err => console.error('sendWelcomeEmail error:', err))
+    );
   }
+
+  await Promise.allSettled(tasks);
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -339,12 +347,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).send(`Invalid signature: ${msg}`);
   }
 
-  // Stripe so schnell wie möglich antworten — Verarbeitung im Hintergrund
+  // Verarbeitung MUSS hier awaited werden, sonst killt Vercel die Async-Arbeit
+  // nach dem Response (Serverless: kein Background nach return). Stripe
+  // wartet bis ~30s, daher problemlos.
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object as Stripe.Checkout.Session;
-    processCheckoutCompleted(session).catch(err => {
+    try {
+      await processCheckoutCompleted(session);
+    } catch (err) {
       console.error('processCheckoutCompleted error:', err);
-    });
+    }
   }
 
   return res.status(200).json({ received: true });
