@@ -91,6 +91,60 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(200).json({ httpStatus: r.status, url, found: (data.value || []).length, data });
     }
 
+    if (action === 'simulate-welcome') {
+      const to = String(req.query.to || '');
+      const localeParam = String(req.query.locale || 'de');
+      if (!to) return res.status(400).json({ error: 'missing to' });
+      const subjects: Record<string, string> = {
+        de: 'bizzcenter Weil am Rhein | Coworking Tagespass | Anfahrtsbeschreibung | Infos',
+        en: 'bizzcenter Weil am Rhein | Coworking Day Pass | Directions | Information',
+      };
+      const subject = subjects[localeParam] || subjects.de;
+      const filter = `subject eq '${subject.replace(/'/g, "''")}'`;
+      const listRes = await fetch(`${MBX}/mailFolders/drafts/messages?$filter=${encodeURIComponent(filter)}&$top=1&$select=id,subject`, { headers: auth });
+      const listData = await listRes.json();
+      const draft = listData.value?.[0];
+      if (!draft) return res.status(200).json({ step: 'find-draft', failed: true, listStatus: listRes.status, listData });
+
+      const msgRes = await fetch(`${MBX}/messages/${encodeURIComponent(draft.id)}?$select=subject,body`, { headers: auth });
+      const msg = await msgRes.json();
+      const attRes = await fetch(`${MBX}/messages/${encodeURIComponent(draft.id)}/attachments`, { headers: auth });
+      const attData = await attRes.json();
+      const attachments = ((attData.value || []) as GraphAttachment[]).map(a => ({
+        '@odata.type': '#microsoft.graph.fileAttachment',
+        name: a.name,
+        contentType: a.contentType,
+        contentBytes: a.contentBytes,
+        contentId: a.contentId,
+        isInline: a.isInline,
+      }));
+      const payload = {
+        message: {
+          subject: msg.subject,
+          body: { contentType: msg.body?.contentType, content: msg.body?.content },
+          toRecipients: [{ emailAddress: { address: to } }],
+          attachments,
+        },
+        saveToSentItems: true,
+      };
+      const payloadStr = JSON.stringify(payload);
+      const sendRes = await fetch(`${MBX}/sendMail`, {
+        method: 'POST',
+        headers: { ...auth, 'Content-Type': 'application/json' },
+        body: payloadStr,
+      });
+      return res.status(200).json({
+        draftId: draft.id,
+        draftSubject: msg.subject,
+        bodyLength: msg.body?.content?.length,
+        attachmentCount: attachments.length,
+        payloadSizeBytes: payloadStr.length,
+        payloadSizeMB: (payloadStr.length / 1024 / 1024).toFixed(2),
+        sendStatus: sendRes.status,
+        sendResponse: sendRes.ok ? 'OK' : await sendRes.text(),
+      });
+    }
+
     if (action === 'test-send') {
       const to = String(req.query.to || '');
       if (!to) return res.status(400).json({ error: 'missing to' });
