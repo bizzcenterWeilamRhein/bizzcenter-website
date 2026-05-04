@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 import { usePathname } from 'next/navigation';
+import { trackLeadSubmitted } from './lib/tracking';
+import { AnfrageartToggle, getAnfrageartStrings, type AnfrageArt } from './AnfrageartToggle';
 
 const STRINGS = {
   de: {
@@ -75,7 +77,9 @@ export function InquiryForm({ title, description, product, fields }: InquiryForm
   const pathname = usePathname();
   const locale: 'de' | 'en' | 'fr' = pathname?.startsWith('/fr') ? 'fr' : pathname?.startsWith('/en') ? 'en' : 'de';
   const t = STRINGS[locale];
+  const tArt = getAnfrageartStrings(locale);
 
+  const [anfrageAls, setAnfrageAls] = useState<AnfrageArt>('firma');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [telefon, setTelefon] = useState('');
@@ -85,7 +89,7 @@ export function InquiryForm({ title, description, product, fields }: InquiryForm
   const [sent, setSent] = useState(false);
   const [error, setError] = useState('');
 
-  const canSubmit = name.length >= 2 && email.includes('@') && email.includes('.') && telefon.length >= 6;
+  const canSubmit = name.length >= 2 && email.includes('@') && email.includes('.') && telefon.length >= 6 && (anfrageAls === 'privat' || firma.length >= 2);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -101,17 +105,23 @@ export function InquiryForm({ title, description, product, fields }: InquiryForm
         body: JSON.stringify({
           vorname: name,
           nachname: '',
-          firma,
+          firma: anfrageAls === 'firma' ? firma : '',
           email,
           telefon,
           nachricht,
           quelle: 'anfrage-formular',
           product,
+          bemerkungen: anfrageAls === 'privat' ? tArt.privateMarker : tArt.companyMarker,
           timestamp: new Date().toISOString(),
         }),
       });
 
       if (!res.ok) throw new Error('Fehler beim Senden');
+      const responseData = await res.json().catch(() => ({}));
+      trackLeadSubmitted('anfrage_produkt', {
+        leadId: responseData?.leadId,
+        product,
+      });
       setSent(true);
     } catch {
       setError(t.errorGeneric);
@@ -142,6 +152,8 @@ export function InquiryForm({ title, description, product, fields }: InquiryForm
         {description && <p className="text-gray-600 mb-8 text-center">{description}</p>}
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          <AnfrageartToggle value={anfrageAls} onChange={setAnfrageAls} />
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">{t.labelName}</label>
             <input
@@ -181,16 +193,20 @@ export function InquiryForm({ title, description, product, fields }: InquiryForm
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">{t.labelCompany}</label>
-            <input
-              type="text"
-              value={firma}
-              onChange={e => setFirma(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none"
-              placeholder={t.placeholderCompany}
-            />
-          </div>
+          {anfrageAls === 'firma' && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{tArt.companyNamePlaceholder.replace(' *', '')} <span className="text-red-500">*</span></label>
+              <input
+                type="text"
+                value={firma}
+                onChange={e => setFirma(e.target.value)}
+                required
+                minLength={2}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none"
+                placeholder={t.placeholderCompany}
+              />
+            </div>
+          )}
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">{t.labelMessage}</label>

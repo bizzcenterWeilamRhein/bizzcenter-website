@@ -2,6 +2,8 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import { trackLeadSubmitted } from './lib/tracking';
+import { AnfrageartToggle, getAnfrageartStrings, type AnfrageArt } from './AnfrageartToggle';
 
 const STRINGS = {
   de: {
@@ -202,6 +204,7 @@ export function BueroAnfrage() {
   const pathname = usePathname();
   const locale: 'de' | 'en' | 'fr' = pathname?.startsWith('/fr') ? 'fr' : pathname?.startsWith('/en') ? 'en' : 'de';
   const t = STRINGS[locale];
+  const tArt = getAnfrageartStrings(locale);
 
   const sectionRef = useRef<HTMLElement>(null);
   const [form, setForm] = useState({
@@ -248,8 +251,9 @@ export function BueroAnfrage() {
     }
     if (submitting) return;
     setSubmitting(true);
+    let leadId: string | undefined;
     try {
-      await fetch('/api/lead', {
+      const res = await fetch('/api/lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -261,6 +265,7 @@ export function BueroAnfrage() {
           quelle: 'buero-anfrage',
           product: 'privates-buero',
           nachricht: [
+            form.privat ? tArt.privateMarker : tArt.companyMarker,
             form.anrede ? `Anrede: ${form.anrede}` : '',
             `Arbeitsplätze: ${form.arbeitsplaetze}`,
             form.einzug ? `Gewünschter Einzug: ${form.einzug}` : '',
@@ -270,7 +275,10 @@ export function BueroAnfrage() {
           ].filter(Boolean).join('\n'),
         }),
       });
+      const data = await res.json().catch(() => ({}));
+      leadId = data?.leadId;
     } catch { /* fire-and-forget */ }
+    trackLeadSubmitted('buero_anfrage', { leadId, arbeitsplaetze: form.arbeitsplaetze });
     setSubmitted(true);
     setSubmitting(false);
     // Scroll to success message
@@ -376,12 +384,12 @@ export function BueroAnfrage() {
           <h3 className="text-lg font-bold text-gray-900 mb-4">{t.formHeadline}</h3>
           <form ref={formRef} onSubmit={handleSubmit} className="space-y-3">
 
-            {/* Privat-Checkbox + Firma */}
-            <div>
-              <label className="flex items-center gap-2 cursor-pointer mb-2">
-                <input type="checkbox" checked={form.privat} onChange={e => setForm(f => ({ ...f, privat: e.target.checked, firma: e.target.checked ? '' : f.firma }))} className="accent-[#6b7f3e]" />
-                <span className="text-sm text-gray-700">{t.privateCheckbox}</span>
-              </label>
+            {/* Anfrageart-Toggle + Firma */}
+            <div className="space-y-2">
+              <AnfrageartToggle
+                value={form.privat ? 'privat' : 'firma'}
+                onChange={(next: AnfrageArt) => setForm(f => ({ ...f, privat: next === 'privat', firma: next === 'privat' ? '' : f.firma }))}
+              />
               {!form.privat && (
                 <div>
                   <label className={labelCls}>{t.labelCompany}</label>
