@@ -39,6 +39,7 @@ export { LanguageSwitcher } from './LanguageSwitcher';
 export { CheckoutWizard } from './CheckoutWizard';
 export { BueroAuswahlModal } from './BueroAuswahlModal';
 export { GeschaeftsadresseAnfrage } from './GeschaeftsadresseAnfrage';
+export { GeschaeftsadresseFormular } from './GeschaeftsadresseFormular';
 export { InquiryForm } from './InquiryForm';
 export { KontaktFormular } from './KontaktFormular';
 export { BannerCTAWithForm } from './BannerCTAWithForm';

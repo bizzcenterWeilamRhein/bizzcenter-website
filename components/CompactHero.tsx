@@ -3,6 +3,7 @@
 import React from 'react';
 import { usePathname } from 'next/navigation';
 import { trackLeadSubmitted } from './lib/tracking';
+import { GeschaeftsadresseFormular } from './GeschaeftsadresseFormular';
 
 interface CompactHeroProps {
   title: string;
@@ -49,7 +50,7 @@ export function CompactHero({ title, description, image, imageAlt, imagePosition
           )}
           {formId && (
             <div className="mt-6 rounded-2xl border border-border bg-card p-5" id={`${formId}-mobile`} style={{scrollMarginTop: '100px'}}>
-              {formVariant === 'geschaeftsadresse' ? <GeschaeftsadresseHeroForm /> : <HeroForm />}
+              {formVariant === 'geschaeftsadresse' ? <GeschaeftsadresseFormular /> : <HeroForm />}
             </div>
           )}
         </div>
@@ -84,7 +85,7 @@ export function CompactHero({ title, description, image, imageAlt, imagePosition
             </div>
             {formId && (
               <div className="rounded-2xl border border-border bg-background/95 backdrop-blur-sm p-6 shadow-lg flex flex-col justify-center min-w-0 flex-1" style={{minWidth: '320px', maxWidth: '420px', scrollMarginTop: '100px'}} id={formId}>
-                {formVariant === 'geschaeftsadresse' ? <GeschaeftsadresseHeroForm /> : <HeroForm />}
+                {formVariant === 'geschaeftsadresse' ? <GeschaeftsadresseFormular /> : <HeroForm />}
               </div>
             )}
           </div>
@@ -314,112 +315,3 @@ function HeroForm() {
   );
 }
 
-function GeschaeftsadresseHeroForm() {
-  const locale = useLocale();
-  const t = HERO_STRINGS[locale];
-
-  const [status, setStatus] = React.useState<'idle' | 'sending' | 'sent'>('idle');
-  const [postversand, setPostversand] = React.useState<'ohne' | 'mit'>('ohne');
-
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setStatus('sending');
-
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-    const data: Record<string, string> = {};
-    formData.forEach((v, k) => { data[k] = v.toString(); });
-
-    fetch('/api/lead', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        vorname: data.vorname || '',
-        nachname: data.nachname || '',
-        firma: data.firma || '',
-        email: data.email || '',
-        telefon: data.telefon || '',
-        nachricht: [
-          '--- Geschäftsadresse Anfrage (Hero-Formular) ---',
-          `Sprache: ${locale}`,
-          `Postversand: ${postversand === 'mit' ? 'Mit Postversand' : 'Ohne Postversand'}`,
-          data.rechtsform ? `Rechtsform: ${data.rechtsform}` : '',
-        ].filter(Boolean).join('\n'),
-        quelle: 'geschaeftsadresse-anfrage',
-        product: 'geschaeftsadresse',
-        timestamp: new Date().toISOString(),
-      }),
-    })
-      .then(async (res) => {
-        const body = await res.json().catch(() => ({}));
-        // Tracking nur am finalen Submit, NICHT bei Auto-Save (quelle = geschaeftsadresse-partial).
-        trackLeadSubmitted('geschaeftsadresse_hero', {
-          leadId: body?.leadId,
-          postversand,
-        });
-        setStatus('sent');
-      })
-      .catch(() => {
-        trackLeadSubmitted('geschaeftsadresse_hero', { postversand });
-        setStatus('sent');
-      });
-  }
-
-  if (status === 'sent') {
-    return (
-      <div className="text-center py-4">
-        <div className="w-12 h-12 rounded-full bg-[#6b7f3e] text-white flex items-center justify-center mx-auto mb-3">
-          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-          </svg>
-        </div>
-        <p className="text-sm font-bold text-foreground">{t.gaSuccessTitle}</p>
-        <p className="text-xs text-muted-foreground mt-1">{t.gaSuccessBody}</p>
-      </div>
-    );
-  }
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-3">
-      <p className="text-sm font-semibold text-foreground">{t.gaHeroTitle}</p>
-
-      {/* Postversand Toggle */}
-      <div className="grid grid-cols-2 gap-2">
-        {(['ohne', 'mit'] as const).map(pv => (
-          <button
-            key={pv}
-            type="button"
-            onClick={() => setPostversand(pv)}
-            className={`rounded-lg border px-3 py-2 text-xs font-medium transition-all cursor-pointer ${
-              postversand === pv
-                ? 'border-[#6b7f3e] bg-[#f0f4e8] text-[#6b7f3e]'
-                : 'border-border bg-background text-muted-foreground hover:border-[#6b7f3e]'
-            }`}
-          >
-            {pv === 'ohne' ? t.pvWithout : t.pvWith}
-          </button>
-        ))}
-      </div>
-
-      <div className="grid grid-cols-2 gap-2">
-        <input name="vorname" type="text" placeholder={t.phFirstName} required className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
-        <input name="nachname" type="text" placeholder={t.phLastName} required className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
-      </div>
-      <input name="email" type="email" placeholder={t.phEmail} required className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
-      <input name="telefon" type="tel" placeholder={t.phPhone} required minLength={6} maxLength={30} className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
-      <div className="grid grid-cols-2 gap-2">
-        <input name="firma" type="text" placeholder={t.phCompanyRequired} className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
-        <select name="rechtsform" className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#6b7f3e] appearance-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' viewBox=\'0 0 12 12\'%3E%3Cpath d=\'M6 8L1 3h10z\' fill=\'%236b7f3e\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center' }}>
-          <option value="">{t.legalFormPlaceholder}</option>
-          {t.legalForms.map(lf => (
-            <option key={lf.value} value={lf.value}>{lf.label}</option>
-          ))}
-        </select>
-      </div>
-      <button type="submit" disabled={status === 'sending'} className="w-full rounded-lg bg-[#6b7f3e] text-white px-4 py-3 text-sm font-bold hover:opacity-90 transition-opacity disabled:opacity-50 shadow-sm">
-        {status === 'sending' ? t.gaSending : t.gaSubmit}
-      </button>
-      <p className="text-[10px] text-muted-foreground text-center">{t.gaFootnote}</p>
-    </form>
-  );
-}
