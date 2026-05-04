@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { trackLeadSubmitted } from './lib/tracking';
+import { AnfrageartToggle, getAnfrageartStrings, type AnfrageArt } from './AnfrageartToggle';
 
 const SUBJECTS = [
   { value: 'Geschäftsadresse', de: 'Geschäftsadresse', en: 'Virtual Office', fr: 'Adresse commerciale' },
@@ -137,6 +138,8 @@ export function KontaktFormular({ embedded = false }: KontaktFormularProps) {
   const [vorname, setVorname] = useState('');
   const [nachname, setNachname] = useState('');
   const [firma, setFirma] = useState('');
+  const [anfrageAls, setAnfrageAls] = useState<AnfrageArt>('firma');
+  const tArt = getAnfrageartStrings(locale);
   const [email, setEmail] = useState('');
   const [telefon, setTelefon] = useState('');
   const [wunschterminVon, setWunschterminVon] = useState('');
@@ -161,7 +164,7 @@ export function KontaktFormular({ embedded = false }: KontaktFormularProps) {
 
   const isProductInquiry = produktInfo !== null;
 
-  const baseValid = betreff.length > 0 && vorname.length >= 2 && nachname.length >= 2 && telefon.length >= 6 && email.includes('@') && email.includes('.') && nachricht.length >= 10;
+  const baseValid = betreff.length > 0 && vorname.length >= 2 && nachname.length >= 2 && telefon.length >= 6 && email.includes('@') && email.includes('.') && nachricht.length >= 10 && (anfrageAls === 'privat' || firma.length >= 2);
   const productValid = !isProductInquiry || (wunschterminVon.length > 0 && wunschterminBis.length > 0);
   const canSubmit = baseValid && productValid;
 
@@ -173,7 +176,11 @@ export function KontaktFormular({ embedded = false }: KontaktFormularProps) {
     setError('');
 
     const productName = produktInfo?.name ?? betreff;
-    const bemerkungenParts = [`Sprache: ${locale}`, `Betreff: ${betreff}`];
+    const bemerkungenParts = [
+      `Sprache: ${locale}`,
+      `Betreff: ${betreff}`,
+      anfrageAls === 'privat' ? tArt.privateMarker : tArt.companyMarker,
+    ];
     if (isProductInquiry) {
       bemerkungenParts.push(`Produkt: ${produktInfo.name}`);
       bemerkungenParts.push(`Wunschtermin: ${wunschterminVon} bis ${wunschterminBis}`);
@@ -187,7 +194,7 @@ export function KontaktFormular({ embedded = false }: KontaktFormularProps) {
         body: JSON.stringify({
           vorname,
           nachname,
-          firma,
+          firma: anfrageAls === 'firma' ? firma : '',
           email,
           telefon,
           nachricht,
@@ -351,21 +358,27 @@ export function KontaktFormular({ embedded = false }: KontaktFormularProps) {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="firma" className="block text-sm font-medium text-gray-700 mb-1">
-                {t.labelCompany}
-              </label>
-              <input
-                id="firma"
-                type="text"
-                value={firma}
-                onChange={(e) => setFirma(e.target.value)}
-                maxLength={200}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none transition-colors"
-                placeholder={t.placeholderCompany}
-              />
-            </div>
+          <AnfrageartToggle value={anfrageAls} onChange={setAnfrageAls} />
+
+          <div className={`grid grid-cols-1 ${anfrageAls === 'firma' ? 'sm:grid-cols-2' : ''} gap-4`}>
+            {anfrageAls === 'firma' && (
+              <div>
+                <label htmlFor="firma" className="block text-sm font-medium text-gray-700 mb-1">
+                  {tArt.companyNamePlaceholder.replace(' *', '')} <span className="text-red-500">*</span>
+                </label>
+                <input
+                  id="firma"
+                  type="text"
+                  value={firma}
+                  onChange={(e) => setFirma(e.target.value)}
+                  required
+                  minLength={2}
+                  maxLength={200}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none transition-colors"
+                  placeholder={t.placeholderCompany}
+                />
+              </div>
+            )}
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                 {t.labelEmail} <span className="text-red-500">*</span>
