@@ -50,19 +50,34 @@ export function ActiveNavHighlight() {
     if (navbarLeft && isHomepage && !existingBadge) {
       const badge = document.createElement('span');
       badge.setAttribute('data-eroeffnungs-badge', 'true');
-      badge.textContent = 'Eröffnungsangebot';
       badge.style.cssText = [
         'display:inline-flex',
+        'flex-direction:column',
         'align-items:center',
-        'padding:4px 10px',
-        'background-color:#B2FF00',
-        'color:#2d3748',
-        'font-size:0.8rem',
-        'font-weight:600',
+        'padding:4px 12px',
+        'background-color:#6b7f3e',
+        'color:#ffffff',
         'border-radius:6px',
         'white-space:nowrap',
-        'line-height:1.2',
+        'line-height:1.15',
+        'text-align:center',
       ].join(';');
+
+      const top = document.createElement('span');
+      top.textContent = 'Wir eröffnen';
+      top.style.cssText = 'font-size:0.7rem;font-weight:500;';
+
+      const middle = document.createElement('span');
+      middle.textContent = 'Eröffnungsangebot';
+      middle.style.cssText = 'font-size:0.85rem;font-weight:700;';
+
+      const bottom = document.createElement('span');
+      bottom.textContent = 'eine neue Fläche';
+      bottom.style.cssText = 'font-size:0.7rem;font-weight:500;';
+
+      badge.appendChild(top);
+      badge.appendChild(middle);
+      badge.appendChild(bottom);
       navbarLeft.appendChild(badge);
     } else if (existingBadge && !isHomepage) {
       existingBadge.remove();
