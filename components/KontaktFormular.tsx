@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import { trackLeadSubmitted } from './lib/tracking';
 
 const SUBJECTS = [
   { value: 'Geschäftsadresse', de: 'Geschäftsadresse', en: 'Virtual Office', fr: 'Adresse commerciale' },
@@ -200,6 +201,13 @@ export function KontaktFormular({ embedded = false }: KontaktFormularProps) {
       });
 
       if (!res.ok) throw new Error('Fehler beim Senden');
+      const responseData = await res.json().catch(() => ({}));
+      trackLeadSubmitted('kontakt_allgemein', {
+        leadId: responseData?.leadId,
+        betreff,
+        product: produktInfo?.name,
+        isProductInquiry,
+      });
       setSent(true);
     } catch {
       setError(t.errorGeneric);

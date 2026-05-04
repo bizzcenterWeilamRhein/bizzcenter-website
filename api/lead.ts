@@ -26,6 +26,7 @@ interface LeadData {
   ort?: string;
   quelle: string;
   product?: string;
+  bedarfKategorie?: string;
   bemerkungen?: string;
   raum?: string;
   dauer?: string;
@@ -257,6 +258,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     };
     const dbQuelle = quelleToEnum[data.quelle] || 'WEBSITE_FORM';
 
+    // CRM-Lead-ID wird im ersten Promise gesetzt (aus RETURNING id des INSERT).
+    // Wird am Ende im Response an den Client zurückgegeben, damit
+    // Tracking-Events (trackLeadSubmitted) mit der Lead-ID verknüpft werden können.
+    let crmLeadId: string | undefined;
+
     // Parallel: CRM + E-Mail + Zendesk Sell
     const results = await Promise.allSettled([
       // 1. CRM Lead - Direct DB insert
@@ -310,12 +316,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           }
           
           // 3. Create Lead (dbQuelle = valid enum value, original quelle preserved in notizen)
-          await client.query(
+          const insertLead = await client.query(
             `INSERT INTO leads (id, "kontaktId", "unternehmenId", quelle, "bedarfKategorie", notizen, "createdAt", "updatedAt")
-             VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, NOW(), NOW())`,
+             VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, NOW(), NOW())
+             RETURNING id`,
             [kontaktId, unternehmenId, dbQuelle, data.product || null, description]
           );
-          
+          crmLeadId = insertLead.rows[0]?.id;
+
           await client.end();
           return 'crm-ok';
         } catch (err) {
@@ -384,28 +392,57 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }
         return 'zendesk-ok';
       })(),
+
+      // 4. Windmill-Webhook → Telegram-Notification + MS-To-Do-Task
+      (async () => {
+        const url = process.env.WINDMILL_LEAD_WEBHOOK_URL;
+        if (!url) return 'windmill-skipped-no-env';
+        const wmRes = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            firstName: firstName,
+            lastName: lastName,
+            email: data.email || '',
+            phone: data.telefon || '',
+            firma: data.firma || '',
+            quelle: data.quelle || '',
+            bedarfKategorie: data.bedarfKategorie || '',
+            product: data.product || '',
+            nachricht: description,
+          }),
+        });
+        if (!wmRes.ok) {
+          const errBody = await wmRes.text().catch(() => '');
+          throw new Error(`Windmill ${wmRes.status}: ${errBody.slice(0, 200)}`);
+        }
+        return 'windmill-ok';
+      })(),
     ]);
 
     const crmSuccess = results[0].status === 'fulfilled';
     const emailSuccess = results[1].status === 'fulfilled';
     const customerSuccess = results[2].status === 'fulfilled';
     const zendeskSuccess = results[3].status === 'fulfilled';
+    const windmillSuccess = results[4].status === 'fulfilled';
 
     if (!crmSuccess) console.error('CRM lead creation failed:', results[0].status === 'rejected' ? results[0].reason : 'unknown');
     if (!emailSuccess) console.error('Email notification failed:', results[1].status === 'rejected' ? results[1].reason : 'unknown');
     if (!customerSuccess) console.error('Customer confirmation failed:', results[2].status === 'rejected' ? results[2].reason : 'unknown');
     if (!zendeskSuccess) console.error('Zendesk Sell lead failed:', results[3].status === 'rejected' ? results[3].reason : 'unknown');
+    if (!windmillSuccess) console.error('Windmill webhook failed:', results[4].status === 'rejected' ? results[4].reason : 'unknown');
 
     // Success wenn mindestens einer erfolgreich
     if (crmSuccess || emailSuccess || zendeskSuccess) {
-      const warnings = [];
+      const warnings: string[] = [];
       if (!crmSuccess) warnings.push('CRM');
       if (!emailSuccess) warnings.push('E-Mail');
       if (!zendeskSuccess) warnings.push('Zendesk');
       
       return res.status(200).json({
         success: true,
-        ...(warnings.length && { 
+        ...(crmLeadId && { leadId: crmLeadId }),
+        ...(warnings.length && {
           warning: `${warnings.join(' + ')} fehlgeschlagen`,
         }),
       });

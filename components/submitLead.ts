@@ -16,7 +16,7 @@ export interface LeadPayload {
   gesamtpreis?: number;
 }
 
-export async function submitLead(data: LeadPayload): Promise<{ success: boolean; leadId?: number; error?: string }> {
+export async function submitLead(data: LeadPayload): Promise<{ success: boolean; leadId?: string; error?: string }> {
   try {
     const res = await fetch('/api/lead', {
       method: 'POST',

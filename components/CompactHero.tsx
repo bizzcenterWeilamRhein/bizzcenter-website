@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { usePathname } from 'next/navigation';
+import { trackLeadSubmitted } from './lib/tracking';
 
 interface CompactHeroProps {
   title: string;
@@ -253,12 +254,19 @@ function HeroForm() {
     const data: Record<string, string> = {};
     formData.forEach((v, k) => { data[k] = v.toString(); });
 
-    // Lead erfassen (fire-and-forget)
+    // Lead erfassen + Tracking (fire-and-forget, damit Redirect nicht verzögert wird)
     fetch('/api/lead', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...data, quelle: 'hero-formular', bemerkungen: `Sprache: ${locale}`, timestamp: new Date().toISOString() }),
-    }).catch(() => {});
+    })
+      .then(async (res) => {
+        const body = await res.json().catch(() => ({}));
+        trackLeadSubmitted('hero_kunde_xyz', { leadId: body?.leadId, tarif: selectedTarif });
+      })
+      .catch(() => {
+        trackLeadSubmitted('hero_kunde_xyz', { tarif: selectedTarif });
+      });
 
     // GCLID mitführen
     const urlGclid = new URLSearchParams(window.location.search).get('gclid') || document.cookie.match(/gclid=([^;]+)/)?.[1] || '';
@@ -313,55 +321,6 @@ function GeschaeftsadresseHeroForm() {
   const [status, setStatus] = React.useState<'idle' | 'sending' | 'sent'>('idle');
   const [postversand, setPostversand] = React.useState<'ohne' | 'mit'>('ohne');
 
-  // Silent auto-save refs
-  const autoSaveTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
-  const lastSavedHash = React.useRef<string>('');
-  const formRef = React.useRef<HTMLFormElement>(null);
-
-  // Debounced auto-save on any input change
-  const triggerAutoSave = React.useCallback(() => {
-    if (!formRef.current) return;
-    const fd = new FormData(formRef.current);
-    const vorname = (fd.get('vorname') as string || '').trim();
-    const email = (fd.get('email') as string || '').trim();
-    const firma = (fd.get('firma') as string || '').trim();
-    const telefon = (fd.get('telefon') as string || '').trim();
-
-    // Need at least (name + email) or firma
-    const hasMin = (vorname.length >= 2 && email.includes('@')) || firma.length >= 2;
-    if (!hasMin) return;
-
-    const hash = JSON.stringify({ vorname, nachname: fd.get('nachname'), email, telefon, firma, rechtsform: fd.get('rechtsform'), postversand });
-    if (hash === lastSavedHash.current) return;
-
-    if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current);
-    autoSaveTimer.current = setTimeout(() => {
-      fetch('/api/lead', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          vorname,
-          nachname: (fd.get('nachname') as string || '').trim(),
-          firma,
-          email,
-          telefon,
-          nachricht: [
-            '--- Geschäftsadresse (Hero-Formular, Auto-Save) ---',
-            `Sprache: ${locale}`,
-            `Postversand: ${postversand === 'mit' ? 'Mit Postversand' : 'Ohne Postversand'}`,
-            fd.get('rechtsform') ? `Rechtsform: ${fd.get('rechtsform')}` : '',
-          ].filter(Boolean).join('\n'),
-          quelle: 'geschaeftsadresse-partial',
-          product: 'geschaeftsadresse',
-          timestamp: new Date().toISOString(),
-        }),
-      }).then(() => { lastSavedHash.current = hash; }).catch(() => {});
-    }, 5000);
-  }, [postversand, locale]);
-
-  // Also trigger on postversand change
-  React.useEffect(() => { triggerAutoSave(); }, [postversand, triggerAutoSave]);
-
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus('sending');
@@ -390,7 +349,20 @@ function GeschaeftsadresseHeroForm() {
         product: 'geschaeftsadresse',
         timestamp: new Date().toISOString(),
       }),
-    }).then(() => setStatus('sent')).catch(() => setStatus('sent'));
+    })
+      .then(async (res) => {
+        const body = await res.json().catch(() => ({}));
+        // Tracking nur am finalen Submit, NICHT bei Auto-Save (quelle = geschaeftsadresse-partial).
+        trackLeadSubmitted('geschaeftsadresse_hero', {
+          leadId: body?.leadId,
+          postversand,
+        });
+        setStatus('sent');
+      })
+      .catch(() => {
+        trackLeadSubmitted('geschaeftsadresse_hero', { postversand });
+        setStatus('sent');
+      });
   }
 
   if (status === 'sent') {
@@ -408,7 +380,7 @@ function GeschaeftsadresseHeroForm() {
   }
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit} onChange={() => triggerAutoSave()} className="space-y-3">
+    <form onSubmit={handleSubmit} className="space-y-3">
       <p className="text-sm font-semibold text-foreground">{t.gaHeroTitle}</p>
 
       {/* Postversand Toggle */}

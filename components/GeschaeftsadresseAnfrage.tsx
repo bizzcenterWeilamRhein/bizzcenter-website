@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import React, { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { trackLeadSubmitted } from './lib/tracking';
 
@@ -368,81 +368,6 @@ export function GeschaeftsadresseAnfrage({ title }: GeschaeftsadresseAnfrageProp
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState('');
-
-  // ─── Silent Auto-Save (Partial Lead Tracking) ───────────────────
-  const autoSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const lastSavedHash = useRef<string>('');
-  const partialSent = useRef(false);
-
-  const buildPayload = useCallback(() => {
-    const selectedTarifObj = TARIFE_DATA.find(ta => ta.id === tarif);
-    const price = selectedTarifObj
-      ? postversand === 'mit' ? selectedTarifObj.priceMit : selectedTarifObj.priceOhne
-      : null;
-    const addonLabelList = ADDONS_DATA
-      .filter(a => selectedAddons.has(a.id))
-      .map(a => t.addonLabels[a.id] ?? a.id);
-
-    return {
-      vorname: name,
-      nachname: '',
-      firma: firmaUnbekannt ? '(Firma wird neu gegründet — Name noch unbekannt)' : firma,
-      email,
-      telefon,
-      nachricht: [
-        `--- Geschäftsadresse Anfrage (Partial / Auto-Save) ---`,
-        `Sprache: ${locale}`,
-        tarif && selectedTarifObj ? `Tarif: ${t.tarifLabels[selectedTarifObj.id]} (${t.months(selectedTarifObj.laufzeitMonths)})` : '',
-        `Postversand: ${postversand === 'mit' ? 'Mit Postversand' : 'Ohne Postversand'}`,
-        price ? `Preis: EUR ${price},-/Mon. zzgl. MwSt.` : '',
-        firmaUnbekannt ? 'Hinweis: Firma wird neu gegründet — Firmenname noch unbekannt' : '',
-        rechtsform ? `Rechtsform: ${rechtsform}` : '',
-        `Gewerbeschein vorhanden: ${gewerbeschein ? 'Ja' : 'Nein'}`,
-        addonLabelList.length > 0 ? `Add-ons: ${addonLabelList.join(', ')}` : '',
-        nachricht ? `Nachricht: ${nachricht}` : '',
-      ].filter(Boolean).join('\n'),
-      quelle: 'geschaeftsadresse-partial',
-      product: 'geschaeftsadresse',
-      timestamp: new Date().toISOString(),
-    };
-  }, [tarif, postversand, selectedAddons, firma, firmaUnbekannt, rechtsform, name, email, telefon, gewerbeschein, nachricht, locale, t]);
-
-  // Debounced auto-save: fires 5s after last field change, only if enough data
-  useEffect(() => {
-    // Don't auto-save after successful submit
-    if (sent) return;
-
-    // Need at least (name + email) OR firma OR firmaUnbekannt to track
-    const hasMinData = (name.length >= 2 && email.includes('@')) || firma.length >= 2 || firmaUnbekannt;
-    if (!hasMinData) return;
-
-    // Build a hash of current form state to avoid duplicate saves
-    const hash = JSON.stringify({ tarif, postversand, firma, firmaUnbekannt, rechtsform, name, email, telefon, gewerbeschein, nachricht, addons: [...selectedAddons].sort() });
-    if (hash === lastSavedHash.current) return;
-
-    if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current);
-
-    autoSaveTimer.current = setTimeout(() => {
-      const payload = buildPayload();
-      // Mark as partial so it's distinguishable from real submissions
-      if (partialSent.current) {
-        payload.quelle = 'geschaeftsadresse-partial-update';
-      }
-
-      fetch('/api/lead', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      }).then(() => {
-        lastSavedHash.current = hash;
-        partialSent.current = true;
-      }).catch(() => { /* silent fail */ });
-    }, 5000);
-
-    return () => {
-      if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current);
-    };
-  }, [tarif, postversand, firma, firmaUnbekannt, rechtsform, name, email, telefon, gewerbeschein, nachricht, selectedAddons, sent, buildPayload]);
 
   const toggleAddon = (id: string) => {
     setSelectedAddons(prev => {
