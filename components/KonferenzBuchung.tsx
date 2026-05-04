@@ -3,6 +3,7 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { submitLead } from './submitLead';
+import { trackLeadSubmitted } from './lib/tracking';
 
 /* ── i18n ── */
 const STRINGS = {
@@ -802,6 +803,11 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
         return;
       }
 
+      trackLeadSubmitted('konferenzraum_buchung', {
+        leadId: result.leadId,
+        raum: selectedRaum.label,
+        preis: preis.gesamt,
+      });
       setSubmitted(true);
     } catch {
       alert(t.errNetwork);
@@ -882,6 +888,9 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
                     {opt.sub && <p style={{ fontSize: '11px', color: '#6b7280', margin: '2px 0 0' }}>{opt.sub}</p>}
                     <p style={{ fontSize: '13px', fontWeight: 700, color: '#6b7f3e', margin: '6px 0 0' }}>
                       EUR {opt.preis},-
+                    </p>
+                    <p style={{ fontSize: '10px', fontWeight: 400, color: '#9ca3af', margin: '2px 0 0' }}>
+                      {t.vatSuffix}
                     </p>
                   </button>
                 );

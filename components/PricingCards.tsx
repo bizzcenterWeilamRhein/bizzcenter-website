@@ -31,9 +31,10 @@ interface PricingCardsProps {
   description?: string;
   ctaText?: string;
   ctaHref?: string;
+  vatSuffix?: string;
 }
 
-function PricingCardItem({ card, ctaText, ctaHref }: { card: PricingCard; ctaText?: string; ctaHref?: string }) {
+function PricingCardItem({ card, ctaText, ctaHref, vatSuffix }: { card: PricingCard; ctaText?: string; ctaHref?: string; vatSuffix?: string }) {
   const pathname = usePathname();
   const locale: 'de' | 'en' | 'fr' = pathname?.startsWith('/fr') ? 'fr' : pathname?.startsWith('/en') ? 'en' : 'de';
   const tennerLabel = locale === 'en' ? '10-day pass' : locale === 'fr' ? 'Carte 10 jours' : '10er-Karte';
@@ -108,9 +109,14 @@ function PricingCardItem({ card, ctaText, ctaHref }: { card: PricingCard; ctaTex
                         : 'bg-[#f0f4e8] hover:bg-[#e8eede]'
                     }`}
                   >
-                    <div className="grid grid-cols-[1fr_auto] items-center gap-2">
+                    <div className="grid grid-cols-[1fr_auto] items-baseline gap-2">
                       <span className={`text-sm font-medium ${isSelectedNormal ? 'text-white' : 'text-gray-700'}`}>{p.label}</span>
-                      <span className={`text-base font-bold tabular-nums text-right ${isSelectedNormal ? 'text-white' : 'text-[#6b7f3e]'}`}>{p.amount}</span>
+                      <span className={`text-right ${isSelectedNormal ? 'text-white' : 'text-[#6b7f3e]'}`}>
+                        <span className="text-base font-bold tabular-nums">{p.amount}</span>
+                        {vatSuffix && (
+                          <span className={`text-[10px] block leading-tight ${isSelectedNormal ? 'text-white/70' : 'text-gray-400'}`}>{vatSuffix}</span>
+                        )}
+                      </span>
                     </div>
                     {p.note && (
                       <span className={`text-[11px] block mt-1 ${isSelectedNormal ? 'text-white/70' : 'text-gray-400'}`}>{p.note}</span>
@@ -159,7 +165,7 @@ function PricingCardItem({ card, ctaText, ctaHref }: { card: PricingCard; ctaTex
   );
 }
 
-export function PricingCards({ cards, backgroundImage, headline, title, description, ctaText, ctaHref }: PricingCardsProps) {
+export function PricingCards({ cards, backgroundImage, headline, title, description, ctaText, ctaHref, vatSuffix }: PricingCardsProps) {
   const displayTitle = title || headline;
 
   return (
@@ -190,7 +196,7 @@ export function PricingCards({ cards, backgroundImage, headline, title, descript
         )}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {cards.map((card, i) => (
-            <PricingCardItem key={i} card={card} ctaText={ctaText} ctaHref={ctaHref} />
+            <PricingCardItem key={i} card={card} ctaText={ctaText} ctaHref={ctaHref} vatSuffix={vatSuffix} />
           ))}
         </div>
       </div>
