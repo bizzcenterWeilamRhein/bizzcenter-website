@@ -64,19 +64,14 @@ export function ActiveNavHighlight() {
       ].join(';');
 
       const top = document.createElement('span');
-      top.textContent = 'Wir eröffnen';
-      top.style.cssText = 'font-size:0.7rem;font-weight:500;';
-
-      const middle = document.createElement('span');
-      middle.textContent = 'Eröffnungsangebot';
-      middle.style.cssText = 'font-size:0.85rem;font-weight:700;';
+      top.textContent = 'Eröffnungsangebot';
+      top.style.cssText = 'font-size:0.85rem;font-weight:700;';
 
       const bottom = document.createElement('span');
-      bottom.textContent = 'eine neue Fläche';
+      bottom.textContent = 'neue Green Office Fläche';
       bottom.style.cssText = 'font-size:0.7rem;font-weight:500;';
 
       badge.appendChild(top);
-      badge.appendChild(middle);
       badge.appendChild(bottom);
       navbarLeft.appendChild(badge);
     } else if (existingBadge && !isHomepage) {
