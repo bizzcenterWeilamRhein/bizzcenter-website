@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { trackLeadSubmitted } from './lib/tracking';
 
 interface BannerCTAWithFormProps {
   title?: string;
@@ -17,6 +18,7 @@ export function BannerCTAWithForm({
   const [nachname, setNachname] = useState('');
   const [firma, setFirma] = useState('');
   const [telefon, setTelefon] = useState('');
+  const [bereich, setBereich] = useState('');
   const [nachricht, setNachricht] = useState('');
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
@@ -42,7 +44,7 @@ export function BannerCTAWithForm({
     return () => form.removeEventListener('focusin', handleFocusIn);
   }, []);
 
-  const canSubmit = vorname.length >= 2 && nachname.length >= 2 && telefon.length >= 6 && nachricht.length >= 10;
+  const canSubmit = vorname.length >= 2 && nachname.length >= 2 && telefon.length >= 6 && nachricht.length >= 10 && bereich !== '';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,9 +56,11 @@ export function BannerCTAWithForm({
       const res = await fetch('/api/lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ vorname, nachname, firma, telefon, nachricht, quelle: 'hero-formular', product: 'startseite' }),
+        body: JSON.stringify({ vorname, nachname, firma, telefon, nachricht, quelle: 'hero-formular', product: 'startseite', bedarfKategorie: bereich }),
       });
       if (!res.ok) throw new Error('Fehler');
+      const responseData = await res.json().catch(() => ({}));
+      trackLeadSubmitted('banner_cta_startseite', { leadId: responseData?.leadId });
       setSent(true);
     } catch {
       setError('Fehler beim Senden. Bitte versuchen Sie es erneut oder rufen Sie uns an.');
@@ -115,6 +119,17 @@ export function BannerCTAWithForm({
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none text-sm"
                 />
               </div>
+              <select
+                value={bereich} onChange={(e) => setBereich(e.target.value)} required
+                className={`w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none text-sm bg-white ${bereich === '' ? 'text-gray-500' : 'text-gray-900'}`}
+              >
+                <option value="" disabled>Worum geht es? *</option>
+                <option value="geschaeftsadresse">Geschäftsadresse</option>
+                <option value="coworking">Coworking</option>
+                <option value="buero">Büro mieten</option>
+                <option value="konferenzraum">Konferenzraum / Meetingraum</option>
+                <option value="sonstiges">Sonstiges</option>
+              </select>
               <textarea
                 value={nachricht} onChange={(e) => setNachricht(e.target.value)}
                 placeholder="Ihre Anfrage *" required minLength={10} maxLength={2000} rows={4}
