@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { trackLeadSubmitted } from './lib/tracking';
 import { AnfrageartToggle, getAnfrageartStrings, type AnfrageArt } from './AnfrageartToggle';
+import PhoneInput from './PhoneInput';
 
 const SUBJECTS = [
   { value: 'Geschäftsadresse', de: 'Geschäftsadresse', en: 'Virtual Office', fr: 'Adresse commerciale' },
@@ -400,15 +401,11 @@ export function KontaktFormular({ embedded = false }: KontaktFormularProps) {
             <label htmlFor="telefon" className="block text-sm font-medium text-gray-700 mb-1">
               {t.labelPhone} <span className="text-red-500">*</span>
             </label>
-            <input
+            <PhoneInput
               id="telefon"
-              type="tel"
               value={telefon}
-              onChange={(e) => setTelefon(e.target.value)}
+              onChange={setTelefon}
               required
-              minLength={6}
-              maxLength={30}
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none transition-colors"
               placeholder={t.placeholderPhone}
             />
           </div>

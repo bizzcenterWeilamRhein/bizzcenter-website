@@ -3,6 +3,7 @@
 import React from 'react';
 import { usePathname } from 'next/navigation';
 import { trackLeadSubmitted } from './lib/tracking';
+import PhoneInput from './PhoneInput';
 
 const STRINGS = {
   de: {
@@ -146,6 +147,7 @@ export function GeschaeftsadresseFormular({ id, title, description }: Props) {
   const [status, setStatus] = React.useState<'idle' | 'sending' | 'sent'>('idle');
   const [postversand, setPostversand] = React.useState<'ohne' | 'mit'>('ohne');
   const [firmaUnbekannt, setFirmaUnbekannt] = React.useState(false);
+  const [telefon, setTelefon] = React.useState('');
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -164,7 +166,7 @@ export function GeschaeftsadresseFormular({ id, title, description }: Props) {
         nachname: data.nachname || '',
         firma: firmaUnbekannt ? '(Firma wird neu gegründet — Name noch unbekannt)' : (data.firma || ''),
         email: data.email || '',
-        telefon: data.telefon || '',
+        telefon: telefon || '',
         nachricht: [
           '--- Geschäftsadresse Anfrage ---',
           `Sprache: ${locale}`,
@@ -226,7 +228,14 @@ export function GeschaeftsadresseFormular({ id, title, description }: Props) {
         <input name="nachname" type="text" placeholder={t.phLastName} required className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
       </div>
       <input name="email" type="email" placeholder={t.phEmail} required className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
-      <input name="telefon" type="tel" placeholder={t.phPhone} required minLength={6} maxLength={30} className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]" />
+      <PhoneInput
+        value={telefon}
+        onChange={setTelefon}
+        required
+        placeholder={t.phPhone}
+        inputClassName="flex-1 min-w-0 rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]"
+        selectClassName="rounded-lg border border-border bg-background px-2 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]"
+      />
       <div className="grid grid-cols-2 gap-2">
         <input name="firma" type="text" placeholder={t.phCompany} required={!firmaUnbekannt} disabled={firmaUnbekannt} className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e] disabled:opacity-50 disabled:cursor-not-allowed" />
         <select name="rechtsform" className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#6b7f3e] appearance-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' viewBox=\'0 0 12 12\'%3E%3Cpath d=\'M6 8L1 3h10z\' fill=\'%236b7f3e\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center' }}>

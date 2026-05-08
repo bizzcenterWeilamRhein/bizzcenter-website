@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { trackLeadSubmitted } from './lib/tracking';
 import { AnfrageartToggle, getAnfrageartStrings, type AnfrageArt } from './AnfrageartToggle';
+import PhoneInput from './PhoneInput';
 
 const STRINGS = {
   de: {
@@ -181,15 +182,13 @@ export function InquiryForm({ title, description, product, fields }: InquiryForm
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">{t.labelPhone}</label>
-            <input
-              type="tel"
+            <PhoneInput
               value={telefon}
-              onChange={e => setTelefon(e.target.value)}
+              onChange={setTelefon}
               required
-              minLength={6}
-              maxLength={30}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none"
               placeholder={t.placeholderPhone}
+              inputClassName="flex-1 min-w-0 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none"
+              selectClassName="px-2 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none bg-white"
             />
           </div>
 

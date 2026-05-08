@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { trackLeadSubmitted } from './lib/tracking';
+import PhoneInput from './PhoneInput';
 
 const STRINGS = {
   de: {
@@ -271,17 +272,23 @@ export function BannerCTAWithForm({
                     placeholder={t.phCompany} required minLength={2} maxLength={200}
                     className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none text-sm"
                   />
-                  <input
-                    type="tel" value={telefon} onChange={(e) => setTelefon(e.target.value)}
-                    placeholder={t.phPhone} required minLength={6} maxLength={30}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none text-sm"
+                  <PhoneInput
+                    value={telefon}
+                    onChange={setTelefon}
+                    required
+                    placeholder={t.phPhone}
+                    inputClassName="flex-1 min-w-0 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none text-sm"
+                    selectClassName="px-2 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none text-sm bg-white"
                   />
                 </div>
               ) : (
-                <input
-                  type="tel" value={telefon} onChange={(e) => setTelefon(e.target.value)}
-                  placeholder={t.phPhone} required minLength={6} maxLength={30}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none text-sm"
+                <PhoneInput
+                  value={telefon}
+                  onChange={setTelefon}
+                  required
+                  placeholder={t.phPhone}
+                  inputClassName="flex-1 min-w-0 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none text-sm"
+                  selectClassName="px-2 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none text-sm bg-white"
                 />
               )}
               <select

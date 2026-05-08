@@ -82,6 +82,27 @@ function esc(str: string): string {
   return str.replace(/[&<>"']/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m] || m));
 }
 
+function telHref(raw: string): string {
+  const cleaned = raw.replace(/[^\d+]/g, '');
+  if (!cleaned) return '';
+  if (cleaned.startsWith('+')) return cleaned;
+  if (cleaned.startsWith('00')) return '+' + cleaned.slice(2);
+  if (cleaned.startsWith('0')) return '+49' + cleaned.slice(1);
+  return '+' + cleaned;
+}
+
+function telDisplay(raw: string): string {
+  const e164 = telHref(raw);
+  if (!e164) return raw;
+  for (const dial of ['+352', '+351', '+353', '+358', '+385', '+386', '+420', '+421', '+359', '+380', '+49', '+41', '+33', '+43', '+39', '+31', '+32', '+34', '+44', '+48', '+45', '+46', '+47', '+30', '+36', '+40', '+90', '+1', '+7']) {
+    if (e164.startsWith(dial)) {
+      const rest = e164.slice(dial.length);
+      return rest ? `${dial} ${rest.slice(0, 3)} ${rest.slice(3)}`.trim() : dial;
+    }
+  }
+  return e164;
+}
+
 async function sendNotificationEmail(lead: { firstName: string; lastName: string; firma?: string; telefon?: string; email?: string; nachricht?: string; quelle: string; product?: string; wunschterminVon?: string; wunschterminBis?: string; zeitraumFreitext?: string }) {
   const token = await getM365Token();
   if (!token) {
@@ -110,7 +131,7 @@ async function sendNotificationEmail(lead: { firstName: string; lastName: string
     `<table style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:14px;">`,
     `<tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Name:</td><td>${esc(lead.firstName)} ${esc(lead.lastName)}</td></tr>`,
     lead.firma ? `<tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Firma:</td><td>${esc(lead.firma)}</td></tr>` : '',
-    lead.telefon ? `<tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Telefon:</td><td><a href="tel:${esc(lead.telefon)}">${esc(lead.telefon)}</a></td></tr>` : '',
+    lead.telefon ? `<tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Telefon:</td><td><a href="tel:${esc(telHref(lead.telefon))}">${esc(telDisplay(lead.telefon))}</a></td></tr>` : '',
     lead.email ? `<tr><td style="padding:4px 12px 4px 0;font-weight:bold;">E-Mail:</td><td><a href="mailto:${esc(lead.email)}">${esc(lead.email)}</a></td></tr>` : '',
     `</table>`,
     lead.nachricht ? `<h3 style="margin:20px 0 8px 0;">Nachricht:</h3><p style="background:#f5f5f5;padding:12px;border-radius:8px;white-space:pre-wrap;">${esc(lead.nachricht)}</p>` : '',

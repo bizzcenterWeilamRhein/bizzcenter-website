@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { trackLeadSubmitted } from './lib/tracking';
 import { AnfrageartToggle, getAnfrageartStrings, type AnfrageArt } from './AnfrageartToggle';
+import PhoneInput from './PhoneInput';
 
 const STRINGS = {
   de: {
@@ -451,7 +452,13 @@ export function BueroAnfrage() {
               </div>
               <div>
                 <label className={labelCls}>{t.labelPhone}</label>
-                <input type="tel" value={form.telefon} onChange={e => setForm(f => ({ ...f, telefon: e.target.value }))} className={inputCls('telefon')} />
+                <PhoneInput
+                  value={form.telefon}
+                  onChange={(v) => setForm(f => ({ ...f, telefon: v }))}
+                  hasError={isMissing('telefon')}
+                  inputClassName={`flex-1 min-w-0 h-10 px-3 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] scroll-mt-32 ${isMissing('telefon') ? 'border-red-400 bg-red-50' : 'border-gray-200'}`}
+                  selectClassName={`h-10 px-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] bg-white ${isMissing('telefon') ? 'border-red-400 bg-red-50' : 'border-gray-200'}`}
+                />
               </div>
             </div>
 
