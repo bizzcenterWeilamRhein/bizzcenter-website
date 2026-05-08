@@ -77,6 +77,35 @@ function getQuelleInfo(quelle: string): { name: string; seite: string } {
   return map[quelle] || { name: quelle, seite: 'unbekannt' };
 }
 
+// Liefert den Produkt-Namen für den Zendesk-Deal-Namen ("WEIL: <Produkt>, …").
+function getProduktForDealName(data: LeadData): string {
+  const explicitProduct = (data.product || '').trim();
+  const cat = (data.bedarfKategorie || '').trim();
+  switch (data.quelle) {
+    case 'buero-anfrage': return 'Büro';
+    case 'geschaeftsadresse-anfrage':
+    case 'geschaeftsadresse-buchung':
+    case 'geschaeftsadresse-partial':
+    case 'geschaeftsadresse-partial-update':
+      return 'Geschäftsadresse';
+    case 'konferenzraum-buchung': return 'Konferenzraum';
+    case 'coworking-buchung': return 'Coworking';
+    case 'beamer-buchung': return 'Beamer';
+    case 'fensterputzroboter-buchung': return 'Fensterputzroboter';
+    case 'angebot-vertrag': return 'Angebot/Vertrag';
+    default:
+      return explicitProduct || cat || 'Anfrage';
+  }
+}
+
+function buildDealName(firstName: string, lastName: string, firma: string | undefined, data: LeadData): string {
+  const fullName = `${firstName} ${lastName}`.trim();
+  const produkt = getProduktForDealName(data);
+  const parts = [`WEIL: ${produkt}`, fullName];
+  if (firma && firma.trim()) parts.push(firma.trim());
+  return parts.join(', ');
+}
+
 // HTML-Escape to prevent XSS in email templates
 function esc(str: string): string {
   return str.replace(/[&<>"']/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m] || m));
@@ -258,10 +287,28 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (data.termine?.length) descParts.push(`Termine: ${data.termine.join(', ')}`);
     if (data.addons?.length) descParts.push(`Add-ons: ${data.addons.join(', ')}`);
     if (data.gesamtpreis) descParts.push(`Gesamtpreis: EUR ${data.gesamtpreis},- zzgl. MwSt.`);
+
+    // Vorgeschlagener Deal-Name fürs Zendesk-Konvertieren (Format: "WEIL: <Produkt>, <Name>, <Firma>").
+    // Zendesk Sell bietet keine API zum Vorbelegen des Deal-Names — daher steht der Vorschlag
+    // als erste Zeile in der Beschreibung, von wo Torben ihn beim Konvertieren ins
+    // "Geschäftsname"-Feld kopiert.
+    const dealNameSuggestion = buildDealName(firstName, lastName, data.firma, data);
+
+    const descriptionForZendesk = [
+      `[Geschäftsname-Vorschlag]`,
+      dealNameSuggestion,
+      ``,
+      ...descParts,
+    ].join('\n');
+
     if (data.nachricht) descParts.push(`Nachricht: ${data.nachricht}`);
     if (data.bemerkungen) descParts.push(`Bemerkungen: ${data.bemerkungen}`);
-
     const description = descParts.join('\n');
+
+    const zendeskNoteContent = [
+      data.nachricht && `Nachricht: ${data.nachricht}`,
+      data.bemerkungen && `Bemerkungen: ${data.bemerkungen}`,
+    ].filter(Boolean).join('\n\n');
 
     // Map website form source to DB enum (LeadSource)
     const quelleToEnum: Record<string, string> = {
@@ -380,7 +427,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           }).then(() => 'customer-ok')
         : Promise.resolve('customer-skipped'),
 
-      // 3. Zendesk Sell Lead
+      // 3. Zendesk Sell Lead (+ Notiz)
       (async () => {
         if (!ZENDESK_TOKEN) throw new Error('ZENDESK_SELL_API_TOKEN not configured');
         if (!data.email && !data.firma) throw new Error('No email or firma for Zendesk');
@@ -401,7 +448,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               organization_name: data.firma || undefined,
               email: data.email || undefined,
               phone: data.telefon || undefined,
-              description: description,
+              description: descriptionForZendesk,
               tags,
             },
           }),
@@ -411,6 +458,34 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           const errBody = await zdRes.text().catch(() => '');
           throw new Error(`Zendesk ${zdRes.status}: ${errBody}`);
         }
+
+        // Nachricht als Notiz an den Lead anhängen — überlebt Lead → Kontakt → Geschäft Konvertierung.
+        if (zendeskNoteContent) {
+          const zdLead = await zdRes.json().catch(() => null);
+          const leadId = zdLead?.data?.id;
+          if (leadId) {
+            const noteRes = await fetch(`${ZENDESK_API}/notes`, {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${ZENDESK_TOKEN}`,
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                data: {
+                  resource_type: 'lead',
+                  resource_id: leadId,
+                  content: zendeskNoteContent,
+                },
+              }),
+            });
+            if (!noteRes.ok) {
+              const errBody = await noteRes.text().catch(() => '');
+              console.error(`Zendesk note creation failed: ${noteRes.status}: ${errBody}`);
+              // Note-Failure soll den ganzen Zendesk-Promise nicht killen — der Lead ist ja schon angelegt.
+            }
+          }
+        }
+
         return 'zendesk-ok';
       })(),
 
