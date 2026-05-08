@@ -4,6 +4,7 @@ import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { submitLead } from './submitLead';
 import { trackLeadSubmitted } from './lib/tracking';
+import PhoneInput from './PhoneInput';
 
 /* ── i18n ── */
 const STRINGS = {
@@ -1179,8 +1180,13 @@ export function KonferenzBuchung({ raumId = 'S' }: KonferenzBuchungProps) {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">{t.labelPhone} *</label>
-                <input type="tel" value={form.telefon} onChange={e => setForm(f => ({ ...f, telefon: e.target.value }))}
-                  className="w-full border rounded-xl px-4 h-[42px] text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none" />
+                <PhoneInput
+                  value={form.telefon}
+                  onChange={(v) => setForm(f => ({ ...f, telefon: v }))}
+                  required
+                  inputClassName="flex-1 min-w-0 border rounded-xl px-4 h-[42px] text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none"
+                  selectClassName="border rounded-xl px-2 h-[42px] text-sm focus:ring-2 focus:ring-[#6b7f3e]/30 focus:border-[#6b7f3e] outline-none bg-white"
+                />
               </div>
             </div>
 

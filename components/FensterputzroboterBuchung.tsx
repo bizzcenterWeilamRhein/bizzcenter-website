@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
+import { trackPurchaseCompleted } from './lib/tracking';
+import PhoneInput from './PhoneInput';
 
 interface Tarif {
   id: string;
@@ -111,6 +113,10 @@ export function FensterputzroboterBuchung() {
     const params = new URLSearchParams(window.location.search);
     if (params.get('buchung') === 'erfolgreich') {
       setSuccessParam(true);
+      const wert = Number(params.get('wert')) || 0;
+      trackPurchaseCompleted('fensterputzroboter_winbot_w2s', wert, {
+        session_id: params.get('session_id') ?? undefined,
+      });
     }
   }, []);
 
@@ -444,8 +450,14 @@ export function FensterputzroboterBuchung() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="E-Mail *" required maxLength={255}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none" />
-                <input type="tel" value={telefon} onChange={e => setTelefon(e.target.value)} placeholder="Telefon *" required minLength={6} maxLength={30}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none" />
+                <PhoneInput
+                  value={telefon}
+                  onChange={setTelefon}
+                  required
+                  placeholder="Telefon *"
+                  inputClassName="flex-1 min-w-0 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none"
+                  selectClassName="px-2 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none bg-white"
+                />
               </div>
 
               {/* Privatperson Toggle */}
