@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import { captureMarketingAttribution, getMarketingAttribution } from './lib/marketing';
 
 // ─── Types ───────────────────────────────────────────────────────────
 
@@ -545,6 +546,9 @@ function BackButton({ onClick, label }: { onClick: () => void; label: string }) 
 
 export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
   const pathname = usePathname();
+
+  // Marketing-Attribution beim Mount erfassen
+  useEffect(() => { captureMarketingAttribution(); }, []);
   const locale: 'de' | 'en' | 'fr' = pathname?.startsWith('/fr') ? 'fr' : pathname?.startsWith('/en') ? 'en' : 'de';
   const s = STRINGS[locale];
 
@@ -646,6 +650,7 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
           locale,
           successUrl: `${window.location.origin}/buchung-bestaetigt`,
           cancelUrl: window.location.href,
+          ...getMarketingAttribution(),
         }),
       });
 
