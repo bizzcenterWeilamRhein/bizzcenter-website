@@ -55,3 +55,4 @@ export { FAQPageSchema } from './FAQPageSchema';
 export { BreadcrumbListSchema } from './BreadcrumbListSchema';
 export { CookieConsent, CookieSettingsLink } from './CookieConsent';
 export { ConsentModeInit } from './ConsentModeInit';
+export { MarketingCapture } from './MarketingCapture';

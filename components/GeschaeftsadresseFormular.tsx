@@ -3,6 +3,7 @@
 import React from 'react';
 import { usePathname } from 'next/navigation';
 import { trackLeadSubmitted } from './lib/tracking';
+import { captureMarketingAttribution, getMarketingAttribution } from './lib/marketing';
 import PhoneInput from './PhoneInput';
 
 const STRINGS = {
@@ -149,6 +150,9 @@ export function GeschaeftsadresseFormular({ id, title, description }: Props) {
   const [firmaUnbekannt, setFirmaUnbekannt] = React.useState(false);
   const [telefon, setTelefon] = React.useState('');
 
+  // Marketing-Attribution beim Mount erfassen
+  React.useEffect(() => { captureMarketingAttribution(); }, []);
+
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus('sending');
@@ -178,6 +182,7 @@ export function GeschaeftsadresseFormular({ id, title, description }: Props) {
         quelle: 'geschaeftsadresse-anfrage',
         product: 'geschaeftsadresse',
         timestamp: new Date().toISOString(),
+        ...getMarketingAttribution(),
       }),
     })
       .then(async (res) => {

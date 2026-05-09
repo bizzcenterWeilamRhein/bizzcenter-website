@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { trackLeadSubmitted } from './lib/tracking';
+import { captureMarketingAttribution, getMarketingAttribution } from './lib/marketing';
 import PhoneInput from './PhoneInput';
 
 const STRINGS = {
@@ -151,6 +152,9 @@ export function BannerCTAWithForm({
   const [error, setError] = useState('');
   const formRef = useRef<HTMLFormElement>(null);
 
+  // Marketing-Attribution beim Mount erfassen
+  useEffect(() => { captureMarketingAttribution(); }, []);
+
   // Scroll focused input into view when mobile keyboard opens
   useEffect(() => {
     const form = formRef.current;
@@ -197,6 +201,7 @@ export function BannerCTAWithForm({
           product: 'startseite',
           bedarfKategorie: bereich,
           bemerkungen: `${anfrageAls === 'privat' ? t.privateMarker : t.companyMarker} · Sprache: ${locale}`,
+          ...getMarketingAttribution(),
         }),
       });
       if (!res.ok) throw new Error('Fehler');

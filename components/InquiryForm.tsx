@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { trackLeadSubmitted } from './lib/tracking';
+import { captureMarketingAttribution, getMarketingAttribution } from './lib/marketing';
 import { AnfrageartToggle, getAnfrageartStrings, type AnfrageArt } from './AnfrageartToggle';
 import PhoneInput from './PhoneInput';
 
@@ -90,6 +91,9 @@ export function InquiryForm({ title, description, product, fields }: InquiryForm
   const [sent, setSent] = useState(false);
   const [error, setError] = useState('');
 
+  // Marketing-Attribution beim Mount erfassen
+  useEffect(() => { captureMarketingAttribution(); }, []);
+
   const canSubmit = name.length >= 2 && email.includes('@') && email.includes('.') && telefon.length >= 6 && (anfrageAls === 'privat' || firma.length >= 2);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -114,6 +118,7 @@ export function InquiryForm({ title, description, product, fields }: InquiryForm
           product,
           bemerkungen: anfrageAls === 'privat' ? tArt.privateMarker : tArt.companyMarker,
           timestamp: new Date().toISOString(),
+          ...getMarketingAttribution(),
         }),
       });
 
