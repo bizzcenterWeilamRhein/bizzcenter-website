@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { trackLeadSubmitted } from './lib/tracking';
+import { captureMarketingAttribution, getMarketingAttribution } from './lib/marketing';
 import { AnfrageartToggle, getAnfrageartStrings, type AnfrageArt } from './AnfrageartToggle';
 import PhoneInput from './PhoneInput';
 
@@ -161,6 +162,8 @@ export function KontaktFormular({ embedded = false }: KontaktFormularProps) {
       setProduktInfo(info);
       setBetreff(info.subject);
     }
+    // Marketing-Attribution aus URL-Params in localStorage speichern
+    captureMarketingAttribution();
   }, []);
 
   const isProductInquiry = produktInfo !== null;
@@ -205,6 +208,7 @@ export function KontaktFormular({ embedded = false }: KontaktFormularProps) {
           wunschterminBis: isProductInquiry ? wunschterminBis : undefined,
           zeitraumFreitext: isProductInquiry ? zeitraumFreitext : undefined,
           bemerkungen: bemerkungenParts.join(' | '),
+          ...getMarketingAttribution(),
         }),
       });
 

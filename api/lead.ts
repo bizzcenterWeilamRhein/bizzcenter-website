@@ -37,6 +37,15 @@ interface LeadData {
   wunschterminVon?: string;
   wunschterminBis?: string;
   zeitraumFreitext?: string;
+  // Marketing-Attribution (von /components/lib/marketing.ts mitgegeben)
+  gclid?: string;
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  utm_term?: string;
+  utm_content?: string;
+  referrer?: string;
+  landing_page?: string;
 }
 
 async function getM365Token(): Promise<string | null> {
@@ -506,6 +515,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             bedarfKategorie: data.bedarfKategorie || '',
             product: data.product || '',
             nachricht: description,
+            // Marketing-Attribution (alle optional)
+            gclid: data.gclid || '',
+            utm_source: data.utm_source || '',
+            utm_medium: data.utm_medium || '',
+            utm_campaign: data.utm_campaign || '',
+            utm_term: data.utm_term || '',
+            utm_content: data.utm_content || '',
+            referrer: data.referrer || '',
+            landing_page: data.landing_page || '',
           }),
         });
         if (!wmRes.ok) {

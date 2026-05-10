@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { trackLeadSubmitted } from './lib/tracking';
 import { AnfrageartToggle, getAnfrageartStrings, type AnfrageArt } from './AnfrageartToggle';
 import PhoneInput from './PhoneInput';
+import { captureMarketingAttribution, getMarketingAttribution } from './lib/marketing';
 
 const STRINGS = {
   de: {
@@ -274,6 +275,7 @@ export function BueroAnfrage() {
             form.bemerkungen ? `Bemerkungen: ${form.bemerkungen}` : '',
             `Sprache: ${locale}`,
           ].filter(Boolean).join('\n'),
+          ...getMarketingAttribution(),
         }),
       });
       const data = await res.json().catch(() => ({}));
@@ -301,6 +303,11 @@ export function BueroAnfrage() {
   }
 
   const formRef = useRef<HTMLFormElement>(null);
+
+  // Marketing-Attribution beim Mount erfassen
+  useEffect(() => {
+    captureMarketingAttribution();
+  }, []);
 
   // Smooth scroll on mobile keyboard open — single scroll, no jumps
   useEffect(() => {

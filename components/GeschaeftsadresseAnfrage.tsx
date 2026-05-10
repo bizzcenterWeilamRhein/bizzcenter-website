@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { trackLeadSubmitted } from './lib/tracking';
+import { captureMarketingAttribution, getMarketingAttribution } from './lib/marketing';
 import PhoneInput from './PhoneInput';
 
 // ─── Strings (i18n) ─────────────────────────────────────────────────
@@ -370,6 +371,9 @@ export function GeschaeftsadresseAnfrage({ title }: GeschaeftsadresseAnfrageProp
   const [sent, setSent] = useState(false);
   const [error, setError] = useState('');
 
+  // Marketing-Attribution beim Mount erfassen
+  useEffect(() => { captureMarketingAttribution(); }, []);
+
   const toggleAddon = (id: string) => {
     setSelectedAddons(prev => {
       const next = new Set(prev);
@@ -426,6 +430,7 @@ export function GeschaeftsadresseAnfrage({ title }: GeschaeftsadresseAnfrageProp
           quelle: 'geschaeftsadresse-anfrage',
           product: 'geschaeftsadresse',
           timestamp: new Date().toISOString(),
+          ...getMarketingAttribution(),
         }),
       });
 
