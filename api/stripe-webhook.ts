@@ -417,6 +417,36 @@ async function processCheckoutCompleted(session: Stripe.Checkout.Session): Promi
     );
   }
 
+  // Google Ads Conversion-Tracking — wenn gclid in Session-Metadata steht,
+  // an Windmill weiterleiten (das schreibt eine Zeile ins Conversion-Sheet,
+  // Google Ads importiert daily und meldet Smart Bidding zurück).
+  const gclid = session.metadata?.gclid || '';
+  if (gclid) {
+    tasks.push(
+      (async () => {
+        const url = process.env.WINDMILL_GOOGLE_ADS_CONVERSION_URL;
+        if (!url) {
+          console.warn('WINDMILL_GOOGLE_ADS_CONVERSION_URL not set — skip conversion upload');
+          return;
+        }
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            gclid,
+            source_produkt: productCode || '',
+            conversion_value_override: value,
+            conversion_time_iso: new Date().toISOString().replace(/\.\d{3}Z$/, '+0000'),
+          }),
+        });
+        if (!res.ok) {
+          const errBody = await res.text().catch(() => '');
+          throw new Error(`Windmill conversion-upload ${res.status}: ${errBody.slice(0, 200)}`);
+        }
+      })().catch(err => console.error('Google Ads conversion upload failed:', err)),
+    );
+  }
+
   await Promise.allSettled(tasks);
 }
 

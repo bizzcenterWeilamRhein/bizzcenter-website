@@ -124,7 +124,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   try {
-    const { priceId, addons, successUrl, cancelUrl, customerEmail, customerName, customerPhone, firma, locale } = req.body;
+    const {
+      priceId, addons, successUrl, cancelUrl,
+      customerEmail, customerName, customerPhone, firma, locale,
+      // Marketing-Attribution (alle optional)
+      gclid, utm_source, utm_medium, utm_campaign, utm_term, utm_content,
+    } = req.body;
     const checkoutLocale: 'de' | 'en' | 'fr' | 'it' = ['de', 'en', 'fr', 'it'].includes(locale) ? locale : 'de';
 
     if (!priceId || !PRICES[priceId]) {
@@ -266,6 +271,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (customerName) params.append('metadata[customer_name]', customerName);
     if (customerPhone) params.append('metadata[phone]', customerPhone);
     params.append('metadata[locale]', checkoutLocale);
+    // Marketing-Attribution für Google Ads Conversion-Tracking via Stripe-Webhook
+    if (gclid) params.append('metadata[gclid]', gclid);
+    if (utm_source) params.append('metadata[utm_source]', utm_source);
+    if (utm_medium) params.append('metadata[utm_medium]', utm_medium);
+    if (utm_campaign) params.append('metadata[utm_campaign]', utm_campaign);
+    if (utm_term) params.append('metadata[utm_term]', utm_term);
+    if (utm_content) params.append('metadata[utm_content]', utm_content);
 
     lineItems.forEach((item, i) => {
       params.append(`line_items[${i}][price]`, item.price);
