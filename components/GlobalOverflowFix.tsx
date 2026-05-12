@@ -41,9 +41,6 @@ const CONSENT_SCRIPT = `
 
 export function GlobalOverflowFix() {
   useEffect(() => {
-    document.documentElement.style.overflowX = 'hidden';
-    document.body.style.overflowX = 'hidden';
-
     // Intercept #cookie-settings clicks to open cookie banner
     const handleClick = (e: MouseEvent) => {
       const target = e.target as HTMLAnchorElement;
@@ -55,8 +52,6 @@ export function GlobalOverflowFix() {
     document.addEventListener('click', handleClick);
 
     return () => {
-      document.documentElement.style.overflowX = '';
-      document.body.style.overflowX = '';
       document.removeEventListener('click', handleClick);
     };
   }, []);
@@ -69,6 +64,20 @@ export function GlobalOverflowFix() {
         dangerouslySetInnerHTML={{ __html: CONSENT_SCRIPT }}
       />
       <style>{`
+        html, body {
+          overflow-x: clip;
+          max-width: 100%;
+          overscroll-behavior-x: none;
+        }
+        /* iOS Safari zoomt rein wenn Input-Schrift <16px ist — verursacht
+           horizontales Hin-und-her-Ziehen der Seite. 16px verhindert den Zoom. */
+        @media (max-width: 640px) {
+          input:not([type="checkbox"]):not([type="radio"]),
+          select,
+          textarea {
+            font-size: 16px !important;
+          }
+        }
         header [data-slot="navigation-menu-content"] ul {
           grid-template-columns: 1fr !important;
           width: auto !important;
