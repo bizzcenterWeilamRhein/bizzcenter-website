@@ -151,6 +151,14 @@ export function KontaktFormular({ embedded = false }: KontaktFormularProps) {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState('');
+  const sectionRef = React.useRef<HTMLDivElement>(null);
+  const [lockedHeight, setLockedHeight] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (sent && sectionRef.current) {
+      sectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [sent]);
 
   // Read ?produkt=... from URL after mount (avoids SSG/Suspense issues)
   useEffect(() => {
@@ -176,6 +184,9 @@ export function KontaktFormular({ embedded = false }: KontaktFormularProps) {
     e.preventDefault();
     if (!canSubmit || sending) return;
 
+    if (sectionRef.current) {
+      setLockedHeight(sectionRef.current.offsetHeight);
+    }
     setSending(true);
     setError('');
 
@@ -235,7 +246,10 @@ export function KontaktFormular({ embedded = false }: KontaktFormularProps) {
   if (sent) {
     return (
       <section className={wrapperClass}>
-        <div className="bg-[#f0f4e8] border border-[#6b7f3e]/20 rounded-2xl p-8 text-center">
+        <div
+          className="bg-[#f0f4e8] border border-[#6b7f3e]/20 rounded-2xl p-8 text-center flex flex-col items-center justify-center"
+          style={lockedHeight ? { minHeight: `${lockedHeight}px` } : undefined}
+        >
           <div className="text-4xl mb-4">✓</div>
           <h3 className="text-xl font-bold text-gray-900 mb-2">{t.successTitle}</h3>
           <p className="text-gray-600">{t.successBody}</p>
@@ -248,7 +262,7 @@ export function KontaktFormular({ embedded = false }: KontaktFormularProps) {
 
   return (
     <section className={wrapperClass}>
-      <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm h-full">
+      <div ref={sectionRef} className="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm h-full">
         <h2 className="text-2xl font-bold text-gray-900 mb-2">{t.title}</h2>
         <p className="text-gray-500 mb-6">{t.subtitle}</p>
 
