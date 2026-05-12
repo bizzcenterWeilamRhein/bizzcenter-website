@@ -69,6 +69,15 @@ export function GlobalOverflowFix() {
           max-width: 100%;
           overscroll-behavior-x: none;
         }
+        /* iOS Safari zoomt rein wenn Input-Schrift <16px ist — verursacht
+           horizontales Hin-und-her-Ziehen der Seite. 16px verhindert den Zoom. */
+        @media (max-width: 640px) {
+          input:not([type="checkbox"]):not([type="radio"]),
+          select,
+          textarea {
+            font-size: 16px !important;
+          }
+        }
         header [data-slot="navigation-menu-content"] ul {
           grid-template-columns: 1fr !important;
           width: auto !important;
