@@ -150,6 +150,14 @@ export function BannerCTAWithForm({
   const [sent, setSent] = useState(false);
   const [error, setError] = useState('');
   const formRef = useRef<HTMLFormElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [lockedHeight, setLockedHeight] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (sent && cardRef.current) {
+      cardRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [sent]);
 
   // Scroll focused input into view when mobile keyboard opens
   useEffect(() => {
@@ -180,6 +188,9 @@ export function BannerCTAWithForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!canSubmit || sending) return;
+    if (cardRef.current) {
+      setLockedHeight(cardRef.current.offsetHeight);
+    }
     setSending(true);
     setError('');
 
@@ -226,10 +237,14 @@ export function BannerCTAWithForm({
         </div>
 
         {/* Right: Form */}
-        <div className="bg-white rounded-2xl p-6 md:p-8 shadow-2xl">
+        <div
+          ref={cardRef}
+          className="bg-white rounded-2xl p-6 md:p-8 shadow-2xl"
+          style={sent && lockedHeight ? { minHeight: `${lockedHeight}px` } : undefined}
+        >
           {sent ? (
-            <div className="text-center py-8">
-              <div className="text-4xl mb-4 text-[#6b7f3e]">✓</div>
+            <div className="flex flex-col items-center justify-center text-center h-full min-h-[300px]">
+              <div className="text-5xl mb-4 text-[#6b7f3e]">✓</div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">{t.successTitle}</h3>
               <p className="text-gray-600">{t.successText}</p>
             </div>

@@ -148,9 +148,20 @@ export function GeschaeftsadresseFormular({ id, title, description }: Props) {
   const [postversand, setPostversand] = React.useState<'ohne' | 'mit'>('ohne');
   const [firmaUnbekannt, setFirmaUnbekannt] = React.useState(false);
   const [telefon, setTelefon] = React.useState('');
+  const wrapperRef = React.useRef<HTMLDivElement>(null);
+  const [lockedHeight, setLockedHeight] = React.useState<number | null>(null);
+
+  React.useEffect(() => {
+    if (status === 'sent' && wrapperRef.current) {
+      wrapperRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [status]);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (wrapperRef.current) {
+      setLockedHeight(wrapperRef.current.offsetHeight);
+    }
     setStatus('sending');
 
     const form = e.currentTarget;
@@ -192,14 +203,17 @@ export function GeschaeftsadresseFormular({ id, title, description }: Props) {
   }
 
   const formContent = status === 'sent' ? (
-    <div className="text-center py-4">
-      <div className="w-12 h-12 rounded-full bg-[#6b7f3e] text-white flex items-center justify-center mx-auto mb-3">
-        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
+    <div
+      className="flex flex-col items-center justify-center text-center"
+      style={lockedHeight ? { minHeight: `${lockedHeight}px` } : undefined}
+    >
+      <div className="w-14 h-14 rounded-full bg-[#6b7f3e] text-white flex items-center justify-center mb-4">
+        <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
         </svg>
       </div>
-      <p className="text-sm font-bold text-foreground">{t.successTitle}</p>
-      <p className="text-xs text-muted-foreground mt-1">{t.successBody}</p>
+      <p className="text-base font-bold text-foreground">{t.successTitle}</p>
+      <p className="text-sm text-muted-foreground mt-2">{t.successBody}</p>
     </div>
   ) : (
     <form onSubmit={handleSubmit} className="space-y-3">
@@ -273,7 +287,7 @@ export function GeschaeftsadresseFormular({ id, title, description }: Props) {
         <div className="max-w-md mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-2 text-foreground">{title}</h2>
           {description && <p className="text-sm text-muted-foreground text-center mb-6">{description}</p>}
-          <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+          <div ref={wrapperRef} className="rounded-2xl border border-border bg-card p-6 shadow-sm">
             {formContent}
           </div>
         </div>
@@ -281,5 +295,5 @@ export function GeschaeftsadresseFormular({ id, title, description }: Props) {
     );
   }
 
-  return formContent;
+  return <div ref={wrapperRef}>{formContent}</div>;
 }
