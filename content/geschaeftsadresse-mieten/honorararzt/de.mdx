@@ -1,6 +1,6 @@
 ---
 title: "Geschäftsadresse für Honorarärzte | bizzcenter Weil am Rhein"
-description: "Ladungsfähige Praxisadresse für freiberufliche Anästhesisten und Honorarärzte im Dreiländereck. KV-akzeptiert, repräsentativ, ohne eigene Praxisräume."
+description: "Ladungsfähige Praxisadresse für freiberufliche Anästhesisten und Honorarärzte im Dreiländereck. KV-akzeptiert, repräsentativ, ohne eigene Praxisräume. Ab EUR 49,- /Monat."
 ---
 
 <GlobalOverflowFix />
@@ -12,12 +12,213 @@ description: "Ladungsfähige Praxisadresse für freiberufliche Anästhesisten un
 
 <ActiveNavHighlight />
 
-<PageHero
-  title="Geschäftsadresse für Honorarärzte"
-  description="Ladungsfähige Praxisadresse für freiberufliche Anästhesisten und andere Honorarärzte — KV-akzeptiert, repräsentativ, ohne eigene Praxisräume."
+{/* ===== HERO ===== */}
+<CompactHero
+  title="Geschäftsadresse für Honorarärzte im Dreiländereck"
+  description="Ladungsfähige Praxisadresse für freiberufliche Anästhesisten und Honorarärzte — KV-akzeptiert, repräsentativ, ohne eigene Praxisräume. Ab EUR 49,- / Monat zzgl. MwSt."
+  image="/images/standorte/weil-am-rhein/kesselhaus-vorderansicht.jpg"
+  imageAlt="Kesselhaus Weil am Rhein – denkmalgeschützter Sitz des bizzcenters"
+  buttonText="Unverbindlich anfragen"
+  buttonHref="#formular"
+>
+  <ul className="mt-4 space-y-2 text-sm md:text-base text-foreground list-none">
+    <li className="flex items-start gap-2"><span className="text-primary mt-0.5">✓</span> Ladungsfähig für Ärztekammer, KV und Finanzamt</li>
+    <li className="flex items-start gap-2"><span className="text-primary mt-0.5">✓</span> Anerkannt von der KV Baden-Württemberg</li>
+    <li className="flex items-start gap-2"><span className="text-primary mt-0.5">✓</span> Diskrete Postannahme und -weiterleitung</li>
+    <li className="flex items-start gap-2"><span className="text-primary mt-0.5">✓</span> Repräsentatives Umfeld im denkmalgeschützten Kesselhaus</li>
+    <li className="flex items-start gap-2"><span className="text-primary mt-0.5">✓</span> Optional: Konferenzräume für Patientengespräche</li>
+    <li className="flex items-start gap-2"><span className="text-primary mt-0.5">✓</span> Auch für Schweizer Honorarärzte mit deutscher Approbation</li>
+    <li className="flex items-start gap-2"><span className="text-primary mt-0.5">✓</span> 300 Meter von der Schweizer Grenze, 8 km zum EuroAirport</li>
+  </ul>
+</CompactHero>
+
+{/* ===== SOCIAL PROOF ===== */}
+<GoogleReviews
+  title="Das sagen unsere Kunden"
+  reviews={[
+    {
+      author: "Francesco Petrini",
+      rating: 5,
+      text: "Very well organized space and in development. Good WiFi network and easy parking. Perfect solution to work in Germany close to CH/France.",
+      source: "Google Review"
+    },
+    {
+      author: "Katja Falkenburger",
+      rating: 5,
+      text: "Die Gemeinschafts- und virtuellen Büros bieten komfortable Räumlichkeiten und Flexibilität verknüpft mit einer attraktiven, grenznahen Lage zur Schweiz und nach Frankreich.",
+      source: "Google Review"
+    },
+    {
+      author: "veprosa",
+      rating: 5,
+      text: "Tolles, helles Büro in attraktiver Lage – besser geht es nicht. Wir können das bizzcenter Weil am Rhein jedem nur wärmstens empfehlen!",
+      source: "Google Review"
+    }
+  ]}
 />
 
+{/* ===== WARUM EINE PRAXISADRESSE ===== */}
+<FeaturesWithBg
+  title="Warum freiberufliche Ärzte eine Praxisadresse brauchen"
+  columns={3}
+  backgroundImage="/images/standorte/weil-am-rhein/kesselhaus-aussen.jpg"
+>
+  <FeatureCard
+    title="§ 17 Berufsordnung"
+    description="Ambulante ärztliche Tätigkeit ist an die Niederlassung in einer Praxis gebunden. Auch wenn Sie als Honorararzt mobil tätig sind, brauchen Sie einen formalen Praxissitz mit Praxisadresse."
+    icon="landmark"
+  />
+  <FeatureCard
+    title="KV-Zulassung"
+    description="Die Kassenärztliche Vereinigung verlangt eine ladungsfähige Anschrift im jeweiligen KV-Bezirk. Für Süddeutschland ist das die KV Baden-Württemberg — genau hier liegt unsere Adresse."
+    icon="file-text"
+  />
+  <FeatureCard
+    title="Anästhesisten-Sonderfall"
+    description="Anästhesisten dürfen sich zur Niederlassung des Operateurs begeben — die Niederlassungspflicht selbst bleibt aber bestehen. Eine formale Praxisadresse ist daher zwingend nötig."
+    icon="map-pin"
+  />
+</FeaturesWithBg>
+
+{/* ===== IHRE LÖSUNG ===== */}
+<FeaturesWithBg
+  title="Ihre Praxisadresse im Kesselhaus Weil am Rhein"
+  columns={2}
+  backgroundImage="/images/standorte/weil-am-rhein/green-office-eingangsbereich.jpeg"
+>
+  <FeatureCard
+    title="Ladungsfähige Adresse"
+    description="Für Ärztekammer, KV, Finanzamt und Patientenkommunikation. Mit Ihrem Namen am Briefkasten — keine c/o-Adresse, sondern eine vollwertige Praxisanschrift."
+    icon="landmark"
+  />
+  <FeatureCard
+    title="Diskrete Postannahme"
+    description="Ärztliche Korrespondenz wird ausschließlich nach Ihrer Anweisung behandelt — digitale oder physische Weiterleitung. Wir öffnen keine Post."
+    icon="mail"
+  />
+  <FeatureCard
+    title="Konferenzräume bei Bedarf"
+    description="Für Patientengespräche, IGeL-Sprechstunden, Anwaltstermine oder Beratungen. Stunden- oder tagesweise buchbar — Sie zahlen nur, wenn Sie sie nutzen."
+    icon="users"
+  />
+  <FeatureCard
+    title="Repräsentatives Umfeld"
+    description="Im denkmalgeschützten Kesselhaus — einem architektonischen Highlight direkt an der Schweizer Grenze. Keine Briefkasten-Optik, sondern eine etablierte Geschäftsadresse."
+    icon="building"
+  />
+  <FeatureCard
+    title="Bundesverband Business Center"
+    description="Über 22 Jahre Erfahrung als Business-Center, Mitglied im Bundesverband. Diskrete Empfangs- und Telefonannahme im Hintergrund."
+    icon="shield"
+  />
+  <FeatureCard
+    title="Schweizer Telefonnummer (optional)"
+    description="Für Schweizer Patientinnen und Patienten oder Kooperationspartner mit CH-Bezug — als Zusatzoption buchbar."
+    icon="phone"
+  />
+</FeaturesWithBg>
+
+{/* ===== FORMULAR #1 ===== */}
 <HonorararztAnfrage
   title="Praxisadresse anfragen"
   description="Wir prüfen Ihre Angaben und melden uns innerhalb von 24 Stunden mit einem individuellen Angebot."
 />
+
+{/* ===== STANDORTVORTEIL ===== */}
+<AlternatingFeatures>
+  <AlternatingFeatureRow
+    title="Optimal positioniert im Dreiländereck"
+    description="Aus dem Kesselhaus erreichen Sie zahlreiche Kliniken und OP-Zentren der Region in unter 30 Minuten: Helios Klinik Rheinfelden, RKK Klinikum Lörrach, Universitätsspital Basel (CH), Klinik Generationen Schopfheim sowie diverse OP-Zentren im Großraum Basel. Schweizer Anästhesisten mit deutscher Approbation können hier ihren formalen deutschen Praxissitz haben, ohne dauerhaft physisch anwesend zu sein."
+    image="/images/standorte/weil-am-rhein/standortkarte.png"
+    imageAlt="Standortkarte bizzcenter Weil am Rhein — Dreiländereck Basel"
+  />
+  <AlternatingFeatureRow
+    title="Diskrete Räume für Patientengespräche"
+    description="Falls Sie hin und wieder einen ruhigen Raum für ein vertrauliches Patientengespräch, eine IGeL-Sprechstunde oder ein Beratungsgespräch brauchen — unsere Konferenz- und Coachingräume sind diskret eingerichtet und stunden- oder tagesweise buchbar. Sie zahlen nur, wenn Sie sie tatsächlich nutzen."
+    image="/images/standorte/weil-am-rhein/meetingraum-empore-5-personen.jpg"
+    imageAlt="Diskreter Meeting-Raum im Green Office mit Empore-Atmosphäre"
+  />
+  <AlternatingFeatureRow
+    title="Arbeiten im Green Office"
+    description="Als Geschäftsadress-Kunde können Sie jederzeit Coworking-Plätze, Tagesbüros oder Konferenzräume dazu buchen — zu Vorzugspreisen. Arbeiten Sie in tageslichtdurchfluteten Räumen mit 7,50 m Deckenhöhe, Highspeed-Internet und Bio-Kaffee."
+    image="/images/standorte/weil-am-rhein/green-office-kueche-empore.jpeg"
+    imageAlt="Blick auf Küche und Empore im Green Office"
+  />
+</AlternatingFeatures>
+
+{/* ===== STATS ===== */}
+<Stats title="bizzcenter in Zahlen">
+  <Stat value="22" label="Jahre" description="Erfahrung seit 2004" />
+  <Stat value="200+" label="Kunden" description="Freiberufler, Unternehmen & Selbstständige" />
+  <Stat value="300m" label="nach Basel" description="Direkt an der Schweizer Grenze" />
+  <Stat value="24/7" label="Zugang" description="Post & Pakete jederzeit abholen" />
+</Stats>
+
+{/* ===== FORMULAR #2 ===== */}
+<HonorararztAnfrage
+  title="Jetzt unverbindlich anfragen"
+  description="Wir erstellen Ihnen ein individuelles Angebot, das genau zu Ihrer Tätigkeit als Honorararzt passt."
+/>
+
+{/* ===== FAQ ===== */}
+<FAQ title="Häufige Fragen von Honorarärzten">
+  <FAQItem question="Ist die Adresse von der Ärztekammer akzeptiert?">
+    Ja. Die Adresse im Kesselhaus ist ladungsfähig und wird von der Landesärztekammer Baden-Württemberg sowie der KV Baden-Württemberg anerkannt. Voraussetzung ist, dass Sie hier tatsächlich erreichbar sind — das stellen wir durch unsere Postannahme und Empfangsservices sicher.
+  </FAQItem>
+  <FAQItem question="Muss ich ein Praxisschild anbringen?">
+    § 17 Abs. 4 Berufsordnung sieht ein Praxisschild vor. Ärzte ohne unmittelbaren Patientenkontakt am Praxissitz können auf das Schild verzichten, wenn sie dies der Ärztekammer anzeigen. Wir helfen bei beiden Varianten.
+  </FAQItem>
+  <FAQItem question="Wie funktioniert das mit der KV-Meldung?">
+    Sie melden Ihren Praxissitz im Rahmen der vertragsärztlichen Zulassung bei der KV Baden-Württemberg an. Die Adresse "Im Schwarzenbach 4, 79576 Weil am Rhein" liegt im Zuständigkeitsbereich der KV BW.
+  </FAQItem>
+  <FAQItem question="Bin ich damit „scheinniedergelassen"?">
+    Nein, sofern Sie hier tatsächlich erreichbar sind und die Adresse für berufliche Belange (Post, Patientenkommunikation, Behördenpost) genutzt wird. Eine reine Briefkastenfirma wäre berufsrechtlich problematisch — unsere Lösung bietet bewusst echte Erreichbarkeit.
+  </FAQItem>
+  <FAQItem question="Kann ich Patientenpost hier empfangen?">
+    Ja, ärztliche Post inkl. Patientenkommunikation kann an die Adresse zugestellt werden. Wir öffnen keine Post, sondern leiten sie nach Ihrer Anweisung weiter — digital oder physisch.
+  </FAQItem>
+  <FAQItem question="Eignet sich die Adresse auch für Belegärzte oder andere Honorarfachärzte?">
+    Ja. Chirurgen, Radiologen, Pathologen und andere Fachärzte mit Honorararzt- oder Belegarzttätigkeit nutzen die Adresse genauso. Auch für Telemediziner mit Patientenkontakt nach BO geeignet.
+  </FAQItem>
+  <FAQItem question="Was ist mit Datenschutz und Schweigepflicht?">
+    Patientenpost wird ausschließlich nach Ihrer Anweisung behandelt. Wir öffnen keine ärztliche Korrespondenz. Falls gewünscht, richten wir ein separates verschlossenes Postfach ein.
+  </FAQItem>
+  <FAQItem question="Kann ich für Patientengespräche Räume nutzen?">
+    Ja. Unsere <a href="/konferenzraum-mieten" style={{color: '#6b7f3e', textDecoration: 'underline'}}>Konferenz- und Coachingräume</a> sind diskret und für Patientengespräche, IGeL-Sprechstunden oder Beratungen geeignet. Stunden- oder tagesweise buchbar.
+  </FAQItem>
+  <FAQItem question="Was ist mit Schweizer Honorarärzten?">
+    Schweizer Anästhesisten mit deutscher Approbation, die DE-Einsätze haben, können hier ihren formalen deutschen Praxissitz nehmen. Auf Wunsch zusätzlich mit Schweizer Telefonnummer für CH-Partner.
+  </FAQItem>
+  <FAQItem question="Wie lange ist die Mindestlaufzeit?">
+    Ab 3 Monaten. Bei längerer Bindung (6 oder 12 Monate, jeweils bis Quartalsende) bieten wir günstigere Konditionen — wir beraten Sie individuell.
+  </FAQItem>
+  <FAQItem question="Was kostet die Praxisadresse?">
+    Die Basis-Variante (Adresse + Postweiterleitung) startet bei EUR 49,- / Monat zzgl. MwSt. Erweiterungen wie Schweizer Telefonnummer, persönlicher Empfang oder Sekretariat können dazu gebucht werden. Wir erstellen ein individuelles Angebot.
+  </FAQItem>
+  <FAQItem question="Wie schnell kann ich starten?">
+    Sobald der Vertrag unterschrieben und die Kaution beglichen ist, richten wir Ihre Praxisadresse innerhalb von 24 Stunden ein. In der Regel sind Sie noch am selben Tag startklar.
+  </FAQItem>
+</FAQ>
+
+<FAQPageSchema items={[
+  { question: "Ist die Adresse von der Ärztekammer akzeptiert?", answer: "Ja. Die Adresse im Kesselhaus ist ladungsfähig und wird von der Landesärztekammer Baden-Württemberg sowie der KV Baden-Württemberg anerkannt." },
+  { question: "Wie funktioniert das mit der KV-Meldung?", answer: "Sie melden Ihren Praxissitz im Rahmen der vertragsärztlichen Zulassung bei der KV Baden-Württemberg an. Die Adresse 'Im Schwarzenbach 4, 79576 Weil am Rhein' liegt im Zuständigkeitsbereich der KV BW." },
+  { question: "Bin ich damit scheinniedergelassen?", answer: "Nein, sofern Sie hier tatsächlich erreichbar sind und die Adresse für berufliche Belange genutzt wird. Unsere Lösung bietet bewusst echte Erreichbarkeit durch Postannahme und Empfangsservices." },
+  { question: "Kann ich Patientenpost hier empfangen?", answer: "Ja, ärztliche Post inkl. Patientenkommunikation kann an die Adresse zugestellt werden. Wir öffnen keine Post, sondern leiten sie nach Ihrer Anweisung weiter." },
+  { question: "Was ist mit Schweizer Honorarärzten?", answer: "Schweizer Anästhesisten mit deutscher Approbation, die DE-Einsätze haben, können hier ihren formalen deutschen Praxissitz nehmen. Auf Wunsch mit Schweizer Telefonnummer." },
+  { question: "Was kostet die Praxisadresse?", answer: "Die Basis-Variante startet bei EUR 49,- / Monat zzgl. MwSt. Erweiterungen wie Schweizer Telefonnummer, persönlicher Empfang oder Sekretariat können dazu gebucht werden." },
+  { question: "Wie schnell kann ich starten?", answer: "Sobald der Vertrag unterschrieben und die Kaution beglichen ist, richten wir Ihre Praxisadresse innerhalb von 24 Stunden ein." },
+]} />
+
+{/* ===== FINALER CTA ===== */}
+<HonorararztAnfrage
+  title="Praxisadresse jetzt sichern"
+  description="Diskret und unverbindlich. Wir melden uns innerhalb von 24 Stunden bei Ihnen."
+/>
+
+{/* ===== RECHTLICHER HINWEIS ===== */}
+<div style={{maxWidth: '720px', margin: '0 auto 3rem', padding: '0 1rem'}}>
+  <p style={{fontSize: '0.75rem', color: '#888', textAlign: 'center', fontStyle: 'italic'}}>
+    Hinweis: Wir stellen die geschäftliche Infrastruktur bereit (Adresse, Postannahme, Räume). Für die berufsrechtliche und kassenarztrechtliche Konformität Ihrer individuellen Tätigkeit sind Sie selbst verantwortlich; ggf. ist eine eigene berufsrechtliche Prüfung sinnvoll.
+  </p>
+</div>
