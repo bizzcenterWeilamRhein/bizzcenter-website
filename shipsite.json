@@ -332,6 +332,14 @@
       ]
     },
     {
+      "slug": "geschaeftsadresse-mieten/honorararzt",
+      "type": "page",
+      "content": "geschaeftsadresse-mieten/honorararzt",
+      "locales": [
+        "de"
+      ]
+    },
+    {
       "slug": "coworking",
       "type": "page",
       "content": "coworking",

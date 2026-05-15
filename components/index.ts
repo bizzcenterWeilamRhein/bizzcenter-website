@@ -40,6 +40,7 @@ export { CheckoutWizard } from './CheckoutWizard';
 export { BueroAuswahlModal } from './BueroAuswahlModal';
 export { GeschaeftsadresseAnfrage } from './GeschaeftsadresseAnfrage';
 export { GeschaeftsadresseFormular } from './GeschaeftsadresseFormular';
+export { HonorararztAnfrage } from './HonorararztAnfrage';
 export { InquiryForm } from './InquiryForm';
 export { KontaktFormular } from './KontaktFormular';
 export { BannerCTAWithForm } from './BannerCTAWithForm';
