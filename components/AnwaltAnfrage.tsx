@@ -139,14 +139,8 @@ export function AnwaltAnfrage({
           </svg>
         </div>
         <h3 className="text-xl font-bold text-gray-900 mb-2">Anfrage erhalten</h3>
-        <p className="text-gray-600 mb-2 text-sm">
+        <p className="text-gray-600 text-sm">
           Vielen Dank für Ihr Interesse. Wir melden uns innerhalb von 24 Stunden bei Ihnen — diskret und unverbindlich.
-        </p>
-        <p className="text-xs text-gray-500">
-          Bei Rückfragen:{' '}
-          <a href="tel:+4976217960310" className="text-[#6b7f3e] font-medium hover:underline">
-            +49 7621 796 0310
-          </a>
         </p>
       </div>
     );
