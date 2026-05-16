@@ -5,6 +5,21 @@ import { trackLeadSubmitted } from './lib/tracking';
 import { captureMarketingAttribution, getMarketingAttribution } from './lib/marketing';
 import PhoneInput from './PhoneInput';
 
+const TITEL_OPTIONS = [
+  '(kein Titel)',
+  'Dr. med.',
+  'Dr. med. Dr.',
+  'Prof. Dr. med.',
+  'Prof. Dr. med. Dr.',
+];
+
+const ANREDE_OPTIONS = [
+  'Herr',
+  'Frau',
+  'Divers',
+  'Keine Angabe',
+];
+
 const FACHRICHTUNGEN = [
   'Anästhesie',
   'Chirurgie',
@@ -12,13 +27,6 @@ const FACHRICHTUNGEN = [
   'Innere Medizin',
   'Psychiatrie',
   'Andere',
-];
-
-const SITUATIONEN = [
-  'Bereits Honorararzt',
-  'Wechsel von Klinik',
-  'Neu-Niederlassung',
-  'Sonstiges',
 ];
 
 const STARTZEITPUNKTE = [
@@ -36,11 +44,13 @@ export function HonorararztAnfrage({
   title = 'Praxisadresse anfragen',
   description,
 }: HonorararztAnfrageProps) {
-  const [name, setName] = useState('');
+  const [titel, setTitel] = useState('');
+  const [anrede, setAnrede] = useState('');
+  const [vorname, setVorname] = useState('');
+  const [nachname, setNachname] = useState('');
   const [email, setEmail] = useState('');
   const [telefon, setTelefon] = useState('');
   const [fachrichtung, setFachrichtung] = useState('');
-  const [situation, setSituation] = useState('');
   const [startzeit, setStartzeit] = useState('');
   const [anmerkungen, setAnmerkungen] = useState('');
   const [dsgvo, setDsgvo] = useState(false);
@@ -52,10 +62,10 @@ export function HonorararztAnfrage({
   useEffect(() => { captureMarketingAttribution(); }, []);
 
   const canSubmit =
-    name.trim().length >= 2 &&
+    vorname.trim().length >= 2 &&
+    nachname.trim().length >= 2 &&
     email.includes('@') && email.includes('.') &&
     telefon.length >= 6 &&
-    fachrichtung &&
     dsgvo;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -65,9 +75,9 @@ export function HonorararztAnfrage({
     setSending(true);
     setError('');
 
-    const nameParts = name.trim().split(/\s+/);
-    const vorname = nameParts[0] || '';
-    const nachname = nameParts.slice(1).join(' ') || '';
+    const titelClean = titel && titel !== '(kein Titel)' ? titel : '';
+    const anredeClean = anrede && anrede !== 'Keine Angabe' ? anrede : '';
+    const firmaDisplay = [titelClean, anredeClean].filter(Boolean).join(' ').trim() || 'Honorararzt';
 
     try {
       const res = await fetch('/api/lead', {
@@ -76,12 +86,14 @@ export function HonorararztAnfrage({
         body: JSON.stringify({
           vorname,
           nachname,
+          firma: firmaDisplay,
           email,
           telefon,
           nachricht: [
             '--- Honorararzt-Anfrage ---',
-            `Fachrichtung: ${fachrichtung}`,
-            situation ? `Aktuelle Situation: ${situation}` : '',
+            titelClean ? `Titel: ${titelClean}` : '',
+            anredeClean ? `Anrede: ${anredeClean}` : '',
+            fachrichtung ? `Fachrichtung: ${fachrichtung}` : '',
             startzeit ? `Gewünschter Start: ${startzeit}` : '',
             anmerkungen ? `\nAnmerkungen: ${anmerkungen}` : '',
           ].filter(Boolean).join('\n'),
@@ -89,8 +101,9 @@ export function HonorararztAnfrage({
           product: 'geschaeftsadresse',
           bedarfKategorie: 'geschaeftsadresse',
           zielgruppe: 'honorararzt',
+          titel: titelClean,
+          anrede: anredeClean,
           fachrichtung,
-          situation,
           startzeit,
           timestamp: new Date().toISOString(),
           ...getMarketingAttribution(),
@@ -104,7 +117,6 @@ export function HonorararztAnfrage({
         leadId: responseData?.leadId,
         zielgruppe: 'honorararzt',
         fachrichtung,
-        situation,
         startzeit,
       });
 
@@ -152,20 +164,66 @@ export function HonorararztAnfrage({
 
         <div className="rounded-2xl border border-gray-200 bg-white shadow-sm p-6 md:p-8">
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Name + E-Mail */}
+            {/* Titel + Anrede */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Name *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Titel</label>
+                <select
+                  value={titel}
+                  onChange={e => setTitel(e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none text-sm bg-white"
+                >
+                  <option value="">Bitte wählen</option>
+                  {TITEL_OPTIONS.map(t => (
+                    <option key={t} value={t}>{t}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Anrede</label>
+                <select
+                  value={anrede}
+                  onChange={e => setAnrede(e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none text-sm bg-white"
+                >
+                  <option value="">Bitte wählen</option>
+                  {ANREDE_OPTIONS.map(a => (
+                    <option key={a} value={a}>{a}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* Vorname + Nachname */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Vorname *</label>
                 <input
                   type="text"
-                  value={name}
-                  onChange={e => setName(e.target.value)}
+                  value={vorname}
+                  onChange={e => setVorname(e.target.value)}
                   required
                   minLength={2}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none text-sm"
-                  placeholder="Dr. med. Mustermann"
+                  placeholder="Vorname"
                 />
               </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Nachname *</label>
+                <input
+                  type="text"
+                  value={nachname}
+                  onChange={e => setNachname(e.target.value)}
+                  required
+                  minLength={2}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none text-sm"
+                  placeholder="Nachname"
+                />
+              </div>
+            </div>
+
+            {/* E-Mail + Telefon */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">E-Mail *</label>
                 <input
@@ -177,49 +235,31 @@ export function HonorararztAnfrage({
                   placeholder="ihre@praxis-mail.de"
                 />
               </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Telefon *</label>
+                <PhoneInput
+                  value={telefon}
+                  onChange={setTelefon}
+                  required
+                  placeholder="+49 123 456 789"
+                  inputClassName="flex-1 min-w-0 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none text-sm"
+                  selectClassName="px-2 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none text-sm bg-white"
+                />
+              </div>
             </div>
 
-            {/* Telefon */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Telefon *</label>
-              <PhoneInput
-                value={telefon}
-                onChange={setTelefon}
-                required
-                placeholder="+49 123 456 789"
-                inputClassName="flex-1 min-w-0 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none text-sm"
-                selectClassName="px-2 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none text-sm bg-white"
-              />
-            </div>
-
-            {/* Fachrichtung */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Fachrichtung *</label>
-              <select
-                value={fachrichtung}
-                onChange={e => setFachrichtung(e.target.value)}
-                required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none text-sm bg-white"
-              >
-                <option value="">Bitte wählen</option>
-                {FACHRICHTUNGEN.map(f => (
-                  <option key={f} value={f}>{f}</option>
-                ))}
-              </select>
-            </div>
-
-            {/* Situation + Startzeitpunkt */}
+            {/* Fachrichtung + Startzeitpunkt — beide optional */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Aktuelle Situation</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Fachrichtung</label>
                 <select
-                  value={situation}
-                  onChange={e => setSituation(e.target.value)}
+                  value={fachrichtung}
+                  onChange={e => setFachrichtung(e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none text-sm bg-white"
                 >
                   <option value="">Bitte wählen</option>
-                  {SITUATIONEN.map(s => (
-                    <option key={s} value={s}>{s}</option>
+                  {FACHRICHTUNGEN.map(f => (
+                    <option key={f} value={f}>{f}</option>
                   ))}
                 </select>
               </div>
@@ -278,7 +318,7 @@ export function HonorararztAnfrage({
             </button>
 
             <p className="text-xs text-gray-400 text-center">
-              Wir melden uns innerhalb von 24 Stunden zurück. Diskret und unverbindlich.
+              * Pflichtfelder · Wir melden uns innerhalb von 24 Stunden zurück. Diskret und unverbindlich.
             </p>
           </form>
         </div>
