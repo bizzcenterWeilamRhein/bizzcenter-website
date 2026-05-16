@@ -4,6 +4,7 @@ import React from 'react';
 import { usePathname } from 'next/navigation';
 import { trackLeadSubmitted } from './lib/tracking';
 import { GeschaeftsadresseFormular } from './GeschaeftsadresseFormular';
+import { HonorararztAnfrage } from './HonorararztAnfrage';
 
 interface CompactHeroProps {
   title: string;
@@ -14,8 +15,14 @@ interface CompactHeroProps {
   buttonText?: string;
   buttonHref?: string;
   formId?: string;
-  formVariant?: 'default' | 'geschaeftsadresse';
+  formVariant?: 'default' | 'geschaeftsadresse' | 'honorararzt';
   children?: React.ReactNode;
+}
+
+function renderHeroFormByVariant(variant: 'default' | 'geschaeftsadresse' | 'honorararzt') {
+  if (variant === 'geschaeftsadresse') return <GeschaeftsadresseFormular />;
+  if (variant === 'honorararzt') return <HonorararztAnfrage variant="compact" title="Praxisadresse anfragen" />;
+  return <HeroForm />;
 }
 
 export function CompactHero({ title, description, image, imageAlt, imagePosition, buttonText, buttonHref, formId, formVariant = 'default', children }: CompactHeroProps) {
@@ -50,7 +57,7 @@ export function CompactHero({ title, description, image, imageAlt, imagePosition
           )}
           {formId && (
             <div className="mt-6 rounded-2xl border border-border bg-card p-5" id={`${formId}-mobile`} style={{scrollMarginTop: '100px'}}>
-              {formVariant === 'geschaeftsadresse' ? <GeschaeftsadresseFormular /> : <HeroForm />}
+              {renderHeroFormByVariant(formVariant)}
             </div>
           )}
         </div>
@@ -85,7 +92,7 @@ export function CompactHero({ title, description, image, imageAlt, imagePosition
             </div>
             {formId && (
               <div className="rounded-2xl border border-border bg-background/95 backdrop-blur-sm p-6 shadow-lg flex flex-col justify-center min-w-0 flex-1" style={{minWidth: '320px', maxWidth: '420px', scrollMarginTop: '100px'}} id={formId}>
-                {formVariant === 'geschaeftsadresse' ? <GeschaeftsadresseFormular /> : <HeroForm />}
+                {renderHeroFormByVariant(formVariant)}
               </div>
             )}
           </div>
