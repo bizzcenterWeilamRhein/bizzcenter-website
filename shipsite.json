@@ -340,6 +340,22 @@
       ]
     },
     {
+      "slug": "geschaeftsadresse-mieten/rechtsanwalt",
+      "type": "page",
+      "content": "geschaeftsadresse-mieten/rechtsanwalt",
+      "locales": [
+        "de"
+      ]
+    },
+    {
+      "slug": "geschaeftsadresse-mieten/steuerberater",
+      "type": "page",
+      "content": "geschaeftsadresse-mieten/steuerberater",
+      "locales": [
+        "de"
+      ]
+    },
+    {
       "slug": "coworking",
       "type": "page",
       "content": "coworking",

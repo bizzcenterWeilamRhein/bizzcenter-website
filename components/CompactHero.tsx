@@ -5,6 +5,10 @@ import { usePathname } from 'next/navigation';
 import { trackLeadSubmitted } from './lib/tracking';
 import { GeschaeftsadresseFormular } from './GeschaeftsadresseFormular';
 import { HonorararztAnfrage } from './HonorararztAnfrage';
+import { AnwaltAnfrage } from './AnwaltAnfrage';
+import { SteuerberaterAnfrage } from './SteuerberaterAnfrage';
+
+type HeroFormVariant = 'default' | 'geschaeftsadresse' | 'honorararzt' | 'anwalt' | 'steuerberater';
 
 interface CompactHeroProps {
   title: string;
@@ -15,17 +19,19 @@ interface CompactHeroProps {
   buttonText?: string;
   buttonHref?: string;
   formId?: string;
-  formVariant?: 'default' | 'geschaeftsadresse' | 'honorararzt';
+  formVariant?: HeroFormVariant;
   children?: React.ReactNode;
 }
 
-function renderHeroFormByVariant(variant: 'default' | 'geschaeftsadresse' | 'honorararzt') {
+function renderHeroFormByVariant(variant: HeroFormVariant) {
   if (variant === 'geschaeftsadresse') return <GeschaeftsadresseFormular />;
   if (variant === 'honorararzt') return <HonorararztAnfrage variant="compact" title="Praxisadresse anfragen" />;
+  if (variant === 'anwalt') return <AnwaltAnfrage variant="compact" title="Kanzleiadresse anfragen" />;
+  if (variant === 'steuerberater') return <SteuerberaterAnfrage variant="compact" title="Berufsniederlassung anfragen" />;
   return <HeroForm />;
 }
 
-export function CompactHero({ title, description, image, imageAlt, imagePosition, buttonText, buttonHref, formId, formVariant = 'default', children }: CompactHeroProps) {
+export function CompactHero({ title, description, image, imageAlt, imagePosition, buttonText, buttonHref, formId, formVariant = 'default' as HeroFormVariant, children }: CompactHeroProps) {
   return (
     <>
       {/* Mobile: Bild mit Text-Overlay, Bullets darunter */}
