@@ -22,7 +22,7 @@ description: "So finden Sie uns im Kesselhaus Weil am Rhein. 300m zur Schweizer 
   buttonHref="https://maps.app.goo.gl/K7cWv3VfM1LGsLyx9"
 >
   <ul className="mt-4 space-y-2 text-sm md:text-base text-foreground list-disc pl-5">
-    <li>Am Kesselhaus 3, 79576 Weil am Rhein</li>
+    <li>Im Schwarzenbach 4, 79576 Weil am Rhein</li>
     <li>Tram 8 — Haltestelle Riedlistrasse/Kesselhaus, 2 Min Fußweg</li>
     <li>Kostenlose Parkplätze direkt vor dem Gebäude (Parkscheibe 90 Min)</li>
     <li>EuroAirport Basel-Mulhouse: 8 km / ca. 10 Min mit Auto</li>
@@ -31,26 +31,7 @@ description: "So finden Sie uns im Kesselhaus Weil am Rhein. 300m zur Schweizer 
   </ul>
 </CompactHero>
 
-{/* ===== ADRESSE ===== */}
-<Features title="Adresse" columns={1}>
-  <FeatureCard
-    title="bizzcenter Weil am Rhein GmbH"
-    description="Am Kesselhaus 3, 79576 Weil am Rhein, Deutschland"
-    icon="map-pin"
-  />
-</Features>
-
-{/* ===== STANDORT IM DREILÄNDERECK ===== */}
-<AlternatingFeatures>
-  <AlternatingFeatureRow
-    title="Im Herzen des Dreiländerecks"
-    description="Das bizzcenter liegt in Weil am Rhein, direkt an der Schweizer Grenze. Von hier aus erreichen Sie Basel (CH) in 5 Minuten, Lörrach in 10 Minuten und Mulhouse/Frankreich in 20 Minuten. Eine ideale Lage für Geschäftsleute mit Aktivitäten in mehreren Ländern — und für unsere Kunden aus den Berufsgruppen Honorarärzte, Rechtsanwälte und Steuerberater mit deutsch-schweizerischer Tätigkeit."
-    image="/images/standorte/weil-am-rhein/standortkarte.png"
-    imageAlt="Standortkarte bizzcenter Weil am Rhein im Dreiländereck Basel"
-  />
-</AlternatingFeatures>
-
-{/* ===== GOOGLE MAPS EMBED ===== */}
+{/* ===== GOOGLE MAPS EMBED (direkt unter Hero) ===== */}
 <div style={{maxWidth: '960px', margin: '3rem auto', padding: '0 1.5rem'}}>
   <iframe
     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3647.220572017281!2d7.599366800000006!3d47.592204499999994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4791bba032079c47%3A0x50d09e47e69eed9!2sbizzcenter%20Weil%20am%20Rhein%20GmbH%20-%20Business%20Center!5e1!3m2!1sde!2sch!4v1778936647299!5m2!1sde!2sch"
@@ -64,6 +45,16 @@ description: "So finden Sie uns im Kesselhaus Weil am Rhein. 300m zur Schweizer 
   />
 </div>
 
+{/* ===== STANDORT IM DREILÄNDERECK ===== */}
+<AlternatingFeatures>
+  <AlternatingFeatureRow
+    title="Im Herzen des Dreiländerecks"
+    description="Das bizzcenter liegt in Weil am Rhein, direkt an der Schweizer Grenze. Von hier aus erreichen Sie Basel (CH) in 5 Minuten, Lörrach in 10 Minuten und Mulhouse/Frankreich in 20 Minuten. Eine ideale Lage für Geschäftsleute mit Aktivitäten in mehreren Ländern — und für unsere Kunden aus den Berufsgruppen Honorarärzte, Rechtsanwälte und Steuerberater mit deutsch-schweizerischer Tätigkeit."
+    image="/images/standorte/weil-am-rhein/standortkarte.png"
+    imageAlt="Standortkarte bizzcenter Weil am Rhein im Dreiländereck Basel"
+  />
+</AlternatingFeatures>
+
 {/* ===== ANFAHRT-OPTIONEN ===== */}
 <FeaturesWithBg
   title="Wie kommen Sie zu uns?"
@@ -72,7 +63,7 @@ description: "So finden Sie uns im Kesselhaus Weil am Rhein. 300m zur Schweizer 
 >
   <FeatureCard
     title="Mit dem Auto"
-    description="A5 oder A98 Richtung Basel, Ausfahrt Weil am Rhein. Navigation auf 'Am Kesselhaus 3, 79576 Weil am Rhein' setzen. Kostenlose Parkplätze direkt vor dem Gebäude (Parkscheibe 90 Min). Reservierbare Parkplätze auf Anfrage."
+    description="A5 oder A98 Richtung Basel, Ausfahrt Weil am Rhein. Navigation auf 'Im Schwarzenbach 4, 79576 Weil am Rhein' setzen. Kostenlose Parkplätze direkt vor dem Gebäude (Parkscheibe 90 Min). Reservierbare Parkplätze auf Anfrage."
     icon="map-pin"
   />
   <FeatureCard
@@ -91,65 +82,6 @@ description: "So finden Sie uns im Kesselhaus Weil am Rhein. 300m zur Schweizer 
     icon="globe"
   />
 </FeaturesWithBg>
-
-{/* ===== WAS IN DER UMGEBUNG ERREICHBAR IST ===== */}
-<section style={{maxWidth: '960px', margin: '4rem auto', padding: '0 1.5rem'}}>
-  <h2 style={{fontSize: '1.75rem', fontWeight: 700, color: '#1B3A5C', marginBottom: '1.5rem', textAlign: 'center'}}>
-    Was Sie aus dem Kesselhaus in unter 30 Minuten erreichen
-  </h2>
-  <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem'}}>
-    <div style={{padding: '1.5rem', background: '#f0f4e8', borderRadius: '1rem'}}>
-      <h3 style={{fontSize: '1.05rem', fontWeight: 700, color: '#1B3A5C', marginBottom: '0.75rem'}}>
-        Kliniken und OP-Zentren
-      </h3>
-      <ul style={{listStyle: 'disc', paddingLeft: '1.25rem', fontSize: '0.875rem', color: '#444', lineHeight: 1.8}}>
-        <li>Helios Klinik Rheinfelden — 15 Min</li>
-        <li>RKK Klinikum Lörrach — 10 Min</li>
-        <li>Klinik Generationen Schopfheim — 25 Min</li>
-        <li>Universitätsspital Basel (CH) — 10 Min</li>
-        <li>OP-Zentren Großraum Basel — 5–20 Min</li>
-      </ul>
-      <p style={{marginTop: '0.75rem', fontSize: '0.8rem'}}>
-        <a href="/geschaeftsadresse-mieten/honorararzt" style={{color: '#6b7f3e', fontWeight: 600, textDecoration: 'underline'}}>
-          Für Honorarärzte
-        </a>
-      </p>
-    </div>
-    <div style={{padding: '1.5rem', background: '#f0f4e8', borderRadius: '1rem'}}>
-      <h3 style={{fontSize: '1.05rem', fontWeight: 700, color: '#1B3A5C', marginBottom: '0.75rem'}}>
-        Gerichte und Notariate
-      </h3>
-      <ul style={{listStyle: 'disc', paddingLeft: '1.25rem', fontSize: '0.875rem', color: '#444', lineHeight: 1.8}}>
-        <li>Amtsgericht Lörrach — 10 Min</li>
-        <li>Amtsgericht Schopfheim — 25 Min</li>
-        <li>Landgericht Freiburg — 50 Min (Auto/ICE)</li>
-        <li>Bundesgericht Karlsruhe — per ICE direkt</li>
-        <li>Diverse Notariate in Basel und Lörrach</li>
-      </ul>
-      <p style={{marginTop: '0.75rem', fontSize: '0.8rem'}}>
-        <a href="/geschaeftsadresse-mieten/rechtsanwalt" style={{color: '#6b7f3e', fontWeight: 600, textDecoration: 'underline'}}>
-          Für Rechtsanwälte
-        </a>
-      </p>
-    </div>
-    <div style={{padding: '1.5rem', background: '#f0f4e8', borderRadius: '1rem'}}>
-      <h3 style={{fontSize: '1.05rem', fontWeight: 700, color: '#1B3A5C', marginBottom: '0.75rem'}}>
-        Finanzämter und Behörden
-      </h3>
-      <ul style={{listStyle: 'disc', paddingLeft: '1.25rem', fontSize: '0.875rem', color: '#444', lineHeight: 1.8}}>
-        <li>Finanzamt Lörrach — 10 Min</li>
-        <li>IHK Hochrhein-Bodensee — 30 Min</li>
-        <li>Handelsregister-Gericht Freiburg — 50 Min</li>
-        <li>Schweizer Steuerverwaltung Basel — 10 Min</li>
-      </ul>
-      <p style={{marginTop: '0.75rem', fontSize: '0.8rem'}}>
-        <a href="/geschaeftsadresse-mieten/steuerberater" style={{color: '#6b7f3e', fontWeight: 600, textDecoration: 'underline'}}>
-          Für Steuerberater
-        </a>
-      </p>
-    </div>
-  </div>
-</section>
 
 {/* ===== PARKEN & EINGANG ===== */}
 <AlternatingFeatures>
@@ -177,3 +109,11 @@ description: "So finden Sie uns im Kesselhaus Weil am Rhein. 300m zur Schweizer 
 
 {/* ===== KONTAKTFORMULAR ===== */}
 <KontaktFormular />
+
+{/* ===== ADRESSE (kompakter Block unten) ===== */}
+<section style={{maxWidth: '720px', margin: '3rem auto 4rem', padding: '0 1.5rem', textAlign: 'center'}}>
+  <p style={{fontSize: '0.9rem', color: '#555', lineHeight: 1.7}}>
+    <strong style={{color: '#1B3A5C'}}>bizzcenter Weil am Rhein GmbH</strong><br />
+    Im Schwarzenbach 4, 79576 Weil am Rhein
+  </p>
+</section>
