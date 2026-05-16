@@ -1,6 +1,6 @@
 ---
-title: "Geschäftsadresse für Honorarärzte | bizzcenter Weil am Rhein"
-description: "Ladungsfähige Praxisadresse für freiberufliche Anästhesisten und Honorarärzte im Dreiländereck — im Zuständigkeitsbereich der KV Baden-Württemberg, repräsentativ, ohne eigene Praxisräume. Ab EUR 49,- /Monat."
+title: "Praxisadresse für Honorarärzte & Anästhesisten | Weil am Rhein"
+description: "Ladungsfähige Praxisadresse für freiberufliche Anästhesisten, Belegärzte und Honorarärzte im Dreiländereck Basel — im Zuständigkeitsbereich der KV Baden-Württemberg, ohne eigene Praxisräume. Ab EUR 49,- / Monat."
 ---
 
 <GlobalOverflowFix />
@@ -10,12 +10,18 @@ description: "Ladungsfähige Praxisadresse für freiberufliche Anästhesisten un
   { name: "Honorarärzte", href: "/geschaeftsadresse-mieten/honorararzt" },
 ]} />
 
+<ServiceSchema
+  serviceType="Praxisadresse für Honorarärzte"
+  audienceType="Honorararzt, Anästhesist, Belegarzt, freiberuflicher Arzt"
+  priceFrom={49}
+/>
+
 <ActiveNavHighlight />
 
 {/* ===== HERO ===== */}
 <CompactHero
-  title="Geschäftsadresse für Honorarärzte in Weil am Rhein"
-  description="Ladungsfähige Praxisadresse für freiberufliche Anästhesisten und Honorarärzte im Dreiländereck — im Zuständigkeitsbereich der KV Baden-Württemberg, repräsentativ, ohne eigene Praxisräume. Ab EUR 49,- / Monat zzgl. MwSt."
+  title="Praxisadresse für Honorarärzte in Weil am Rhein"
+  description="Ladungsfähige Praxisanschrift für freiberufliche Anästhesisten, Belegärzte und Honorarärzte im Dreiländereck Basel — im Zuständigkeitsbereich der KV Baden-Württemberg, repräsentativ, ohne eigene Praxisräume. Ab EUR 49,- / Monat zzgl. MwSt."
   image="/images/standorte/weil-am-rhein/kesselhaus-vorderansicht.jpg"
   imageAlt="Kesselhaus Weil am Rhein – denkmalgeschützter Sitz des bizzcenters"
   formId="formular"
@@ -80,12 +86,11 @@ description: "Ladungsfähige Praxisadresse für freiberufliche Anästhesisten un
   />
 </FeaturesWithBg>
 
-{/* ===== ÜBERGANG ===== */}
-<div style={{maxWidth: '720px', margin: '0 auto', padding: '4rem 1.5rem 2rem', textAlign: 'center'}}>
-  <p style={{fontSize: '1.125rem', color: '#1B3A5C', fontWeight: 500, lineHeight: '1.7'}}>
-    Genau hier setzen wir an: eine ladungsfähige Praxisadresse, die alle drei Anforderungen erfüllt — pragmatisch, diskret und wirtschaftlich.
-  </p>
-</div>
+{/* ===== ÜBERGANG: INLINE-FORM zwischen "Warum" und "Ihre Praxisadresse" ===== */}
+<HonorararztAnfrage
+  title="Praxisadresse anfragen"
+  description="Wir prüfen Ihre Angaben und melden uns innerhalb von 24 Stunden mit einem individuellen Angebot."
+/>
 
 {/* ===== IHRE LÖSUNG ===== */}
 <FeaturesWithBg
@@ -153,6 +158,22 @@ description: "Ladungsfähige Praxisadresse für freiberufliche Anästhesisten un
   />
 </AlternatingFeatures>
 
+{/* ===== AUCH GEEIGNET FÜR BELEGÄRZTE & ZWEIGPRAXEN ===== */}
+<section style={{maxWidth: '960px', margin: '4rem auto', padding: '0 1.5rem'}}>
+  <h2 style={{fontSize: '1.75rem', fontWeight: 700, color: '#1B3A5C', marginBottom: '1rem', textAlign: 'center'}}>
+    Auch geeignet für Belegärzte und Zweigpraxen
+  </h2>
+  <p style={{fontSize: '1rem', color: '#444', lineHeight: 1.7, maxWidth: '720px', margin: '0 auto 1.5rem', textAlign: 'center'}}>
+    Belegärzte mit Tätigkeit an Kliniken (z.B. Helios Rheinfelden, RKK Lörrach, Klinikum Schopfheim) brauchen einen formalen Praxissitz — auch wenn die eigentliche Tätigkeit in der Klinik stattfindet.
+    Genauso können Sie unsere Adresse als <strong>Zweigpraxis</strong> nutzen: § 17 Abs. 2 Berufsordnung erlaubt bis zu zwei weitere Tätigkeitsorte neben dem Praxissitz.
+    Auch für <strong>Telemediziner</strong> mit ärztlicher Korrespondenz und Patientenkontakt nach Berufsordnung geeignet.
+  </p>
+  <p style={{fontSize: '0.9rem', color: '#555', textAlign: 'center'}}>
+    Aus dem Kesselhaus erreichen Sie in ca. 30 Min: <a href="/anfahrt" style={{color: '#6b7f3e', textDecoration: 'underline'}}>Kliniken und OP-Zentren im Dreiländereck</a>.
+    Auf Wunsch zusätzlich eine <a href="/schweizer-telefonnummer" style={{color: '#6b7f3e', textDecoration: 'underline'}}>Schweizer Telefonnummer</a> für CH-Patienten.
+  </p>
+</section>
+
 {/* ===== STATS ===== */}
 <Stats title="bizzcenter in Zahlen">
   <Stat value="22" label="Jahre" description="Erfahrung seit 2004" />
@@ -202,6 +223,9 @@ description: "Ladungsfähige Praxisadresse für freiberufliche Anästhesisten un
   <FAQItem question="Was kostet die Praxisadresse?">
     Die Basis-Variante (Adresse + Postweiterleitung) startet bei EUR 49,- / Monat zzgl. MwSt. Erweiterungen wie Schweizer Telefonnummer, Telefonservice oder Sekretariatsservice können dazu gebucht werden. Wir erstellen ein individuelles Angebot.
   </FAQItem>
+  <FAQItem question="Geht das auch ohne eigene Praxisräume — als Praxisanschrift ohne Praxis?">
+    Ja, genau das ist der Use Case unserer Lösung. Sie haben eine vollwertige, ladungsfähige Praxisadresse für formale Zwecke (Kammer, KV, Finanzamt, Patientenkorrespondenz, Impressum) — ohne die Kosten eigener Praxisräume. Die tatsächliche ärztliche Tätigkeit findet bei Ihnen üblicherweise in Kliniken oder OP-Zentren statt. Konferenzräume für gelegentliche Patientengespräche können stundenweise zugebucht werden.
+  </FAQItem>
   <FAQItem question="Wie schnell kann ich starten?">
     Innerhalb von 24-48 Stunden nach Unterzeichnung des Vertrags und Zahlungseingang der ersten Kautionsrechnung richten wir Ihre Praxisadresse ein. Sobald wir die Zahlung sehen, geht es sofort los.
   </FAQItem>
@@ -223,9 +247,36 @@ description: "Ladungsfähige Praxisadresse für freiberufliche Anästhesisten un
   description="Diskret und unverbindlich. Wir melden uns innerhalb von 24 Stunden bei Ihnen."
 />
 
+{/* ===== WEITERFÜHRENDE LINKS (Authority + E-E-A-T) ===== */}
+<section style={{maxWidth: '720px', margin: '3rem auto 1rem', padding: '0 1.5rem'}}>
+  <h3 style={{fontSize: '1rem', fontWeight: 700, color: '#1B3A5C', marginBottom: '0.75rem', textAlign: 'center'}}>
+    Weiterführende offizielle Quellen
+  </h3>
+  <ul style={{listStyle: 'none', padding: 0, fontSize: '0.875rem', color: '#444', textAlign: 'center'}}>
+    <li style={{marginBottom: '0.5rem'}}>
+      <a href="https://www.kvbawue.de/" target="_blank" rel="noopener noreferrer" style={{color: '#6b7f3e', textDecoration: 'underline'}}>
+        Kassenärztliche Vereinigung Baden-Württemberg
+      </a>
+    </li>
+    <li style={{marginBottom: '0.5rem'}}>
+      <a href="https://www.aerztekammer-bw.de/" target="_blank" rel="noopener noreferrer" style={{color: '#6b7f3e', textDecoration: 'underline'}}>
+        Landesärztekammer Baden-Württemberg
+      </a>
+    </li>
+    <li>
+      <a href="https://www.bundesaerztekammer.de/themen/aerzte/aerztliches-berufsrecht/musterberufsordnung-aerzte" target="_blank" rel="noopener noreferrer" style={{color: '#6b7f3e', textDecoration: 'underline'}}>
+        § 17 Musterberufsordnung-Ärzte (Bundesärztekammer)
+      </a>
+    </li>
+  </ul>
+</section>
+
 {/* ===== RECHTLICHER HINWEIS ===== */}
-<div style={{maxWidth: '720px', margin: '0 auto 3rem', padding: '0 1rem'}}>
+<div style={{maxWidth: '720px', margin: '0 auto 1rem', padding: '0 1rem'}}>
   <p style={{fontSize: '0.75rem', color: '#888', textAlign: 'center', fontStyle: 'italic'}}>
-    Hinweis: Wir stellen die geschäftliche Infrastruktur bereit (Adresse, Postannahme, Räume). Für die berufsrechtliche und kassenarztrechtliche Konformität Ihrer individuellen Tätigkeit sind Sie selbst verantwortlich; ggf. ist eine eigene berufsrechtliche Prüfung sinnvoll.
+    Hinweis: Wir stellen die geschäftliche Infrastruktur bereit (Adresse, Postannahme, Räume). Für die berufsrechtliche und kassenarztrechtliche Konformität Ihrer individuellen Tätigkeit sind Sie selbst verantwortlich. Dieser Beitrag ist keine Rechtsberatung — ggf. ist eine eigene berufsrechtliche Prüfung sinnvoll.
   </p>
 </div>
+
+{/* ===== AUTOR-BOX (E-E-A-T) ===== */}
+<AutorBox stand="Mai 2026" />
