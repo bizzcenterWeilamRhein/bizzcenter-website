@@ -19,34 +19,24 @@ description: "So finden Sie uns im Kesselhaus Weil am Rhein. 300m zur Schweizer 
   image="/images/standorte/weil-am-rhein/kesselhaus-vorderansicht.jpg"
   imageAlt="Kesselhaus Weil am Rhein – Hauptsitz des bizzcenters"
   buttonText="Standort als Route öffnen"
-  buttonHref="https://maps.google.com/?q=Am+Kesselhaus+3,+79576+Weil+am+Rhein"
+  buttonHref="https://maps.app.goo.gl/K7cWv3VfM1LGsLyx9"
 >
-  <ul className="mt-4 space-y-2 text-sm md:text-base text-foreground list-none">
-    <li className="flex items-start gap-2"><span className="text-primary mt-0.5">📍</span> Am Kesselhaus 3, 79576 Weil am Rhein</li>
-    <li className="flex items-start gap-2"><span className="text-primary mt-0.5">🚊</span> Tram 8 — Haltestelle Riedlistrasse/Kesselhaus, 2 Min Fußweg</li>
-    <li className="flex items-start gap-2"><span className="text-primary mt-0.5">🚗</span> Kostenlose Parkplätze direkt vor dem Gebäude (Parkscheibe 90 Min)</li>
-    <li className="flex items-start gap-2"><span className="text-primary mt-0.5">✈️</span> EuroAirport Basel-Mulhouse: 8 km / ca. 10 Min mit Auto</li>
-    <li className="flex items-start gap-2"><span className="text-primary mt-0.5">🇨🇭</span> Bahnhof Basel SBB: 5 Min mit Tram 8</li>
-    <li className="flex items-start gap-2"><span className="text-primary mt-0.5">🕓</span> 24/7-Zugang für Bestandskunden mit individuellem Türcode</li>
+  <ul className="mt-4 space-y-2 text-sm md:text-base text-foreground list-disc pl-5">
+    <li>Am Kesselhaus 3, 79576 Weil am Rhein</li>
+    <li>Tram 8 — Haltestelle Riedlistrasse/Kesselhaus, 2 Min Fußweg</li>
+    <li>Kostenlose Parkplätze direkt vor dem Gebäude (Parkscheibe 90 Min)</li>
+    <li>EuroAirport Basel-Mulhouse: 8 km / ca. 10 Min mit Auto</li>
+    <li>Bahnhof Basel SBB: 5 Min mit Tram 8</li>
+    <li>24/7-Zugang für Bestandskunden mit individuellem Türcode</li>
   </ul>
 </CompactHero>
 
-{/* ===== ADRESSE & KONTAKT ===== */}
-<Features title="Adresse & Kontakt" columns={3}>
+{/* ===== ADRESSE ===== */}
+<Features title="Adresse" columns={1}>
   <FeatureCard
-    title="Adresse"
-    description="bizzcenter Weil am Rhein GmbH, Am Kesselhaus 3, 79576 Weil am Rhein, Deutschland"
+    title="bizzcenter Weil am Rhein GmbH"
+    description="Am Kesselhaus 3, 79576 Weil am Rhein, Deutschland"
     icon="map-pin"
-  />
-  <FeatureCard
-    title="Telefon (Deutschland)"
-    description="+49 (0)7621 916 5547"
-    icon="phone"
-  />
-  <FeatureCard
-    title="Telefon (Schweiz)"
-    description="+41 (0)71 511 22 04"
-    icon="phone"
   />
 </Features>
 
@@ -60,6 +50,20 @@ description: "So finden Sie uns im Kesselhaus Weil am Rhein. 300m zur Schweizer 
   />
 </AlternatingFeatures>
 
+{/* ===== GOOGLE MAPS EMBED ===== */}
+<div style={{maxWidth: '960px', margin: '3rem auto', padding: '0 1.5rem'}}>
+  <iframe
+    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3647.220572017281!2d7.599366800000006!3d47.592204499999994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4791bba032079c47%3A0x50d09e47e69eed9!2sbizzcenter%20Weil%20am%20Rhein%20GmbH%20-%20Business%20Center!5e1!3m2!1sde!2sch!4v1778936647299!5m2!1sde!2sch"
+    width="100%"
+    height="450"
+    style={{border: 0, borderRadius: '1rem', display: 'block'}}
+    allowFullScreen
+    loading="lazy"
+    referrerPolicy="no-referrer-when-downgrade"
+    title="bizzcenter Weil am Rhein auf Google Maps"
+  />
+</div>
+
 {/* ===== ANFAHRT-OPTIONEN ===== */}
 <FeaturesWithBg
   title="Wie kommen Sie zu uns?"
@@ -67,22 +71,22 @@ description: "So finden Sie uns im Kesselhaus Weil am Rhein. 300m zur Schweizer 
   backgroundImage="/images/standorte/weil-am-rhein/kesselhaus-aussen.jpg"
 >
   <FeatureCard
-    title="🚗 Mit dem Auto"
+    title="Mit dem Auto"
     description="A5 oder A98 Richtung Basel, Ausfahrt Weil am Rhein. Navigation auf 'Am Kesselhaus 3, 79576 Weil am Rhein' setzen. Kostenlose Parkplätze direkt vor dem Gebäude (Parkscheibe 90 Min). Reservierbare Parkplätze auf Anfrage."
     icon="map-pin"
   />
   <FeatureCard
-    title="🚊 Mit der Tram (aus Basel)"
+    title="Mit der Tram (aus Basel)"
     description="Tramlinie 8 vom Bahnhof Basel SBB Richtung Weil am Rhein. Aussteigen an der Haltestelle 'Riedlistrasse/Kesselhaus'. Von dort 2 Minuten Fußweg zum bizzcenter. Linie fährt im 10-Minuten-Takt."
     icon="globe"
   />
   <FeatureCard
-    title="🚌 Mit dem Bus"
+    title="Mit dem Bus"
     description="Buslinie 16 hält an der Haltestelle 'Riedlistrasse/Kesselhaus'. 2 Minuten Fußweg zum bizzcenter."
     icon="globe"
   />
   <FeatureCard
-    title="✈️ Vom EuroAirport"
+    title="Vom EuroAirport"
     description="EuroAirport Basel-Mulhouse-Freiburg ist nur 8 km entfernt — ca. 10 Min mit Auto oder Taxi. Mit ÖPNV: Bus 50 zum Bahnhof Basel SBB, dann Tram 8 nach Weil am Rhein."
     icon="globe"
   />
@@ -96,9 +100,9 @@ description: "So finden Sie uns im Kesselhaus Weil am Rhein. 300m zur Schweizer 
   <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem'}}>
     <div style={{padding: '1.5rem', background: '#f0f4e8', borderRadius: '1rem'}}>
       <h3 style={{fontSize: '1.05rem', fontWeight: 700, color: '#1B3A5C', marginBottom: '0.75rem'}}>
-        🏥 Kliniken & OP-Zentren
+        Kliniken und OP-Zentren
       </h3>
-      <ul style={{listStyle: 'none', padding: 0, fontSize: '0.875rem', color: '#444', lineHeight: 1.8}}>
+      <ul style={{listStyle: 'disc', paddingLeft: '1.25rem', fontSize: '0.875rem', color: '#444', lineHeight: 1.8}}>
         <li>Helios Klinik Rheinfelden — 15 Min</li>
         <li>RKK Klinikum Lörrach — 10 Min</li>
         <li>Klinik Generationen Schopfheim — 25 Min</li>
@@ -107,32 +111,32 @@ description: "So finden Sie uns im Kesselhaus Weil am Rhein. 300m zur Schweizer 
       </ul>
       <p style={{marginTop: '0.75rem', fontSize: '0.8rem'}}>
         <a href="/geschaeftsadresse-mieten/honorararzt" style={{color: '#6b7f3e', fontWeight: 600, textDecoration: 'underline'}}>
-          → Für Honorarärzte
+          Für Honorarärzte
         </a>
       </p>
     </div>
     <div style={{padding: '1.5rem', background: '#f0f4e8', borderRadius: '1rem'}}>
       <h3 style={{fontSize: '1.05rem', fontWeight: 700, color: '#1B3A5C', marginBottom: '0.75rem'}}>
-        ⚖️ Gerichte & Notariate
+        Gerichte und Notariate
       </h3>
-      <ul style={{listStyle: 'none', padding: 0, fontSize: '0.875rem', color: '#444', lineHeight: 1.8}}>
+      <ul style={{listStyle: 'disc', paddingLeft: '1.25rem', fontSize: '0.875rem', color: '#444', lineHeight: 1.8}}>
         <li>Amtsgericht Lörrach — 10 Min</li>
         <li>Amtsgericht Schopfheim — 25 Min</li>
         <li>Landgericht Freiburg — 50 Min (Auto/ICE)</li>
         <li>Bundesgericht Karlsruhe — per ICE direkt</li>
-        <li>Diverse Notariate in Basel & Lörrach</li>
+        <li>Diverse Notariate in Basel und Lörrach</li>
       </ul>
       <p style={{marginTop: '0.75rem', fontSize: '0.8rem'}}>
         <a href="/geschaeftsadresse-mieten/rechtsanwalt" style={{color: '#6b7f3e', fontWeight: 600, textDecoration: 'underline'}}>
-          → Für Rechtsanwälte
+          Für Rechtsanwälte
         </a>
       </p>
     </div>
     <div style={{padding: '1.5rem', background: '#f0f4e8', borderRadius: '1rem'}}>
       <h3 style={{fontSize: '1.05rem', fontWeight: 700, color: '#1B3A5C', marginBottom: '0.75rem'}}>
-        💼 Finanzämter & Behörden
+        Finanzämter und Behörden
       </h3>
-      <ul style={{listStyle: 'none', padding: 0, fontSize: '0.875rem', color: '#444', lineHeight: 1.8}}>
+      <ul style={{listStyle: 'disc', paddingLeft: '1.25rem', fontSize: '0.875rem', color: '#444', lineHeight: 1.8}}>
         <li>Finanzamt Lörrach — 10 Min</li>
         <li>IHK Hochrhein-Bodensee — 30 Min</li>
         <li>Handelsregister-Gericht Freiburg — 50 Min</li>
@@ -140,7 +144,7 @@ description: "So finden Sie uns im Kesselhaus Weil am Rhein. 300m zur Schweizer 
       </ul>
       <p style={{marginTop: '0.75rem', fontSize: '0.8rem'}}>
         <a href="/geschaeftsadresse-mieten/steuerberater" style={{color: '#6b7f3e', fontWeight: 600, textDecoration: 'underline'}}>
-          → Für Steuerberater
+          Für Steuerberater
         </a>
       </p>
     </div>
@@ -156,26 +160,12 @@ description: "So finden Sie uns im Kesselhaus Weil am Rhein. 300m zur Schweizer 
     imageAlt="Parkplätze direkt vor dem Kesselhaus Weil am Rhein"
   />
   <AlternatingFeatureRow
-    title="Haupteingang & 24/7-Zugang"
+    title="Haupteingang und 24/7-Zugang"
     description="Der Haupteingang liegt direkt am Parkplatz — Sie können ohne Umwege zum Gebäude gehen. Im Eingangsbereich finden Sie das Klingel-Schild mit allen Mietern, einen großen Briefkasten-Bereich und die Schließanlage für 24/7-Zugang. Bestandskunden erhalten einen individuellen Türcode und können rund um die Uhr Post und Pakete abholen — auch am Wochenende und an Feiertagen."
     image="/images/standorte/weil-am-rhein/haupteingang-parkplaetze.jpg"
     imageAlt="Haupteingang bizzcenter Weil am Rhein mit Parkplätzen"
   />
 </AlternatingFeatures>
-
-{/* ===== ÖFFNUNGSZEITEN ===== */}
-<Features title="Erreichbarkeit & Öffnungszeiten" columns={2}>
-  <FeatureCard
-    title="Empfang (Telefon)"
-    description="Montag bis Freitag 9:00 – 17:00 Uhr erreichbar. Anrufannahme in Ihrem Firmennamen über unseren Telefonservice (Zusatzoption)."
-    icon="phone"
-  />
-  <FeatureCard
-    title="24/7-Zugang"
-    description="Bestandskunden erhalten einen individuellen Türcode und können Post, Pakete und (mit gebuchtem Coworking-Plan) Arbeitsplätze rund um die Uhr nutzen."
-    icon="key"
-  />
-</Features>
 
 {/* ===== STATS ===== */}
 <Stats title="bizzcenter Weil am Rhein in Zahlen">
@@ -185,23 +175,5 @@ description: "So finden Sie uns im Kesselhaus Weil am Rhein. 300m zur Schweizer 
   <Stat value="24/7" label="Zugang" description="für Bestandskunden" />
 </Stats>
 
-{/* ===== KONTAKT-CTA ===== */}
-<section style={{maxWidth: '720px', margin: '4rem auto 3rem', padding: '2rem 1.5rem', background: '#f0f4e8', borderRadius: '1rem', textAlign: 'center'}}>
-  <h3 style={{fontSize: '1.4rem', fontWeight: 700, color: '#1B3A5C', marginBottom: '0.75rem'}}>
-    Erst einmal vorbeischauen?
-  </h3>
-  <p style={{color: '#555', marginBottom: '1.5rem'}}>
-    Gerne können Sie uns ohne Termin vorbeischauen — Mo bis Fr zwischen 9 und 17 Uhr ist immer jemand am Empfang. Für eine ausführliche Besichtigung empfehlen wir einen Termin per Telefon oder Mail.
-  </p>
-  <p style={{marginBottom: '0.75rem'}}>
-    <a href="tel:+4976219165547" style={{display: 'inline-block', background: '#6b7f3e', color: 'white', fontWeight: 600, padding: '0.75rem 1.5rem', borderRadius: '0.5rem', textDecoration: 'none'}}>
-      📞 +49 (0)7621 916 5547
-    </a>
-  </p>
-  <p style={{fontSize: '0.875rem', color: '#666'}}>
-    oder per Mail an{' '}
-    <a href="mailto:info@bizzcenter.de" style={{color: '#6b7f3e', fontWeight: 600, textDecoration: 'underline'}}>
-      info@bizzcenter.de
-    </a>
-  </p>
-</section>
+{/* ===== KONTAKTFORMULAR ===== */}
+<KontaktFormular />
