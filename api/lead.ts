@@ -228,6 +228,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({ error: 'Name ist ein Pflichtfeld.' });
     }
 
+    // Test-Marker: "test" in Vor- oder Nachnamen (case-insensitive) überspringt
+    // alle externen Side-Effects (CRM-DB, Zendesk, Windmill). E-Mails werden trotzdem
+    // verschickt, damit der Mailer end-to-end testbar bleibt.
+    const isTestLead = /test/i.test(firstName) || /test/i.test(lastName);
+    if (isTestLead) {
+      console.log('Test-Lead erkannt (Marker "test" in Name) — Side-Effects werden übersprungen');
+    }
+
     // Beschreibung zusammenbauen
     const descParts: string[] = [];
     descParts.push(`Quelle: ${data.quelle}`);
@@ -291,6 +299,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const results = await Promise.allSettled([
       // 1. CRM Lead - Direct DB insert
       (async () => {
+        if (isTestLead) return 'crm-skipped-test';
         try {
           const { Client } = await import('pg');
           const dbUrl = process.env.CRM_DATABASE_URL;
@@ -385,6 +394,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
       // 3. Zendesk Sell Lead (+ Notiz)
       (async () => {
+        if (isTestLead) return 'zendesk-skipped-test';
         if (!ZENDESK_TOKEN) throw new Error('ZENDESK_SELL_API_TOKEN not configured');
         if (!data.email && !data.firma) throw new Error('No email or firma for Zendesk');
 
@@ -447,6 +457,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
       // 4. Windmill-Webhook → Telegram-Notification + MS-To-Do-Task
       (async () => {
+        if (isTestLead) return 'windmill-skipped-test';
         const url = process.env.WINDMILL_LEAD_WEBHOOK_URL;
         if (!url) return 'windmill-skipped-no-env';
         const wmRes = await fetch(url, {
