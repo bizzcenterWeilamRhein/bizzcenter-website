@@ -152,7 +152,7 @@ const HERO_STRINGS = {
     gaSubmit: 'Unverbindlich anfragen →',
     gaFootnote: 'Keine Zahlungsdaten nötig · Angebot innerhalb 24h',
     gaSuccessTitle: 'Vielen Dank für Ihre Anfrage!',
-    gaSuccessBody: 'Wir melden uns innerhalb von 24 Stunden persönlich bei Ihnen. Mit 22 Jahren Erfahrung im Dreiländereck unterstützen wir Sie gerne.',
+    gaSuccessBody: 'Gerne unterstützen wir Sie mit einer flexiblen Bürolösung.',
   },
   en: {
     heroTitle: 'Create a quote in 2 minutes',
@@ -192,7 +192,7 @@ const HERO_STRINGS = {
     gaSubmit: 'Request without obligation →',
     gaFootnote: 'No payment details needed · Offer within 24h',
     gaSuccessTitle: 'Thank you for your inquiry!',
-    gaSuccessBody: 'We will get back to you personally within 24 hours. With 22 years of experience in the tri-border area, we are happy to support you.',
+    gaSuccessBody: 'We are happy to support you with a flexible office solution.',
   },
   fr: {
     heroTitle: 'Obtenir une offre en 2 minutes',
@@ -232,7 +232,7 @@ const HERO_STRINGS = {
     gaSubmit: 'Demander sans engagement →',
     gaFootnote: 'Aucune donnée de paiement requise · Offre sous 24h',
     gaSuccessTitle: 'Merci pour votre demande !',
-    gaSuccessBody: 'Nous vous recontacterons personnellement sous 24 heures. Avec 22 ans d\'expérience dans la région des trois frontières, nous sommes heureux de vous accompagner.',
+    gaSuccessBody: 'Nous serons heureux de vous accompagner avec une solution de bureau flexible.',
   },
 };
 

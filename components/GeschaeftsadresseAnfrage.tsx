@@ -88,7 +88,7 @@ const STRINGS = {
     formFooter: '* Pflichtfelder · Keine Zahlungsdaten erforderlich · Wir melden uns innerhalb von 24h',
 
     successTitle: 'Vielen Dank für Ihre Anfrage!',
-    successBody: 'Wir melden uns innerhalb von 24 Stunden persönlich bei Ihnen. Mit 22 Jahren Erfahrung im Dreiländereck unterstützen wir Sie gerne.',
+    successBody: 'Gerne unterstützen wir Sie mit einer flexiblen Bürolösung.',
     successContact: 'Bei Rückfragen erreichen Sie uns unter',
 
     // Rechtsformen (legal entity types)

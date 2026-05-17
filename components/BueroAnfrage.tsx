@@ -61,7 +61,7 @@ const STRINGS = {
     submit: 'Jetzt anfragen',
     contactSoon: 'Wir melden uns umgehend.',
     successTitle: 'Vielen Dank für Ihre Anfrage!',
-    successBody: 'Wir melden uns innerhalb von 24 Stunden persönlich bei Ihnen. Mit 22 Jahren Erfahrung im Dreiländereck unterstützen wir Sie gerne.',
+    successBody: 'Gerne unterstützen wir Sie mit einer flexiblen Bürolösung.',
     mfCompany: 'Firma',
     mfSalutation: 'Anrede',
     mfFirstName: 'Vorname',

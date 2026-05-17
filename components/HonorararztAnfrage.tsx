@@ -140,7 +140,7 @@ export function HonorararztAnfrage({
         </div>
         <h3 className="text-xl font-bold text-gray-900 mb-2">Vielen Dank für Ihre Anfrage!</h3>
         <p className="text-gray-600 text-sm">
-          Wir melden uns innerhalb von 24 Stunden persönlich bei Ihnen. Mit 22 Jahren Erfahrung im Dreiländereck unterstützen wir Sie gerne.
+          Gerne unterstützen wir Sie mit einer flexiblen Bürolösung.
         </p>
       </div>
     );
