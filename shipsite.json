@@ -154,6 +154,15 @@
               "it": "Noleggiare Teufel Boomster 4"
             },
             "href": "/musikbox-boomster-mieten"
+          },
+          {
+            "label": {
+              "de": "Fensterputzroboter mieten",
+              "en": "Window Cleaning Robot Rental",
+              "fr": "Louer robot lave-vitres",
+              "it": "Affittare robot lavavetri"
+            },
+            "href": "/fensterputzroboter-mieten"
           }
         ]
       },
