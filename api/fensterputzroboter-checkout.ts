@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import Stripe from 'stripe';
 import { Pool } from 'pg';
+import { sendMail, INTERNAL_NOTIFICATION_EMAIL } from '../lib/mailer';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', { apiVersion: '2025-03-31.basil' as any });
 const pool = new Pool({
@@ -150,65 +151,28 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Send ausweis to internal email if uploaded
     if (ausweisBase64) {
       try {
-        const M365_TENANT = process.env.M365_TENANT_ID;
-        const M365_CLIENT = process.env.M365_CLIENT_ID;
-        const M365_SECRET = process.env.M365_CLIENT_SECRET;
-        const M365_USER = process.env.M365_USER_ID || 'weil@bizzcenter.onmicrosoft.com';
+        const matches = ausweisBase64.match(/^data:(.+);base64,(.+)$/);
+        const contentType = matches?.[1] || 'image/jpeg';
+        const base64Content = matches?.[2] || ausweisBase64;
+        const ext = contentType.includes('pdf') ? 'pdf' : contentType.includes('png') ? 'png' : 'jpg';
 
-        if (M365_TENANT && M365_CLIENT && M365_SECRET) {
-          // Get access token
-          const tokenRes = await fetch(`https://login.microsoftonline.com/${M365_TENANT}/oauth2/v2.0/token`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams({
-              grant_type: 'client_credentials',
-              client_id: M365_CLIENT,
-              client_secret: M365_SECRET,
-              scope: 'https://graph.microsoft.com/.default',
-            }),
-          });
-          const tokenData = await tokenRes.json();
-
-          if (tokenData.access_token) {
-            // Extract base64 content and content type
-            const matches = ausweisBase64.match(/^data:(.+);base64,(.+)$/);
-            const contentType = matches?.[1] || 'image/jpeg';
-            const base64Content = matches?.[2] || ausweisBase64;
-            const ext = contentType.includes('pdf') ? 'pdf' : contentType.includes('png') ? 'png' : 'jpg';
-
-            await fetch(`https://graph.microsoft.com/v1.0/users/${M365_USER}/sendMail`, {
-              method: 'POST',
-              headers: {
-                Authorization: `Bearer ${tokenData.access_token}`,
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                message: {
-                  subject: `Ausweiskopie — Fensterputzroboter-Buchung ${vorname} ${nachname} (${formatDate(startDate)})`,
-                  body: {
-                    contentType: 'HTML',
-                    content: `<p>Ausweiskopie für Fensterputzroboter-Buchung:</p>
-                      <ul>
-                        <li><strong>Name:</strong> ${vorname} ${nachname}</li>
-                        <li><strong>Firma:</strong> ${firma || 'Privatperson'}</li>
-                        <li><strong>Zeitraum:</strong> ${zeitraum}</li>
-                        <li><strong>E-Mail:</strong> ${email}</li>
-                        <li><strong>Telefon:</strong> ${telefon}</li>
-                      </ul>`,
-                  },
-                  toRecipients: [{ emailAddress: { address: M365_USER } }],
-                  attachments: [{
-                    '@odata.type': '#microsoft.graph.fileAttachment',
-                    name: `Ausweis_${nachname}_${vorname}.${ext}`,
-                    contentType,
-                    contentBytes: base64Content,
-                  }],
-                },
-                saveToSentItems: false,
-              }),
-            });
-          }
-        }
+        await sendMail({
+          to: INTERNAL_NOTIFICATION_EMAIL,
+          subject: `Ausweiskopie — Fensterputzroboter-Buchung ${vorname} ${nachname} (${formatDate(startDate)})`,
+          html: `<p>Ausweiskopie für Fensterputzroboter-Buchung:</p>
+            <ul>
+              <li><strong>Name:</strong> ${vorname} ${nachname}</li>
+              <li><strong>Firma:</strong> ${firma || 'Privatperson'}</li>
+              <li><strong>Zeitraum:</strong> ${zeitraum}</li>
+              <li><strong>E-Mail:</strong> ${email}</li>
+              <li><strong>Telefon:</strong> ${telefon}</li>
+            </ul>`,
+          attachments: [{
+            name: `Ausweis_${nachname}_${vorname}.${ext}`,
+            contentType,
+            contentBase64: base64Content,
+          }],
+        });
       } catch (emailErr) {
         console.error('Ausweis email error (non-blocking):', emailErr);
         // Non-blocking — booking still proceeds
