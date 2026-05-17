@@ -10,8 +10,8 @@ import PhoneInput from './PhoneInput';
 const STRINGS = {
   de: {
     defaultTitle: 'Anfrage senden',
-    successTitle: 'Anfrage erhalten',
-    successBody: 'Vielen Dank! Wir melden uns in Kuerze bei Ihnen.',
+    successTitle: 'Vielen Dank für Ihre Anfrage!',
+    successBody: 'Wir melden uns innerhalb von 24 Stunden persönlich bei Ihnen. Mit 22 Jahren Erfahrung im Dreiländereck unterstützen wir Sie gerne.',
     labelName: 'Name *',
     placeholderName: 'Vor- und Nachname',
     labelEmail: 'E-Mail *',
@@ -29,8 +29,8 @@ const STRINGS = {
   },
   en: {
     defaultTitle: 'Send inquiry',
-    successTitle: 'Inquiry received',
-    successBody: 'Thank you! We will get back to you shortly.',
+    successTitle: 'Thank you for your inquiry!',
+    successBody: 'We will get back to you personally within 24 hours. With 22 years of experience in the tri-border area, we are happy to support you.',
     labelName: 'Name *',
     placeholderName: 'First and last name',
     labelEmail: 'Email *',
@@ -48,8 +48,8 @@ const STRINGS = {
   },
   fr: {
     defaultTitle: 'Envoyer une demande',
-    successTitle: 'Demande recue',
-    successBody: 'Merci ! Nous vous recontacterons sous peu.',
+    successTitle: 'Merci pour votre demande !',
+    successBody: 'Nous vous recontacterons personnellement sous 24 heures. Avec 22 ans d\'expérience dans la région des trois frontières, vous êtes entre de bonnes mains chez nous.',
     labelName: 'Nom *',
     placeholderName: 'Prenom et nom',
     labelEmail: 'E-mail *',

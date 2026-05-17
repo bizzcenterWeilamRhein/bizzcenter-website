@@ -33,8 +33,8 @@ const STRINGS = {
     sending: 'Wird gesendet...',
     submit: 'Unverbindlich anfragen →',
     footnote: 'Keine Zahlungsdaten nötig · Angebot innerhalb 24h',
-    successTitle: 'Anfrage erhalten!',
-    successBody: 'Wir melden uns innerhalb von 24h.',
+    successTitle: 'Vielen Dank für Ihre Anfrage!',
+    successBody: 'Wir melden uns innerhalb von 24 Stunden persönlich bei Ihnen. Mit 22 Jahren Erfahrung im Dreiländereck unterstützen wir Sie gerne.',
   },
   en: {
     formTitle: 'Request a business address',

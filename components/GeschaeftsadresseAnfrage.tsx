@@ -87,8 +87,8 @@ const STRINGS = {
     submit: 'Unverbindlich anfragen',
     formFooter: '* Pflichtfelder · Keine Zahlungsdaten erforderlich · Wir melden uns innerhalb von 24h',
 
-    successTitle: 'Anfrage erhalten',
-    successBody: 'Vielen Dank für Ihr Interesse! Wir prüfen Ihre Angaben und melden uns innerhalb von 24 Stunden mit einem individuellen Vertragsangebot bei Ihnen.',
+    successTitle: 'Vielen Dank für Ihre Anfrage!',
+    successBody: 'Wir melden uns innerhalb von 24 Stunden persönlich bei Ihnen. Mit 22 Jahren Erfahrung im Dreiländereck unterstützen wir Sie gerne.',
     successContact: 'Bei Rückfragen erreichen Sie uns unter',
 
     // Rechtsformen (legal entity types)
