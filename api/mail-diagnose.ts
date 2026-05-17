@@ -2,23 +2,13 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { sendMailVerbose, INTERNAL_NOTIFICATION_EMAIL } from '../lib/mailer';
 
 // TEMPORÄRER Diagnose-Endpunkt für Gmail-API-Migration.
-// Schutz: ?secret=... muss MAIL_TEST_SECRET entsprechen.
-// Schickt eine Test-Mail und gibt die exakte API-Antwort/Fehlermeldung zurück.
-//
-// Beispiel:
-//   https://weil.bizzcenter.de/api/mail-diagnose?secret=XXX
-//   https://weil.bizzcenter.de/api/mail-diagnose?secret=XXX&to=test@example.com
+// Sendet eine Test-Mail an die interne Adresse (torben@greenofficeweil.com)
+// und gibt einen detaillierten Status zurück. Kein Auth-Schutz — der Endpunkt
+// kann nur eine fixe interne Adresse anschreiben, also unkritisch.
+// Nach Migration-Erfolg wieder entfernen.
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
-  const expected = process.env.MAIL_TEST_SECRET;
-  if (!expected) {
-    return res.status(503).json({ error: 'MAIL_TEST_SECRET nicht gesetzt' });
-  }
-  if (req.query.secret !== expected) {
-    return res.status(401).json({ error: 'invalid secret' });
-  }
-
-  const to = (typeof req.query.to === 'string' ? req.query.to : '') || INTERNAL_NOTIFICATION_EMAIL;
+export default async function handler(_req: VercelRequest, res: VercelResponse) {
+  const to = INTERNAL_NOTIFICATION_EMAIL;
   const ts = new Date().toISOString();
 
   // Pre-flight check: ist GMAIL_SA_JSON überhaupt gesetzt + parsebar?
