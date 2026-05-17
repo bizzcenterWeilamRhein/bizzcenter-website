@@ -1,9 +1,14 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { sendMail, INTERNAL_NOTIFICATION_EMAIL } from '../lib/mailer';
+
+// M365 Graph API for email notifications
+const MS_TENANT_ID = process.env.MS_TENANT_ID || '';
+const MS_CLIENT_ID = process.env.MS_CLIENT_ID || '';
+const MS_CLIENT_SECRET = process.env.MS_CLIENT_SECRET || '';
 
 // Zendesk Sell
 const ZENDESK_TOKEN = process.env.ZENDESK_SELL_API_TOKEN || '';
 const ZENDESK_API = 'https://api.getbase.com/v2';
+const NOTIFICATION_EMAIL = 'weil@bizzcenter.onmicrosoft.com';
 
 interface LeadData {
   // Kontaktformular fields
@@ -41,6 +46,26 @@ interface LeadData {
   utm_content?: string;
   referrer?: string;
   landing_page?: string;
+}
+
+async function getM365Token(): Promise<string | null> {
+  if (!MS_TENANT_ID || !MS_CLIENT_ID || !MS_CLIENT_SECRET) return null;
+  try {
+    const res = await fetch(`https://login.microsoftonline.com/${MS_TENANT_ID}/oauth2/v2.0/token`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        client_id: MS_CLIENT_ID,
+        client_secret: MS_CLIENT_SECRET,
+        scope: 'https://graph.microsoft.com/.default',
+        grant_type: 'client_credentials',
+      }),
+    });
+    const data = await res.json();
+    return data.access_token || null;
+  } catch {
+    return null;
+  }
 }
 
 // Mapping quelle → lesbarer Name + Seite
@@ -117,6 +142,12 @@ function telDisplay(raw: string): string {
 }
 
 async function sendNotificationEmail(lead: { firstName: string; lastName: string; firma?: string; telefon?: string; email?: string; nachricht?: string; quelle: string; product?: string; wunschterminVon?: string; wunschterminBis?: string; zeitraumFreitext?: string }) {
+  const token = await getM365Token();
+  if (!token) {
+    console.warn('M365 token not available — skipping email notification');
+    return;
+  }
+
   const quelleInfo = getQuelleInfo(lead.quelle);
   const hasTimeRange = lead.wunschterminVon && lead.wunschterminBis;
   const subject = `Neue Anfrage: ${esc(lead.firstName)} ${esc(lead.lastName)}${lead.firma ? ` (${esc(lead.firma)})` : ''} — ${quelleInfo.name}`;
@@ -144,14 +175,27 @@ async function sendNotificationEmail(lead: { firstName: string; lastName: string
     lead.nachricht ? `<h3 style="margin:20px 0 8px 0;">Nachricht:</h3><p style="background:#f5f5f5;padding:12px;border-radius:8px;white-space:pre-wrap;">${esc(lead.nachricht)}</p>` : '',
   ].filter(Boolean).join('\n');
 
-  await sendMail({
-    to: INTERNAL_NOTIFICATION_EMAIL,
-    subject,
-    html: lines,
-  });
+  try {
+    await fetch(`https://graph.microsoft.com/v1.0/users/${NOTIFICATION_EMAIL}/sendMail`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: {
+          subject,
+          body: { contentType: 'HTML', content: lines },
+          toRecipients: [{ emailAddress: { address: NOTIFICATION_EMAIL } }],
+        },
+      }),
+    });
+  } catch (err) {
+    console.error('Email notification failed:', err);
+  }
 }
 
 async function sendCustomerConfirmation(lead: { firstName: string; email: string; product?: string; wunschterminVon?: string; wunschterminBis?: string; zeitraumFreitext?: string }) {
+  const token = await getM365Token();
+  if (!token) return;
+
   const hasTimeRange = lead.wunschterminVon && lead.wunschterminBis;
   const isProductInquiry = !!lead.product && hasTimeRange;
   const subject = isProductInquiry
@@ -186,12 +230,21 @@ async function sendCustomerConfirmation(lead: { firstName: string; email: string
     </div>
   `;
 
-  await sendMail({
-    to: lead.email,
-    subject,
-    html: body,
-    replyTo: 'info@greenofficeweil.com',
-  });
+  try {
+    await fetch(`https://graph.microsoft.com/v1.0/users/${NOTIFICATION_EMAIL}/sendMail`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: {
+          subject,
+          body: { contentType: 'HTML', content: body },
+          toRecipients: [{ emailAddress: { address: lead.email } }],
+        },
+      }),
+    });
+  } catch (err) {
+    console.error('Customer confirmation email failed:', err);
+  }
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
