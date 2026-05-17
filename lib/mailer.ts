@@ -22,22 +22,64 @@ export interface SendMailArgs {
 }
 
 let cachedClient: JWT | null = null;
+let lastClientError: string | null = null;
 
 function getClient(): JWT | null {
   if (cachedClient) return cachedClient;
-  if (!SA_JSON) return null;
+  if (!SA_JSON) {
+    lastClientError = 'GMAIL_SA_JSON env var is empty or unset';
+    return null;
+  }
   try {
     const credentials = JSON.parse(SA_JSON);
+    if (!credentials.client_email || !credentials.private_key) {
+      lastClientError = 'GMAIL_SA_JSON is missing client_email or private_key';
+      return null;
+    }
+    // Vercel speichert mehrzeilige Werte häufig als String mit literalen \n —
+    // Google's JWT erwartet aber echte Zeilenumbrüche im PEM-Format.
+    const privateKey = credentials.private_key.replace(/\\n/g, '\n');
     cachedClient = new JWT({
       email: credentials.client_email,
-      key: credentials.private_key,
+      key: privateKey,
       scopes: ['https://www.googleapis.com/auth/gmail.send'],
       subject: IMPERSONATE_USER,
     });
     return cachedClient;
   } catch (err) {
-    console.error('mailer: GMAIL_SA_JSON parse failed', err);
+    lastClientError = `GMAIL_SA_JSON parse failed: ${err instanceof Error ? err.message : String(err)}`;
+    console.error('mailer:', lastClientError);
     return null;
+  }
+}
+
+export interface SendMailResult {
+  ok: boolean;
+  error?: string;
+  status?: number;
+  messageId?: string;
+}
+
+export async function sendMailVerbose(args: SendMailArgs): Promise<SendMailResult> {
+  const client = getClient();
+  if (!client) {
+    return { ok: false, error: lastClientError ?? 'client unavailable' };
+  }
+  try {
+    const raw = toBase64Url(Buffer.from(buildMessage(args), 'utf8'));
+    const res = await client.request<{ id?: string }>({
+      method: 'POST',
+      url: 'https://gmail.googleapis.com/gmail/v1/users/me/messages/send',
+      data: { raw },
+    });
+    const ok = res.status >= 200 && res.status < 300;
+    return { ok, status: res.status, messageId: res.data?.id };
+  } catch (err: any) {
+    const msg = err?.response?.data
+      ? JSON.stringify(err.response.data)
+      : err?.message || String(err);
+    console.error('sendMail failed:', msg);
+    return { ok: false, error: msg, status: err?.response?.status };
   }
 }
 
@@ -99,21 +141,6 @@ function buildMessage(args: SendMailArgs): string {
 }
 
 export async function sendMail(args: SendMailArgs): Promise<boolean> {
-  const client = getClient();
-  if (!client) {
-    console.error('sendMail: GMAIL_SA_JSON missing or invalid — mail not sent');
-    return false;
-  }
-  try {
-    const raw = toBase64Url(Buffer.from(buildMessage(args), 'utf8'));
-    const res = await client.request<{ id?: string }>({
-      method: 'POST',
-      url: 'https://gmail.googleapis.com/gmail/v1/users/me/messages/send',
-      data: { raw },
-    });
-    return res.status >= 200 && res.status < 300;
-  } catch (err) {
-    console.error('sendMail failed:', err);
-    return false;
-  }
+  const result = await sendMailVerbose(args);
+  return result.ok;
 }
