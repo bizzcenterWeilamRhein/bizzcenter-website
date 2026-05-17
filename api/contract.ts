@@ -1,10 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-
-// M365 Graph API for email
-const MS_TENANT_ID = process.env.MS_TENANT_ID || '';
-const MS_CLIENT_ID = process.env.MS_CLIENT_ID || '';
-const MS_CLIENT_SECRET = process.env.MS_CLIENT_SECRET || '';
-const NOTIFICATION_EMAIL = 'weil@bizzcenter.onmicrosoft.com';
+import { sendMail, INTERNAL_NOTIFICATION_EMAIL } from '../lib/mailer';
 
 interface ContractSubmission {
   // Vertragsdaten
@@ -41,37 +36,11 @@ interface ContractSubmission {
   };
 }
 
-async function getM365Token(): Promise<string | null> {
-  if (!MS_TENANT_ID || !MS_CLIENT_ID || !MS_CLIENT_SECRET) return null;
-  try {
-    const res = await fetch(`https://login.microsoftonline.com/${MS_TENANT_ID}/oauth2/v2.0/token`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({
-        client_id: MS_CLIENT_ID,
-        client_secret: MS_CLIENT_SECRET,
-        scope: 'https://graph.microsoft.com/.default',
-        grant_type: 'client_credentials',
-      }),
-    });
-    const data = await res.json();
-    return data.access_token || null;
-  } catch {
-    return null;
-  }
-}
-
 function esc(str: string): string {
   return str.replace(/[&<>"']/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m] || m));
 }
 
 async function sendContractNotification(data: ContractSubmission, clientIp: string) {
-  const token = await getM365Token();
-  if (!token) {
-    console.warn('M365 token not available — skipping contract email');
-    return;
-  }
-
   const gesamtNetto = data.preisNetto + data.addons.reduce((s, a) => s + a.preisNetto, 0);
   const signedAt = new Date(data.signatur.timestamp);
 
@@ -128,31 +97,19 @@ async function sendContractNotification(data: ContractSubmission, clientIp: stri
   `;
 
   await Promise.allSettled([
-    // Internal notification
-    fetch(`https://graph.microsoft.com/v1.0/users/${NOTIFICATION_EMAIL}/sendMail`, {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        message: {
-          subject: `Vertrag unterschrieben: ${data.firma} — ${data.tarifName}`,
-          body: { contentType: 'HTML', content: internalHtml },
-          toRecipients: [{ emailAddress: { address: NOTIFICATION_EMAIL } }],
-        },
-      }),
+    sendMail({
+      to: INTERNAL_NOTIFICATION_EMAIL,
+      subject: `Vertrag unterschrieben: ${data.firma} — ${data.tarifName}`,
+      html: internalHtml,
     }),
-    // Customer confirmation
-    data.email ? fetch(`https://graph.microsoft.com/v1.0/users/${NOTIFICATION_EMAIL}/sendMail`, {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        message: {
+    data.email
+      ? sendMail({
+          to: data.email,
           subject: `Ihre Geschäftsadresse bei bizzcenter — Vertragsbestätigung`,
-          body: { contentType: 'HTML', content: customerHtml },
-          toRecipients: [{ emailAddress: { address: data.email } }],
-          replyTo: [{ emailAddress: { address: 'weilamrhein@bizzcenter.de' } }],
-        },
-      }),
-    }) : Promise.resolve(),
+          html: customerHtml,
+          replyTo: 'info@greenofficeweil.com',
+        })
+      : Promise.resolve(),
   ]);
 }
 
