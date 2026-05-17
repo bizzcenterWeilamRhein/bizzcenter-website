@@ -96,7 +96,9 @@ export default function PhoneInput({
   const initial = parseE164(value);
   const [dial, setDial] = useState(initial.dial);
   const [localNumber, setLocalNumber] = useState(initial.localNumber);
+  const [isOpen, setIsOpen] = useState(false);
   const userTouched = useRef(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Geo-based default: nur setzen wenn User noch nichts angefasst hat und value leer.
   useEffect(() => {
@@ -117,9 +119,29 @@ export default function PhoneInput({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Close dropdown on click outside / Escape
+  useEffect(() => {
+    if (!isOpen) return;
+    const onMouseDown = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsOpen(false);
+    };
+    document.addEventListener("mousedown", onMouseDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onMouseDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [isOpen]);
+
   const updateDial = (newDial: string) => {
     userTouched.current = true;
     setDial(newDial);
+    setIsOpen(false);
     onChange(joinE164(newDial, localNumber));
   };
   const updateNumber = (raw: string) => {
@@ -129,41 +151,84 @@ export default function PhoneInput({
     onChange(joinE164(dial, cleaned));
   };
 
+  const selectedCountry =
+    ALL_COUNTRIES.find((c) => c.dial === dial) ?? TOP_COUNTRIES[0];
+
   const baseInputCls =
     inputClassName ??
     `flex-1 min-w-0 px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none transition-colors ${
       hasError ? "border-red-500" : "border-gray-300"
     }`;
-  const baseSelectCls =
+  const baseTriggerCls =
     selectClassName ??
-    `px-2 py-2.5 border rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none bg-white text-sm ${
+    `flex items-center gap-1.5 w-24 shrink-0 px-2 py-2.5 border rounded-lg bg-white text-sm transition-colors ${
       hasError ? "border-red-500" : "border-gray-300"
-    }`;
+    } ${disabled ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-50 cursor-pointer"}`;
 
   return (
     <div className={wrapperClassName ?? "flex gap-2"}>
-      <select
-        aria-label="Ländervorwahl"
-        value={dial}
-        onChange={(e) => updateDial(e.target.value)}
-        disabled={disabled}
-        className={baseSelectCls}
-      >
-        <optgroup label="Häufig">
-          {TOP_COUNTRIES.map((c) => (
-            <option key={c.code} value={c.dial}>
-              {c.flag} {c.dial}
-            </option>
-          ))}
-        </optgroup>
-        <optgroup label="Andere Länder">
-          {OTHER_COUNTRIES.map((c) => (
-            <option key={`${c.code}-${c.dial}`} value={c.dial}>
-              {c.flag} {c.dial} {c.name}
-            </option>
-          ))}
-        </optgroup>
-      </select>
+      <div ref={dropdownRef} className="relative">
+        <button
+          type="button"
+          onClick={() => !disabled && setIsOpen((o) => !o)}
+          disabled={disabled}
+          aria-haspopup="listbox"
+          aria-expanded={isOpen}
+          aria-label={`Ländervorwahl: ${selectedCountry.name} ${selectedCountry.dial}`}
+          className={baseTriggerCls}
+        >
+          <span aria-hidden>{selectedCountry.flag}</span>
+          <span className="flex-1 text-left font-medium">{selectedCountry.dial}</span>
+          <span aria-hidden className="text-gray-400 text-xs">▾</span>
+        </button>
+        {isOpen && (
+          <ul
+            role="listbox"
+            className="absolute z-50 left-0 top-full mt-1 max-h-72 w-64 overflow-y-auto border border-gray-300 rounded-lg bg-white shadow-lg py-1"
+          >
+            <li className="px-3 py-1 text-xs font-semibold text-gray-500 bg-gray-50">
+              Häufig
+            </li>
+            {TOP_COUNTRIES.map((c) => (
+              <li key={c.code}>
+                <button
+                  type="button"
+                  role="option"
+                  aria-selected={c.dial === dial}
+                  onClick={() => updateDial(c.dial)}
+                  className={`w-full text-left px-3 py-2 flex items-center gap-2 hover:bg-gray-100 ${
+                    c.dial === dial ? "bg-[#f0f4e8]" : ""
+                  }`}
+                >
+                  <span aria-hidden>{c.flag}</span>
+                  <span className="w-14 font-medium text-sm">{c.dial}</span>
+                  <span className="text-sm text-gray-700 truncate">{c.name}</span>
+                </button>
+              </li>
+            ))}
+            <li className="px-3 py-1 text-xs font-semibold text-gray-500 bg-gray-50 mt-1">
+              Andere Länder
+            </li>
+            {OTHER_COUNTRIES.map((c) => (
+              <li key={`${c.code}-${c.dial}`}>
+                <button
+                  type="button"
+                  role="option"
+                  aria-selected={c.dial === dial}
+                  onClick={() => updateDial(c.dial)}
+                  className={`w-full text-left px-3 py-2 flex items-center gap-2 hover:bg-gray-100 ${
+                    c.dial === dial ? "bg-[#f0f4e8]" : ""
+                  }`}
+                >
+                  <span aria-hidden>{c.flag}</span>
+                  <span className="w-14 font-medium text-sm">{c.dial}</span>
+                  <span className="text-sm text-gray-700 truncate">{c.name}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
       <input
         id={id}
         type="tel"
