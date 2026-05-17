@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { sendMail, INTERNAL_NOTIFICATION_EMAIL } from '../lib/mailer';
+import { MAIL_SIGNATURE_WITH_WHATSAPP } from '../lib/mailSignature';
 
 interface ContractSubmission {
   // Vertragsdaten
@@ -90,9 +91,7 @@ async function sendContractNotification(data: ContractSubmission, clientIp: stri
       </ol>
       <p style="margin:16px 0;"><a href="https://weil.bizzcenter.de/vertrag/${esc(data.slug)}" style="display:inline-block;background:#6b7f3e;color:#fff;padding:12px 24px;text-decoration:none;border-radius:6px;font-weight:bold;">Dokumente hochladen & Zahlung einrichten</a></p>
       <p style="font-size:12px;color:#666;">Oder kopieren Sie diesen Link: https://weil.bizzcenter.de/vertrag/${esc(data.slug)}</p>
-      <p>Bei Fragen erreichen Sie uns unter:<br/>
-      <strong>Torben Götz</strong> · <a href="tel:+4917153949009">+49 171 539 49 09</a> · <a href="mailto:weilamrhein@bizzcenter.de">weilamrhein@bizzcenter.de</a></p>
-      <p style="color:#999;font-size:12px;margin-top:24px;">bizzcenter Weil am Rhein GmbH · Im Schwarzenbach 4 · 79576 Weil am Rhein</p>
+      ${MAIL_SIGNATURE_WITH_WHATSAPP}
     </div>
   `;
 

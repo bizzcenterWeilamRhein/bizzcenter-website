@@ -151,8 +151,8 @@ const HERO_STRINGS = {
     gaSending: 'Wird gesendet...',
     gaSubmit: 'Unverbindlich anfragen →',
     gaFootnote: 'Keine Zahlungsdaten nötig · Angebot innerhalb 24h',
-    gaSuccessTitle: 'Anfrage erhalten!',
-    gaSuccessBody: 'Wir melden uns innerhalb von 24h.',
+    gaSuccessTitle: 'Vielen Dank für Ihre Anfrage!',
+    gaSuccessBody: 'Gerne unterstützen wir Sie mit einer flexiblen Bürolösung.',
   },
   en: {
     heroTitle: 'Create a quote in 2 minutes',
@@ -191,8 +191,8 @@ const HERO_STRINGS = {
     gaSending: 'Sending...',
     gaSubmit: 'Request without obligation →',
     gaFootnote: 'No payment details needed · Offer within 24h',
-    gaSuccessTitle: 'Request received!',
-    gaSuccessBody: 'We will get back to you within 24h.',
+    gaSuccessTitle: 'Thank you for your inquiry!',
+    gaSuccessBody: 'We are happy to support you with a flexible office solution.',
   },
   fr: {
     heroTitle: 'Obtenir une offre en 2 minutes',
@@ -231,8 +231,8 @@ const HERO_STRINGS = {
     gaSending: 'Envoi en cours...',
     gaSubmit: 'Demander sans engagement →',
     gaFootnote: 'Aucune donnée de paiement requise · Offre sous 24h',
-    gaSuccessTitle: 'Demande reçue !',
-    gaSuccessBody: 'Nous vous répondrons sous 24h.',
+    gaSuccessTitle: 'Merci pour votre demande !',
+    gaSuccessBody: 'Nous serons heureux de vous accompagner avec une solution de bureau flexible.',
   },
 };
 

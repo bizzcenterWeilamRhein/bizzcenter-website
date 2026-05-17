@@ -2,7 +2,7 @@ import { JWT } from 'google-auth-library';
 
 const SA_JSON = process.env.GMAIL_SA_JSON || '';
 const IMPERSONATE_USER = 'torben@greenofficeweil.com';
-const SENDER_FROM = 'info@greenofficeweil.com';
+const SENDER_FROM = '"bizzcenter Weil am Rhein" <info@greenofficeweil.com>';
 
 export const INTERNAL_NOTIFICATION_EMAIL =
   process.env.INTERNAL_NOTIFICATION_EMAIL || 'torben@greenofficeweil.com';

@@ -138,9 +138,9 @@ export function HonorararztAnfrage({
             <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
           </svg>
         </div>
-        <h3 className="text-xl font-bold text-gray-900 mb-2">Anfrage erhalten</h3>
+        <h3 className="text-xl font-bold text-gray-900 mb-2">Vielen Dank für Ihre Anfrage!</h3>
         <p className="text-gray-600 text-sm">
-          Vielen Dank für Ihr Interesse. Wir melden uns innerhalb von 24 Stunden bei Ihnen — diskret und unverbindlich.
+          Gerne unterstützen wir Sie mit einer flexiblen Bürolösung.
         </p>
       </div>
     );

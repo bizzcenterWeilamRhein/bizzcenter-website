@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { sendMail, INTERNAL_NOTIFICATION_EMAIL } from '../lib/mailer';
+import { MAIL_SIGNATURE_WITH_WHATSAPP } from '../lib/mailSignature';
 
 // Zendesk Sell
 const ZENDESK_TOKEN = process.env.ZENDESK_SELL_API_TOKEN || '';
@@ -118,8 +119,9 @@ function telDisplay(raw: string): string {
 
 async function sendNotificationEmail(lead: { firstName: string; lastName: string; firma?: string; telefon?: string; email?: string; nachricht?: string; quelle: string; product?: string; wunschterminVon?: string; wunschterminBis?: string; zeitraumFreitext?: string }) {
   const quelleInfo = getQuelleInfo(lead.quelle);
+  const produkt = getProduktForDealName({ quelle: lead.quelle, product: lead.product } as LeadData);
   const hasTimeRange = lead.wunschterminVon && lead.wunschterminBis;
-  const subject = `Neue Anfrage: ${esc(lead.firstName)} ${esc(lead.lastName)}${lead.firma ? ` (${esc(lead.firma)})` : ''} — ${quelleInfo.name}`;
+  const subject = `${produkt}: ${lead.firstName} ${lead.lastName}`;
 
   // Prominent time-range block (rendered above the regular details)
   const timeRangeBlock = hasTimeRange
@@ -131,9 +133,9 @@ async function sendNotificationEmail(lead: { firstName: string; lastName: string
     : '';
 
   const lines = [
-    `<h2>Neue Anfrage über ${esc(quelleInfo.name)}</h2>`,
+    `<h2>Neue ${esc(produkt)}-Anfrage</h2>`,
     `<p style="color:#666;font-size:13px;margin:0 0 16px 0;">Quelle: <strong>${esc(quelleInfo.seite)}</strong></p>`,
-    lead.product ? `<p style="font-size:15px;margin:0 0 12px 0;"><strong>Produkt/Service:</strong> ${esc(lead.product)}</p>` : '',
+    lead.product && lead.product !== produkt ? `<p style="font-size:15px;margin:0 0 12px 0;"><strong>Produkt/Service:</strong> ${esc(lead.product)}</p>` : '',
     timeRangeBlock,
     `<table style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:14px;">`,
     `<tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Name:</td><td>${esc(lead.firstName)} ${esc(lead.lastName)}</td></tr>`,
@@ -177,12 +179,7 @@ async function sendCustomerConfirmation(lead: { firstName: string; email: string
       <p>Hallo ${esc(lead.firstName)},</p>
       ${intro}
       ${summary}
-      <p>Mit freundlichen Grüßen<br/>Ihr Team vom bizzcenter Weil am Rhein</p>
-      <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0 12px 0;"/>
-      <p style="font-size:12px;color:#6b7280;margin:0;">
-        bizzcenter Weil am Rhein · Am Kesselhaus 3 · 79576 Weil am Rhein<br/>
-        <a href="https://weil.bizzcenter.de" style="color:#6b7f3e;">weil.bizzcenter.de</a>
-      </p>
+      ${MAIL_SIGNATURE_WITH_WHATSAPP}
     </div>
   `;
 
