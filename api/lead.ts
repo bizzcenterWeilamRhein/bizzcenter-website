@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { sendMail, INTERNAL_NOTIFICATION_EMAIL } from '../lib/mailer';
+import { MAIL_SIGNATURE_WITH_WHATSAPP } from '../lib/mailSignature';
 
 // Zendesk Sell
 const ZENDESK_TOKEN = process.env.ZENDESK_SELL_API_TOKEN || '';
@@ -178,15 +179,7 @@ async function sendCustomerConfirmation(lead: { firstName: string; email: string
       <p>Hallo ${esc(lead.firstName)},</p>
       ${intro}
       ${summary}
-      <p style="background:#f0fdf4;border-left:4px solid #25D366;padding:12px 16px;margin:16px 0;border-radius:4px;">
-        <strong>In dringenden Fällen</strong> erreichen Sie uns direkt über <a href="https://wa.me/491715394909" style="color:#25D366;text-decoration:none;font-weight:600;">WhatsApp Business</a>: <a href="https://wa.me/491715394909" style="color:#1f2a37;font-weight:600;">+49 171 5394909</a>
-      </p>
-      <p>Mit freundlichen Grüßen<br/>Ihr Team vom bizzcenter Weil am Rhein</p>
-      <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0 12px 0;"/>
-      <p style="font-size:12px;color:#6b7280;margin:0;">
-        bizzcenter Weil am Rhein · Am Kesselhaus 3 · 79576 Weil am Rhein<br/>
-        <a href="https://weil.bizzcenter.de" style="color:#6b7f3e;">weil.bizzcenter.de</a>
-      </p>
+      ${MAIL_SIGNATURE_WITH_WHATSAPP}
     </div>
   `;
 
