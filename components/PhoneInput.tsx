@@ -136,7 +136,7 @@ export default function PhoneInput({
     }`;
   const baseSelectCls =
     selectClassName ??
-    `px-2 py-2.5 border rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none bg-white text-sm ${
+    `w-24 sm:w-auto shrink-0 px-2 py-2.5 border rounded-lg focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e] outline-none bg-white text-sm ${
       hasError ? "border-red-500" : "border-gray-300"
     }`;
 
