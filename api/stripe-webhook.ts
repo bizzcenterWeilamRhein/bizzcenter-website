@@ -14,6 +14,11 @@ const ZENDESK_API = 'https://api.getbase.com/v2';
 const ZENDESK_WON_STAGE_ID = process.env.ZENDESK_WON_STAGE_ID
   ? Number(process.env.ZENDESK_WON_STAGE_ID)
   : undefined;
+// Besitzer der "Rechnung erstellen"-Aufgabe (Timo Schneeweis, ts@bizzcenter.de).
+// Per Env überschreibbar, falls die Zuständigkeit wechselt.
+const ZENDESK_INVOICE_TASK_OWNER_ID = process.env.ZENDESK_INVOICE_TASK_OWNER_ID
+  ? Number(process.env.ZENDESK_INVOICE_TASK_OWNER_ID)
+  : 64992;
 
 const MS_TENANT_ID = process.env.MS_TENANT_ID || '';
 const MS_CLIENT_ID = process.env.MS_CLIENT_ID || '';
@@ -217,6 +222,46 @@ async function createDeal(args: {
       },
     }),
   }).catch(err => console.error('Zendesk note attach failed:', err));
+
+  // Aufgabe "Rechnung erstellen" an Timo anhängen (Buchhaltungs-Trigger)
+  await createInvoiceTask({
+    dealId: dealData.data.id,
+    dealName: args.name,
+    value: args.value,
+    currency: args.currency,
+  }).catch(err => console.error('Zendesk invoice task create failed:', err));
+}
+
+async function createInvoiceTask(args: {
+  dealId: number;
+  dealName: string;
+  value: number;
+  currency: string;
+}): Promise<void> {
+  // Fälligkeit: in 1 Stunde — taucht sofort in Timos To-do-Liste auf,
+  // wird aber nicht im selben Moment schon als überfällig markiert
+  const due = new Date();
+  due.setHours(due.getHours() + 1);
+
+  const res = await fetch(`${ZENDESK_API}/tasks`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${ZENDESK_TOKEN}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      data: {
+        content: `Rechnung erstellen — ${args.dealName} (${args.value.toFixed(2)} ${args.currency})`,
+        owner_id: ZENDESK_INVOICE_TASK_OWNER_ID,
+        resource_type: 'deal',
+        resource_id: args.dealId,
+        due_date: due.toISOString(),
+      },
+    }),
+  });
+  if (!res.ok) {
+    console.error('Zendesk task create failed:', res.status, await res.text().catch(() => ''));
+  }
 }
 
 async function getGraphToken(): Promise<string | null> {
