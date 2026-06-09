@@ -136,6 +136,8 @@ const STRINGS = {
     // Errors
     errOptions: 'Bitte wählen Sie alle Optionen aus.',
     errRequired: 'Bitte füllen Sie alle Pflichtfelder aus.',
+    errDate: 'Bitte wählen Sie ein Datum.',
+    labelDate: 'Gewünschtes Datum *',
     errEmail: 'Bitte geben Sie eine gültige E-Mail-Adresse ein.',
     errGeneric: 'Ein Fehler ist aufgetreten.',
     errConnection: 'Verbindungsfehler. Bitte versuchen Sie es erneut.',
@@ -245,6 +247,8 @@ const STRINGS = {
     securePayment: 'Secure payment via Stripe · SSL encrypted',
     errOptions: 'Please select all options.',
     errRequired: 'Please fill in all required fields.',
+    errDate: 'Please choose a date.',
+    labelDate: 'Preferred date *',
     errEmail: 'Please enter a valid email address.',
     errGeneric: 'An error occurred.',
     errConnection: 'Connection error. Please try again.',
@@ -352,6 +356,8 @@ const STRINGS = {
     securePayment: 'Paiement sécurisé via Stripe · Chiffré SSL',
     errOptions: 'Veuillez sélectionner toutes les options.',
     errRequired: 'Veuillez remplir tous les champs obligatoires.',
+    errDate: 'Veuillez choisir une date.',
+    labelDate: 'Date souhaitée *',
     errEmail: 'Veuillez saisir une adresse e-mail valide.',
     errGeneric: 'Une erreur est survenue.',
     errConnection: 'Erreur de connexion. Veuillez réessayer.',
@@ -584,6 +590,7 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [isPrivat, setIsPrivat] = useState(false);
+  const [bookingDate, setBookingDate] = useState('');
 
   const toggleAddon = (id: string) => {
     setSelectedAddons(prev => {
@@ -630,6 +637,12 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
       setError(s.errEmail);
       return;
     }
+    // Tagespass / Tagesbüro brauchen ein Buchungsdatum
+    const needsDate = product === 'tagesbuero' || priceKey === 'cw_tagespass';
+    if (needsDate && !bookingDate) {
+      setError(s.errDate);
+      return;
+    }
 
     setLoading(true);
     setError('');
@@ -647,6 +660,7 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
           customerName: name,
           customerPhone: phone,
           firma,
+          bookingDate,
           locale,
           successUrl: `${window.location.origin}/buchung-bestaetigt`,
           cancelUrl: window.location.href,
@@ -995,6 +1009,19 @@ export function CheckoutWizard({ product, title }: CheckoutWizardProps) {
                 className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e]"
               />
             </div>
+
+            {(product === 'tagesbuero' || getMainPriceKey() === 'cw_tagespass') && (
+              <div>
+                <label className="block text-xs font-medium text-gray-700 mb-1">{s.labelDate}</label>
+                <input
+                  type="date"
+                  value={bookingDate}
+                  min={new Date().toISOString().slice(0, 10)}
+                  onChange={e => setBookingDate(e.target.value)}
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b7f3e] focus:border-[#6b7f3e]"
+                />
+              </div>
+            )}
           </div>
 
           {error && (
