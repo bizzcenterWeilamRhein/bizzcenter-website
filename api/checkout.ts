@@ -150,45 +150,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ error: 'Firmenname zu lang' });
     }
 
-    // ─── Upsell mapping: which add-on keys are available per product category ───
-    // (Park-Optionen nur bei Monatsbuchungen — laut Geschäftsregel)
-    const UPSELL_MAP: Record<string, string[]> = {
-      'cw_tagespass': ['addon_kaffee_tag', 'addon_monitor_tag'],
-      'cw_10er': [],
-      'cw_monatspass': ['addon_kaffee', 'addon_parkplatz_fest', 'addon_monitor', 'addon_schrank'],
-      'cw_monatsabo': ['addon_kaffee', 'addon_parkplatz_fest', 'addon_monitor', 'addon_schrank'],
-      'tb_tag': ['addon_kaffee_tag', 'addon_monitor_tag', 'addon_parkplatz_tag'],
-      'tb_woche': [],
-      'tb_10er': ['addon_parkplatz_10er'],
-      'tb_monat': ['addon_kaffee', 'addon_parkplatz_fest', 'addon_monitor'],
-    };
-    // Konferenzraum upsells (Kaffee als Tages-Add-on, kein Parkplatz)
-    for (const prefix of ['konf_2pers', 'konf_6pers', 'konf_15pers', 'konf_25pers']) {
-      for (const dur of ['_stunde', '_halbtags', '_ganztags']) {
-        UPSELL_MAP[prefix + dur] = ['addon_kaffee_tag'];
-      }
-    }
-
-    // Build line items
-    const lineItems: Array<{ price: string; quantity: number; adjustable?: boolean }> = [
+    // Build line items — nur das gewählte Produkt plus die im Buchungs-Assistenten
+    // AKTIV angehakten Add-ons. Es werden KEINE Upsells vorausgewählt: Add-ons sind
+    // reines Opt-in (Kunde hakt an, was er will), nicht Opt-out (alles vorausgewählt,
+    // Kunde muss abwählen). Die Auswahl passiert ausschließlich im Wizard.
+    const lineItems: Array<{ price: string; quantity: number }> = [
       { price: PRICES[priceId], quantity: 1 },
     ];
-
-    const selectedAddonKeys = new Set<string>(addons || []);
 
     if (addons && Array.isArray(addons)) {
       for (const addon of addons) {
         if (PRICES[addon]) {
           lineItems.push({ price: PRICES[addon], quantity: 1 });
         }
-      }
-    }
-
-    // Upsell items: pre-selected at qty 1, adjustable down to 0 so customers can opt out
-    const upsellKeys = UPSELL_MAP[priceId] || [];
-    for (const upsellKey of upsellKeys) {
-      if (!selectedAddonKeys.has(upsellKey) && PRICES[upsellKey]) {
-        lineItems.push({ price: PRICES[upsellKey], quantity: 1, adjustable: true });
       }
     }
 
@@ -284,11 +258,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       params.append(`line_items[${i}][quantity]`, String(item.quantity));
       if (mode === 'payment') {
         params.append(`line_items[${i}][tax_rates][0]`, taxRateId);
-      }
-      if (item.adjustable) {
-        params.append(`line_items[${i}][adjustable_quantity][enabled]`, 'true');
-        params.append(`line_items[${i}][adjustable_quantity][minimum]`, '0');
-        params.append(`line_items[${i}][adjustable_quantity][maximum]`, '1');
       }
     });
 
