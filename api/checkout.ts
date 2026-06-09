@@ -126,7 +126,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const {
       priceId, addons, successUrl, cancelUrl,
-      customerEmail, customerName, customerPhone, firma, locale,
+      customerEmail, customerName, customerPhone, firma, locale, bookingDate,
       // Marketing-Attribution (alle optional)
       gclid, utm_source, utm_medium, utm_campaign, utm_term, utm_content,
     } = req.body;
@@ -242,6 +242,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     if (firma) params.append('metadata[firma]', firma);
+    if (bookingDate) {
+      params.append('metadata[buchungsdatum]', bookingDate);
+      const dateLabel = ({ de: 'Gewünschtes Datum', en: 'Preferred date', fr: 'Date souhaitée', it: 'Data desiderata' } as Record<string, string>)[checkoutLocale] || 'Datum';
+      params.append('custom_text[submit][message]', `${dateLabel}: ${bookingDate}`);
+    }
     if (customerName) params.append('metadata[customer_name]', customerName);
     if (customerPhone) params.append('metadata[phone]', customerPhone);
     params.append('metadata[locale]', checkoutLocale);
