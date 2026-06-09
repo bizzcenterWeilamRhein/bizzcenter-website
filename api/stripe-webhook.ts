@@ -402,12 +402,14 @@ async function processCheckoutCompleted(session: Stripe.Checkout.Session): Promi
   const currency = (session.currency || 'eur').toUpperCase();
 
   // Kontakt suchen oder anlegen (Upsert by Email)
+  const buchungsdatum = session.metadata?.buchungsdatum || '';
   const description = [
     `Quelle: stripe-checkout`,
     `Stripe Session: ${session.id}`,
     `Betrag: ${value.toFixed(2)} ${currency}`,
+    buchungsdatum ? `Gewünschtes Datum: ${buchungsdatum}` : '',
     `Modus: ${session.mode}`,
-  ].join('\n');
+  ].filter(Boolean).join('\n');
 
   // Zendesk-Sync und Welcome-Mail unabhängig + parallel — Fehler in dem einen
   // soll den anderen nicht blockieren.
