@@ -1,3 +1,9 @@
+'use client';
+
+import { useLocale } from './lib/i18n';
+
+const REVIEWS_SUBTITLE: Record<string, string> = { de: 'Verifizierte Google Bewertungen', en: 'Verified Google reviews', fr: 'Avis Google vérifiés', it: 'Recensioni Google verificate' };
+
 interface Review {
   author: string;
   rating: number;
@@ -20,6 +26,7 @@ function Stars({ count }: { count: number }) {
 }
 
 export function GoogleReviews({ title, reviews, speed = 35 }: GoogleReviewsProps) {
+  const locale = useLocale();
   const doubled = [...reviews, ...reviews];
 
   return (
@@ -29,7 +36,7 @@ export function GoogleReviews({ title, reviews, speed = 35 }: GoogleReviewsProps
           <h2 className="text-2xl sm:text-3xl font-bold">{title}</h2>
           <div className="flex items-center justify-center gap-2 mt-2">
             <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
-            <span className="text-sm text-gray-500">Verifizierte Google Bewertungen</span>
+            <span className="text-sm text-gray-500">{REVIEWS_SUBTITLE[locale]}</span>
           </div>
         </div>
       )}
