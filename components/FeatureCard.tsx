@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useLocale, localizeHref } from './lib/i18n';
 import {
   MapPin, Shield, TrendingUp, Zap, Mail, Package, Phone,
   Monitor, Users, Building2, Globe, Calendar, CheckCircle,
@@ -62,6 +63,8 @@ const customIcons: Record<string, React.FC<{ size?: number }>> = {
   'flag-de-ch': FlagDeCh,
 };
 
+const MEHR_ERFAHREN: Record<string, string> = { de: 'Mehr erfahren', en: 'Learn more', fr: 'En savoir plus', it: 'Scopri di più' };
+
 interface FeatureCardProps {
   title: string;
   description: string;
@@ -71,6 +74,7 @@ interface FeatureCardProps {
 }
 
 export function FeatureCard({ title, description, icon, iconColor, link }: FeatureCardProps) {
+  const locale = useLocale();
   const color = iconColor || 'var(--color-primary, #6b7f3e)';
   const IconComponent = icon ? iconMap[icon] : null;
   const CustomIcon = icon ? customIcons[icon] : null;
@@ -91,7 +95,7 @@ export function FeatureCard({ title, description, icon, iconColor, link }: Featu
       <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>
       {link && (
         <span className="mt-3 text-sm font-medium inline-flex items-center gap-1" style={{ color }}>
-          Mehr erfahren →
+          {MEHR_ERFAHREN[locale]} →
         </span>
       )}
     </>
@@ -99,7 +103,7 @@ export function FeatureCard({ title, description, icon, iconColor, link }: Featu
 
   if (link) {
     return (
-      <a href={link} className="flex flex-col items-start p-6 rounded-xl bg-background/90 backdrop-blur-sm border border-border/50 shadow-sm hover:shadow-md hover:border-[#6b7f3e]/40 transition-all no-underline cursor-pointer">
+      <a href={localizeHref(link, locale)} className="flex flex-col items-start p-6 rounded-xl bg-background/90 backdrop-blur-sm border border-border/50 shadow-sm hover:shadow-md hover:border-[#6b7f3e]/40 transition-all no-underline cursor-pointer">
         {content}
       </a>
     );

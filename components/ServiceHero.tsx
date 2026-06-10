@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useLocale, localizeHref } from './lib/i18n';
 
 interface ServiceCard {
   title: string;
@@ -16,11 +17,12 @@ interface ServiceHeroProps {
 }
 
 function MobileServiceCard({ service, index }: { service: ServiceCard; index: number }) {
+  const locale = useLocale();
   const href = service.links[0]?.href || '#';
 
   return (
     <Link
-      href={href}
+      href={localizeHref(href, locale)}
       className="bg-white/90 backdrop-blur-sm rounded-xl shadow-xl p-4 flex items-center gap-3 active:scale-[0.98] transition-transform"
     >
       {service.image && (
@@ -52,6 +54,7 @@ function MobileServiceCard({ service, index }: { service: ServiceCard; index: nu
 }
 
 export function ServiceHero({ backgroundImage, headline, services }: ServiceHeroProps) {
+  const locale = useLocale();
   return (
     <section className="relative w-full min-h-[auto] sm:min-h-[90vh] flex items-start justify-center overflow-hidden">
       {/* Background Image */}
@@ -82,7 +85,7 @@ export function ServiceHero({ backgroundImage, headline, services }: ServiceHero
                 
                 {service.image && (
                   <Link
-                    href={primaryHref}
+                    href={localizeHref(primaryHref, locale)}
                     className="w-full h-32 rounded-lg overflow-hidden mb-3 block group"
                   >
                     <img
@@ -102,7 +105,7 @@ export function ServiceHero({ backgroundImage, headline, services }: ServiceHero
                   {service.links.map((link, j) => (
                     <Link
                       key={j}
-                      href={link.href}
+                      href={localizeHref(link.href, locale)}
                       className={`block text-center text-sm font-semibold py-2.5 px-4 rounded-lg transition-colors ${
                         j === 0
                           ? 'bg-[var(--color-primary,#1a73b5)] text-white hover:opacity-90'

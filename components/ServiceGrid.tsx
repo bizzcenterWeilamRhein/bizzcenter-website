@@ -1,5 +1,8 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
+import { useLocale, localizeHref } from './lib/i18n';
 
 interface Service {
   title: string;
@@ -64,9 +67,10 @@ function ServiceIcon({ icon }: { icon: string }) {
 }
 
 function ServiceCard({ service }: { service: Service }) {
+  const locale = useLocale();
   return (
     <Link
-      href={`/${service.slug}`}
+      href={localizeHref(`/${service.slug}`, locale)}
       className="bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md hover:border-gray-200 transition-all duration-200 cursor-pointer h-full flex flex-col overflow-hidden active:scale-[0.98]"
     >
       {/* Header */}
